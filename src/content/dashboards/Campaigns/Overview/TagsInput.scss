@@ -1,0 +1,86 @@
+.ootags-input {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	width: 100%;
+	margin-bottom: 1vw;
+	padding: 8px 10px;
+	gap: 10px;
+	border: 1px solid rgb(214, 216, 218);
+	border-radius: 6px;
+
+	input {
+		flex: 1;
+		width: auto;
+		border: none;
+		font-size: 14px;
+
+		&:focus {
+			outline: transparent;
+		}
+	}
+}
+
+#ootags {
+	display: flex;
+	flex-wrap: wrap;
+	padding: 0;
+}
+
+.ootag {
+	width: auto;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	margin-left: 0.2vw;
+	justify-content: center;
+	color: #fff;
+	padding: 0 8px;
+	font-size: 14px;
+	list-style: none;
+	border-radius: 6px;
+	background: #1A75FF;
+
+	.ootag-close-icon {
+		display: block;
+		width: 16px;
+		height: 16px;
+		line-height: 16px;
+		text-align: center;
+		font-size: 14px;
+		margin-left: 8px;
+		color: #0052cc;
+		border-radius: 50%;
+		background: #fff;
+		cursor: pointer;
+	}
+}
+
+// @media screen and (max-width: 567px) {
+// 	.tags-input {
+// 		width: calc(100vw - 32px);
+// 	}
+// }
+
+
+.ootags-input input::placeholder {
+	font-family: $font_Manrope;
+	font-style: normal;
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 19px;
+	display: flex;
+	align-items: center;
+	color: #223354;
+	opacity: 0.5;
+}
+
+@media screen and (max-width: 790px) {
+	#ootags {
+		display: none;
+	}
+	.ootags-input{
+		padding: 15px 10px;
+	}
+}

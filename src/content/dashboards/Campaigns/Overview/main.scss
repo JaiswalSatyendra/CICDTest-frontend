@@ -1,0 +1,510 @@
+.overviewContainer {
+  padding: 4vh;
+  margin: 2vh;
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1vh;
+}
+
+.overviewContainer #title {
+  padding-left: 0.5vw;
+  color: #223354;
+  font-family: $font_Manrope;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 29px;
+  cursor: default;
+}
+
+.overviewContainer #logo {
+  cursor: default;
+}
+
+.flexOverview {
+  display: flex;
+  margin-top: 2vw;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  gap: 1vw;
+  width: auto;
+  height: auto;
+  background: #ffffff;
+  box-shadow: 0px 1px 4px rgba(25, 117, 255, 0.25),
+    0px 3px 12px 2px rgba(25, 117, 255, 0.35);
+  border-radius: 12px;
+}
+
+.flexOverview #child1,
+.flexOverview #child2,
+.flexOverview #child4,
+.campaignheading,
+.flexOverview #child5 {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.flexOverview #child3 {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.flexOverview h1 {
+  font-family: $font_Manrope;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #090a0c;
+  margin-bottom: 1vw;
+  cursor: default;
+}
+
+.flexOverview #child1,
+.flexOverview #child2,
+.flexOverview #child3,
+.flexOverview #child4 {
+  border-bottom: 1px solid #a2a2a2;
+}
+
+.cptype,
+.activeType {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 238px;
+  height: 272px;
+}
+
+.campaigntypes {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 1vw;
+}
+
+.cptype {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 35px 15px 35px 15px;
+  gap: 10px;
+  background: #ffffff;
+  opacity: 0.3;
+  border: 1px solid #cccedd;
+  border-radius: 6px;
+  margin: 0 0.5vw 2vw 0.5vw;
+  cursor: pointer;
+}
+
+.cptype p {
+  font-family: $font_Manrope;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #223354;
+  opacity: 0.5;
+}
+
+.cptype h2 {
+  font-family: $font_Manrope;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  display: flex;
+  align-items: center;
+  color: #223354;
+  opacity: 0.5;
+}
+
+.cptype img {
+  margin: 2vw 1vw 2vw 1vw;
+}
+
+.activeType {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 35px 15px 35px 15px;
+  gap: 10px;
+  background: #ffffff;
+  border: 1px solid #cccedd;
+  box-shadow: 0px 1px 4px rgba(25, 117, 255, 0.25),
+    0px 3px 12px 2px rgba(25, 117, 255, 0.35);
+  border-radius: 6px;
+  margin: 0 0.5vw 2vw 0.5vw;
+  cursor: pointer;
+}
+
+.activeType h2 {
+  font-family: $font_Manrope;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  display: flex;
+  align-items: center;
+  color: #223354;
+  opacity: 0.5;
+}
+
+.activeType img {
+  margin: 2vw 1vw 2vw 1vw;
+}
+
+.activeType p {
+  font-family: $font_Manrope;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #223354;
+  opacity: 0.5;
+}
+
+.flexitem {
+  width: 70%;
+}
+
+.flexOverview #child31 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px solid #cccedd;
+  border-radius: 6px;
+  margin-bottom: 1vw;
+  max-width: 23%;
+  min-width: auto;
+}
+
+.flexOverview #child31 img {
+  cursor: pointer;
+  padding: 0.5vw;
+  line-height: 19px;
+  display: flex;
+  align-items: center;
+  color: #223354;
+  opacity: 0.5;
+}
+
+.flexOverview #child31 option {
+  cursor: default;
+  padding: 13.5px 10px;
+  font-family: $font_Manrope;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  display: flex;
+  align-items: center;
+  color: #223354;
+  opacity: 0.5;
+}
+
+.flexOverview #child1 input {
+  border: 1px solid #cccedd;
+  border-radius: 6px;
+  outline: none;
+  width: 70%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 13.5px 10px;
+  gap: 10px;
+  background: #ffffff;
+  margin-bottom: 1vw;
+}
+
+.flexOverview button {
+  padding: 12px 12px;
+  width: 30%;
+  gap: 100px;
+  background: #1a75ff;
+  color: #ffffff;
+  margin: 1vw;
+  border-radius: 6px;
+  border: 1px solid #1a75ff;
+}
+
+.flexOverview button:hover {
+  background: #ffffff;
+  color: #1a75ff;
+  border: 1px solid #1a75ff;
+}
+
+.dropdown {
+  width: 70%;
+  user-select: none;
+  position: relative;
+}
+
+.dropdown .dropdown-btn {
+  background: #ffffff;
+  border: 1px solid #cccedd;
+  border-radius: 6px;
+  padding: 13.5px 10px;
+  font-family: $font_Manrope;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  color: #223354;
+  opacity: 0.5;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 1vw;
+}
+
+.dropdown .dropdown-content {
+  position: absolute;
+  top: 75%;
+  z-index: 2;
+  left: 0;
+  padding: 1vw;
+  background: #ffffff;
+  border: 1px solid rgba(34, 51, 84, 0.2);
+  border-radius: 12px;
+  width: 100%;
+  height: 35vh;
+  overflow-y: auto;
+}
+
+.dropdown .dropdown-content .dropdown-item {
+  cursor: pointer;
+  font-family: $font_Manrope;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 13px;
+  line-height: 10px;
+  color: #223354;
+  opacity: 0.5;
+  transition: all 0.2s;
+  padding: 1vw;
+}
+
+.dropdown .dropdown-content .dropdown-item:hover {
+  background: #f4f4f4;
+}
+
+.ootagsInput {
+  width: 70%;
+}
+
+.containerforcampaigntypes {
+  display: flex;
+  flex-direction: row;
+}
+
+#firstrow {
+  display: flex;
+  flex-direction: row;
+}
+
+#secondrow {
+  display: flex;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 1450px) {
+  .containerforcampaigntypes {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #firstrow {
+    display: flex;
+    flex-direction: row;
+  }
+
+  #secondrow {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+@media screen and (max-width: 950px) {
+  .flexOverview #child31 {
+    max-width: 30%;
+  }
+}
+
+@media screen and (max-width: 790px) {
+  .flexOverview #child31 {
+    max-width: 40%;
+  }
+
+  .campaigntypes {
+    flex-direction: row;
+  }
+}
+
+@media screen and (max-width: 690px) {
+  .flexOverview button {
+    width: 70%;
+  }
+  .containerforcampaigntypes {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #firstrow {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #secondrow {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #child1 {
+    flex-direction: column;
+  }
+
+  .flexOverview #child1,
+  .flexOverview #child2,
+  .flexOverview #child4,
+  .campaignheading,
+  .flexOverview #child5 {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    width: 100%;
+  }
+
+  .flexOverview #child1 input {
+    width: 100%;
+  }
+  .ootagsInput {
+    width: 100%;
+  }
+  .flexitem {
+    width: 100%;
+  }
+  .dropdown {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .flexOverview #child31 {
+    max-width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .flexOverview button {
+    width: 100%;
+  }
+  .overviewContainer #title {
+    font-size: 20px;
+  }
+}
+
+//saved templates
+
+.cardtempset {
+  text-align: center;
+}
+
+.cardtempset > .cardtemp {
+  display: inline-block;
+}
+
+.cardtemp {
+  padding: 10px;
+  box-shadow: 0px 0.5px 2px rgba(25, 117, 255, 0.25),
+    0px 2px 5px 1px rgba(25, 117, 255, 0.35);
+  height: 100%;
+  width: 45%;
+  margin: 10px;
+  background-color: #ffffff;
+  display: block;
+  text-align: center;
+}
+
+.cardtemp h3 {
+  font-size: 16px;
+  font-weight: 300;
+  color: black;
+  margin-bottom: 2vh;
+}
+
+#editST {
+  font-size: 16px;
+  width: 85%;
+  display: inline-block;
+  padding: 1.5vh;
+  text-align: center;
+  background-color: #1a75ff;
+  border: 1px solid #1a75ff;
+  color: #ffffff;
+  border-radius: 0.5vh;
+  margin: 0.5vh;
+  margin-bottom: 1.5vh;
+}
+
+#editST:hover {
+  background-color: #ffffff;
+  color: #1a75ff;
+  border: 1px solid #1a75ff;
+}
+
+#editST:disabled,
+#editST[disabled] {
+  border: 1px solid #cccccc;
+  background-color: #cccccc;
+  color: #666666;
+}
+
+#deleteST {
+  font-size: 16px;
+  width: 85%;
+  display: inline-block;
+  padding: 1.5vh;
+  text-align: center;
+  background-color: #ffffff;
+  border: 1px solid #1a75ff;
+  color: #1a75ff;
+  border-radius: 0.5vh;
+  margin: 0.5vh;
+  margin-bottom: 1.5vh;
+}
+
+#deleteST:hover {
+  color: #ffffff;
+  border: 1px solid #1a75ff;
+  background-color: #1a75ff;
+  border: 1px solid #1a75ff;
+  border: none;
+}
