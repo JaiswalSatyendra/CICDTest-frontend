@@ -1,4 +1,4 @@
-name: S3 Deploy
+name: S3 Deploy Frontend
 on:
   push:
     branches:
@@ -31,7 +31,7 @@ jobs:
       - name: Invalidate CloudFront
         uses: chetan/invalidate-cloudfront-action@v2
         env:
-          DISTRIBUTION: E3QGHJ021SDQQ4
+          DISTRIBUTION: E2KLXWQ5MV5FOD
           PATHS: "/*"
           AWS_REGION: "us-east-1"
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
