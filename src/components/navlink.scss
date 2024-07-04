@@ -1,0 +1,11 @@
+.mobileview {
+    @media only screen and (max-width: 600px) {
+        font-size: 14px;
+    }
+}
+
+@media only screen and (max-width: 1014px) {
+    #imageNavLink {
+       display: none;
+    }
+}

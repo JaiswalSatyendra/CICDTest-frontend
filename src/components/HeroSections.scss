@@ -1,0 +1,13 @@
+.conversion {
+    top: "22rem";
+    right: "22rem";
+}
+
+.blink {
+    animation: blink 0.5s infinite;
+}
+@keyframes blink {
+    to {
+        opacity: 0;
+    }
+}

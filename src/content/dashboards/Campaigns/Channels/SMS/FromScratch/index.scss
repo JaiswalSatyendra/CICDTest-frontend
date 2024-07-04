@@ -1,0 +1,73 @@
+ .smsContainer{
+  margin: 2vw;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.headingsms{
+  display: flex;
+  align-items: center;
+}
+
+.headingsms img{
+  height: 3.5vw;
+  width: 3.5vw;
+  padding: 0.5vw;
+}
+
+.headingsms h1{
+  font-size: 2vw;
+  padding: 0.5vw;
+}
+
+.choiceHeadersms{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(216, 215, 215);
+  width: 100%;
+  height: auto;
+  border-radius: 0.5vw;
+  padding: 1vw;
+  margin: 2vw 0;
+}
+
+.choiceHeaderoptsms{
+  display: flex;
+  align-items: center;
+}
+
+.choiceHeaderoptsms .activesms{
+  font-size: 0.8vw;
+  background-color: #0061f4;
+  color: #ffffff;
+  border-radius: 0.3vw;
+  padding: 0.5vw;
+  margin: 0 1vw;
+}
+
+.choiceHeaderoptsms a{
+  font-size: 0.8vw;
+  margin: 0 1vw;
+}
+
+.optionsms{
+  display: flex;
+  align-items: center;
+}
+.optionsms button{
+  font-size: 0.8vw;
+  background-color: #ffffff;
+  border-radius: 0.4vw;
+  color: #0061f4;
+  border: 0.1vw solid #0061f4;
+  padding: 0.5vw;
+  margin: 0 0.3vw;
+}
+
+.optionsms button:hover{
+  background-color: #0061f4;
+  border-radius: 0.4vw;
+  color: #ffffff;
+  border: 0.1vw solid #0061f4;
+}

@@ -1,0 +1,31 @@
+@import "../../../assets/scss/variables";
+.contactusSocialMedia {
+    display: flex;
+    justify-content: space-around;
+    background-color: black;
+    padding: 50px;
+    font-family: $font_Manrope;
+
+    @media only screen and (max-width: 900px) {
+        padding: 30px;
+        flex-direction: column;
+    }
+    div {
+        text-align: center;
+        h1 {
+            font-size: 26px;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 25px;
+            font-family: inherit;
+            @media only screen and (max-width: 900px) {
+                font-size: 20px;
+                margin: 20px 0px 5px;
+            }
+        }
+        span {
+            color: #ea48ae;
+            font-family: inherit;
+        }
+    }
+}

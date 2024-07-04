@@ -1,0 +1,55 @@
+.rightprofile {
+    display: flex;
+    padding: 2% 5%;
+    background-color: black;
+    color: white;
+    align-items: center;
+    &-avatar {
+        display: grid;
+        place-content: center;
+        width: 50%;
+        img {
+            width: 300px;
+            border-radius: 50%;
+            height: 300px;
+        }
+    }
+    &-about {
+        width: 50%;
+        h1 {
+            font-size: 26px;
+            text-align: left;
+            margin: 0px;
+            font-weight: bold;
+        }
+        span {
+            display: inline-block;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #ea48ae;
+        }
+        div {
+            margin-bottom: 20px;
+            font-size: 22px;
+            font-weight: 400;
+        }
+        &__servicecompany {
+            display: flex;
+            gap: 20px;
+
+            &logo {
+                img {
+                    width: 150px;
+                    height: 80px;
+                }
+            }
+        }
+    }
+}
+
+.desktop {
+    @media only screen and (max-width: 900px) {
+        display: none;
+    }
+}

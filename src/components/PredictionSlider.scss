@@ -1,0 +1,10 @@
+.aligncenter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.group {
+    @media only screen and (max-width: 900px) {
+        display: none;
+    }
+}

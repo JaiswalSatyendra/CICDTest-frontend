@@ -1,0 +1,31 @@
+ 
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap'); 
+
+.bg-red {    background:  rgb(245, 1, 1, );  }
+.bg-yellow {  background:  rgb(255, 196, 130 );  }   
+.bg-green {  background:  rgb(47, 160, 49 ); }
+
+// $primary:#0072a9;
+$font_Manrope: "Manrope", sans-serif;
+$font_Awesome: FontAwesome;
+$font_Awesome: FontAwesome;
+ 
+
+
+$primary: #009efb;
+$color_porcelain_approx: #ebedee;
+$color_gothic_approx: #6f9199;
+$text-color:#535560;
+
+$primaryblue:#0051FA;
+$black:#000000;
+
+/*-------------------------pipelinemonotring ---------------*/
+.pipelinecout span {    background: $primary;    } 
+.pipelinecout-containor .source-pipeline {  background: #6f9199; }
+.pipelinecout-containor  .source-pipeline::before{  color: #535560;    }
+.pipelinecout-containor .target-pipeline {  background: #6f9199;  }
+.pipelinecout-containor .target-pipeline::before{ color: #535560; }
+
+.box-shadow-card{  box-shadow:0px 2px 7px rgba(0, 0, 0, 0.25); }
+
