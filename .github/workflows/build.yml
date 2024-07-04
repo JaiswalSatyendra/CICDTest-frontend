@@ -24,7 +24,7 @@ jobs:
 
       - name: Build
         env:
-          REACT_APP_API_URL: http://3.82.57.239:3001
+          REACT_APP_API_URL: http://Cml-test-env.eba-ynempwns.us-east-1.elasticbeanstalk.com
           REACT_APP_ALGO_API_URL: https://algo.convertml.ai
         run: CI=false npm run build
         
