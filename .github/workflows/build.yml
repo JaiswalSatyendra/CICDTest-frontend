@@ -24,7 +24,7 @@ jobs:
 
       - name: Build
         env:
-          REACT_APP_API_URL: https://cml-test.convertml.ai:3001
+          REACT_APP_API_URL: https://cml-test.convertml.ai
           REACT_APP_ALGO_API_URL: https://algo.convertml.ai
         run: CI=false npm run build
         
