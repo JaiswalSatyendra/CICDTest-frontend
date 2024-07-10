@@ -40,16 +40,19 @@ import { hubspotModuleData } from '../../../assets/data/data';
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 
+import SplitterLayout from "react-splitter-layout";
+import "react-splitter-layout/lib/index.css";
+
 const steps = ['Agreement', 'Data Connnection'];
 
 
 
-const style = {
+const popupstyle = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  // width: 900,
+   width: '60vw',
   bgcolor: 'background.paper',
   // border: '1px solid #ddd',
   boxShadow: 24,
@@ -57,36 +60,12 @@ const style = {
 };
 
 
-const Accordion = styled((props: AccordionProps) => (
-  <MuiAccordion disableGutters elevation={0} square {...props} />
-))(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  '&:not(:last-child)': {
-    borderBottom: 0,
-  },
-  '&:before': {
-    display: 'none',
-  },
-}));
 
-const AccordionSummary = styled((props: AccordionSummaryProps) => (
-  <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
-    {...props}
-  />
-))(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === 'dark'
-      ? 'rgba(255, 255, 255, .05)'
-      : 'rgba(0, 0, 0, .03)',
-  flexDirection: 'row-reverse',
-  '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-    transform: 'rotate(90deg)',
-  },
-  '& .MuiAccordionSummary-content': {
-    marginLeft: theme.spacing(1),
-  },
-}));
+const connectoinArrow = {  
+  margin:'20px 5px',
+};
+
+
 
 const AvatarNotSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -110,7 +89,7 @@ const AvatarSuccess = styled(Avatar)(
 //   borderTop: '1px solid rgba(0, 0, 0, .125)',
 // }));
 
-function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebook, openTwitter, openFeshdesk, openSalesforce,openbraze, openInstagram, listOfWorkspace, listListOfContact, checkedMappingForSurvey, checkedMappingForHubspot, isOpenPopupTypeform, isOpenPopupHubspot, token, hubspotTokenName, hubspotRefreshtokenName, isTypeFormEmptyData, isHubspotEmptyData, selectedWorkspace }) {
+function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebook, openTwitter, openFeshdesk, openSalesforce,openbraze, openInstagram,openKlaviyo,openIntercom,openShopify, listOfWorkspace, listListOfContact, checkedMappingForSurvey, checkedMappingForHubspot, isOpenPopupTypeform, isOpenPopupHubspot, token, hubspotTokenName, hubspotRefreshtokenName, isTypeFormEmptyData, isHubspotEmptyData, selectedWorkspace }) {
 
   // const [isConfirm, setIsConfirm] = React.useState(false);
 
@@ -168,29 +147,28 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
 
   const [session, ,] = useContext(SessionContext);
   const { user } = session;
+ 
+ 
 
-  // const isModalCloseHubspot = () => {
-  //   handleClose();
-  //   // setlistContactMapping([]);
-  //   // setcheckDuplicateSurveyList("");
-  //   seterrorListDisplay([]);
-  // }
-  // const isModalCloseZendesk = () => {
-  //   handleCloseZendesk(); 
-  // }
-
-
-  // const [open11, setOpen11] = React.useState(true);
-
-  // const handleClick11 = (ind) => {
-  //   let newListObj = [...hubspotModule1];
-  //   newListObj[ind].isopen = !newListObj[ind].isopen;
-  //   sethubspotModule1(newListObj);
-  // };
+  const selectHubsportsData = (val) => {
+    setselectedDefaultHubspotModule(val);
+    console.log(val)
+    setselectedFeedbackSurvey(null)
+    if (val == "contact") {
+      getFeedbackSurveyList("contact")
+      setdisplayNotification(false);
+      setdisplayNotificationFeedback(true)
+    } else {
+      getFeedbackSurveyList("feedback")
+      setdisplayNotificationFeedback(false)
+      setdisplayNotification(true);
+    }
+  }; 
   const handleClick12 = (ev, val) => {
     setselectedDefaultHubspotModule(val);
+    console.log(val)
     setselectedFeedbackSurvey(null)
-    if (val.name.toLowerCase() == "contact") {
+    if (val == "contact") {
       getFeedbackSurveyList("contact")
       setdisplayNotification(false);
       setdisplayNotificationFeedback(true)
@@ -247,7 +225,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
           }
           if (listContactMapping.length == counter) {
             listContactMapping.forEach(element => {
-              let newlistObj = { ...element }
+              let newlistObj = { ...element,ptag: true, }
               let newColList = element.colList.filter((ele1) => (element.selectedRow.indexOf(ele1.id) != -1));
               newlistObj.colList = element.hs_object == "contact" ? (newColList.filter(elemUsed => elemUsed.used == "True")) : newColList
               newlistObj.selectedRow = newlistObj.colList.map(eleUsusedId => eleUsusedId.id);
@@ -497,7 +475,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
 
   const colListHubspotContact = [
     {
-      field: 'displayName', headerName: 'List of properties', width: 700, editable: false, renderCell: (data) => {
+      field: 'displayName', headerName: 'List of properties', width: 450, editable: false, renderCell: (data) => {
         return (<div style={{ textWrap: 'wrap' }}>{data.row.displayName} </div>);
       }
     },
@@ -540,11 +518,19 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
       localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_TYPEFORM_CLIENT_ID);
       newConnectionType = process.env.REACT_APP_TYPEFORM_CLIENT_ID
       window.location = 'https://admin.typeform.com/oauth/authorize?client_id=' + process.env.REACT_APP_TYPEFORM_CLIENT_ID + '&scope=offline+workspaces:read+workspaces:write+accounts:read+responses:read+responses:write+forms:write+forms:read+webhooks:read+webhooks:write&redirect_uri=' + process.env.REACT_APP_TYPEFORM_REDIRECT_URI + '&state=xyz789';
+       /* --------------  Don't delete --------------  */
+      // rawcubes.us@gmail.com
+      // Convertml@2023
+       /* --------------  Don't delete --------------  */
     }
     else if (seltype == 'hubspot') {
       localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_HUBSPOT_CLIENT_ID);
       newConnectionType = process.env.REACT_APP_HUBSPOT_CLIENT_ID
       window.location = 'https://app.hubspot.com/oauth/authorize?client_id=' + process.env.REACT_APP_HUBSPOT_CLIENT_ID + '&scope=cms.domains.write+crm.schemas.quotes.read+cms.functions.read+crm.objects.line_items.read+cms.functions.write+crm.schemas.deals.read+crm.schemas.line_items.read+cms.knowledge_base.articles.publish+cms.knowledge_base.articles.write+actions+cms.knowledge_base.articles.read+cms.knowledge_base.settings.read+cms.knowledge_base.settings.write+crm.objects.owners.read+forms+settings.users.teams.read+analytics.behavioral_events.send+account-info.security.read+integration-sync+cms.performance.read+settings.currencies.read+crm.objects.marketing_events.read+crm.schemas.custom.read+crm.objects.custom.read+crm.objects.feedback_submissions.read+forms-uploaded-files+crm.objects.goals.read+crm.objects.companies.read+crm.lists.read+settings.users.read+crm.objects.deals.read+crm.schemas.contacts.read+ctas.read+crm.objects.contacts.read+cms.domains.read+crm.schemas.companies.read+crm.objects.quotes.read+accounting&redirect_uri=' + process.env.REACT_APP_HUBSPOT_REDIRECT_URI;
+      /* --------------  Don't delete --------------  */
+      // rawcubes.us@gmail.com 
+      // Convertml$2024
+      /* --------------  Don't delete --------------  */
     }
     else if (seltype == 'zendesk') {
       localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_Zendesk_CLIENT_ID);
@@ -598,20 +584,45 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
       localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_HUBSPOT_CLIENT_ID);
       window.location = 'https://www.braze.com/#'
       /* --------------  Don't delete --------------  */
-      // User Name: aman.chaurasia-nzgm@force.com
-      // password: Tech@5050 
+      
       /* -------------- Don't delete --------------  */
     }
     
 
     else if (seltype == 'instagram') {
       localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_HUBSPOT_CLIENT_ID);
-      window.location = 'https://api.instagram.com/oauth/authorize?force_authentication=1&client_id=458136926822674&redirect_uri=https://test.convertml.ai/dashboard/data-platform/create-data-connection&scope=user_profile,user_media&state=1&response_type=code'
-
+      window.location = 'https://api.instagram.com/oauth/authorize?force_authentication=1&client_id=458136926822674&redirect_uri=https://test.convertml.ai/dashboard/data-platform/create-data-connection&scope=user_profile,user_media&state=1&response_type=code' 
       /* --------------  Don't delete --------------  */
       // login: https://www.facebook.com/login/ 
       // User Name: aman.chaurasia-nzgm@force.com
       // password: Tech@5050 
+      /* -------------- Don't delete --------------  */
+    }
+    else if (seltype == 'klaviyo') {
+      localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_klaviyo_CLIENT_ID);
+      window.location = 'https://www.klaviyo.com/oauth/authorize?response_type=code&client_id=' + process.env.REACT_APP_klaviyo_CLIENT_ID + '&redirect_uri=' + process.env.REACT_APP_klaviyo_REDIRECT_URI+'&scope=lists:write campaigns:write metrics:read&code_challenge_method=S256&code_challenge=' + process.env.REACT_APP_klaviyo_Client_Secre +'' 
+      
+      /* --------------  Don't delete --------------  */
+      // login: https://www.klaviyo.com/manage-apps/01J1ACW9WJZXXRS5C9PJDBXQ8M
+      // User Name: harikant121@gmail.com
+      // password: rcIndia#63 
+      /* -------------- Don't delete --------------  */
+    }
+    else if (seltype == 'intercom') {
+      localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_Intercom_CLIENT_ID); 
+      window.location = 'https://app.intercom.com/oauth?&client_id=' + process.env.REACT_APP_Intercom_CLIENT_ID + '&redirect_uri=' + process.env.REACT_APP_Intercom_REDIRECT_URI+'&response_type=code&state=random_string_here'   
+      /* --------------  Don't delete --------------  */ 
+      // user name- aman.chaurasia@convertml.ai
+      // pssd -  Tech@12345
+      /* -------------- Don't delete --------------  */
+    }
+    else if (seltype == 'shopify') {
+      localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_Shopify_CLIENT_ID);
+      window.location = 'https://admin.shopify.com/oauth/install_custom_app?client_id=' + process.env.REACT_APP_Intercom_CLIENT_ID + '&no_redirect=true&signature=' + process.env.REACT_APP_Shopify_signature+''
+        
+      /* --------------  Don't delete --------------  */        
+      // id- aman.chaurasia@convertml.ai
+      // pssd- Tech@5050 
       /* -------------- Don't delete --------------  */
     }
     setSelectedSourceType(newConnectionType);
@@ -668,52 +679,9 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
       });
 
   }
-
-  const hubContactLit = [{ id: 1, "item": "age", "displayName": "Age", "is_mapped": true, "weightage": "H" },
-  { id: 2, "item": "firstname", "displayName": "First Name", "is_mapped": true, "weightage": "H" },
-  { id: 3, "item": "gender", "displayName": "Gender", "is_mapped": true, "weightage": "H" },
-  { id: 4, "item": "lastname", "displayName": "Last Name", "is_mapped": true, "weightage": "H" },
-  { id: 5, "item": "email", "displayName": "Email", "is_mapped": true, "weightage": "H" },
-  { id: 6, "item": "average_purchase_value", "displayName": "Average Purchase Value", "is_mapped": true, "weightage": "H" },
-  { id: 7, "item": "purchase_frequency", "displayName": "Purchase Frequency", "is_mapped": true, "weightage": "H" },
-  { id: 8, "item": "cart_drop_rate", "displayName": "Days Since Last Purchased", "is_mapped": true, "weightage": "H" }]
-
-  const selectList = async (ev, val) => {
-    // let cloneContactMap = [...listContactMapping];
-    // let getIndex = cloneContactMap.findIndex(ele => ele.displayName == val.name)
-    // if (getIndex == -1) {
-    //   let addNewFieldList = hubContactLit.map((ele1, indx) => ({ ...ele1, "module": hubContactLit[indx].item }))
-    //   cloneContactMap.push({
-    //     displayName: val.name, value: val.listId, hs_object: "contact", colList: addNewFieldList, selectedRow: [1, 2, 3, 4, 5, 6, 7, 8]
-    //   })
-    //   setlistContactMapping(cloneContactMap);//For mapping selecte list id with selectedColumn
-    //   setcheckDuplicateSurveyList("")
-    //   seterrorListDisplay([]);
-    //   setselectedContact(val);
-
-    // } else {
-    //   seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Duplicate Survey', message: ["Already added in the list"] }]);
-    //   // setcheckDuplicateSurveyList("Already added in the list")
-
-    // }
-
-
-    // await axios.post(`${process.env.REACT_APP_API_URL}/user/fetchSelectedListContact`, { "token": hubspotTokenName, "listId": val.listId })
-    //   .then(async (response) => {
-    //     if (response.data.list.length != 0) {
-    //       let addNewFieldList = hubContactLit.map((ele1, indx) => ({ ...ele1, "module": hubContactLit[indx].item }))
-    //       cloneContactMap.push({
-    //         list: { displayName: val.name, value: val.listId }, colList: addNewFieldList, selectedRow: [1, 2, 3, 4, 5, 6, 7, 8]
-    //       })
-    //       setlistContactMapping(cloneContactMap);//For mapping selecte list id with selectedColumn
-    //       // setSelectionModelForHubspot([1, 2, 3, 4, 5, 6, 7, 8])//For selectedColumn id
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     setlistContactMapping([]);
-    //   });
-  }
-  const selectFeedbackSurvey = (ev, val) => {
+ 
+  const selectFeedbackSurvey = (ev, sval) => {
+    let val={...sval,ptag: true,}
     if (val == null) {
       seterrorListDisplay([]);
       return;
@@ -903,13 +871,30 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
         console.log("");
       });
 
+  } 
+  const hideObjgrid = (index,select) => {  
+    let filterlistContactMapping = [...listContactMapping];
+     filterlistContactMapping.forEach((ele) => {
+        if (ele.hs_object === select) {
+          ele.ptag = false; 
+      }
+      });
+setlistContactMapping(filterlistContactMapping);    
+console.log(filterlistContactMapping)  
   }
 
-
-  const submenuOpen = (select) => {
-    // alert(select);
-    console.log(select)
+  const editObjgrid = (index,select) => {  
+    let filterlistContactMapping = [...listContactMapping];
+     filterlistContactMapping.forEach((ele) => {
+        if (ele.hs_object === select) {
+          ele.ptag = true; 
+      }
+      });
+setlistContactMapping(filterlistContactMapping);    
+console.log(filterlistContactMapping)  
   }
+
+  
 
   const collapseAndExpandError = (val, ind) => {
     let newObj = [...errorListDisplay];
@@ -934,7 +919,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
         aria-describedby="modal-modal-description"
       >
         {/* // Connect Typeform */}
-        <Box sx={style} style={{ width: !isOpenPopupTypeform ? '35%' : '65%' }} className='panel'>
+        <Box sx={popupstyle}   className='panel'>
 
           <Box sx={{ display: 'flex', flexDirection: 'row', pb: 2 }} className='flex panel-header' >
             <Typography id="modal-modal-title" variant="h4" component="h4" className='flex'>
@@ -956,13 +941,9 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
                         <Typography variant="span" component="span" gutterBottom>
                           <div className="flex justify-center items-center grayscale-image">
                             <span className="flex items-center my-4 justify-center">
-                              <img src={"/images/partners/typeform.svg"} className="w-44 mx-auto img-box" style={{ marginRight: '15px' }} alt="Type form" /> <img
-                                className="text-center mx-auto" style={{ marginRight: '15px' }}
-                                src={"/images/right-arrow.png"} alt='convertml'
-                              />  <img
-                                className="w-44 mx-auto img-box"
-                                src={"/images/convertmlLogo.png"} alt='convertml'
-                              />
+                              <img src={"/json-media/img/partners/typeform-sm.svg"} className="w-44 mx-auto img-box-connection"  alt="Type form" />
+                              <img style={connectoinArrow} src={"/images/right-arrow.png"} alt='convertml' />  
+                              <img className="w-44 mx-auto img-box-connection" src={"/images/convertmlLogo.png"} alt='convertml' />
                             </span>
                           </div>
                         </Typography>
@@ -1168,7 +1149,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
         aria-describedby="modal-modal-description"
       >
         {/* // Connect Typeform */}
-        <Box sx={style} onClick={(ev) => { ev.stopPropagation(); setisShowHubspotObject(false) }} style={{ width: !isOpenPopupHubspot ? '35%' : '65%' }} className='panel'>
+        <Box sx={popupstyle} onClick={(ev) => { ev.stopPropagation(); setisShowHubspotObject(false) }}  className='panel'>
 
           <Box sx={{ display: 'flex', flexDirection: 'row', pb: 2 }} className='flex panel-header' >
             <Typography id="modal-modal-title" variant="h4" component="h4" className='flex'>
@@ -1191,13 +1172,9 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
                         <Typography variant="span" component="span" gutterBottom>
                           <div className="flex justify-center items-center grayscale-image">
                             <span className="flex items-center my-4 justify-center">
-                              <img src={"/images/partners/hubspot.svg"} className="w-44 mx-auto img-box" style={{ marginRight: '15px' }} alt="Typeform" /> <img
-                                className="text-center mx-auto" style={{ marginRight: '15px' }}
-                                src={"/images/right-arrow.png"} alt='arrow-left'
-                              />  <img
-                                className="w-44 mx-auto img-box"
-                                src={"/images/convertmlLogo.png"} alt='convertML'
-                              />
+                              <img src={"/json-media/img/partners/hubspot-sm.svg"} className="w-44 mx-auto img-box-connection"  alt="Typeform" /> 
+                              <img style={connectoinArrow} src={"/images/right-arrow.png"} alt='convertml' /> 
+                               <img className="w-44 mx-auto img-box-connection" src={"/images/convertmlLogo.png"} alt='convertML' />
                             </span>
                           </div>
                         </Typography>
@@ -1221,7 +1198,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
                 ) : (
                   <Box>
                     <Box container>
-                      <Box style={{ maxHeight: '60vh', overflowX: 'hidden', overflowY: 'auto', padding: '0 10px 0 0' }}>
+                      <Box style={{ maxHeight: '64vh', overflowX: 'hidden', overflowY: 'auto', padding: '0 10px 0 0' }}>
 
 
                         <Box sx={{ display: 'flex', flexDirection: 'row', py: 2 }}>
@@ -1242,7 +1219,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
                                 />
                               </Grid> */}
 
-                            <Grid item xs={12} spacing={2}>
+                            <Grid item xs={12} spacing={1}>
                               <Stack sx={{ width: '100%' }}>
 
                                 {/* <TextField fullWidth onClick={(ev) => { ev.stopPropagation(); setisShowHubspotObject(!isShowHubspotObject) }} id="standard-search" label="Select Object" value={selectedDefaultHubspotModule.displayName} />
@@ -1271,8 +1248,13 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
                                   {
                                     displayNotification == true && selectedDefaultHubspotModule.displayName != "" ? <FormHelperText style={{ margin: '0px' }}>No data is available</FormHelperText> : ''
                                   } */}
-
-                                <Autocomplete
+                                  <h4 className='m-0 mt-n3 '>Select Object</h4> 
+                                  <div className='mt-3'></div>
+                                <Stack spacing={1} direction="row">
+                                <Button onClick={(e) => { selectHubsportsData('contact') }}  className='lightblue-btn' ><i className='icon-user-icon fa-1x float-left mr-2'/> Contacts  </Button>
+                                <Button onClick={(e) => { selectHubsportsData('feedback') }}  className='lightblue-btn'><i className='icon-feedback fa-1x float-left mr-2'/> Feedback </Button>
+                                </Stack>
+                                {/* <Autocomplete
                                   id="tags-filled"
 
                                   // value={selectedDefaultHubspotModule}
@@ -1288,7 +1270,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
                                       placeholder="Select Object"
                                     />
                                   )}
-                                />
+                                /> */}
                                 <br />
                               </Stack>
 
@@ -1317,8 +1299,8 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
                                     renderInput={(params) => (
                                       <TextField
                                         {...params}
-                                        label="Select List"
-                                        placeholder="Select List"
+                                        label="Select Contacts"
+                                        placeholder="Select Contacts"
                                       />
                                     )}
                                   />
@@ -1337,8 +1319,8 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
                                     renderInput={(params) => (
                                       <TextField
                                         {...params}
-                                        label="Select Survey"
-                                        placeholder="Select Survey"
+                                        label="Select FeedBack"
+                                        placeholder="Select FeedBack"
                                       />
                                     )}
                                   />
@@ -1397,65 +1379,47 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
                             </Grid>
 
                           </Grid>
-                        </Box>
-
-
-
-                        <Grid container spacing={4} display="flex" alignItems="center">
-                          <Grid item xs={12} >
-                            {listContactMapping.map((item, index) =>
-                            (
-                              <>
-                                <Box sx={{ display: 'flex', flexDirection: 'row' }} className='justify-between cursor-pointer'>
-                                  <button
-                                    className='chips-btn'
-                                    color="primary"
-                                    size="small"
-                                    variant="outlined"
-                                    onClick={(ev) => {
-                                      handleRemoveSurvey(ev, index);
-                                    }}
-                                  >
-                                    {item.displayName} <i className='fa fa-times-circle'></i>
-                                  </button>
-                                  {/* {item.isCollapse ?
-                                    <ExpandLessIcon className='cursor-pointer' style={{ color: '#212121' }} />
-                                    : <ExpandMoreIcon className='cursor-pointer' style={{ color: '#212121' }} />
-                                  } */}
-                                </Box><br />
-                                <Box sx={{ height: 300, width: '100%', paddingBottom: '10px' }}>
-                                  <DataGridPro
-                                    rows={item.colList}
-                                    columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
-                                    pageSizeOptions={[5, 10, 50, 100]}
-                                    checkboxSelection={true}
-                                    isRowSelectable={(params) => (params.row.used == "False" ? false : true)}
-                                    disableSelectionOnClick
-                                    getRowHeight={() => 'auto'}
-                                    rowSelectionModel={item.selectedRow}
-                                    // onRowSelectionModelChange={(e) => {
-                                    //   let newList1 = [...listContactMapping]
-                                    //   newList1[index].selectedRow = e;
-                                    //   setlistContactMapping(newList1);
-                                    //   // item.selectedRow = e;
-                                    // }}
-
-                                    pagination={false}
-                                    hideFooterRowCount={true}
-                                    hideFooter={true}
-                                    editable
-                                  />
-                                </Box>
-                              </>
-
-                            )
-
-                            )}
-                          </Grid>
-                        </Grid>
-                      </Box>
-                    </Box>
-                  </Box>
+                        </Box>  
+                        {listContactMapping.map((item, index) =>
+                                                    (   <div className='ml-1  mt-2 mr-2 float-left'> 
+                                                          <button
+                                                            className='chips-btn'
+                                                            color="primary"
+                                                            size="small"
+                                                            variant="outlined" 
+                                                          >
+                                                            <span className='selectType'>{item.hs_object}</span>
+                                                            <span onClick={(ev) => {editObjgrid(index,item.hs_object);}}>{item.displayName}</span> <i className='fa fa-times-circle' onClick={(ev) => {
+                                                              handleRemoveSurvey(ev, index);
+                                                            }}></i>
+                                                          </button> 
+                                                          <br /> <div className='mt-2'></div>  
+                                                {!item.ptag?<></>:<> <Box  sx={{  height: 280, width:1100  }}>
+                                                  <DataGridPro
+                                                            rows={item.colList}
+                                                            columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
+                                                            pageSizeOptions={[5, 10, 50, 100]}
+                                                            checkboxSelection={true}
+                                                            isRowSelectable={(params) => (params.row.used == "False" ? false : true)}
+                                                            disableSelectionOnClick
+                                                            getRowHeight={() => 'auto'}
+                                                            rowSelectionModel={item.selectedRow} 
+                                                            pagination={false}
+                                                            hideFooterRowCount={true}
+                                                            hideFooter={true} 
+                                                            editable       
+                                                          />  <div className='mt-2 mb-2'></div> 
+                                                          <Button variant='contained' size="small"   onClick={(ev) => {hideObjgrid(index,item.hs_object);}}  >Done</Button> 
+                                                          </Box><br /><br />  </>} 
+                                                        <div className='clearfix'></div> <br/>
+                                                         </div>  
+                                                    ) 
+                                                    )}
+                                                    
+                                                    <div className='clearfix'></div>
+                                              </Box>
+                                            </Box>
+                                          </Box>
                 )
                 }
               </React.Fragment>
@@ -1488,7 +1452,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
         aria-describedby="modal-modal-description"
       >
         {/* // Connect Typeform */}
-        <Box sx={style} onClick={(ev) => { ev.stopPropagation(); setisShowHubspotObject(false) }} style={{ width: !isOpenPopupHubspot ? '35%' : '65%' }} className='panel'>
+        <Box sx={popupstyle} onClick={(ev) => { ev.stopPropagation(); setisShowHubspotObject(false) }}   className='panel'>
 
           <Box sx={{ display: 'flex', flexDirection: 'row', pb: 2 }} className='flex panel-header' >
             <Typography id="modal-modal-title" variant="h4" component="h4" className='flex'>
@@ -1511,13 +1475,9 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
                         <Typography variant="span" component="span" gutterBottom>
                           <div className="flex justify-center items-center grayscale-image">
                             <span className="flex items-center my-4 justify-center">
-                              <img src={"/images/partners/zendesk-sm.svg"} className="w-44 mx-auto img-box" style={{ marginRight: '15px' }} alt="zendeskicons" /> <img
-                                className="text-center mx-auto" style={{ marginRight: '15px' }}
-                                src={"/images/right-arrow.png"} alt='arrow-left'
-                              />  <img
-                                className="w-44 mx-auto img-box"
-                                src={"/images/convertmlLogo.png"} alt='convertML'
-                              />
+                              <img src={"/json-media/img/partners/zendesk-sm.svg"} className="w-44 mx-auto img-box-connection"  alt="zendeskicons" />   
+                              <img style={connectoinArrow} src={"/images/right-arrow.png"} alt='convertml' /> 
+                                <img className="w-44 mx-auto img-box-connection"  src={"/images/convertmlLogo.png"} alt='convertML' />
                             </span>
                           </div>
                         </Typography>
@@ -1795,7 +1755,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
         aria-describedby="modal-modal-description"
       >
         {/* // Connect Typeform */}
-        <Box sx={style} style={{ width: !isOpenPopupHubspot ? '35%' : '65%' }} className='panel'>
+        <Box sx={popupstyle}   className='panel'>
           <Box sx={{ display: 'flex', flexDirection: 'row', pb: 2 }} className='flex panel-header' >
             <Typography id="modal-modal-title" variant="h4" component="h4" className='flex'>
               {!isOpenPopupHubspot ? "Connect Facebook" : "Contact Details"}
@@ -1816,13 +1776,9 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
                         <Typography variant="span" component="span" gutterBottom>
                           <div className="flex justify-center items-center grayscale-image">
                             <span className="flex items-center my-4 justify-center">
-                              <img src={"/images/partners/facebook-sm.svg"} className="w-44 mx-auto img-box" style={{ marginRight: '15px' }} alt="zendeskicons" /> <img
-                                className="text-center mx-auto" style={{ marginRight: '15px' }}
-                                src={"/images/right-arrow.png"} alt='arrow-left'
-                              />  <img
-                                className="w-44 mx-auto img-box"
-                                src={"/images/convertmlLogo.png"} alt='convertML'
-                              />
+                              <img src={"/json-media/img/partners/facebook-sm.svg"} className="w-44 mx-auto img-box-connection"  alt="zendeskicons" />   
+                              <img style={connectoinArrow} src={"/images/right-arrow.png"} alt='convertml' />
+                              <img  className="w-44 mx-auto img-box-connection" src={"/images/convertmlLogo.png"} alt='convertML' />
                             </span>
                           </div>
                         </Typography>
@@ -2099,7 +2055,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
         aria-describedby="modal-modal-description"
       >
         {/* // Connect Typeform */}
-        <Box sx={style} style={{ width: !isOpenPopupHubspot ? '35%' : '65%' }} className='panel'>
+        <Box sx={popupstyle}   className='panel'>
           <Box sx={{ display: 'flex', flexDirection: 'row', pb: 2 }} className='flex panel-header' >
             <Typography id="modal-modal-title" variant="h4" component="h4" className='flex'>
               {!isOpenPopupHubspot ? "Connect Twitter" : "Contact Details"}
@@ -2120,13 +2076,9 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
                         <Typography variant="span" component="span" gutterBottom>
                           <div className="flex justify-center items-center grayscale-image">
                             <span className="flex items-center my-4 justify-center">
-                              <img src={"/images/partners/twitter-sm.svg"} className="w-44 mx-auto img-box" style={{ marginRight: '15px' }} alt="zendeskicons" /> <img
-                                className="text-center mx-auto" style={{ marginRight: '15px' }}
-                                src={"/images/right-arrow.png"} alt='arrow-left'
-                              />  <img
-                                className="w-44 mx-auto img-box"
-                                src={"/images/convertmlLogo.png"} alt='convertML'
-                              />
+                              <img src={"/json-media/img/partners/twitter-sm.svg"} className="w-44 mx-auto img-box-connection"  alt="zendeskicons" />   
+                               <img style={connectoinArrow} src={"/images/right-arrow.png"} alt='convertml' /> 
+                                <img className="w-44 mx-auto img-box-connection" src={"/images/convertmlLogo.png"} alt='convertML' />
                             </span>
                           </div>
                         </Typography>
@@ -2403,7 +2355,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
         aria-describedby="modal-modal-description"
       >
         {/* // Connect Typeform */}
-        <Box sx={style} style={{ width: !isOpenPopupHubspot ? '35%' : '65%' }} className='panel'>
+        <Box sx={popupstyle}   className='panel'>
           <Box sx={{ display: 'flex', flexDirection: 'row', pb: 2 }} className='flex panel-header' >
             <Typography id="modal-modal-title" variant="h4" component="h4" className='flex'>
               {!isOpenPopupHubspot ? "Connect Feshdesk" : "Contact Details"}
@@ -2424,13 +2376,9 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
                         <Typography variant="span" component="span" gutterBottom>
                           <div className="flex justify-center items-center grayscale-image">
                             <span className="flex items-center my-4 justify-center">
-                              <img src={"/images/partners/feshdesk-sm.svg"} className="w-44 mx-auto img-box" style={{ marginRight: '15px' }} alt="zendeskicons" /> <img
-                                className="text-center mx-auto" style={{ marginRight: '15px' }}
-                                src={"/images/right-arrow.png"} alt='arrow-left'
-                              />  <img
-                                className="w-44 mx-auto img-box"
-                                src={"/images/convertmlLogo.png"} alt='convertML'
-                              />
+                              <img src={"/json-media/img/partners/feshdesk-sm.svg"} className="w-44 mx-auto img-box-connection"   alt="zendeskicons" />   
+                              <img style={connectoinArrow} src={"/images/right-arrow.png"} alt='convertml' />   
+                              <img  className="w-44 mx-auto img-box-connection" src={"/images/convertmlLogo.png"} alt='convertML' />
                             </span>
                           </div>
                         </Typography>
@@ -2707,7 +2655,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
         aria-describedby="modal-modal-description"
       >
         {/* // Connect Typeform */}
-        <Box sx={style} style={{ width: !isOpenPopupHubspot ? '35%' : '65%' }} className='panel'>
+        <Box sx={popupstyle}   className='panel'>
           <Box sx={{ display: 'flex', flexDirection: 'row', pb: 2 }} className='flex panel-header' >
             <Typography id="modal-modal-title" variant="h4" component="h4" className='flex'>
               {!isOpenPopupHubspot ? "Connect Salesforce" : "Contact Details"}
@@ -2728,13 +2676,8 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
                         <Typography variant="span" component="span" gutterBottom>
                           <div className="flex justify-center items-center grayscale-image">
                             <span className="flex items-center my-4 justify-center">
-                              <img src={"/images/partners/salesforce-sm.svg"} className="w-44 mx-auto img-box" style={{ marginRight: '15px' }} alt="zendeskicons" /> <img
-                                className="text-center mx-auto" style={{ marginRight: '15px' }}
-                                src={"/images/right-arrow.png"} alt='arrow-left'
-                              />  <img
-                                className="w-44 mx-auto img-box"
-                                src={"/images/convertmlLogo.png"} alt='convertML'
-                              />
+                              <img src={"/json-media/img/partners/salesforce-sm.svg"} className="w-44 mx-auto img-box-connection"   alt="zendeskicons" />   <img style={connectoinArrow} src={"/images/right-arrow.png"} alt='convertml' /> 
+                               <img className="w-44 mx-auto img-box-connection" src={"/images/convertmlLogo.png"} alt='convertML' />
                             </span>
                           </div>
                         </Typography>
@@ -3011,7 +2954,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
         aria-describedby="modal-modal-description"
       >
         {/* // Connect Typeform */}
-        <Box sx={style} style={{ width: !isOpenPopupHubspot ? '35%' : '65%' }} className='panel'>
+        <Box sx={popupstyle}   className='panel'>
           <Box sx={{ display: 'flex', flexDirection: 'row', pb: 2 }} className='flex panel-header' >
             <Typography id="modal-modal-title" variant="h4" component="h4" className='flex'>
               {!isOpenPopupHubspot ? "Connect braze" : "Contact Details"}
@@ -3032,13 +2975,9 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
                         <Typography variant="span" component="span" gutterBottom>
                           <div className="flex justify-center items-center grayscale-image">
                             <span className="flex items-center my-4 justify-center">
-                              <img src={"/images/partners/braze-sm.svg"} className="w-44 mx-auto img-box" style={{ marginRight: '15px' }} alt="zendeskicons" /> <img
-                                className="text-center mx-auto" style={{ marginRight: '15px' }}
-                                src={"/images/right-arrow.png"} alt='arrow-left'
-                              />  <img
-                                className="w-44 mx-auto img-box"
-                                src={"/images/convertmlLogo.png"} alt='convertML'
-                              />
+                              <img src={"/json-media/img/partners/braze-sm.svg"} className="w-44 mx-auto img-box-connection"  alt="zendeskicons" />    
+                              <img style={connectoinArrow} src={"/images/right-arrow.png"} alt='convertml' />  
+                              <img className="w-44 mx-auto img-box-connection" src={"/images/convertmlLogo.png"} alt='convertML' />
                             </span>
                           </div>
                         </Typography>
@@ -3288,7 +3227,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
         aria-describedby="modal-modal-description"
       >
         {/* // Connect Typeform */}
-        <Box sx={style} style={{ width: !isOpenPopupHubspot ? '35%' : '65%' }} className='panel'>
+        <Box sx={popupstyle}  className='panel'>
           <Box sx={{ display: 'flex', flexDirection: 'row', pb: 2 }} className='flex panel-header' >
             <Typography id="modal-modal-title" variant="h4" component="h4" className='flex'>
               {!isOpenPopupHubspot ? "Connect Instagram" : "Contact Details"}
@@ -3309,13 +3248,9 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
                         <Typography variant="span" component="span" gutterBottom>
                           <div className="flex justify-center items-center grayscale-image">
                             <span className="flex items-center my-4 justify-center">
-                              <img src={"/images/partners/instagram-sm.svg"} className="w-44 mx-auto img-box" style={{ marginRight: '15px' }} alt="zendeskicons" /> <img
-                                className="text-center mx-auto" style={{ marginRight: '15px' }}
-                                src={"/images/right-arrow.png"} alt='arrow-left'
-                              />  <img
-                                className="w-44 mx-auto img-box"
-                                src={"/images/convertmlLogo.png"} alt='convertML'
-                              />
+                              <img src={"/json-media/img/partners/instagram-sm.svg"} className="w-44 mx-auto img-box-connection"   alt="zendeskicons" /> 
+                              <img style={connectoinArrow} src={"/images/right-arrow.png"} alt='convertml' /> 
+                              <img className="w-44 mx-auto img-box-connection" src={"/images/convertmlLogo.png"} alt='convertML'  />
                             </span>
                           </div>
                         </Typography>
@@ -3576,6 +3511,904 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
                   <Button variant='contained' size="small" style={{ float: 'right' }} disabled={listContactMapping.length == 0} onClick={isModalCloseHubspot1}>OK</Button> {showLoder && <CircularProgress style={{ float: 'right', marginRight: 15 }} />}
                 </>
                   : <Button variant='contained' size="small" style={{ float: 'right' }} disabled={!isCheckConfrmHubspot} onClick={(e) => handleNext('instagram')}>Next Step</Button>
+                }
+              </Grid>
+            </Grid>
+          </Box>
+
+        </Box>
+      </Modal>
+      }
+       {openKlaviyo && <Modal
+        open={openKlaviyo}
+        onClose={isModalClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        {/* // Connect Typeform */}
+        <Box sx={popupstyle}   className='panel'>
+          <Box sx={{ display: 'flex', flexDirection: 'row', pb: 2 }} className='flex panel-header' >
+            <Typography id="modal-modal-title" variant="h4" component="h4" className='flex'>
+              {!isOpenPopupHubspot ? "Connect Klaviyo" : "Contact Details"}
+            </Typography>
+            <Typography id="modal-modal-title" variant="p" component="p" className='panel-close-icon'>
+              <CloseIcon onClick={isModalClose} className='cursor-pointer' style={{ color: '#212121' }} />
+            </Typography>
+          </Box>
+
+          <Box className='panel-body'>
+            <Box width={'100%'}>
+              <React.Fragment>
+                {true ? (
+                  <Box>
+
+                    <Box sx={{ display: 'flex', flexDirection: 'row' }} className='panel-box-bg'>
+                      <Grid item xs={12} className='flex justify-center items-center'>
+                        <Typography variant="span" component="span" gutterBottom>
+                          <div className="flex justify-center items-center grayscale-image">
+                            <span className="flex items-center my-4 justify-center">
+                              <img src={"/json-media/img/partners/klaviyo-sm.svg"} className="w-44 mx-auto img-box-connection"  alt="zendeskicons" />  
+                              <img style={connectoinArrow} src={"/images/right-arrow.png"} alt='convertml' />
+                              <img className="w-44 mx-auto img-box-connection" src={"/images/convertmlLogo.png"} alt='convertML'
+                              />
+                            </span>
+                          </div>
+                        </Typography>
+                      </Grid>
+                    </Box>
+
+                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                      <Grid item mt={1} mb={1}>
+                        <Typography variant="span" component="span" gutterBottom color="text.secondary">ConvertML is requesting access to your Instagram account</Typography>
+                      </Grid>
+                    </Box>
+
+                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                      <Grid item>
+                        <FormGroup>
+                          <FormControlLabel required control={<Checkbox onChange={checkConfrmHubspot} />} label="I agree to continue connecting" />
+                        </FormGroup>
+                      </Grid>
+                    </Box>
+                  </Box>
+                ) : (
+                  <Box>
+                    <Box container>
+                      <Box style={{ maxHeight: '60vh', overflowX: 'hidden', overflowY: 'auto', padding: '0 10px 0 0' }}>
+
+
+                        <Box sx={{ display: 'flex', flexDirection: 'row', py: 2 }}>
+                          <Grid container item spacing={2} xs={12} style={{
+                            width: '100%'
+                          }}>
+                            <Grid item xs={12} spacing={2}>
+                              <Stack sx={{ width: '100%' }}>
+
+                                {/* <TextField fullWidth onClick={(ev) => { ev.stopPropagation(); setisShowHubspotObject(!isShowHubspotObject) }} id="standard-search" label="Select Object" value={selectedDefaultHubspotModule.displayName} />
+                                  `<List className='custom-list' style={{ marginTop: '-23px' }} component="nav" aria-labelledby="nested-list-subheader">
+                                    {!isShowHubspotObject == true ? "" :
+                                      hubspotModule1.map((item, i) => (
+                                        <>
+                                          <ListItemButton style={{ background: '#F7F7F7' }} onClick={(ev) => { ev.stopPropagation(); handleClick11(i) }}>
+                                            {item.isopen ? <ExpandLess /> : <ExpandMore />}
+                                            <ListItemText primary={item.displayName} />
+                                          </ListItemButton>
+                                          <Box style={{ maxHeight: 150, overflowY: 'scroll' }}>
+                                            {item.children.map((childItem, i) => (
+                                              <Collapse in={item.isopen} timeout="auto" unmountOnExit>
+                                                <List component="div" disablePadding>
+                                                  <ListItemButton sx={{ pl: 4 }} onClick={() => { handleClick12(childItem.name, childItem.displayName) }}>
+                                                    <ListItemText primary={childItem.displayName} />
+                                                  </ListItemButton>
+                                                </List>
+                                              </Collapse>
+                                            ))}
+                                          </Box>
+                                        </>
+                                      ))}
+                                  </List> `   
+                                  {
+                                    displayNotification == true && selectedDefaultHubspotModule.displayName != "" ? <FormHelperText style={{ margin: '0px' }}>No data is available</FormHelperText> : ''
+                                  } */}
+
+                                <Autocomplete
+                                  id="tags-filled"
+
+                                  // value={selectedDefaultHubspotModule}
+                                  onChange={(ev, val) => { handleClick12(ev, val) }}
+                                  getOptionLabel={(option) => option.displayName}
+                                  options={hubspotModule}
+                                  // groupBy={(option) => option.type}
+                                  value={selectedDefaultHubspotModule}
+                                  renderInput={(params) => (
+                                    <TextField
+                                      {...params}
+                                      label="Select Object"
+                                      placeholder="Select Object"
+                                    />
+                                  )}
+                                />
+                                <br />
+                              </Stack>
+
+                              {isFetchedFeedbackList == true &&
+                                <Box className='text-center'>
+                                  <div><CircularProgress />  </div><br />
+                                  <div className='ml-3'>
+                                    <p>Syncing data from your Hubspot account, thank you for your patience...</p> </div>
+                                </Box>
+
+
+                              }
+
+
+                              {
+                                isFetchedFeedbackList == false && displayNotification == false && <Stack sx={{ width: '100%', }}>
+                                  <Autocomplete
+                                    id="tags-filled"
+
+                                    onChange={(ev, val) => { selectFeedbackSurvey(ev, val) }}
+                                    getOptionLabel={(option) => option.displayName}
+                                    options={contactList}
+                                    value={selectedFeedbackSurvey}
+
+
+                                    renderInput={(params) => (
+                                      <TextField
+                                        {...params}
+                                        label="Select List"
+                                        placeholder="Select List"
+                                      />
+                                    )}
+                                  />
+                                  {/* <FormHelperText style={{ margin: '0px' }}>You can select several forms</FormHelperText> */}
+                                </Stack>
+                              }
+                              {
+                                isFetchedFeedbackList == false && displayNotificationFeedback == false && <Stack sx={{ width: '100%', }}>
+
+                                  <Autocomplete
+                                    id="tags-filled"
+                                    onChange={(ev, val) => { selectFeedbackSurvey(ev, val) }}
+                                    getOptionLabel={(option) => option.displayName}
+                                    options={listOfFeedbackSurvey}
+                                    value={selectedFeedbackSurvey}
+                                    renderInput={(params) => (
+                                      <TextField
+                                        {...params}
+                                        label="Select Survey"
+                                        placeholder="Select Survey"
+                                      />
+                                    )}
+                                  />
+
+
+                                  {/* <FormHelperText style={{ margin: '0px' }}>{checkDuplicateSurveyList}</FormHelperText> */}
+                                </Stack>
+                              }
+
+                              {
+                                errorListDisplay.map(
+                                  (itemMessage, i) => (
+                                    <section style={{ height: (itemMessage.isCollapsable == true ? '50px' : 'auto') }}
+                                      className={`message-box mt-2 ${itemMessage.alertType}`}
+                                    >
+                                      <span>{itemMessage.short_text}</span>
+                                      <a
+                                        onClick={(val, ind) => {
+
+                                          collapseAndExpandError(val, i)
+                                        }
+                                        }
+                                      >
+                                        <i
+                                          className={
+                                            !itemMessage.isCollapsable
+                                              ? "fa fa-angle-up"
+                                              : "fa fa-angle-down"
+                                          }
+                                        ></i>
+                                      </a>
+                                      {!itemMessage.isCollapsable ? (
+                                        <>
+                                          <ul>
+                                            {
+                                              itemMessage.message.map((mssgList, ii) => (
+                                                <li>{mssgList} </li>
+                                              ))
+                                            }
+                                          </ul>
+                                        </>
+                                      ) : (
+                                        <> </>
+                                      )}
+
+                                    </section>
+                                  ))
+                              }
+
+
+                              {/* {
+                                  checkDuplicateSurveyList != "" &&
+                                  <p className="error-text">{checkDuplicateSurveyList}</p>
+                                } */}
+
+                            </Grid>
+
+                          </Grid>
+                        </Box>
+
+
+
+                        <Grid container spacing={4} display="flex" alignItems="center">
+                          <Grid item xs={12} >
+                            {listContactMapping.map((item, index) =>
+                            (
+                              <>
+                                <Box sx={{ display: 'flex', flexDirection: 'row' }} className='justify-between cursor-pointer'>
+                                  <button
+                                    className='chips-btn'
+                                    color="primary"
+                                    size="small"
+                                    variant="outlined"
+                                    onClick={(ev) => {
+                                      handleRemoveSurvey(ev, index);
+                                    }}
+                                  >
+                                    {item.displayName} <i className='fa fa-times-circle'></i>
+                                  </button>
+                                  {/* {item.isCollapse ?
+                                    <ExpandLessIcon className='cursor-pointer' style={{ color: '#212121' }} />
+                                    : <ExpandMoreIcon className='cursor-pointer' style={{ color: '#212121' }} />
+                                  } */}
+                                </Box><br />
+                                <Box sx={{ height: 300, width: '100%', paddingBottom: '10px' }}>
+                                  <DataGridPro
+                                    rows={item.colList}
+                                    columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
+                                    pageSizeOptions={[5, 10, 50, 100]}
+                                    checkboxSelection={true}
+                                    isRowSelectable={(params) => (params.row.used == "False" ? false : true)}
+                                    disableSelectionOnClick
+                                    getRowHeight={() => 'auto'}
+                                    rowSelectionModel={item.selectedRow}
+                                    // onRowSelectionModelChange={(e) => {
+                                    //   let newList1 = [...listContactMapping]
+                                    //   newList1[index].selectedRow = e;
+                                    //   setlistContactMapping(newList1);
+                                    //   // item.selectedRow = e;
+                                    // }}
+
+                                    pagination={false}
+                                    hideFooterRowCount={true}
+                                    hideFooter={true}
+                                    editable
+                                  />
+                                </Box>
+                              </>
+
+                            )
+
+                            )}
+                          </Grid>
+                        </Grid>
+                      </Box>
+                    </Box>
+                  </Box>
+                )
+                }
+              </React.Fragment>
+
+            </Box>
+
+          </Box>
+
+          <Box sx={{ display: 'flex', flexDirection: 'row' }} className='panel-footer'>
+            <Grid container item>
+              <Grid item xs={12}>
+                <Button variant='outlined' size="small" style={{ float: 'left' }} onClick={isModalClose}>Cancel</Button>
+                {!isModalClose ? <>
+                  <Button variant='contained' size="small" style={{ float: 'right' }} disabled={listContactMapping.length == 0} onClick={isModalCloseHubspot1}>OK</Button> {showLoder && <CircularProgress style={{ float: 'right', marginRight: 15 }} />}
+                </>
+                  : <Button variant='contained' size="small" style={{ float: 'right' }} disabled={!isCheckConfrmHubspot} onClick={(e) => handleNext('klaviyo')}>Next Step</Button>
+                }
+              </Grid>
+            </Grid>
+          </Box>
+
+        </Box>
+      </Modal>
+      }
+      {openIntercom && <Modal
+        open={openIntercom}
+        onClose={isModalClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        {/* // Connect Typeform */}
+        <Box sx={popupstyle}   className='panel'>
+          <Box sx={{ display: 'flex', flexDirection: 'row', pb: 2 }} className='flex panel-header' >
+            <Typography id="modal-modal-title" variant="h4" component="h4" className='flex'>
+              {!isOpenPopupHubspot ? "Connect Intercom" : "Contact Details"}
+            </Typography>
+            <Typography id="modal-modal-title" variant="p" component="p" className='panel-close-icon'>
+              <CloseIcon onClick={isModalClose} className='cursor-pointer' style={{ color: '#212121' }} />
+            </Typography>
+          </Box>
+
+          <Box className='panel-body'>
+            <Box width={'100%'}>
+              <React.Fragment>
+                {true ? (
+                  <Box>
+
+                    <Box sx={{ display: 'flex', flexDirection: 'row' }} className='panel-box-bg'>
+                      <Grid item xs={12} className='flex justify-center items-center'>
+                        <Typography variant="span" component="span" gutterBottom>
+                          <div className="flex justify-center items-center grayscale-image">
+                            <span className="flex items-center my-4 justify-center">
+                              <img src={"/json-media/img/partners/intercom-sm.svg"} className="w-44 mx-auto img-box-connection" alt="openIntercom" />   
+                              <img style={connectoinArrow} src={"/images/right-arrow.png"} alt='convertml' /> 
+                               <img className="w-44 mx-auto img-box-connection" src={"/images/convertmlLogo.png"} alt='convertML' />
+                            </span>
+                          </div>
+                        </Typography>
+                      </Grid>
+                    </Box>
+
+                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                      <Grid item mt={1} mb={1}>
+                        <Typography variant="span" component="span" gutterBottom color="text.secondary">ConvertML is requesting access to your Intercom account</Typography>
+                      </Grid>
+                    </Box>
+
+                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                      <Grid item>
+                        <FormGroup>
+                          <FormControlLabel required control={<Checkbox onChange={checkConfrmHubspot} />} label="I agree to continue connecting" />
+                        </FormGroup>
+                      </Grid>
+                    </Box>
+                  </Box>
+                ) : (
+                  <Box>
+                    <Box container>
+                      <Box style={{ maxHeight: '60vh', overflowX: 'hidden', overflowY: 'auto', padding: '0 10px 0 0' }}>
+
+
+                        <Box sx={{ display: 'flex', flexDirection: 'row', py: 2 }}>
+                          <Grid container item spacing={2} xs={12} style={{
+                            width: '100%'
+                          }}>
+                            <Grid item xs={12} spacing={2}>
+                              <Stack sx={{ width: '100%' }}>
+
+                                {/* <TextField fullWidth onClick={(ev) => { ev.stopPropagation(); setisShowHubspotObject(!isShowHubspotObject) }} id="standard-search" label="Select Object" value={selectedDefaultHubspotModule.displayName} />
+                                  `<List className='custom-list' style={{ marginTop: '-23px' }} component="nav" aria-labelledby="nested-list-subheader">
+                                    {!isShowHubspotObject == true ? "" :
+                                      hubspotModule1.map((item, i) => (
+                                        <>
+                                          <ListItemButton style={{ background: '#F7F7F7' }} onClick={(ev) => { ev.stopPropagation(); handleClick11(i) }}>
+                                            {item.isopen ? <ExpandLess /> : <ExpandMore />}
+                                            <ListItemText primary={item.displayName} />
+                                          </ListItemButton>
+                                          <Box style={{ maxHeight: 150, overflowY: 'scroll' }}>
+                                            {item.children.map((childItem, i) => (
+                                              <Collapse in={item.isopen} timeout="auto" unmountOnExit>
+                                                <List component="div" disablePadding>
+                                                  <ListItemButton sx={{ pl: 4 }} onClick={() => { handleClick12(childItem.name, childItem.displayName) }}>
+                                                    <ListItemText primary={childItem.displayName} />
+                                                  </ListItemButton>
+                                                </List>
+                                              </Collapse>
+                                            ))}
+                                          </Box>
+                                        </>
+                                      ))}
+                                  </List> `   
+                                  {
+                                    displayNotification == true && selectedDefaultHubspotModule.displayName != "" ? <FormHelperText style={{ margin: '0px' }}>No data is available</FormHelperText> : ''
+                                  } */}
+
+                                <Autocomplete
+                                  id="tags-filled"
+
+                                  // value={selectedDefaultHubspotModule}
+                                  onChange={(ev, val) => { handleClick12(ev, val) }}
+                                  getOptionLabel={(option) => option.displayName}
+                                  options={hubspotModule}
+                                  // groupBy={(option) => option.type}
+                                  value={selectedDefaultHubspotModule}
+                                  renderInput={(params) => (
+                                    <TextField
+                                      {...params}
+                                      label="Select Object"
+                                      placeholder="Select Object"
+                                    />
+                                  )}
+                                />
+                                <br />
+                              </Stack>
+
+                              {isFetchedFeedbackList == true &&
+                                <Box className='text-center'>
+                                  <div><CircularProgress />  </div><br />
+                                  <div className='ml-3'>
+                                    <p>Syncing data from your Hubspot account, thank you for your patience...</p> </div>
+                                </Box>
+
+
+                              }
+
+
+                              {
+                                isFetchedFeedbackList == false && displayNotification == false && <Stack sx={{ width: '100%', }}>
+                                  <Autocomplete
+                                    id="tags-filled"
+
+                                    onChange={(ev, val) => { selectFeedbackSurvey(ev, val) }}
+                                    getOptionLabel={(option) => option.displayName}
+                                    options={contactList}
+                                    value={selectedFeedbackSurvey}
+
+
+                                    renderInput={(params) => (
+                                      <TextField
+                                        {...params}
+                                        label="Select List"
+                                        placeholder="Select List"
+                                      />
+                                    )}
+                                  />
+                                  {/* <FormHelperText style={{ margin: '0px' }}>You can select several forms</FormHelperText> */}
+                                </Stack>
+                              }
+                              {
+                                isFetchedFeedbackList == false && displayNotificationFeedback == false && <Stack sx={{ width: '100%', }}>
+
+                                  <Autocomplete
+                                    id="tags-filled"
+                                    onChange={(ev, val) => { selectFeedbackSurvey(ev, val) }}
+                                    getOptionLabel={(option) => option.displayName}
+                                    options={listOfFeedbackSurvey}
+                                    value={selectedFeedbackSurvey}
+                                    renderInput={(params) => (
+                                      <TextField
+                                        {...params}
+                                        label="Select Survey"
+                                        placeholder="Select Survey"
+                                      />
+                                    )}
+                                  />
+
+
+                                  {/* <FormHelperText style={{ margin: '0px' }}>{checkDuplicateSurveyList}</FormHelperText> */}
+                                </Stack>
+                              }
+
+                              {
+                                errorListDisplay.map(
+                                  (itemMessage, i) => (
+                                    <section style={{ height: (itemMessage.isCollapsable == true ? '50px' : 'auto') }}
+                                      className={`message-box mt-2 ${itemMessage.alertType}`}
+                                    >
+                                      <span>{itemMessage.short_text}</span>
+                                      <a
+                                        onClick={(val, ind) => {
+
+                                          collapseAndExpandError(val, i)
+                                        }
+                                        }
+                                      >
+                                        <i
+                                          className={
+                                            !itemMessage.isCollapsable
+                                              ? "fa fa-angle-up"
+                                              : "fa fa-angle-down"
+                                          }
+                                        ></i>
+                                      </a>
+                                      {!itemMessage.isCollapsable ? (
+                                        <>
+                                          <ul>
+                                            {
+                                              itemMessage.message.map((mssgList, ii) => (
+                                                <li>{mssgList} </li>
+                                              ))
+                                            }
+                                          </ul>
+                                        </>
+                                      ) : (
+                                        <> </>
+                                      )}
+
+                                    </section>
+                                  ))
+                              }
+
+
+                              {/* {
+                                  checkDuplicateSurveyList != "" &&
+                                  <p className="error-text">{checkDuplicateSurveyList}</p>
+                                } */}
+
+                            </Grid>
+
+                          </Grid>
+                        </Box>
+
+
+
+                        <Grid container spacing={4} display="flex" alignItems="center">
+                          <Grid item xs={12} >
+                            {listContactMapping.map((item, index) =>
+                            (
+                              <>
+                                <Box sx={{ display: 'flex', flexDirection: 'row' }} className='justify-between cursor-pointer'>
+                                  <button
+                                    className='chips-btn'
+                                    color="primary"
+                                    size="small"
+                                    variant="outlined"
+                                    onClick={(ev) => {
+                                      handleRemoveSurvey(ev, index);
+                                    }}
+                                  >
+                                    {item.displayName} <i className='fa fa-times-circle'></i>
+                                  </button>
+                                  {/* {item.isCollapse ?
+                                    <ExpandLessIcon className='cursor-pointer' style={{ color: '#212121' }} />
+                                    : <ExpandMoreIcon className='cursor-pointer' style={{ color: '#212121' }} />
+                                  } */}
+                                </Box><br />
+                                <Box sx={{ height: 300, width: '100%', paddingBottom: '10px' }}>
+                                  <DataGridPro
+                                    rows={item.colList}
+                                    columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
+                                    pageSizeOptions={[5, 10, 50, 100]}
+                                    checkboxSelection={true}
+                                    isRowSelectable={(params) => (params.row.used == "False" ? false : true)}
+                                    disableSelectionOnClick
+                                    getRowHeight={() => 'auto'}
+                                    rowSelectionModel={item.selectedRow}
+                                    // onRowSelectionModelChange={(e) => {
+                                    //   let newList1 = [...listContactMapping]
+                                    //   newList1[index].selectedRow = e;
+                                    //   setlistContactMapping(newList1);
+                                    //   // item.selectedRow = e;
+                                    // }}
+
+                                    pagination={false}
+                                    hideFooterRowCount={true}
+                                    hideFooter={true}
+                                    editable
+                                  />
+                                </Box>
+                              </>
+
+                            )
+
+                            )}
+                          </Grid>
+                        </Grid>
+                      </Box>
+                    </Box>
+                  </Box>
+                )
+                }
+              </React.Fragment>
+
+            </Box>
+
+          </Box>
+
+          <Box sx={{ display: 'flex', flexDirection: 'row' }} className='panel-footer'>
+            <Grid container item>
+              <Grid item xs={12}>
+                <Button variant='outlined' size="small" style={{ float: 'left' }} onClick={isModalClose}>Cancel</Button>
+                {!isModalClose ? <>
+                  <Button variant='contained' size="small" style={{ float: 'right' }} disabled={listContactMapping.length == 0} onClick={isModalCloseHubspot1}>OK</Button> {showLoder && <CircularProgress style={{ float: 'right', marginRight: 15 }} />}
+                </>
+                  : <Button variant='contained' size="small" style={{ float: 'right' }} disabled={!isCheckConfrmHubspot} onClick={(e) => handleNext('intercom')}>Next Step</Button>
+                }
+              </Grid>
+            </Grid>
+          </Box>
+
+        </Box>
+      </Modal>
+      }
+      {openShopify && <Modal
+        open={openShopify}
+        onClose={isModalClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        {/* // Connect Typeform */}
+        <Box sx={popupstyle}   className='panel'>
+          <Box sx={{ display: 'flex', flexDirection: 'row', pb: 2 }} className='flex panel-header' >
+            <Typography id="modal-modal-title" variant="h4" component="h4" className='flex'>
+              {!isOpenPopupHubspot ? "Connect Intercom" : "Contact Details"}
+            </Typography>
+            <Typography id="modal-modal-title" variant="p" component="p" className='panel-close-icon'>
+              <CloseIcon onClick={isModalClose} className='cursor-pointer' style={{ color: '#212121' }} />
+            </Typography>
+          </Box>
+
+          <Box className='panel-body'>
+            <Box width={'100%'}>
+              <React.Fragment>
+                {true ? (
+                  <Box>
+
+                    <Box sx={{ display: 'flex', flexDirection: 'row' }} className='panel-box-bg'>
+                      <Grid item xs={12} className='flex justify-center items-center'>
+                        <Typography variant="span" component="span" gutterBottom>
+                          <div className="flex justify-center items-center grayscale-image">
+                            <span className="flex items-center my-4 justify-center">
+                              <img src={"/json-media/img/partners/shopify-sm.svg"} className="w-44 mx-auto img-box-connection"   alt="openIntercom" />  
+                                <img style={connectoinArrow} src={"/images/right-arrow.png"} alt='convertml' />  
+                                <img  className="w-44 mx-auto img-box-connection" src={"/images/convertmlLogo.png"} alt='convertML' />
+                            </span>
+                          </div>
+                        </Typography>
+                      </Grid>
+                    </Box>
+
+                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                      <Grid item mt={1} mb={1}>
+                        <Typography variant="span" component="span" gutterBottom color="text.secondary">ConvertML is requesting access to your shopify account</Typography>
+                      </Grid>
+                    </Box>
+
+                    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                      <Grid item>
+                        <FormGroup>
+                          <FormControlLabel required control={<Checkbox onChange={checkConfrmHubspot} />} label="I agree to continue connecting" />
+                        </FormGroup>
+                      </Grid>
+                    </Box>
+                  </Box>
+                ) : (
+                  <Box>
+                    <Box container>
+                      <Box style={{ maxHeight: '60vh', overflowX: 'hidden', overflowY: 'auto', padding: '0 10px 0 0' }}>
+
+
+                        <Box sx={{ display: 'flex', flexDirection: 'row', py: 2 }}>
+                          <Grid container item spacing={2} xs={12} style={{
+                            width: '100%'
+                          }}>
+                            <Grid item xs={12} spacing={2}>
+                              <Stack sx={{ width: '100%' }}>
+
+                                {/* <TextField fullWidth onClick={(ev) => { ev.stopPropagation(); setisShowHubspotObject(!isShowHubspotObject) }} id="standard-search" label="Select Object" value={selectedDefaultHubspotModule.displayName} />
+                                  `<List className='custom-list' style={{ marginTop: '-23px' }} component="nav" aria-labelledby="nested-list-subheader">
+                                    {!isShowHubspotObject == true ? "" :
+                                      hubspotModule1.map((item, i) => (
+                                        <>
+                                          <ListItemButton style={{ background: '#F7F7F7' }} onClick={(ev) => { ev.stopPropagation(); handleClick11(i) }}>
+                                            {item.isopen ? <ExpandLess /> : <ExpandMore />}
+                                            <ListItemText primary={item.displayName} />
+                                          </ListItemButton>
+                                          <Box style={{ maxHeight: 150, overflowY: 'scroll' }}>
+                                            {item.children.map((childItem, i) => (
+                                              <Collapse in={item.isopen} timeout="auto" unmountOnExit>
+                                                <List component="div" disablePadding>
+                                                  <ListItemButton sx={{ pl: 4 }} onClick={() => { handleClick12(childItem.name, childItem.displayName) }}>
+                                                    <ListItemText primary={childItem.displayName} />
+                                                  </ListItemButton>
+                                                </List>
+                                              </Collapse>
+                                            ))}
+                                          </Box>
+                                        </>
+                                      ))}
+                                  </List> `   
+                                  {
+                                    displayNotification == true && selectedDefaultHubspotModule.displayName != "" ? <FormHelperText style={{ margin: '0px' }}>No data is available</FormHelperText> : ''
+                                  } */}
+
+                                <Autocomplete
+                                  id="tags-filled"
+
+                                  // value={selectedDefaultHubspotModule}
+                                  onChange={(ev, val) => { handleClick12(ev, val) }}
+                                  getOptionLabel={(option) => option.displayName}
+                                  options={hubspotModule}
+                                  // groupBy={(option) => option.type}
+                                  value={selectedDefaultHubspotModule}
+                                  renderInput={(params) => (
+                                    <TextField
+                                      {...params}
+                                      label="Select Object"
+                                      placeholder="Select Object"
+                                    />
+                                  )}
+                                />
+                                <br />
+                              </Stack>
+
+                              {isFetchedFeedbackList == true &&
+                                <Box className='text-center'>
+                                  <div><CircularProgress />  </div><br />
+                                  <div className='ml-3'>
+                                    <p>Syncing data from your Hubspot account, thank you for your patience...</p> </div>
+                                </Box>
+
+
+                              }
+
+
+                              {
+                                isFetchedFeedbackList == false && displayNotification == false && <Stack sx={{ width: '100%', }}>
+                                  <Autocomplete
+                                    id="tags-filled"
+
+                                    onChange={(ev, val) => { selectFeedbackSurvey(ev, val) }}
+                                    getOptionLabel={(option) => option.displayName}
+                                    options={contactList}
+                                    value={selectedFeedbackSurvey}
+
+
+                                    renderInput={(params) => (
+                                      <TextField
+                                        {...params}
+                                        label="Select List"
+                                        placeholder="Select List"
+                                      />
+                                    )}
+                                  />
+                                  {/* <FormHelperText style={{ margin: '0px' }}>You can select several forms</FormHelperText> */}
+                                </Stack>
+                              }
+                              {
+                                isFetchedFeedbackList == false && displayNotificationFeedback == false && <Stack sx={{ width: '100%', }}>
+
+                                  <Autocomplete
+                                    id="tags-filled"
+                                    onChange={(ev, val) => { selectFeedbackSurvey(ev, val) }}
+                                    getOptionLabel={(option) => option.displayName}
+                                    options={listOfFeedbackSurvey}
+                                    value={selectedFeedbackSurvey}
+                                    renderInput={(params) => (
+                                      <TextField
+                                        {...params}
+                                        label="Select Survey"
+                                        placeholder="Select Survey"
+                                      />
+                                    )}
+                                  />
+
+
+                                  {/* <FormHelperText style={{ margin: '0px' }}>{checkDuplicateSurveyList}</FormHelperText> */}
+                                </Stack>
+                              }
+
+                              {
+                                errorListDisplay.map(
+                                  (itemMessage, i) => (
+                                    <section style={{ height: (itemMessage.isCollapsable == true ? '50px' : 'auto') }}
+                                      className={`message-box mt-2 ${itemMessage.alertType}`}
+                                    >
+                                      <span>{itemMessage.short_text}</span>
+                                      <a
+                                        onClick={(val, ind) => {
+
+                                          collapseAndExpandError(val, i)
+                                        }
+                                        }
+                                      >
+                                        <i
+                                          className={
+                                            !itemMessage.isCollapsable
+                                              ? "fa fa-angle-up"
+                                              : "fa fa-angle-down"
+                                          }
+                                        ></i>
+                                      </a>
+                                      {!itemMessage.isCollapsable ? (
+                                        <>
+                                          <ul>
+                                            {
+                                              itemMessage.message.map((mssgList, ii) => (
+                                                <li>{mssgList} </li>
+                                              ))
+                                            }
+                                          </ul>
+                                        </>
+                                      ) : (
+                                        <> </>
+                                      )}
+
+                                    </section>
+                                  ))
+                              }
+
+
+                              {/* {
+                                  checkDuplicateSurveyList != "" &&
+                                  <p className="error-text">{checkDuplicateSurveyList}</p>
+                                } */}
+
+                            </Grid>
+
+                          </Grid>
+                        </Box>
+
+
+
+                        <Grid container spacing={4} display="flex" alignItems="center">
+                          <Grid item xs={12} >
+                            {listContactMapping.map((item, index) =>
+                            (
+                              <>
+                                <Box sx={{ display: 'flex', flexDirection: 'row' }} className='justify-between cursor-pointer'>
+                                  <button
+                                    className='chips-btn'
+                                    color="primary"
+                                    size="small"
+                                    variant="outlined"
+                                    onClick={(ev) => {
+                                      handleRemoveSurvey(ev, index);
+                                    }}
+                                  >
+                                    {item.displayName} <i className='fa fa-times-circle'></i>
+                                  </button>
+                                  {/* {item.isCollapse ?
+                                    <ExpandLessIcon className='cursor-pointer' style={{ color: '#212121' }} />
+                                    : <ExpandMoreIcon className='cursor-pointer' style={{ color: '#212121' }} />
+                                  } */}
+                                </Box><br />
+                                <Box sx={{ height: 300, width: '100%', paddingBottom: '10px' }}>
+                                  <DataGridPro
+                                    rows={item.colList}
+                                    columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
+                                    pageSizeOptions={[5, 10, 50, 100]}
+                                    checkboxSelection={true}
+                                    isRowSelectable={(params) => (params.row.used == "False" ? false : true)}
+                                    disableSelectionOnClick
+                                    getRowHeight={() => 'auto'}
+                                    rowSelectionModel={item.selectedRow}
+                                    // onRowSelectionModelChange={(e) => {
+                                    //   let newList1 = [...listContactMapping]
+                                    //   newList1[index].selectedRow = e;
+                                    //   setlistContactMapping(newList1);
+                                    //   // item.selectedRow = e;
+                                    // }}
+
+                                    pagination={false}
+                                    hideFooterRowCount={true}
+                                    hideFooter={true}
+                                    editable
+                                  />
+                                </Box>
+                              </>
+
+                            )
+
+                            )}
+                          </Grid>
+                        </Grid>
+                      </Box>
+                    </Box>
+                  </Box>
+                )
+                }
+              </React.Fragment>
+
+            </Box>
+
+          </Box>
+
+          <Box sx={{ display: 'flex', flexDirection: 'row' }} className='panel-footer'>
+            <Grid container item>
+              <Grid item xs={12}>
+                <Button variant='outlined' size="small" style={{ float: 'left' }} onClick={isModalClose}>Cancel</Button>
+                {!isModalClose ? <>
+                  <Button variant='contained' size="small" style={{ float: 'right' }} disabled={listContactMapping.length == 0} onClick={isModalCloseHubspot1}>OK</Button> {showLoder && <CircularProgress style={{ float: 'right', marginRight: 15 }} />}
+                </>
+                  : <Button variant='contained' size="small" style={{ float: 'right' }} disabled={!isCheckConfrmHubspot} onClick={(e) => handleNext('shopify')}>Next Step</Button>
                 }
               </Grid>
             </Grid>

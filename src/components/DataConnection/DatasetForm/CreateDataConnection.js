@@ -87,7 +87,7 @@ import ConnectorsLoader from "../connectors-loader";
 import { useRef } from "react";
 import MarketResearchAnalysis from "../../../content/dashboards/DataPlatform/market-research-analysis";
 import tr from "date-fns/locale/tr/index";
-import { CRMListData, SurveyListData, customerServiceListData, dataWarehouseDatabaseListData, financialListData, macroMicroEconomics, reviewsListData, sassPlatform, socialmediaList } from "../../../assets/data/create-data-connection";
+import { CRMListData, SurveyListData, customerServiceListData, dataWarehouseDatabaseListData, financialListData, macroMicroEconomics, reviewsListData, sassPlatform, socialmediaList, ecommerceListData } from "../../../assets/data/create-data-connection";
 
 const steps = ["Name & Source", "Template", "Data Visualization"];
 
@@ -162,6 +162,10 @@ function CreateDataConnection() {
   const [openSalesforce, setOpenSalesforce] = React.useState(false);
   const [openbraze, setOpenbraze] = React.useState(false);
   const [openInstagram, setOpenInstagram] = React.useState(false);
+  const [openKlaviyo, setOpenKlaviyo] = React.useState(false);
+  const [openIntercom, setOpenIntercom] = React.useState(false);
+  const [openShopify, setOpenShopify] = React.useState(false);
+
   const [errorMessgeDetais, seterrorMessgeDetais] = React.useState(false);
   const [warningMessgeDetais, setwarningMessgeDetais] = React.useState(false);
   const [isConnectedTypeForm, setisConnectedTypeForm] = React.useState(false);
@@ -202,14 +206,15 @@ function CreateDataConnection() {
   const [isModalDataFile, setIsModalDataFile] = useState([]);
   const [checkProgressDatasetStatus, setcheckProgressDatasetStatus] = useState([]);
   const [isRunningIngestion, setisRunningIngestion] = useState(false);
+  const [isError, setisError] = useState(true)
   const interval = React.useRef();
   const [isRunningAnalysis, setisRunningAnalysis] = useState({ processList: [], status: false, sccessPercent: 10 });
   const intervalForAnalysis = React.useRef();
-  const intervalForCategoryMapping = React.useRef();  
+  const intervalForCategoryMapping = React.useRef();
   const [datarefreshloader, setdatarefreshloader] = useState(true);
-  
+
   const [datarefreshupdated, setdatarefreshupdated] = useState(true);
-  
+
 
   const [warningNotificationAlert, setwarningNotificationAlert] = useState({
     alertType: "",
@@ -235,6 +240,8 @@ function CreateDataConnection() {
     message: "",
     isSubmit: false
   });
+
+  const [changeCatMappingData, setChangeCatMappingData] = useState({});
 
   const handleOpen = (ev, value) => {
     if (ev != null) {
@@ -278,6 +285,19 @@ function CreateDataConnection() {
       localStorage.setItem("instagramMapping", JSON.stringify(isModalDataTypeform));
       setOpenInstagram(true);
     }
+    else if (value == "Klaviyo") {
+      localStorage.setItem("KlaviyoMapping", JSON.stringify(isModalDataTypeform));
+      setOpenKlaviyo(true);
+    }
+    else if (value == "Intercom") {
+      localStorage.setItem("intercomMapping", JSON.stringify(isModalDataTypeform));
+      setOpenIntercom(true);
+    }
+    else if (value == "Shopify") {
+      localStorage.setItem("shopifyMapping", JSON.stringify(isModalDataTypeform));
+      setOpenShopify(true);
+    }
+
   };
 
   const emailpopupOpen = (objectkey, objectVal) => {
@@ -393,6 +413,9 @@ function CreateDataConnection() {
     setOpenSalesforce(false);
     setOpenbraze(false);
     setOpenInstagram(false);
+    setOpenKlaviyo(false);
+    setOpenIntercom(false);
+    setOpenShopify(false);
   };
 
   const handleUploadClose = () => {
@@ -428,7 +451,13 @@ function CreateDataConnection() {
         axios.post(`${process.env.REACT_APP_API_URL}/survey/setNewQuestionMapping`, {
           user_id: user._id,
           template: name
-        });
+        }).then(async (response1) => {
+          if (response1.data.success) {
+            setisError(true)
+          } else {
+            setisError(false)
+          }
+        })
 
         handleApplyFetchSurvey(name);
       }
@@ -448,6 +477,7 @@ function CreateDataConnection() {
 
   const handleNext = async () => {
     errorRef.current.scrollIntoView({ behavior: 'smooth' })
+    setisError(true)
     if (activeStep == 0) {
       let checkDuplicate = await checkProjectNameExist();
       // if (projectName.match(/[^a-zA-Z0-9_]/) !== null) {
@@ -469,6 +499,7 @@ function CreateDataConnection() {
         }));
         errorRef.current.scrollIntoView({ behavior: 'smooth' })
       }
+
       if (projectName.trim() == "") {
         let isValiedProject = { ...projectNameValid };
         setprojectNameValid((prev) => ({
@@ -478,16 +509,27 @@ function CreateDataConnection() {
         }));
         errorRef.current.scrollIntoView({ behavior: 'smooth' })
       } else if (selected.length == 0) {
+        setisError(false)
         seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Data Source Connection Error', message: ['Select at least one data source'] }])
 
         errorRef.current.scrollIntoView({ behavior: 'smooth' })
       } else {
+        localStorage.setItem('projectName', projectName.trim());
         seterrorListDisplay([])
         setcheckProgressDatasetStatus([]);
         setisRunningIngestion(false);
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
       }
     } else {
+      let typeFormConnectedList = isShowSurveyMapp.filter((ele) => ele.dataType == "Typeform");
+
+    if (typeFormConnectedList.length > 1) {
+      isShowSurveyMapp.forEach((ele) => {
+        if (ele.dataType == "Typeform") {
+          ele.listMapping = typeFormConnectedList[typeFormConnectedList.length-1].listMapping
+        }
+      });
+    }
       let found1 = isShowSurveyMapp.map((ele) => ele.listMapping).flat();
       let found2 = found1.filter((ele) => {
         return !ele.is_mapped;
@@ -496,6 +538,7 @@ function CreateDataConnection() {
         seterrorListDisplay([])
         createSurvey(true);
       } else {
+        setisError(false)
         seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Category Mapping Error', message: ['Please map question with category'] }])
 
         errorRef.current.scrollIntoView({ behavior: 'smooth' })
@@ -518,13 +561,14 @@ function CreateDataConnection() {
       })
       .then(async (response1) => {
         if (response1.data.success) {
+          setisError(true)
           let newData = JSON.parse(response1.data.data);
           newList = newData.map((ele, ind) => ({ ...ele, id: ind + 1 }));
 
         } else {
           newList = [];
+          setisError(false)
           seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Category Mapping Error', message: [response1.data.message] }])
-
         }
       })
       .catch((err) => {
@@ -549,6 +593,7 @@ function CreateDataConnection() {
           let findInprogressIngestionerror = response1.data.data.filter((ele) => ele.message != "");
 
           if (findInprogressIngestionerror.length == 0) {
+            setisError(true)
             let getStatus = (findInprogressIngestion.length == 0 ? false : true);
             setisRunningIngestion(getStatus);
             response1.data.data.forEach((ele) => {
@@ -575,6 +620,7 @@ function CreateDataConnection() {
             setcheckProgressDatasetStatus(listOfDataSource1);
           } else {
             setisRunningIngestion(false)
+            setisError(false)
             let errorListitem = findInprogressIngestionerror.map((ele) => ({ ...ele, short_text: 'Ingestion Error', message: (ele.message.split(/[,|;]+/)), alertType: 'error-message', isCollapsable: true }));
             seterrorListDisplay(errorListitem);
             let tmpwithouterror = selected.filter((elem) => elem.label != "Typeform")
@@ -936,6 +982,14 @@ function CreateDataConnection() {
     let hubspotConnectedListFeedback = isShowSurveyMapp.filter((ele) => ele.dataType == "Hubspot" && ele.hs_object === "feedback");
     let typeFormConnectedList = isShowSurveyMapp.filter((ele) => ele.dataType == "Typeform");
 
+    // if (typeFormConnectedList.length > 1) {
+    //   isShowSurveyMapp.forEach((ele) => {
+    //     if (ele.dataType == "Typeform") {
+    //       ele.listMapping = typeFormConnectedList[0].listMapping
+    //     }
+    //   });
+    // }
+
     // if ((typeFormConnectedList.length == 0 && hubspotConnectedListFeedback.length == 0 && hubspotConnectedListCotact.length != 0) &&
     //   activeStep == 1 &&
     //   isDraft
@@ -1103,8 +1157,9 @@ function CreateDataConnection() {
             setSelectedProjectId(newValLocalStorage1);
             setProjectName(newValLocalStorage);
             setisConnectedTypeForm(true);
-            fetchTokenTypeform(null, newParam);
-          } else {
+            fetchTokenTypeform(null, newParam); 
+          } 
+          else {
             setisConnectedTypeForm(false);
           }
         } else {
@@ -1167,7 +1222,7 @@ function CreateDataConnection() {
       //   console.log(err);
       // });
     }
-
+    fetchTokenklaviyo();
   }, []);
 
   const setCatMappingOption = (catOptionList) => {
@@ -1215,9 +1270,20 @@ function CreateDataConnection() {
                   //   data.row.module = value;
                   //   data.row.is_mapped = data.row.module != null ? true : false;
                   // }}
+                  // onBlur={(event) => {
+                  //   if (event != null) {
+                  //     event.stopPropagation();
+                  //     ddd(data.row);
+                  //   }
+                  // }
+                  // }
                   onInputChange={(event, value) => {
                     if (event != null) {
                       event.stopPropagation();
+                      // console.log("yyy",data.row);
+                      // setChangeCatMappingData(data.row)
+                      // ddd(data.row);
+                      //  isShowSurveyMapp.listMapping
                       data.row.module = value;
                       data.row.weightage = "L";
                       data.row.is_mapped =
@@ -1378,82 +1444,11 @@ function CreateDataConnection() {
 
   //databases json
 
-  const databases = [
-    {
-      id: 1,
-      img: "/images/partners/snowflake-sm.svg",
-      name: "Snowflake",
-      value: "snowflake",
-      description:
-        "Enables data cloud storage, processing, and analytic solutions that are faster, easier and flexible.",
-      btnLink: "",
-      active: false,
-    },
-    {
-      id: 2,
-      img: "/images/partners/google-bigquery-sm.svg",
-      name: "Google BigQuery",
-      value: "google-bigQuery",
-      description:
-        "Multi cloud data warehouse designed to turn big data into valuable business insights.",
-      btnLink: "",
-      active: false,
-    },
-    {
-      id: 3,
-      img: "/images/partners/awsRedshift-sm.svg",
-      name: "AWS Redshift",
-      value: "awsRedshift",
-      description:
-        "Cloud data warehouse to analyze data using standard SQL and your existing ETL (extract, transform, and load), business intelligence (BI), and reporting tools.",
-      btnLink: "",
-      active: false,
-    },
-    {
-      id: 4,
-      img: "/images/partners/microsoftAzure-sm.svg",
-      name: "Microsoft Azure",
-      value: "microsoftAzure",
-      description:
-        "Build, run, and manage applications across multiple clouds, on-premises, and at the edge, with the tools and frameworks of your choice.",
-      btnLink: "",
-      active: false,
-    },
-    {
-      id: 5,
-      img: "/images/partners/mongoDB-sm.svg",
-      name: "MongoDB",
-      value: "mongoDB ",
-      description:
-        "Open-source document database that provides high performance, high availability, and automatic scaling.",
-      btnLink: "",
-      active: false,
-    },
-    // { id: 2, img: '/images/partners/couchdb-sm.svg', name: 'CouchDB', value: 'couchDB', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false },
-    // { id: 3, img: '/images/partners/document-database.svg', name: 'Document Database', value: 'document-database', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false },
-    // { id: 4, img: '/images/partners/gridgain.svg', name: 'Gridgain', value: 'gridgain', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false }
-  ];
+ 
 
   //upload a file json
 
-  const uploadFile = [
-    {
-      id: 1,
-      img: "/images/partners/azure.svg",
-      name: "Azure",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      btnLink: "",
-      active: false,
-    },
-    {
-      id: 2,
-      img: "/images/partners/s3-bucket.svg",
-      name: "S3 Bucket",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      btnLink: "",
-      active: false,
-    },
-  ];
+
 
   //selected form data
 
@@ -1463,7 +1458,7 @@ function CreateDataConnection() {
       name: "Typeform",
       value: "typeform",
       description: "Build beautiful, interactive forms — get more responses",
-      img: "/images/partners/typeform-sm.svg",
+      img: "/json-media/img/partners/typeform-sm.svg",
     },
     // { id: 2, name: 'Salesforce', description: 'Personalize every experience along the customer journey with the Customer 360', img: '/images/partners/salesforce.svg' },
     {
@@ -1472,7 +1467,7 @@ function CreateDataConnection() {
       value: "hubspot",
       description:
         "CRM platform with all the software, integrations, and resources",
-      img: "/images/partners/hubspot-sm.svg",
+      img: "/json-media/img/partners/hubspot-sm.svg",
     },
   ];
 
@@ -1505,6 +1500,53 @@ function CreateDataConnection() {
         console.log(err);
         // setLoaderShow(false)
       });
+  };
+
+  const fetchTokenklaviyo = async (ev) => {
+
+    let search = window.location.search;
+    let params = new URLSearchParams(search);
+    let newParam = params.get("code");
+    await axios
+    .post(`${process.env.REACT_APP_API_URL}/user/fetchTokenKlaviyo`, {
+      grant_type: 'authorization_code', 
+      code: newParam,
+      code_verifier: 'code_challenge',
+      redirect_uri: 'http://localhost:3000/dashboard/data-platform/create-data-connection',
+    })
+    .then((response) => {
+      console.log(response)
+      // settokenName(response.data.access_token);
+      // setRefreshtokenName(response.data.refresh_token);
+      // getWorkspaceList(
+      //   { token: response.data.access_token },
+      //   response.data.refresh_token
+      // );
+    })
+    .catch((err) => {
+      console.log(err);
+      // setLoaderShow(false)
+    });
+    // await axios
+    //   .post(`https://a.klaviyo.com/oauth/token`, {
+    //     grant_type: 'authorization_code',
+    //     code: newParam,
+    //     code_verifier: 'code_challenge',
+    //     redirect_uri: 'http://localhost:3000/dashboard/data-platform/create-data-connection',
+    //   })
+    //   .then((response) => {
+    //     console.log(response + '11')
+    //     // settokenName(response.data.access_token);
+    //     // setRefreshtokenName(response.data.refresh_token);
+    //     // getWorkspaceList(
+    //     //   // { token: response.data.access_token },
+    //     //   response.data.refresh_token
+    //     // );
+    //   })
+    //   .catch((err) => {
+    //     console.log(err + 'false');
+    //     // setLoaderShow(false)
+    //   });
   };
 
   const fetchTokenHubspotList = (ev, newParam) => {
@@ -1671,9 +1713,11 @@ function CreateDataConnection() {
             response1.data.list.length != 0
           ) {
             getlistListOfContact([response1.data.list]);
+            setisError(true)
           } else {
             setOpenHubspot(false);
             setisOpenPopupHubspot(false);
+            setisError(false)
             seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Data Source Connection Error', message: ['No Contact List is found in this account'] }])
           }
         } else {
@@ -1914,6 +1958,14 @@ function CreateDataConnection() {
     }
   }, [typeformIngestionStatus.status]);
 
+  // useEffect( () => {
+  //   console.log(changeCatMappingData)
+  //   console.log(isShowSurveyMapp)
+
+  // }, [changeCatMappingData]);
+
+
+
   const gotoProjectManagementScreen = async () => {
     // setSelectedProjectId("");
     // navigate("/dashboard/data-platform/project-management");
@@ -1942,8 +1994,7 @@ function CreateDataConnection() {
     }
   };
 
-  function dataRefreshProject ()
-  {
+  function dataRefreshProject() {
     setdatarefreshloader(false)
     setTimeout(() => {
       setdatarefreshloader(true)
@@ -1982,7 +2033,7 @@ function CreateDataConnection() {
     );
   }
 
-  
+
 
   return (
     <>
@@ -2032,9 +2083,9 @@ function CreateDataConnection() {
             <Grid item xs={3} md={3} lg={3}>
               <div className="float-right">
                 <Box display="flex">
-                <Stack direction="row" spacing={1}>
+                  <Stack direction="row" spacing={1}>
                     {activeStep + 1 != 3 && (
-                      <Button 
+                      <Button
                         color="primary"
                         variant="outlined"
                       // onClick={() => {
@@ -2044,19 +2095,19 @@ function CreateDataConnection() {
                         Save Draft
                       </Button>
                     )}
-                    {activeStep == 2? <Button
-                  color={!datarefreshupdated?'success':'primary'}
-                  variant="outlined" 
-                  className="icon-btn"
-                  onClick={() => {
-                   dataRefreshProject();
-                  }}
-                >
-                  {datarefreshloader?<> <span class="icon-data-refresh fa-1x"></span></>:<>
-                  {datarefreshupdated?<><CircularProgress size="1.5rem" className="float-right"/></>:<><i class="fa fa-check-circle"></i></>} 
-                  </>}  
-                </Button>:''}
-                    <Button 
+                    {activeStep == 2 ? <Button
+                      color={!datarefreshupdated ? 'success' : 'primary'}
+                      variant="outlined"
+                      className="icon-btn"
+                      onClick={() => {
+                        dataRefreshProject();
+                      }}
+                    >
+                      {datarefreshloader ? <> <span class="icon-data-refresh fa-1x"></span></> : <>
+                        {datarefreshupdated ? <><CircularProgress size="1.5rem" className="float-right" /></> : <><i class="fa fa-check-circle"></i></>}
+                      </>}
+                    </Button> : ''}
+                    <Button
                       color="primary"
                       variant="outlined"
                       onClick={() => {
@@ -2085,17 +2136,12 @@ function CreateDataConnection() {
               ""
             ) : (
               <React.Fragment>
-                <Box
-                  style={{
-                    border: "1px solid #ddd",
-                    padding: "40px",
-                    borderRadius: "20px",
-                  }}
-                >
+                <Box>
                   {/* step1 code */}
                   {activeStep + 1 == 1 ? (
                     <Box display={"grid"} gap={4}  >
-                      <Grid item xs={11} display={"flex"}>
+
+                      <Grid container spacing={2}>
                         <Grid item xs={4}>
                           <Typography variant="h6" component="h6">
                             Project Name
@@ -2115,7 +2161,6 @@ function CreateDataConnection() {
                             Enter a unique project name
                           </Typography>
                         </Grid>
-
                         <Grid item xs={8}>
                           <TextField
                             fullWidth
@@ -2146,7 +2191,9 @@ function CreateDataConnection() {
                             {projectNameValid.textMessage}
                           </span>
                         </Grid>
+
                       </Grid>
+
 
                       <hr style={{ border: "1px solid #ddd", margin: 0 }} />
 
@@ -3149,6 +3196,106 @@ className={
                               </Grid>
                             ))}
 
+ <Grid xs={12} md={12} lg={12}>
+                              <div className="mt-3"></div>
+                              <Typography
+                                variant="h6"
+                                component="h6"
+                                className="ml-4"
+                              >
+                               E-commerce
+                              </Typography>
+                            </Grid>
+                            {ecommerceListData.map((item, i) => (
+                              <Grid
+                                item
+                                xs={12}
+                                md={3}
+                                lg={3}
+                                key={i}
+                                className="cursor-pointer" onClick={(ev) => {
+                                  connectDataForIngestion(ev, item.name);
+                                }}>
+                                <Card
+                                  key={i}
+                                  className={item.connectionAvl ? '' : 'dataListcard'}>
+                                  <CardMedia
+                                    sx={{
+                                      height: 48,
+                                      width: 48,
+                                      margin: "10px 16px",
+                                      backgroundSize: "70%",
+                                      borderRadius: "4px",
+                                      border: "1px solid #ddd",
+                                    }}
+                                    className='cardMedia'
+                                    image={item.img}
+                                    title={item.name}
+                                  />
+                                  {(isConnectedTypeForm == true && ["Typeform"].indexOf(item.name) != -1) ||
+                                    (isConnectedHubspot == true && ["Hubspot"].indexOf(item.name) != -1) || (isConnectedZendesk == true && ["Zendesk"].indexOf(item.name) != -1) ? (
+                                    <> <label class="switch" onClick={(ev) => {
+                                      removeTypeformToken(ev, item.name);
+                                    }}>
+                                      <input type="checkbox" checked={true} disabled={item.active} />
+                                      <span class="slider round"></span>
+                                    </label> </>
+                                  ) : (
+                                    <> <label class="switch" onClick={(e) => {
+                                      handleOpen(e, item.name);
+                                    }} >
+                                      <input type="checkbox" checked={false} />
+                                      <span class="slider round"></span>
+                                    </label> </>
+                                  )}
+                                  <CardContent>
+                                    <Typography
+                                      gutterBottom
+                                      variant="h5"
+                                      component="h5"
+                                    >
+                                      {item.name}
+                                    </Typography>
+                                    <Typography
+                                      variant="body2"
+                                      component="p"
+                                      color="text.secondary"
+                                      style={{ height: "50px" }}
+                                    >
+                                      {item.description}
+                                    </Typography>
+                                  </CardContent>
+                                  <CardActions>
+                                    {item.connectionAvl ? (
+                                      <>
+                                        {(["Typeform"].indexOf(item.name) != -1 && isModalDataTypeform.length != 0) || ["Hubspot"].indexOf(item.name) != -1 && isModalDataHubspot.length != 0 ?
+                                          (<div className="disconnect-btn">Dataset Connected  <div className="float-right"><a className="fa fa-pencil mr-3" onClick={(ev) => {
+                                            connectDataForIngestion(ev, item.name);
+                                          }}></a>   <a className="fa fa-close" onClick={(ev) => {
+                                            clearDataForIngestion(ev, item.name);
+                                          }}></a></div></div>) : <><Button
+                                            className="connect-btn">Connect Source</Button></>}
+                                      </>
+                                    ) : (
+                                      <>
+                                        <Button
+                                          className="connect-btn"
+                                          onClick={(e) => { handleOpen(item.name) }}
+                                        >
+                                          Connect Dataset
+                                        </Button>
+                                        {
+                                          (item.name != "Typeform" && item.name != "Hubspot") &&
+                                          <Button className="getstart-btn" onClick={(e) => emailpopupOpen("datasource", item.name)}>
+                                            Get Started
+                                          </Button>
+                                        }
+                                      </>
+                                    )}
+                                  </CardActions>
+                                </Card>
+                              </Grid>
+                            ))}
                           </Grid>
                         </CustomTabPanel>
                         <CustomTabPanel value={value} index={1}>
@@ -3351,14 +3498,13 @@ className={
                                           )}
                                         </section>
                                       </Grid>
-                                    )}
-
+                                    )} 
                                   {
                                     errorListDisplay.map(
                                       (itemMessage, i) => (
                                         <Grid item>
                                           <div style={{ height: (itemMessage.isCollapsable == true ? '50px' : 'auto') }}
-                                            className={`message-box  ml-4   ${itemMessage.alertType}`}
+                                            className={`message-box mb-3 ml-4   ${itemMessage.alertType}`}
                                           >
                                             <span>{itemMessage.short_text}</span>
                                             <a
@@ -3440,28 +3586,9 @@ className={
 
 
                                 {!showLoder && !typeformIngestionStatus.status ?
-                                  isShowSurveyMapp.map((label, index) => (
-                                    <Box
-                                      sx={{
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        pt: 2,
-                                      }}
-                                    >
-                                      <Grid
-                                        container
-                                        spacing={4}
-                                        display="flex"
-                                        alignItems="center"
-                                      >
-                                        <Grid item xs={12}>
-                                          <Box>
-                                            <Grid
-                                              item
-                                              xs={12}
-                                              style={{ padding: "0px 15px" }}
-                                            >
-                                              <Typography
+                                  isShowSurveyMapp.map((label, index) => ( 
+                                    <> 
+                                      <Typography  style={{margin:'15px'}}   
                                                 variant="span"
                                                 className="text-primary datasources"
                                               >
@@ -3481,19 +3608,65 @@ className={
                                                 >
                                                   <CloseIcon /> Remove
                                                 </Button>
-                                              </Typography>
-                                            </Grid>
-                                          </Box>
+                                              </Typography> 
 
-                                          <Box
+                                          {label.dataType == "Typeform" && label.survey.value == (isShowSurveyMapp.filter((ele) => ele.dataType == "Typeform")[isShowSurveyMapp.filter((ele) => ele.dataType == "Typeform").length-1]).survey.value ?
+                                            <Box
+                                              sx={{
+                                                height: 520,
+                                                width: "98.5%", 
+                                                margin:'15px',
+                                                paddingBottom: "10px",
+                                              }}
+                                            >
+                                              <DataGrid
+                                                rows={label.listMapping}
+                                                columns={
+                                                  label.dataType == "Typeform"
+                                                    ? gridDataForGrid.columns
+                                                    : gridDataForGrid.columns1
+                                                }
+                                                pageSizeOptions={[5, 10, 50, 100]}
+                                                checkboxSelection={true}
+                                                disableSelectionOnClick
+                                                rowHeight={65}
+                                                selectionModel={
+                                                  label.checkedAllList
+                                                }
+                                                onSelectionModelChange={(
+                                                  e
+                                                ) => {
+                                                  setSelectionModel(e);
+                                                  const selectedIDs = new Set(e);
+                                                  const selectedRows =
+                                                    label.listMapping.filter(
+                                                      (r) => selectedIDs.has(r.id)
+                                                    );
+                                                  setSelectedRows(selectedRows);
+                                                }}
+                                                onCellKeyDown={(
+                                                  params,
+                                                  event
+                                                ) => {
+                                                  event.stopPropagation();
+                                                  event.defaultMuiPrevented = true;
+                                                }}
+                                                pagination={false}
+                                                hideFooterRowCount={true}
+                                                hideFooter={true}
+                                                editable
+                                              />
+                                            </Box>
+                                            : ""}
+
+                                          {label.dataType !== "Typeform" ? <Box
                                             sx={{
                                               height: 520,
-                                              width: "100%",
-                                              padding: "16px",
-                                              paddingBottom: "0px",
+                                              width: "98.5%", 
+                                              margin:'15px', 
                                             }}
                                           >
-                                            <DataGridPro
+                                            <DataGrid
                                               rows={label.listMapping}
                                               columns={
                                                 label.dataType == "Typeform"
@@ -3504,10 +3677,10 @@ className={
                                               checkboxSelection={true}
                                               disableSelectionOnClick
                                               rowHeight={65}
-                                              rowSelectionModel={
+                                              selectionModel={
                                                 label.checkedAllList
                                               }
-                                              onRowSelectionModelChange={(
+                                              onSelectionModelChange={(
                                                 e
                                               ) => {
                                                 setSelectionModel(e);
@@ -3518,6 +3691,20 @@ className={
                                                   );
                                                 setSelectedRows(selectedRows);
                                               }}
+                                              // rowSelectionModel={
+                                              //   label.checkedAllList
+                                              // }
+                                              // onRowSelectionModelChange={(
+                                              //   e
+                                              // ) => {
+                                              //   setSelectionModel(e);
+                                              //   const selectedIDs = new Set(e);
+                                              //   const selectedRows =
+                                              //     label.listMapping.filter(
+                                              //       (r) => selectedIDs.has(r.id)
+                                              //     );
+                                              //   setSelectedRows(selectedRows);
+                                              // }}
                                               onCellKeyDown={(
                                                 params,
                                                 event
@@ -3531,9 +3718,9 @@ className={
                                               editable
                                             />
                                           </Box>
-                                        </Grid>
-                                      </Grid>
-                                    </Box>
+                                            : ''} 
+                                             
+                                      </> 
                                   )) :
                                   <>
                                     <Box className='text-center'><br />
@@ -3762,7 +3949,7 @@ className={
                         return (
                           <>
                             <Box className="dataprogressBar">
-                              <img className="mr-2" src={`/images/partners/${label11.dataSource}-sm.svg`} width={20} height={20} />
+                              <img className="mr-2" src={`/json-media/img/partners/${label11.dataSource}-sm.svg`} width={20} height={20} />
                               {label11.status == "progress" ? (
                                 ""
                               ) : (
@@ -3815,7 +4002,7 @@ className={
                         disabled={
                           (activeStep + 1 == 2 && showLoder == true) || (activeStep + 1 == 2 && checked.length == 0) ||
                           showLoderVisual == true ||
-                          isRunningIngestion == true
+                          isRunningIngestion == true 
                         }
                         onClick={handleNext}
                       >
@@ -3845,6 +4032,9 @@ className={
             openSalesforce={openSalesforce}
             openbraze={openbraze}
             openInstagram={openInstagram}
+            openKlaviyo={openKlaviyo}
+            openIntercom={openIntercom}
+            openShopify={openShopify}
             token={tokenName}
             hubspotTokenName={hubspotTokenName}
             hubspotRefreshtokenName={hubspotRefreshtokenName}

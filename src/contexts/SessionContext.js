@@ -1,6 +1,7 @@
 import { useState, createContext, useEffect } from "react";
 import Cookies from "js-cookie";
 import utils from "../utils/index";
+// import { useNavigate } from "react-router";
 
 export const SessionContext = createContext();
 
@@ -9,6 +10,7 @@ export const SessionProvider = ({ children }) => {
   const user = utils.decodeToken(token);
   const [tablesData, setTablesData] = useState({});
 
+  
 
   const [session, setSession] = useState({
     token,
@@ -16,7 +18,6 @@ export const SessionProvider = ({ children }) => {
   });
 
   const [userImg, setProfileImg] = useState({});
-
 
 
   const hostname = window.location.hostname;
@@ -32,6 +33,7 @@ export const SessionProvider = ({ children }) => {
   } else {
     domain = "convertml.ai";
   }
+
   async function login({ email, password }) {
     const response = await utils.login({
       email,
@@ -86,12 +88,14 @@ export const SessionProvider = ({ children }) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        setSession((prevState) => {
-          return {
-              ...prevState,
-              user: res.user,
-          };
-      });
+        if(res.status=="success"){
+          setSession((prevState) => {
+            return {
+                ...prevState,
+                user: res.user,
+            };
+        });
+        }
 
 
       })

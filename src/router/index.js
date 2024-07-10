@@ -60,6 +60,7 @@ import AiInNPSAnalysis from "../pages/webpages/blogs/2024/march/ai-In-NPS-Analys
 import AnticipatingCustomer from "../pages/webpages/blogs/2024/march/anticipatingcustomer";
 import AttentionTypeform from "../pages/webpages/blogs/2024/april/attentionTypeform";
 import Theonlywinwinstrategy from "../pages/webpages/blogs/2024/april/the-only-win-win-strategy-for-survey-data-analytics";
+import IntegrationMultiplePlatforms from "../pages/webpages/integration-multiple-platforms";
 
 // import HiddenfieldsSuperenhance from "../pages/webpages/blogs/2024/feb/hidden-fields-Super-enhance-your-ConvertML-analysis";
 
@@ -169,6 +170,12 @@ const router = [
     exact: true,
     element: <AboutUs />,
   },
+  {
+    path: "/integration-multiple-platforms",
+    exact: true,
+    element: <IntegrationMultiplePlatforms />,
+  },
+  
   {
     path: "/power-user-program-convertml",
     exact: true,
@@ -383,15 +390,15 @@ const router = [
       
       {
         path: "data-platform/project-management",
-        element: <ProjectManagement />
+        element: (<RequireAuth><ProjectManagement /></RequireAuth>)
       },
       {
         path: "data-platform/create-data-connection",
-        element: <CreateDataConnection />
+        element: (<RequireAuth><CreateDataConnection /></RequireAuth>)
       },
       {
         path: "data-platform/ml-result",
-        element: <MlResultsConnection />
+        element: (<RequireAuth><MlResultsConnection /></RequireAuth>)
       },
       
       

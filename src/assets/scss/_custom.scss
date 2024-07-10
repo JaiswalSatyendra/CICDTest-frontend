@@ -56,7 +56,7 @@ a{ cursor: pointer;}
 // .afterlogin{ background:  #F8F9FA; width: 240px;}
 
 .resultpage-header{ margin: 0px 0px 0px 0px;}
-.icon-size{ font-size: 14px; cursor: pointer;}
+.small-md-icons{ font-size: 14px; cursor: pointer;}
   .left-navigation{float: left; padding: 15px; width: 270px;    height:94vh;    flex-direction: column;   background:#F8F9FA;
   ul{ margin: auto; padding: 0px; list-style: none;
     li{ margin: 3px 0px;}
@@ -87,19 +87,7 @@ a{ cursor: pointer;}
 .dot {  cursor: pointer;  height: 5px;  width: 20px;  margin: 0 2px;  background-color: #ddd;  display: inline-flex;
   transition: background-color 0.6s ease;}
   
-// -------------------- button style
-.link-text{ color:$primaryblue;}
-.icon-btn-sm{ min-height: 34px; min-width: 45px!important; @extend .linkbtn; i{ font-size:15px;} }
-.icon-btn{ min-height: 34px; min-width: 45px!important; @extend .linkbtn; i{ font-size: 20px;} }
-  .linkbtn{ padding: 10px 16px;     align-items: center; border-radius: 8px;  }
-  .outline-btn{ @extend .linkbtn;     border: 1px solid #DFE2E5;    background: #FFF;}
-  .link-btn{ @extend .linkbtn;     border: 1px solid $primaryblue; color:#fff!important;    background: $primaryblue;}
 
-  .connect-btn{width: 100%;  color:  $primaryblue!important;    padding: 6px 12px;    justify-content: center;    align-items: center;    gap: 8px; border-radius: 8px;  border: 1px solid  #DFE2E5!important;    background: #FFF!important;}
-  .getstart-btn{width: 100%;  color:  $primaryblue!important;    padding: 6px 12px;    justify-content: center;    align-items: center;    gap: 8px; border-radius: 8px;  border: 1px solid  #DFE2E5!important;    background: #FFF!important;}
-  .disconnect-btn{ width: 100%; background: #c2ffad!important; color: #39901a!important; text-align: center; font-weight: 700;     padding: 10px 12px;    justify-content: center;    align-items: center;    gap: 8px; border-radius: 8px; border: 1px solid  #c2ffad!important; 
-  a{ color: $text-color; font-size: 18px;}
-  }
  
  
 .dataListcard{
@@ -180,12 +168,12 @@ li{    padding-top: 5px;  padding-bottom: 5px; padding-left:0px}
 
   .new-banner{ position: relative; z-index: 0;       
     section{  border-radius: 30px;     padding: 100px 122px 0px 122px;    margin:50px  auto 0px auto;     z-index: 1;      display: block;      position: relative;
-      .h1-heading{ margin: 20px 0px; font-size: 70px; font-style: normal; font-weight: 700;  line-height: 100%; b{ color: #6644F1;} }
-      h1{ margin: 20px 0px; font-size: 70px; font-style: normal; font-weight: 700;  line-height: 100%; b{ color: #6644F1;} }
-      h2{ margin: 20px 0px; font-size: 60px; font-style: normal; font-weight: 700; line-height: 100%; b{ color: #6644F1;} }
-      h3{ margin:20px 0px; font-size: 40px; font-style: normal; font-weight: 700;  line-height: 50px; b{ color: #6644F1;} }
-      .heading3{ margin:20px 0px; font-size: 40px; font-style: normal; font-weight: 700;  line-height: 50px; b{ color: #6644F1;} }
-      p{font-size: 18px;  font-style: normal; font-weight: 400; line-height: 28px; margin: 0px; color: $text-color;}
+      .h1-heading{ margin: 20px 0px; font-size: 70px; font-style: normal; font-weight: 700;  line-height: 100%; color: $white; b{ color: $white;} }
+      h1{ margin: 20px 0px; font-size: 70px; font-style: normal; font-weight: 700;  line-height: 100%; b{ color: $white;} color: $white; }
+      h2{ margin: 20px 0px; font-size: 60px; font-style: normal; font-weight: 700; line-height: 100%; b{ color: $white;} color: $white;}
+      h3{ margin:20px 0px; font-size: 40px; font-style: normal; font-weight: 700;  line-height: 50px; b{ color: $white;} color: $white;}
+      .heading3{ margin:20px 0px; font-size: 40px; font-style: normal; font-weight: 700;  line-height: 50px; b{ color: $white;} color: $white;}
+      p{font-size: 18px;  font-style: normal; font-weight: 400; line-height: 28px; margin: 0px; color: $white;}
     }
     .beta-test-banner{ padding: 0px;}
   // .link-btn{ background: #fff; color: $black!important;}`
@@ -193,11 +181,11 @@ li{    padding-top: 5px;  padding-bottom: 5px; padding-left:0px}
   .banner-top-heading{ min-width:250px; display: inline-block;    margin:auto;  background: $black; border-radius: 50px; padding:10px 30px; color:#ffffff; font-size: 20px;}
  .link-btn{ font-size: 18px;}
    }
-   .new-banner::before{ width: 115%;  height: 450px;          content: '';    position:  absolute;    background: #f8f9fa;
+   .new-banner::before{ width: 115%;  height: 450px;          content: '';    position:  absolute;    background: #EA48AE;
     //  background: rgb(96,70,244);    background: linear-gradient(180deg, rgba(96,70,244,1) 0%, rgba(197,45,214,1) 100%);     
      
      top: 0;    left: -140px;    z-index: 0;}
-   .new-banner::after{ width: 115%;    height: 290px;    content: '';    position: absolute;    background: #f8f9fa;    border-radius: 0% 0% 50% 50%;
+   .new-banner::after{ width: 115%;    height: 290px;    content: '';    position: absolute;    background: #EA48AE;    border-radius: 0% 0% 50% 50%;
     top: 400px;    left: -140px;    z-index: 0;}
  
 .blog-home-list{ background: url(../../assets/img/home-blogs-bg.png) 0px 10px; }
@@ -229,12 +217,40 @@ li{    padding-top: 5px;  padding-bottom: 5px; padding-left:0px}
       p{font-size: 18px;  font-style: normal; font-weight: 400; line-height: 28px; margin: 0px; color: $text-color;}
       .bannerimg{ width:70%; margin: 30px 0px;}
     }
+.survey-list-home{ @extend.box-shadow-card; border-radius: 20px; padding: 20px; z-index: 10; 
+  .icons{ color: $primarybluen; }
+h4{ font-weight: 800;}
+}
+  
 
-    
-  .builtfor-section{ text-align: center; margin: 50px 0px; 
-    img{ width: 25px; height: 25px; float: left; margin:0px 15px; }
-    a{ cursor: pointer; display: inline-block;   font-weight: 600; width:23%; font-size: 18px; background: #F8F9FA   no-repeat 25px 18px; border:#DFE2E5 solid 1px; padding:15px 0px; border-radius: 12px; margin: 10px 10px;     text-align: left;  }
-  }
+.banneraction-button{ background:#D0E4FF; padding: 20px; border-radius: 20px; width: 300px; margin: auto;
+.btn1{ width: 250px; padding: 10px 20px; background: $primarybluen; border: none;  @extend.box-shadow-card; font-size: 18px; border-radius: 10px; color: #fff; /*margin-right: 15px;*/}
+// .btn2{  width: 170px; padding: 10px 0px; background: #ffffff; border: none;   @extend.box-shadow-card; font-size: 18px; border-radius: 10px;}
+}
+
+.home-roles-page{ margin: 20px 0px;
+  .skybluebox{ text-align: center; background: #D7EEFF; height: 300px; border: $primarybluen solid 1px; padding: 15px;  border-radius: 20px;
+  img{ margin: -100px 0px 0px 0px; height: 100px;}  }
+  .heading{ color: $primarybluen; font-size: $fontsize-md; font-weight: 600;}
+
+  a{margin: 10px 0px; display: inline-block; background:$primarybluen; border: none; border-radius: 10px; color: $white; padding:10px 15px;}
+}
+
+.no-CodeAnalytical{ position: relative;  /*background: url(../img/home-pagebanner/no-CodeAnalytical.jpg) 100%; color: #fff;*/
+   .heading{ font-weight: 800;}
+.panel-box{ background: #D7EEFF; position: relative;    border-radius: 10px;  padding: 15px; height: 335px;  
+}
+ .hrstyle{height: 5px; margin:10px 0; padding: 0; width: 100px; border-radius: 10px; border:none}
+.hr1{ background: #2FCDF4; @extend.hrstyle; }
+.hr2{ background: #8B4BD7;  @extend.hrstyle;}
+.hr3{ background: #CB4D8D;  @extend.hrstyle;}
+.hr4{ background: #483AC1; @extend.hrstyle; }
+.hr5{ background: #8B4BD7;  @extend.hrstyle;}
+.hr6{ background: #DD4A67;  @extend.hrstyle;}
+p{ margin-left: 35px;}
+}
+ 
+   
 
   .banner-content-section{  
 h2{font-size: 40px;  font-style: normal;  font-weight: 400;  line-height: 50px;  }
@@ -244,18 +260,9 @@ p{font-size: 16px;  font-style: normal;  font-weight: 400;
       border: 1px solid   #937BF6;    background: #F8F9FA;}
   }
 
-  .howitworks{ background: #22252a  url(../img/blue-dotted.png) no-repeat;  width: 100%; margin:50px 0px; padding: 50px 50px;  border-radius: 30px;
-    h2{color: #fff;      text-align: center;      margin: 0px 0px 50px 0px;  }
-   
-.box{ width:100%; margin: 0px 0px; float: left;   padding: 20px; background: transparent; border-radius: 12px; color: #fff;
-  border: 1px solid #6644F1; height: 320px;  background: #141619;  box-shadow: 0px 4px 31px 0px rgba(102, 68, 241, 0.80);
-.heading{ font-size:28px;     padding: 0px;}
-} 
-  }
+  
 
-  .getStarted {background: $text-color url(../img/getstated.png) no-repeat 100%;  border-radius: 15px;  margin: 50px 0px; padding: 15px 50px; color: #fff;
-    .white-btn{ float: right;}
- }
+ 
   .white-btn{ background: #fff; border-radius: 5px; padding: 5px; color: $black; padding: 15px 30px;  display: inline-block;}
 
   
@@ -268,6 +275,61 @@ p{font-size: 16px;  font-style: normal;  font-weight: 400;
     .content{ margin-left: 20px; } 
    
   }
+ 
+
+  .footerContainer-home::before{ width: 100%;  height: 320px;  content: ' ';  position: absolute;   top: 0px;  background: #ffffff;}
+  .footerContainer-home{    background-size: 50%  50%; position: relative;    padding:0px 0px  0px  0px; 
+     .banner-img{ margin: 0px 0px -5px 0px;}
+    .container-home{ position: relative;}
+    .subscription-section{  position:  relative;  background: #E947AD; 
+    h2{   font-size: 40px;      font-style: normal;      font-weight: 600; color: $white;         }
+    h3{   font-size: 25px;      font-style: normal;      font-weight: 600; color: $white;         }
+      p{       font-size: 14px;        font-style: normal;        font-weight: 400; line-height: 24px; }
+      
+      .from { margin: 0px 15px 0px 15px;  input[type=text]{border: none; width: 100%;   border: 1px solid  #DFE2E5; border-radius: 8px;     float: left;  padding: 12px 10px; }
+        input[type=submit]{border: none; background: #E947AD; font-weight: 800;   width: 100%;   padding: 12px 10px;color:  #FFF;   border-radius: 8px;  }
+        button{border: none; background: #0065FF;  font-weight: 800;     padding: 10px 50px;color:  #FFF;   border-radius: 8px;  }
+        }
+        a{color: $white;}
+    }
+    
+    .footer-link-section{ padding:50px 15px 0px 15px;
+      a{ color: $black;}
+      h4{         font-size: 20px;        font-style: normal;        font-weight: 600;        line-height: 26px; margin: 16px 0px 30px 0px; }
+    p{ 
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 20px;  }
+      .subscribeform{ 
+        input[type=text]{border-radius: 8px; margin-bottom: 10px;     display: flex;
+          padding: 14px 16px;  align-items: center;border-radius: 8px;  border: 1px solid   $black;   }
+        input[type=button]{ display: flex; border: none;
+            padding: 14px 20px;color:  #FFF; 
+            justify-content: center;
+            align-items: center;
+            gap: 8px; border-radius: 8px;
+            background:  $black; }
+      }
+    }
+    .copyright{  padding: 20px 120px 10px 120px;     margin-top: 50px;  
+      align-self: stretch;border-top: 1px solid   #DDDDDD;  
+      font-size: 16px; 
+      font-weight: 400;
+      line-height: 24px;
+      a{color:   $black; }  
+    }
+  }
+
+  .getStarted {
+    background: #535560 url(../img/getstated.png) no-repeat 100%;
+    border-radius: 15px;
+    color: #fff;
+    margin: 50px 0;
+    padding: 15px 50px;
+}
+.getStarted .white-btn{ float: right;}
+
   .am-section{  
     h3{color:  $text-color;  margin:10px 0px 10px 0px; padding: 0px ;   font-size: 23px;    font-weight: 600;    line-height: 28px;  }
     .heading{text-align: center;  display:block;      font-size: 60px;       font-weight: 600;      line-height: 130%;}
@@ -309,51 +371,6 @@ p{font-size: 16px;  font-style: normal;  font-weight: 400;
               align-items: center;  border-radius: 8px;
               background:  #FFF;}
   } 
-
-  .footerContainer-home::before{ width: 100%;  height: 320px;  content: ' ';  position: absolute;   top: 0px;  background: #ffffff;}
-  .footerContainer-home{  background:#22252a;  background-repeat: no-repeat;
-    background-size: 50%  50%; position: relative; color: #22252a;  padding:0px 0px  0px  0px;
-
-    .footerBanner{ width: 1440px; img{ width: 1200px;}}
-    .container-home{ position: relative;}
-    .subscription-section{ background: #6644f1; border-radius: 20px;     padding:20px 50px; position:  relative; margin: -175px 100px 0px 100px;
-    h2{color:  #FFF;  font-size: 40px;      font-style: normal;      font-weight: 600;      line-height: 130%;  }
-      p{color: #FFF;      font-size: 14px;        font-style: normal;        font-weight: 400; line-height: 24px; }
-      
-      .from {  input[type=text]{border: none; width: 100%;  background: rgba(255, 255, 255, 0.99);border: 1px solid  #DFE2E5; border-radius: 8px;     float: left;  padding: 12px 10px; }
-        input[type=submit]{border: none; background: #E947AD; font-weight: 800;   width: 100%;   padding: 12px 10px;color:  #FFF;   border-radius: 8px;  }
-        button{border: none; background: #E947AD;width: 100%; font-weight: 800;     padding: 12px 10px;color:  #FFF;   border-radius: 8px;  }
-        }
-    }
-    
-    .footer-link-section{ padding:50px 15px 0px 15px;
-      a{ color: #ffffff;}
-      h4{color:   #FFF;         font-size: 20px;        font-style: normal;        font-weight: 600;        line-height: 26px; margin: 16px 0px 30px 0px; }
-    p{color:   #FFF;  
-      font-size: 14px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 20px;  }
-      .subscribeform{ 
-        input[type=text]{border-radius: 8px; margin-bottom: 10px;  border: 1px solid #DFE2E5; background:  #FFF; display: flex;
-          padding: 14px 16px;  align-items: center;border-radius: 8px;  border: 1px solid   #DFE2E5;  background:  #FFF; }
-        input[type=button]{ display: flex; border: none;
-            padding: 14px 20px;color:  #FFF; 
-            justify-content: center;
-            align-items: center;
-            gap: 8px; border-radius: 8px;
-            background:  #6644F1; }
-      }
-    }
-    .copyright{  padding: 20px 120px;     margin-top: 50px;  
-      align-self: stretch;border-top: 1px solid   #4A5056; color:  #9AA0A5;  
-      font-size: 16px; 
-      font-weight: 400;
-      line-height: 24px;
-      a{color:   #FFF; }  
-    }
-  }
-
 
   .emailsuccessfulsubmitfooter::before{background:#fff url(../img/email-submit.png) no-repeat;  content: ' '; width: 50px;
     height: 50px;
@@ -417,13 +434,13 @@ p{font-size: 16px;  font-style: normal;  font-weight: 400;
             justify-content: center;
             align-items: center;
             gap: 8px; border-radius: 8px;
-            background:  #6644F1; }
+            background:  $black; }
       }
     }
     .copyright{  padding: 20px 120px;     margin-top: 50px;  
       align-self: stretch;border-top: 1px solid   #4A5056; color:  #9AA0A5;  
       font-size: 16px; 
-      font-weight: 400;
+    font-weight: 400;
       line-height: 24px;
       a{color:   #FFF; }  
     }
@@ -435,32 +452,12 @@ p{font-size: 16px;  font-style: normal;  font-weight: 400;
   /*------------------------    common class ------------ ------------  */ 
   .mt-8p{ margin-top: 8px!important;}
 .section-gray{ padding: 20px;  /*background: #f5f7fa;*/ background: #ffffff; border: 1px solid #ffffff;  border-radius: 20px;   margin: -20px; } 
-.section-green{ padding: 20px;  background: #F8FCFF;   border-radius: 20px; margin: -40px; } 
+.section-green{ padding: 20px;  background: #F8FCFF;     margin: auto; }   
+.section-skyblue{ padding: 20px;  background: #D7EEFF;      margin: auto; } 
+.section-skyblue-box-contained{ padding: 20px;  background: #D7EEFF;  margin: 50px 0px 50px 0px;     margin: auto; } 
+ 
 
 .grey-box-withoutborder{ padding: 8px;  background: #f8f9fa; border-radius: 16px;}
-small{font-family: $font_Manrope;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 16px; }
-.count-number{font-family: $font_Manrope;  font-size: 24px;  font-style: normal;  font-weight: 600;   }
-.btn-white{ background: #fff; }
-.btn-small{   padding: 4px 12px;  border-radius: 100px; line-height: 25px;}
- 
-.btn-active{  color: #fff;   border: 1px solid  $primaryblue; background: $primaryblue;}
-.btn-grey{    border: 1px solid  #DFE2E5; background: #F8F9FA;}
- .chip-status{
-  .sbox{
-    font-family: $font_Manrope;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 20px; /* 142.857% */}
-  .low{color:  #4A9E17; background:#A4E27E; @extend.sbox}
-  .medium{color:  #A98D00; background:#EED65A; @extend.sbox}
-  .high{color:  #CA1F1F; background:#FC9B9B; @extend.sbox}
-  .normals{color:#79A3FB; background:#E3ECFF; @extend.sbox }
- }
 
  .chips-status{ 
   .status-sm{   padding: 3px 10px; text-transform: capitalize;    align-items: center; border-radius: 100px;   }
@@ -553,12 +550,12 @@ p{ cursor: pointer; margin: 0px;}
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;}
 
-  .result-pages{  padding: 10px;
+  .result-pages{  padding: 10px;   border: 1px solid #ddd;  border-radius:15px;
     .selectCard{ border:#79A3FB solid 2px!important;  }
     .cardBox{@extend .box-shadow-card;  margin: 2px 3px;    background: #fff;      border-radius: 15px; border:none; box-shadow: none;  
     h3{ margin: 0px; max-width:72%; float:left;  font-size: 15px; text-transform: capitalize;     overflow: hidden;      text-overflow: ellipsis; white-space:nowrap;}
-    .result-toolbar{float: right;   max-width:28%; text-align: right; 
-    a{ float: right;     padding: 0px 0px 0px 3px;}}
+    .result-toolbar{float: right;   max-width:28%; text-align: right;      position: relative;      z-index: 3;
+          a{ float: right;     padding: 0px 0px 0px 3px;}}
     }
     
     .table{ font-size: 12px; @extend .box-shadow-card; margin: 5px;}
@@ -580,12 +577,13 @@ p{ cursor: pointer; margin: 0px;}
  
 .custom-switch-btn{border-radius: 12px;  border: 1px solid #DFE2E5;  background: #FFF;  width: 281px;  margin: auto;  height: 48px;  line-height: 46px;  a{ display: inline-block; width: 50%; padding: 0px;} }
 .plan-cards{text-align: left; margin: 100px -120px;
+  h3{ color: $black;}
   sup{  color: #6644F1;    display: inline-block;    position: absolute;     border-radius: 100px;     margin: -10px 0px 0px 90px;    background: #fff;    padding: 8px; border: 1px solid   #6644F1;}
   .card{  font-family: $font_Manrope; border-radius: 12px; cursor: pointer;     border: 1px solid  #937BF6;    background:  #fff;     }
   .text{ font-size: 14px; line-height: 18px;}
   h3{font-size: 30px!important;}
   h4{font-size: 28px;font-family: $font_Manrope; font-style: normal;    font-weight: 600;    line-height: 34px}
-h3{border-radius: 12px;font-size: 30px;font-family: $font_Manrope; color: #6644F1; margin: 0; padding: 0;  span{font-size: 14px;    font-weight: 400; color: #515151;}}
+h3{border-radius: 12px;font-size: 30px;font-family: $font_Manrope; color: #6644F1!important; margin: 0; padding: 0;  span{font-size: 14px;    font-weight: 400; color: #515151;}}
  a{border-radius: 8px;  border: 1px solid #6644F1;  cursor: pointer; background: #FFF;  padding: 10px 16px;
   width: 100%;  font-size: 14px;  color: #6644F1;  font-weight: 600;      display: inline-block;  text-align: center;  font-family: $font_Manrope;} 
 
@@ -595,11 +593,11 @@ h3{border-radius: 12px;font-size: 30px;font-family: $font_Manrope; color: #6644F
   .checkBox{    width: 16px;    height: 16px;    border-radius: 4px;    border: 1px solid #6644F1;
     display: inline-block;    float: left;     margin-right: 6px;}
   .checkBox::before {content: '\2713';   color: #6644F1;      padding: 0px 2px;       margin: -1px 0px 0px 0px;      position: absolute;}
-
+  .text{color: $black;}
     
 }
 .card:hover{ background: #6644F1; color: #fff;  .text{color: #fff;}
-h3{color: #fff;  
+h3{color: #ffffff!important;  
    span{color: #fff;}  
 }
 }
@@ -832,10 +830,15 @@ p{ margin: 0px; font-size: 35px; line-height: 20px;}
 .custom-popover{width: 800px;  background: #fff;  position: fixed;  right: 26px;
   box-shadow: 0px 0px 1px 1px #d5d0d6;  padding: 15px;  border-radius: 10px;}
 .chartHistroy{  height: 58vh; overflow: auto; padding: 5px;  background: #F4FAFF; padding: 10px; border-radius: 5px; box-shadow: #333  0px 0px 8px; margin-top: 10px; 
+  .qus-box{border-bottom: #d5d0d6 solid 1px; padding: 10px; cursor: pointer;}
   .qus{ font-size: 16px; width: 70%;  white-space: nowrap;  text-overflow: ellipsis;  overflow: hidden; float: left;}
-  .date{  color: #393939; font-size: 12px; float: right;}
+  .date{  color: #393939; font-size: 12px; float: right;  } 
+  .action{ float: right; a{ color: #333;}  display: none; }
+  .qus-box:hover{border-left: #0051FA solid 10px; border-bottom:transparent solid 1px; background: #fff; @extend.box-shadow-card; border-radius: 10px;   .date{ display: none;} .action{ display: block;}}
   
   }
+
+
   .selectedcopilot{ img{ filter: sepia(100%) hue-rotate(190deg) saturate(500%);}}
 .copilot-heading{ display:inline-flex; text-align: center; color: #FF26C2; font-size: 32px; font-weight: 1000;
   line-height: 37px;}
@@ -897,3 +900,39 @@ p{ margin: 0px; font-size: 35px; line-height: 20px;}
 .heading-small{  color:#969696; font-size: 12px;}
     .formbox{box-shadow: 0px 0px 1px 1px #d5d0d6; padding: 15px; border-radius: 10px;}
   }
+/* ---------------  integration-multiple-platforms  ---------------*/
+  .integrationMultiple{
+    .heading{ position: relative; margin-left: 15px; color: #868D9E;}
+    .heading::after{ content:''; position: absolute;   background: $primaryblue;        width: 7%;       height: 5px;      top: 28px;
+      left: 0;      border-radius: 50px;}
+    .cardbox{  text-align: center; vertical-align: middle; align-items: center; height: 130px; padding: 45px 0px 0px 45px;
+      h4{ margin: 0; padding: 0; }
+      div{ text-align: left;}
+img{ background: #F2F4F7; padding: 5px; width: 50px; height: 50px; border-radius: 50px; float: left; margin:0px 15px 0px 0%;}
+span{ color: #868D9E;}
+    }
+  }
+
+/* ---------------  integration-multiple-platforms  ---------------*/
+
+  /* ---------------  material class overwrite ---------------*/
+
+  .MuiMenu-list{ max-height: 250px;}
+
+  /* ---------------  material class overwrite ---------------*/
+
+
+ /* ---------------  Customchart   ---------------*/
+
+ .color-dropdown{  z-index: 1; position: relative; border-radius: 7px; border: #ccc solid 1px; padding: 10px 10px;  color: #969696;  font-size: 14px;
+  label{position: absolute;    margin: -17px 0px 0px 0px;    background: #fff;    padding: 0px 5px;    font-size: 12px;}
+  .arrowup {  width: auto;  height: 5px;  top: 15px;  right: 15px;  content: ' ';  position: absolute; border-top: rgba(9, 15, 15, 0.5) solid 5px;border-bottom: transparent solid 5px;  border-right: transparent solid 5px;  border-left: transparent solid 5px;}
+  .arrowdown {  width: auto;  height: 5px;  top: 15px;  right: 15px;  content: ' ';  position: absolute; border-bottom: rgba(9, 15, 15, 0.5) solid 5px;border-top: transparent solid 5px;  border-right: transparent solid 5px;  border-left: transparent solid 5px;}
+  b{ width: 15px; height: 15px; float: left; margin:2px;}
+} 
+ 
+ ul.chartpatterncolor{ position: absolute;     width: 100.5%; list-style-type: none;  margin: 3px 0px 0px -11px !important;  padding: 0;  background: #fff;  border: #ccc solid 1px;  border-radius: 0px 0px 7px 7px;  padding: 0px 10px;  border-top: none;  z-index: 2;
+      li{ margin:5px 0px; float: left; width: 100%;} 
+   li b{ width: 15px; height: 15px; float: left; margin:2px;} 
+  } 
+   /* ---------------  Customchart ---------------*/

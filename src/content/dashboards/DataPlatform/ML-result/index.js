@@ -31,9 +31,14 @@ import {
   Popper,
   Stack,
   Menu,
+  FormControlLabel,
 } from "@mui/material";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
-import { DataGridPro, gridClasses, gridColumnsTotalWidthSelector } from "@mui/x-data-grid-pro";
+import {
+  DataGridPro,
+  gridClasses,
+  gridColumnsTotalWidthSelector,
+} from "@mui/x-data-grid-pro";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useTranslation } from "react-i18next";
 import { useContext, useEffect, useState } from "react";
@@ -116,10 +121,8 @@ import ChatIcons from "../../../../assets/icons/chat-icons.svg";
 import Insightsicons from "../../../../assets/icons/insights-icons.svg";
 import alertactionIcons from "../../../../assets/icons/alertactionIcons.svg";
 
-
 import slacklogo from "../../../../assets/icons/slacklogo.svg";
 import zendesklogo from "../../../../assets/icons/zendesk.svg";
-
 
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -145,13 +148,18 @@ import { v4 as uuidv4 } from "uuid";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import CloseIcon from "@mui/icons-material/Close";
 import { useMemo } from "react";
-import { NPSAlertList, brandLoyaltyAlertList, churnPredictionAlertList, customerSatisfactionAlertList, marketResearchAlertList } from "../../../../assets/data/alerts-trigger";
+import {
+  NPSAlertList,
+  brandLoyaltyAlertList,
+  churnPredictionAlertList,
+  customerSatisfactionAlertList,
+  marketResearchAlertList,
+} from "../../../../assets/data/alerts-trigger";
 import { AiChat } from "@nlux/react";
-import '@nlux/themes/nova.css';
-import { streamAdapter } from './adapter';
-import { personas } from './personas';
-
-
+import "@nlux/themes/nova.css";
+import { streamAdapter } from "./adapter";
+import { personas } from "./personas";
+import CustomChart from "../custom-chart/custom-chart";
 
 function getWeeksAfter(date, amount) {
   return date ? addWeeks(date, amount) : undefined;
@@ -174,6 +182,19 @@ export default function MlResultsConnection({ resultData }) {
   const [hideButton, setIshideButton] = useState("d-none");
   const [chartOne, setIschartOne] = useState("d-inline-block");
   const [chartOneCopy, setIschartOneCopy] = useState("d-none");
+
+  const [chartHalfheat, setIschartHalfheat] = useState(4); 
+  const [chartBoxHeightheat, setIschartBoxHeightheat] = useState(230); 
+  const [hideButtonheat, setIshideButtonheat] = useState("d-none"); 
+  const [showButtonheat, setIsshowButtonheat] = useState("d-inline-block");  
+  
+  
+  const [chartHalfdonutChart, setIschartHalfdonutChart] = useState(4); 
+  const [chartBoxHeightdonutChart, setIschartBoxHeightdonutChart] = useState(230); 
+  const [hideButtondonutChart, setIshideButtondonutChart] = useState("d-none"); 
+  const [showButtondonutChart, setIsshowButtondonutChart] = useState("d-inline-block");
+  
+
   const [chartHalfTM, setIschartHalfTM] = useState(4);
   const [chartBoxHeightTM, setIschartBoxHeightTM] = useState(250);
   const [chartHeightTM, setIschartHeightTM] = useState(250);
@@ -189,7 +210,7 @@ export default function MlResultsConnection({ resultData }) {
   const [chartThree, setIschartThree] = useState("d-inline-block");
   const [chartThreeCopy, setIschartThreeCopy] = useState("d-none");
   const [chartHalfST, setIschartHalfST] = useState(4);
-  const [chartBoxHeightST, setIschartBoxHeightST] = useState(230);
+  const [chartBoxHeightST, setIschartBoxHeightST] = useState(340);
   const [chartHeightST, setIschartHeightST] = useState(230);
   const [showButtonST, setIsshowButtonST] = useState("d-inline-block");
   const [hideButtonST, setIshideButtonST] = useState("d-none");
@@ -247,9 +268,18 @@ export default function MlResultsConnection({ resultData }) {
   ];
 
   const chatbot = [
-    { user: "Explain How Quantum computing works?", text: "Quantum computing works by utilizing the principles of quantum mechanics " },
-    { user: "Explain How Quantum computing works?", text: "Quantum computing works by utilizing the principles of quantum mechanics to perform calculations in a fundamentally different way than classical computers.  " },
-    { user: "Explain How Quantum computing works?", text: "Quantum computing works by utilizing the principles of quantum mechanics to perform calculations in a fundamentally different way than classical computers. In classical computing, information is processed and stored in binary form using bits, which can be either a 0 or a 1. Quantum computing, on the other hand, uses quantum bits or qubits, which can exist in multiple states simultaneously due to the phenomenon of superposition. This allows quantum computers to explore many possible solutions to a problem at the same time." },
+    {
+      user: "Explain How Quantum computing works?",
+      text: "Quantum computing works by utilizing the principles of quantum mechanics ",
+    },
+    {
+      user: "Explain How Quantum computing works?",
+      text: "Quantum computing works by utilizing the principles of quantum mechanics to perform calculations in a fundamentally different way than classical computers.  ",
+    },
+    {
+      user: "Explain How Quantum computing works?",
+      text: "Quantum computing works by utilizing the principles of quantum mechanics to perform calculations in a fundamentally different way than classical computers. In classical computing, information is processed and stored in binary form using bits, which can be either a 0 or a 1. Quantum computing, on the other hand, uses quantum bits or qubits, which can exist in multiple states simultaneously due to the phenomenon of superposition. This allows quantum computers to explore many possible solutions to a problem at the same time.",
+    },
   ];
 
   const chatHistory = [
@@ -263,13 +293,13 @@ export default function MlResultsConnection({ resultData }) {
       id: 2,
       question:
         "Identify the most common customer pain points based on this typeform survey data.",
-      date: "6 April 2024",
+      date: "1 Feb 2024",
     },
     {
       id: 3,
       question:
         "Which customer segments are most likely to churn in the next quarter, and what factors contribute to their attrition?",
-      date: "6 April 2024",
+      date: "6 March 2024",
     },
     {
       id: 4,
@@ -378,7 +408,7 @@ export default function MlResultsConnection({ resultData }) {
   const [alertsListData, setalertsListData] = useState([]);
   const [messagedetailsData, setMessagedetailsData] = useState({});
   const [openAlertsDialog, setopenAlertsDialog] = useState(false);
-  const [finalClickInfo, setFinalClickInfo] = useState(null);
+  // const [finalClickInfo, setFinalClickInfo] = useState(null); 
 
   const gridGridColumns = [
     {
@@ -754,6 +784,9 @@ export default function MlResultsConnection({ resultData }) {
     labels: [],
     overall: "",
     xLable: "",
+    xAxisMinMax: [0, 5],
+    yLable: "",
+    colList: [],
     gridData: [],
     gridDataCols: [],
     tootltipProp: [],
@@ -779,6 +812,11 @@ export default function MlResultsConnection({ resultData }) {
   const [churnSatisfactionResult, setchurnSatisfactionResultResult] = useState({
     high_Risk: "",
     low_Risk: "",
+  });
+
+  const [heatMapDataForResult, setHeatMapDataForResult] = useState({
+    chartSeries: [],
+    labels: []
   });
 
   const [timeSeriesData, settimeSeriesData] = useState({
@@ -862,59 +900,7 @@ export default function MlResultsConnection({ resultData }) {
   const [segmentationCategoryMapping, setsegmentationCategoryMapping] =
     useState([{ ques: "Overall Response", tab_name: "Overall Response" }]);
 
-  const chartOptions = {
-    chart: {
-      events: {
-        dataPointSelection: function (event, chartContext, config) {
-          console.log("ssssss+++++++++++");
-          // let newGridObj = { ...gridDataForChurn }
-          // let filterdData = newGridObj.rows.filter(ele => ele.status === config.w.config.labels[config.dataPointIndex]);
-          // setGridFilterDataForChurn({
-          //   columns: newGridObj.columns,
-          //   rows: filterdData
-          // })
-        },
-      },
-      background: "transparent",
-      width: 400,
-      height: "auto",
-      stacked: true,
-      toolbar: {
-        show: false,
-      },
-    },
-    dataLabels: {
-      fontSize: "14px",
-      fontFamily: "Helvetica, Arial, sans-serif",
-      fontWeight: "bold",
-      colors: " #f00f00",
-    },
-    xaxis: {
-      categories: companyConsidration.labels,
-      labels: {
-        show: true,
-        rotate: -45,
-        rotateAlways: true,
-        hideOverlappingLabels: false,
-        showDuplicates: false,
-        trim: true,
-        minHeight: undefined,
-        width: 50,
-        maxWidth: 50,
-        maxHeight: 120,
-        fill: "#000000",
-        style: {
-          fontSize: chartFontSize,
-          with: "150px",
-          color: "#000000",
-          colors: "black",
-          wordWrap: "break-word",
-          fontWeight: 400,
-          cssClass: "apexcharts-xaxis-label",
-        },
-      },
-    },
-  };
+
 
   const chartOptionsTimeSeries = {
     chart: {
@@ -1032,8 +1018,10 @@ export default function MlResultsConnection({ resultData }) {
         text: "Date",
       },
     },
-    yaxis: { title: {      text: "No of Churned",    },
-    categories: timeSeriesData.yaxisList},
+    yaxis: {
+      title: { text: "No of Churned" },
+      categories: timeSeriesData.yaxisList,
+    },
     tooltip: {
       shared: false,
       intersect: true,
@@ -1050,9 +1038,9 @@ export default function MlResultsConnection({ resultData }) {
     series: nrrBreakdownData.chartSeries,
     colors: [
       function ({ value, seriesIndex }) {
-        let colorInd = nrrBreakdownData.chartSeries[
-          seriesIndex
-        ].data.findIndex((ele) => ele == value);
+        let colorInd = nrrBreakdownData.chartSeries[seriesIndex].data.findIndex(
+          (ele) => ele == value
+        );
         if (colorInd == 0) {
           return "#44C662";
         } else if (colorInd == 1) {
@@ -1063,14 +1051,18 @@ export default function MlResultsConnection({ resultData }) {
       },
     ],
     chart: {
-      type: 'bar',
+      type: "bar",
       height: 430,
       events: {
         dataPointSelection: (event, chartContext, config) => {
-          let whereCondition = ` WHERE s."churn_risk" = '${revenueARRResult.labels[config.dataPointIndex]}'`
-          getResultFromS3(isHubspotMerge, mappingResultdata.query_list, whereCondition)
-        }
-
+          let whereCondition = ` WHERE s."churn_risk" = '${revenueARRResult.labels[config.dataPointIndex]
+            }'`;
+          getResultFromS3(
+            isHubspotMerge,
+            mappingResultdata.query_list,
+            whereCondition
+          );
+        },
       },
     },
     plotOptions: {
@@ -1078,26 +1070,26 @@ export default function MlResultsConnection({ resultData }) {
         borderRadius: 7,
         horizontal: true,
         dataLabels: {
-          position: 'top',
+          position: "top",
         },
-      }
+      },
     },
     dataLabels: {
       enabled: true,
       offsetX: -6,
       style: {
-        fontSize: '10px',
-        colors: ['#fff']
-      }
+        fontSize: "10px",
+        colors: ["#fff"],
+      },
     },
     stroke: {
       show: true,
       width: 1,
-      colors: ['#fff']
+      colors: ["#fff"],
     },
     tooltip: {
       shared: true,
-      intersect: false
+      intersect: false,
     },
     xaxis: {
       categories: nrrBreakdownData.labels,
@@ -1116,8 +1108,6 @@ export default function MlResultsConnection({ resultData }) {
     },
   };
 
-
-
   const polarAreachartOptions = {
     chart: {
       foreColor: "#ffffff",
@@ -1126,9 +1116,13 @@ export default function MlResultsConnection({ resultData }) {
       events: {
         dataPointSelection: function (event, chartContext, config) {
           // event.stopPropagation();
-          let whereCondition = ` WHERE s."${demographicsResult.selectedCat}" = '${config.w.config.labels[config.dataPointIndex]}'`
-          getResultFromS3(isHubspotMerge, mappingResultdata.query_list, whereCondition)
-
+          let whereCondition = ` WHERE s."${demographicsResult.selectedCat
+            }" = '${config.w.config.labels[config.dataPointIndex]}'`;
+          getResultFromS3(
+            isHubspotMerge,
+            mappingResultdata.query_list,
+            whereCondition
+          );
         },
       },
     },
@@ -1144,10 +1138,16 @@ export default function MlResultsConnection({ resultData }) {
     yaxis: {
       show: false,
     },
-    legend: false,
-    // legend: {
-    //   position: 'bottom'
-    // },
+
+    legend: { 
+      show: showButtondonutChart=='d-none'?true:false,
+      position: 'bottom',
+      fontSize: '14px',
+      labels: {
+        colors: '#000000',
+        useSeriesColors: false
+      },
+    },
     plotOptions: {
       pie: {
         donut: {
@@ -1174,14 +1174,18 @@ export default function MlResultsConnection({ resultData }) {
         dataPointSelection: async (event, chartContext, config) => {
           console.log(revenueARRResult.chartSeries);
           // revenueARRResult.chartSeries
-          let categoryCols = resultData.template == "Net Promoter Score"
-            ? "nps_category"
-            : "sat_category";
-          let whereCondition = ` WHERE s."${categoryCols}" = '${revenueARRResult.labels[config.dataPointIndex]}'`
-          getResultFromS3(isHubspotMerge, mappingResultdata.query_list, whereCondition)
-
-        }
-
+          let categoryCols =
+            resultData.template == "Net Promoter Score"
+              ? "nps_category"
+              : "sat_category";
+          let whereCondition = ` WHERE s."${categoryCols}" = '${revenueARRResult.labels[config.dataPointIndex]
+            }'`;
+          getResultFromS3(
+            isHubspotMerge,
+            mappingResultdata.query_list,
+            whereCondition
+          );
+        },
       },
     },
     colors: [
@@ -1541,7 +1545,11 @@ export default function MlResultsConnection({ resultData }) {
           ) {
             // getResultFromS3(isHubspotMerge, mappingResultdata.query_list, `WHERE CAST(s."${baritem.topic}" as FLOAT) BETWEEN 4 AND 5 `)
             let whereCondition = ` WHERE CAST(s."mean" as FLOAT) BETWEEN ${aa1.xmin} AND ${aa1.xmax} AND CAST(s."PC2" as FLOAT) BETWEEN ${aa1.ymin} AND ${aa1.ymax}`;
-            getResultFromS3(isHubspotMerge, mappingResultdata.query_list, whereCondition)
+            getResultFromS3(
+              isHubspotMerge,
+              mappingResultdata.query_list,
+              whereCondition
+            );
             // getSatisfactionResult(
             //   positiveSatisfactionTable,
             //   aa2,
@@ -1587,8 +1595,8 @@ export default function MlResultsConnection({ resultData }) {
     },
     xaxis: {
       type: "numeric",
-      min: 0,
-      max: 6,
+      min: correspondenceAnalysis.xAxisMinMax[0],
+      max: correspondenceAnalysis.xAxisMinMax[1],
       tickAmount: 5,
       labels: {
         formatter: function (val) {
@@ -1601,16 +1609,16 @@ export default function MlResultsConnection({ resultData }) {
     },
 
     yaxis: {
-      min: -3,
-      max: 4,
-      tickAmount: 5,
+      // min: -3,
+      // max: 4,
+      // tickAmount: 5,
       labels: {
         formatter: function (val) {
           return parseInt(val);
         },
       },
       title: {
-        text: "PC2",
+        text: correspondenceAnalysis.yLable//"PC2",
       },
     },
 
@@ -1629,8 +1637,7 @@ export default function MlResultsConnection({ resultData }) {
               "</span><br/>" +
               "</div>"
             );
-          }
-          else {
+          } else {
             return (
               '<div class="arrow_box py-2 px-2 bg-blue text-white">' +
               "<span>Average Purchase Value: " +
@@ -1651,7 +1658,6 @@ export default function MlResultsConnection({ resultData }) {
               "</div>"
             );
           }
-
         } else {
           return (
             '<div class="arrow_box py-2 px-2 bg-blue text-white">' +
@@ -1667,13 +1673,74 @@ export default function MlResultsConnection({ resultData }) {
     },
   };
 
-  
+  const heatmapChartOption = {
+    chart: {
+      height: 450,
+      type: 'heatmap',
+    },
+    plotOptions: {
+      heatmap: {
+        shadeIntensity: 0.5,
+        radius: 20,
+        useFillColorAsStroke: true,
+        colorScale: {
+          ranges: [{
+            from: -30,
+            to: 5,
+            color: '#00A100',
+            name: 'low',
+          },
+          {
+            from: 6,
+            to: 20,
+            color: '#128FD9',
+            name: 'medium',
+          },
+          {
+            from: 21,
+            to: 45,
+            color: '#FFB200',
+            name: 'high',
+          }
+          ]
+        }
+      }
+    },
+    dataLabels: {
+      enabled: true,
+      style: {
+        colors: ['#fff'],
+        fontSize: "15px"
+      }
+    },
+    legend: {
+      show: false,
+    },
 
-  const optionsWordCloud = { 
+    xaxis: {
+      type: 'category',
+      title: { text: "Months since subscription" },
+      categories: heatMapDataForResult.labels,
+    },
+    yaxis: {
+      title: { text: "Month of subscription" },
+    },
+
+    title: {
+      text: ''
+    },
+    grid: {
+      padding: {
+        right: 20
+      }
+    }
+  }
+
+  const optionsWordCloud = {
     enableTooltip: true,
     deterministic: true,
     fontFamily: "Manrope",
-    fontSizes: [18, 32], 
+    fontSizes: [18, 32],
     padding: 4,
     rotations: 3,
     rotationAngles: [0, -90],
@@ -1681,7 +1748,7 @@ export default function MlResultsConnection({ resultData }) {
     spiral: "archimedean",
     transitionDuration: 1000,
   };
- 
+
   const callbacks = {
     getWordColor: (word) => word.color,
     onWordClick: fetchSelectedWordCloudInfo("onWordClick"),
@@ -1693,13 +1760,15 @@ export default function MlResultsConnection({ resultData }) {
     return function (word, event) {
       let newresponsId = word.responseIds.map((x) => `'${x}'`).toString();
       if (word.responseIds != undefined && word.responseIds.length != 0) {
-        getResultFromS3(isHubspotMerge, mappingResultdata.query_list, `WHERE response_id IN( ${newresponsId} )`)
+        getResultFromS3(
+          isHubspotMerge,
+          mappingResultdata.query_list,
+          `WHERE response_id IN( ${newresponsId} )`
+        );
         // getFilteredResult(` WHERE response_id IN( ${newresponsId} )`)
       }
     };
   }
-
-  
 
   const getSatisfactionResult = async (
     tableDetails,
@@ -1742,12 +1811,16 @@ export default function MlResultsConnection({ resultData }) {
           let npsCols = gridGridColumnswithoutHubspot.filter(
             (ele) => queryList.indexOf(ele.field) != -1
           );
+
           setpositiveSatisfactionResult({
             filterdRow:
               csCol.length == 0 || npsCols.length == 0 ? [] : newArrr1,
             filterdCol: hubspotMergeStatus ? csCol : npsCols,
           });
 
+          console.log(setpositiveSatisfactionResult)
+
+          // console.log(Object.keys(positiveSatisfactionResult.filterdRow))
           if (wherequery == null && queryList.indexOf("PC1") != -1) {
             let getAllCluster = response1.data.data.map((ele) => ele.cluster);
             const listAllCluster = [...new Set(getAllCluster)];
@@ -1792,6 +1865,9 @@ export default function MlResultsConnection({ resultData }) {
               labels: [],
               overall: "",
               xLable: clusterAnalysisXlable,
+              xAxisMinMax: [0, 5],
+              yLable: "",
+              colList: [],
               gridData: [],
               gridDataCols: [],
               tootltipProp: seriesData1,
@@ -1808,7 +1884,6 @@ export default function MlResultsConnection({ resultData }) {
       .catch((err) => { });
   };
 
-
   const fetchSurveyResult = () => {
     fetch(`${process.env.REACT_APP_API_URL}/survey/viewResult`, {
       method: "POST",
@@ -1817,17 +1892,16 @@ export default function MlResultsConnection({ resultData }) {
         "Content-type": "application/json",
       },
       body: JSON.stringify({
-        project_name:resultData.project_name,//'gh', //resultData.project_name,
-        user_id:resultData.user_id,// "65d5e841af6e64f8c032e8ed", //resultData.user_id,
-        template: resultData.template,
+        project_name: resultData.project_name, //'churn_heatmap_test', //resultData.project_name,
+        user_id: resultData.user_id, //'660d1550e7c1463e26b94592', //resultData.user_id,
+        template: resultData.template, //"Churn Prediction" //resultData.template,
       }),
     })
       .then((res) => res.json())
       .then((res) => {
         if (res.success === true && res.data.length != 0) {
           let mappingResult = res.data[res.data.length - 1].analysis_result;
-          setMappingResultdata(mappingResult); 
-           
+          setMappingResultdata(mappingResult);
 
           let mappingCrossTab1 = res.data[res.data.length - 1].cross_tab;
           let mappingCrossTab =
@@ -1899,11 +1973,32 @@ export default function MlResultsConnection({ resultData }) {
             setkpiResult(newKpi1);
           }
 
+          //////for heatmap/////////
+
+          if (
+            mappingResult.heatmap != undefined &&
+            mappingResult.heatmap != "null"
+          ) {
+            let heatmapl = [];
+            mappingResult.heatmap.forEach((el, index) => {
+              if (index == 0) {
+                el.data.forEach((item) => {
+                  heatmapl.push(item.x)
+                })
+              }
+            });
+            setHeatMapDataForResult({
+              chartSeries: mappingResult.heatmap,
+              labels: heatmapl
+            })
+          }
+
+
           //////for time series/////////
           if (
             mappingResult.timeseries != undefined &&
             mappingResult.timeseries != "null"
-          )           {
+          ) {
             let tmpTimeSeriesData1 =
               mappingResult.timeseries == undefined
                 ? []
@@ -2005,13 +2100,15 @@ export default function MlResultsConnection({ resultData }) {
           }
           //////for time series/////////
 
-          if (resultData.template == "Churn Prediction" && resultData.template != "null") {
+          if (
+            resultData.template == "Churn Prediction" &&
+            resultData.template != "null"
+          ) {
             setchurnSatisfactionResultResult({
               high_Risk: mappingResult?.percentage_breakdown?.High,
-              low_Risk: mappingResult?.percentage_breakdown?.Low
+              low_Risk: mappingResult?.percentage_breakdown?.Low,
             });
           }
-
 
           if (
             resultData.template == "Net Promoter Score" &&
@@ -2155,7 +2252,7 @@ export default function MlResultsConnection({ resultData }) {
               chartData: null,
               categoriesList: [],
               selectedCat: newDemographicDataLable[0],
-            }); 
+            });
           }
 
           if (
@@ -2214,11 +2311,12 @@ export default function MlResultsConnection({ resultData }) {
             });
           }
 
-          if (mappingResult.nrr_breakdown !== undefined && mappingResult.nrr_breakdown !== "null") {
+          if (
+            mappingResult.nrr_breakdown !== undefined &&
+            mappingResult.nrr_breakdown !== "null"
+          ) {
             let nrrBreakdownLable = Object.keys(mappingResult.nrr_breakdown);
-            let nrrBreakdownValue = Object.values(
-              mappingResult.nrr_breakdown
-            );
+            let nrrBreakdownValue = Object.values(mappingResult.nrr_breakdown);
             setNrrBreakdownData({
               chartSeries: [
                 {
@@ -2230,9 +2328,14 @@ export default function MlResultsConnection({ resultData }) {
             });
           }
 
-          setpositiveSatisfactionTable(mappingResult.positive_satisfaction_db_tbl);
-          setisHubspotMerge(res.data[res.data.length - 1].hubspot_merged_status);
-          getResultFromS3(res.data[res.data.length - 1].hubspot_merged_status, mappingResult.query_list, "");
+          setpositiveSatisfactionTable(
+            mappingResult.positive_satisfaction_db_tbl
+          );
+          setisHubspotMerge(
+            res.data[res.data.length - 1].hubspot_merged_status
+          );
+          getResultFromS3(res.data[res.data.length - 1].hubspot_merged_status,
+            mappingResult.query_list, "", mappingResult.clustering);
         } else {
           // setToastObject({
           //   message: t(`${res.message}`),
@@ -2277,7 +2380,22 @@ export default function MlResultsConnection({ resultData }) {
       setIshideButton("d-inline-block");
       setIsshowButton("d-none");
       setIschartFontSize("12px");
-    } else if (selectChart == "companyTM") {
+    }
+    else if (selectChart == "heatMap") {
+      setIschartHalfheat(12);
+      setIschartBoxHeightheat(600);
+      setIshideButtonheat("d-inline-block");
+      setIsshowButtonheat("d-none");
+      setIschartFontSize("12px");
+    }
+    else if (selectChart == "donutChart") {
+      setIschartHalfdonutChart(12);
+      setIschartBoxHeightdonutChart(600);
+      setIshideButtondonutChart("d-inline-block");
+      setIsshowButtondonutChart("d-none");
+      setIschartFontSize("12px");
+    } 
+    else if (selectChart == "companyTM") {
       setlabelHide(true);
       setIschartHalfTM(12);
       setIschartBoxHeightTM(600);
@@ -2292,7 +2410,8 @@ export default function MlResultsConnection({ resultData }) {
       setIschartHeightCR(600);
       setIshideButtonCR("d-inline-block");
       setIsshowButtonCR("d-none");
-    } else if (selectChart == "companyPC") {
+    }
+    else if (selectChart == "companyPC") {
       if (
         mappingResultdata.word_cloud != undefined &&
         mappingResultdata.word_cloud != "null"
@@ -2385,7 +2504,7 @@ export default function MlResultsConnection({ resultData }) {
     let exlheader = segmentationCategoryMapping.map((item, ind1) => {
       if (item.ques == "Overall Response") {
         return item.tab_name.split("\n")[0];
-      } else { 
+      } else {
         return item.tab_name.split("% ")[0] + "\n" + item.ques.split("\n")[0];
       }
     });
@@ -2397,10 +2516,9 @@ export default function MlResultsConnection({ resultData }) {
       newdata.push(
         item.tableHeader.map((itemn1, ii) => {
           if (ii != 0 && itemn1.split("\n").length != 0) {
-            return itemn1.split("\n")[2]
-          }
-          else {
-            return itemn1
+            return itemn1.split("\n")[2];
+          } else {
+            return itemn1;
           }
         })
       );
@@ -2416,24 +2534,25 @@ export default function MlResultsConnection({ resultData }) {
     setopenSegmentation(false);
   };
 
-  const getResultFromS3 = (hubspotMergeStatus, queryList, wherCondition) => {
+  const getResultFromS3 = (hubspotMergeStatus, queryList, wherCondition, clustringData) => {
     console.log(mappingResultdata.query_list);
-    let categoryCols = resultData.template == "Net Promoter Score"
-      ? "nps_category"
-      : "sat_category";
+    let categoryCols =
+      resultData.template == "Net Promoter Score"
+        ? "nps_category"
+        : "sat_category";
     axios
       .post(`${process.env.REACT_APP_API_URL}/s3/read`, {
         bucket: "convertml-test-data",
         key: `${resultData.user_id}/gold/contact_satisfaction_${resultData._id}.csv`,
-        whereClouse: wherCondition
+        whereClouse: wherCondition,
       })
       .then(async (responsee) => {
         setLoderVisual(false);
         seterrorFilterBox({ message: "", show: false });
         closeFilterBox();
         if (responsee.data.success) {
-          let response1a = JSON.parse(responsee.data.data)//CSVToJSON(responsee.data.data, wherCondition,s3listOfkey);
-          let response1 = response1a.filter(ele => ele.response_id != "");
+          let response1a = JSON.parse(responsee.data.data); //CSVToJSON(responsee.data.data, wherCondition,s3listOfkey);
+          let response1 = response1a.filter((ele) => ele.response_id != "");
           let newArrr1 = response1.map((ele, ind) => ({
             ...ele,
             id: ind + 1,
@@ -2443,81 +2562,33 @@ export default function MlResultsConnection({ resultData }) {
                 ? ele.nps_category
                 : ele.sat_category,
           }));
-          let csCol = (gridGridColumns.filter(ele => queryList.indexOf(ele.field) != -1));
-          let npsCols = (gridGridColumnswithoutHubspot.filter(ele => queryList.indexOf(ele.field) != -1));
+          let csCol = gridGridColumns.filter(
+            (ele) => queryList.indexOf(ele.field) != -1
+          );
+          let npsCols = gridGridColumnswithoutHubspot.filter(
+            (ele) => queryList.indexOf(ele.field) != -1
+          );
 
           setpositiveSatisfactionResult({
             filterdRow:
               csCol.length == 0 || npsCols.length == 0 ? [] : newArrr1,
             filterdCol: hubspotMergeStatus ? csCol : npsCols,
           });
-          // wherequery == null && 
-          if (wherCondition == "" && queryList.indexOf("PC1") != -1) {
-            let getAllCluster = response1.slice(1, 1000).map((ele) => ele.cluster);
-            const listAllCluster = [...new Set(getAllCluster)];
-            const seriesData = [];
-            const seriesData1 = [];
-            await listAllCluster.forEach((ele) => {
+
+          setrowgridData(newArrr1)
+          let keysvalue = (Object.keys(newArrr1[0]))
+          setresultvalueKeys(keysvalue)
+          // wherequery == null && queryList.indexOf("PC1") != -1
+          if (wherCondition == "") {
+            if (clustringData == undefined) {
               if (resultData.template === "Churn Prediction") {
-                let matchedCluster = {
-                  name: ele,
-                  color: ele == 1 ? "#FEAC00" : ele == 2 ? "#FA586C" : "#10BA5C",
-                  data: response1
-                    .slice(1, 1000)
-                    .filter((ele1) => ele1.cluster == ele)
-                    .map((ele2) => [
-                      parseFloat(ele2.PC1).toFixed(3),
-                      parseFloat(ele2.PC2).toFixed(3),
-                    ]),
-                };
-                seriesData.push(matchedCluster);
+                await createObjectForCluster(response1, ["PC1", "PC2"], []);
+              } else {
+                await createObjectForCluster(response1, ["mean", "PC2"], []);
               }
-              else {
-                let matchedCluster = {
-                  name: ele,
-                  color: ele == 1 ? "#FEAC00" : ele == 2 ? "#FA586C" : "#10BA5C",
-                  data: response1
-                    .slice(1, 1000)
-                    .filter((ele1) => ele1.cluster == ele)
-                    .map((ele2) => [
-                      parseFloat(ele2.mean).toFixed(3),
-                      parseFloat(ele2.PC2).toFixed(3),
-                    ]),
-                };
-                seriesData.push(matchedCluster);
-              }
-            });
-
-            await listAllCluster.forEach((ele) => {
-              let matchedCluster = {
-                name: ele,
-                data: response1
-                  .slice(1, 1000)
-                  .filter((ele1) => ele1.cluster == ele)
-                  .map((ele2) => ({
-                    average_purchase_value: ele2.average_purchase_value,
-                    purchase_frequency: ele2.purchase_frequency,
-                    mean: ele2.mean,
-                    pc1: parseFloat(ele2.PC1).toFixed(3),
-                    pc2: parseFloat(ele2.PC2).toFixed(3),
-                  })),
-              };
-              seriesData1.push(matchedCluster);
-            });
-
-            let clusterAnalysisXlable =
-              resultData.template == "Net Promoter Score"
-                ? "Likelihood in clustering analysis."
-                : "Satisfaction";
-            setCorrespondenceAnalysis({
-              chartSeries: seriesData,
-              labels: [],
-              overall: "",
-              xLable: clusterAnalysisXlable,
-              gridData: [],
-              gridDataCols: [],
-              tootltipProp: seriesData1,
-            });
+            } else {
+              await createObjectForCluster(response1, clustringData.default_pair, clustringData.factor_list);
+            }
           }
         } else {
           console.log(responsee.data.error.message);
@@ -2528,33 +2599,95 @@ export default function MlResultsConnection({ resultData }) {
       });
   };
 
-  const CSVToJSON = (csv, isWhere, selectedKey) => {
-    // let tt = [...s3listOfkey1]
-    if (csv != undefined) {
-      if (isWhere == "") {
-        const lines = csv.split('\n');
-        const keys = lines[0].replaceAll("\"", "").split(',');
-        return lines.slice(1).map((line, ind) => {
-          return line.split(/,(?=\S)/g).reduce((acc, cur, i) => {
-            const toAdd = {};
-            toAdd[keys[i]] = cur.replaceAll("\"", "");
-            return { ...acc, ...toAdd };
-          }, {});
-        });
-      } else {
-
-        const lines = csv.split('\n');
-        return lines.map((line, ind) => {
-          return line.split(/,(?=\S)/g).reduce((acc, cur, i) => {
-            const toAdd = {};
-            toAdd[selectedKey[i]] = cur.replaceAll("\"", "");
-            return { ...acc, ...toAdd };
-          }, {});
-        });
-      }
 
 
-    }
+  const createObjectForCluster = async (response1, clustringDefaultAxis, clustringFactorList) => {
+    let getAllCluster = response1
+      .slice(1, 1000)
+      .map((ele) => ele.cluster);
+    const listAllCluster = [...new Set(getAllCluster)];
+    const seriesData = [];
+    const seriesData1 = [];
+    await listAllCluster.forEach((ele) => {
+      let matchedCluster = {
+        name: ele,
+        color:
+          ele == 1 ? "#FEAC00" : ele == 2 ? "#FA586C" : ele == 0 ? "#10BA5C" : "#008FFB",
+        data: response1
+          .slice(1, 1000)
+          .filter((ele1) => ele1.cluster == ele)
+          .map((ele2) => [
+            parseFloat(ele2[clustringDefaultAxis[0]]).toFixed(3),
+            parseFloat(ele2[clustringDefaultAxis[1]]).toFixed(3),
+          ]),
+      };
+      seriesData.push(matchedCluster);
+      // if (resultData.template === "Churn Prediction") {
+      //   let matchedCluster = {
+      //     name: ele,
+      //     color:
+      //       ele == 1 ? "#FEAC00" : ele == 2 ? "#FA586C" : ele == 0 ? "#10BA5C" : "#008FFB",
+      //     data: response1
+      //       .slice(1, 1000)
+      //       .filter((ele1) => ele1.cluster == ele)
+      //       .map((ele2) => [
+      //         parseFloat(ele2.PC1).toFixed(3),
+      //         parseFloat(ele2.PC2).toFixed(3),
+      //       ]),
+      //   };
+      //   seriesData.push(matchedCluster);
+      // } else {
+      //   let matchedCluster = {
+      //     name: ele,
+      //     color:
+      //       ele == 1 ? "#FEAC00" : ele == 2 ? "#FA586C" : ele == 0 ? "#10BA5C" : "#008FFB",
+      //     data: response1
+      //       .slice(1, 1000)
+      //       .filter((ele1) => ele1.cluster == ele)
+      //       .map((ele2) => [
+      //         parseFloat(ele2.mean).toFixed(3),
+      //         parseFloat(ele2.PC2).toFixed(3),
+      //       ]),
+      //   };
+      //   seriesData.push(matchedCluster);
+      // }
+    });
+
+    await listAllCluster.forEach((ele) => {
+      let matchedCluster = {
+        name: ele,
+        data: response1
+          .slice(1, 1000)
+          .filter((ele1) => ele1.cluster == ele)
+          .map((ele2) => ({
+            average_purchase_value: ele2.average_purchase_value,
+            purchase_frequency: ele2.purchase_frequency,
+            mean: ele2.mean,
+            pc1: parseFloat(ele2[clustringDefaultAxis[0]]).toFixed(3),
+            pc2: parseFloat(ele2[clustringDefaultAxis[1]]).toFixed(3),
+          })),
+      };
+      seriesData1.push(matchedCluster);
+    });
+
+    let clusterAnalysisXlable =
+      resultData.template == "Net Promoter Score"
+        ? "Likelihood in clustering analysis."
+        : clustringDefaultAxis[0]//"Satisfaction";
+    let tmpxMin = Math.min(...response1.map(o => o[clustringDefaultAxis[0]]));
+    let tmpxMax = Math.max(...response1.map(o => o[clustringDefaultAxis[0]]));
+    setCorrespondenceAnalysis({
+      chartSeries: seriesData,
+      labels: [],
+      overall: "",
+      xLable: clusterAnalysisXlable,
+      xAxisMinMax: [tmpxMin, tmpxMax],
+      yLable: clustringDefaultAxis[1],
+      colList: clustringFactorList,
+      gridData: [],
+      gridDataCols: [],
+      tootltipProp: seriesData1,
+    });
   };
 
   const openInsightDialogBox = (e, dialogHeader) => {
@@ -2625,7 +2758,7 @@ export default function MlResultsConnection({ resultData }) {
   };
 
   const openAlertsDialogBox = (e, templateType) => {
-    console.log(templateType)
+    console.log(templateType);
     e.stopPropagation();
     setopenAlerts(true);
     setDataInsights("insights");
@@ -2633,20 +2766,16 @@ export default function MlResultsConnection({ resultData }) {
       xPosition: e.pageX - 300,
       yPosition: e.pageY + 10,
     });
-    if (templateType == 'Market Research') {
-      setalertsListData(marketResearchAlertList)
-    }
-    else if (templateType == 'Customer Satisfaction') {
-      setalertsListData(customerSatisfactionAlertList)
-    }
-    else if (templateType == 'Brand Loyalty') {
-      setalertsListData(brandLoyaltyAlertList)
-    }
-    else if (templateType == 'Net Promoter Score') {
-      setalertsListData(NPSAlertList)
-    }
-    else if (templateType == 'Churn Prediction') {
-      setalertsListData(churnPredictionAlertList)
+    if (templateType == "Market Research") {
+      setalertsListData(marketResearchAlertList);
+    } else if (templateType == "Customer Satisfaction") {
+      setalertsListData(customerSatisfactionAlertList);
+    } else if (templateType == "Brand Loyalty") {
+      setalertsListData(brandLoyaltyAlertList);
+    } else if (templateType == "Net Promoter Score") {
+      setalertsListData(NPSAlertList);
+    } else if (templateType == "Churn Prediction") {
+      setalertsListData(churnPredictionAlertList);
     }
   };
   const messagedetails = (alert, index) => {
@@ -2848,7 +2977,23 @@ export default function MlResultsConnection({ resultData }) {
       setIshideButtonCR("d-none");
       setIsshowButtonCR("d-blok");
       setIschartFontSize("6px");
-    } else if (selectChart == "companyPC") {
+    }
+    else if (selectChart == "heatMap") {
+      setIschartHalfheat(4);
+      setIschartBoxHeightheat(230);
+      setIshideButtonheat("d-none");
+      setIsshowButtonheat("d-blok");
+      setIschartFontSize("6px");
+    }
+    else if (selectChart == "donutChart") {
+      setIschartHalfdonutChart(4);
+      setIschartBoxHeightdonutChart(230);
+      setIshideButtondonutChart("d-none");
+      setIsshowButtondonutChart("d-blok");
+      setIschartFontSize("6px");
+    }
+    
+    else if (selectChart == "companyPC") {
       if (
         mappingResultdata.word_cloud != undefined &&
         mappingResultdata.word_cloud != "null"
@@ -2922,11 +3067,8 @@ export default function MlResultsConnection({ resultData }) {
   //   { name: "Yearly", value: "year" },
   // ];
 
-  const [filterDateRange, setfilterDateRange] = React.useState([
-    null,
-    null,
-  ]);
-  const [activeTopButton,setactiveTopButton]= useState(false)
+  const [filterDateRange, setfilterDateRange] = React.useState([null, null]);
+  const [activeTopButton, setactiveTopButton] = useState(false);
   const [surveyNames, setsurveyNames] = React.useState([]);
 
   const handleChange = (event) => {
@@ -2960,16 +3102,15 @@ export default function MlResultsConnection({ resultData }) {
     let getSelectedFormId = optionSurveyListForFilter.filter(
       (ele) => selectedSurveyListForFilter.form_ids.indexOf(ele.label) != -1
     );
-    let tmpGlobalGloblTmp = {}
-    if (selFitler == 'globelFilter') {
-      tmpGlobalGloblTmp = 'null';
-    }
-    else {
+    let tmpGlobalGloblTmp = {};
+    if (selFitler == "globelFilter") {
+      tmpGlobalGloblTmp = "null";
+    } else {
       tmpGlobalGloblTmp = {
         form_ids: getSelectedFormId.map((ele) => ele.value),
-        date_filter: filterDateRange, 
+        date_filter: filterDateRange,
       };
-      setactiveTopButton(true) 
+      setactiveTopButton(true);
     }
 
     fetch(`${process.env.REACT_APP_API_URL}/survey/createSurvey`, {
@@ -3013,124 +3154,119 @@ export default function MlResultsConnection({ resultData }) {
       });
   };
 
-  const clearfilter = (selFilter) => { 
-    if(selFilter=='globelFilter'){
-      setfilterDateRange(null,null) 
+  const clearfilter = (selFilter) => {
+    if (selFilter == "globelFilter") {
+      setfilterDateRange(null, null);
       setactiveTopButton(false);
-      filterGlobalFilterOk('globelFilter');
-    } 
-    else if(selFilter=='Sentiment By Topic'){  
-    let filtertopicSentimentResult1 = topicSentimentResult; 
-    settopicSentimentResult1(filtertopicSentimentResult1);
-    setfilterBox(false);
-    }
-    else if(selFilter=='Demography'){ 
-      console.log(demographicsResult)
+      filterGlobalFilterOk("globelFilter");
+    } else if (selFilter == "Sentiment By Topic") {
+      let filtertopicSentimentResult1 = topicSentimentResult;
+      settopicSentimentResult1(filtertopicSentimentResult1);
+      setfilterBox(false);
+    } else if (selFilter == "Demography") {
+      console.log(demographicsResult);
       let tmpdemographicsResult = { ...demographicsResult };
-      let item=tmpdemographicsResult.categoriesList[0]
-      let catList=tmpdemographicsResult.chartData[item]
-      tmpdemographicsResult.selectedCat = item; 
-      tmpdemographicsResult.chartSeries = catList.series; 
-      tmpdemographicsResult.labels = catList.labels;  
-      setdemographicsResult(tmpdemographicsResult);  
-      setfilterBox(false); 
-    }
-    else if(selFilter=='timeseries'){
-    let tmpTimeSeriesData1 = Object.values(mappingResultdata.timeseries);
-    let tmpTimeSeriesData = [];
-    let newTimeKey = Object.keys(tmpTimeSeriesData1[0].data);
-    tmpTimeSeriesData1.forEach((ele) => {
-      let newData = {};
-      newTimeKey.forEach((el) => {
-        let timeSt = [];
-        let timeVal = [];
-        ele.data[el].values.forEach((eel1, ind) => {
-          if (eel1 != null) {
-            timeVal.push(eel1);
-            timeSt.push(ele.data[el].timestamp[ind]);
-          }
+      let item = tmpdemographicsResult.categoriesList[0];
+      let catList = tmpdemographicsResult.chartData[item];
+      tmpdemographicsResult.selectedCat = item;
+      tmpdemographicsResult.chartSeries = catList.series;
+      tmpdemographicsResult.labels = catList.labels;
+      setdemographicsResult(tmpdemographicsResult);
+      setfilterBox(false);
+    } else if (selFilter == "timeseries") {
+      let tmpTimeSeriesData1 = Object.values(mappingResultdata.timeseries);
+      let tmpTimeSeriesData = [];
+      let newTimeKey = Object.keys(tmpTimeSeriesData1[0].data);
+      tmpTimeSeriesData1.forEach((ele) => {
+        let newData = {};
+        newTimeKey.forEach((el) => {
+          let timeSt = [];
+          let timeVal = [];
+          ele.data[el].values.forEach((eel1, ind) => {
+            if (eel1 != null) {
+              timeVal.push(eel1);
+              timeSt.push(ele.data[el].timestamp[ind]);
+            }
+          });
+          newData[el] = { timestamp: timeSt, values: timeVal };
         });
-        newData[el] = { timestamp: timeSt, values: timeVal };
+        tmpTimeSeriesData.push({ data: newData, label: ele.label });
       });
-      tmpTimeSeriesData.push({ data: newData, label: ele.label });
-    });
-    let newOption = newTimeKey.map((ele) => ({
-      name: ele.charAt(0).toUpperCase() + ele.slice(1),
-      value: ele,
-    }));
-    let tmpSeriesData = []; 
-    tmpTimeSeriesData1.forEach((ele) => {
-      tmpSeriesData.push({
-        name: ele.label,
-        data: ele.data[newTimeKey[0]].values,
+      let newOption = newTimeKey.map((ele) => ({
+        name: ele.charAt(0).toUpperCase() + ele.slice(1),
+        value: ele,
+      }));
+      let tmpSeriesData = [];
+      tmpTimeSeriesData1.forEach((ele) => {
+        tmpSeriesData.push({
+          name: ele.label,
+          data: ele.data[newTimeKey[0]].values,
+        });
       });
-    });
 
-    let newTimeSeriesDataObj = {
-      chartSeries: tmpSeriesData.slice(0, 5),
-      labels: tmpTimeSeriesData[0].data[newTimeKey[0]].timestamp,
-      originalData: tmpTimeSeriesData,
-      selectedTimeSeriesCat: tmpTimeSeriesData
-        .slice(0, 5)
-        .map((ele) => ele.label),
-      selectedTimeSeriesTime: newTimeKey[0],
-      selectedTimeSeriesTimeOption: newOption,
-      yaxisList: [
-        {
-          opposite: true,
-          axisTicks: {
-            show: true,
-          },
-          axisBorder: {
-            show: true,
-            color: "#FF1654",
-          },
-          labels: {
-            style: {
-              colors: "#FF1654",
+      let newTimeSeriesDataObj = {
+        chartSeries: tmpSeriesData.slice(0, 5),
+        labels: tmpTimeSeriesData[0].data[newTimeKey[0]].timestamp,
+        originalData: tmpTimeSeriesData,
+        selectedTimeSeriesCat: tmpTimeSeriesData
+          .slice(0, 5)
+          .map((ele) => ele.label),
+        selectedTimeSeriesTime: newTimeKey[0],
+        selectedTimeSeriesTimeOption: newOption,
+        yaxisList: [
+          {
+            opposite: true,
+            axisTicks: {
+              show: true,
             },
-          },
-          title: {
-            text: "Responses over times",
-            style: {
+            axisBorder: {
+              show: true,
               color: "#FF1654",
             },
-          },
-          tooltip: {
-            enabled: true,
-          },
-        },
-        {
-          opposite: false,
-          axisTicks: {
-            show: true,
-          },
-          axisBorder: {
-            show: true,
-            color: "#247BA0",
-          },
-          labels: {
-            style: {
-              colors: "#247BA0",
+            labels: {
+              style: {
+                colors: "#FF1654",
+              },
+            },
+            title: {
+              text: "Responses over times",
+              style: {
+                color: "#FF1654",
+              },
+            },
+            tooltip: {
+              enabled: true,
             },
           },
-          title: {
-            text: "Average Score",
-            style: {
+          {
+            opposite: false,
+            axisTicks: {
+              show: true,
+            },
+            axisBorder: {
+              show: true,
               color: "#247BA0",
             },
+            labels: {
+              style: {
+                colors: "#247BA0",
+              },
+            },
+            title: {
+              text: "Average Score",
+              style: {
+                color: "#247BA0",
+              },
+            },
+            tooltip: {
+              enabled: true,
+            },
           },
-          tooltip: {
-            enabled: true,
-          },
-        },
-      ],
-    };  
-    settimeSeriesData(newTimeSeriesDataObj);
-    setfilterBox(false); 
-    }
-    else if(selFilter=='Churn')
-    {
+        ],
+      };
+      settimeSeriesData(newTimeSeriesDataObj);
+      setfilterBox(false);
+    } else if (selFilter == "Churn") {
       let withoutoverAllChurnData = { ...mappingResultdata.word_cloud };
       let listOfCategory = Object.keys(withoutoverAllChurnData);
       let selectedChartData1 = { ...withoutoverAllChurnData };
@@ -3168,10 +3304,9 @@ export default function MlResultsConnection({ resultData }) {
             ? listOfCategory[0]
             : listOfCategory.filter((ele) => ele == "Overall"),
       });
-      setfilterBox(false); 
+      setfilterBox(false);
     }
-
-  }
+  };
   const selectCatTimeSeries = (e, value, isTime) => {
     let tmptimeSeriesData = { ...timeSeriesData };
     if (isTime) {
@@ -3187,6 +3322,13 @@ export default function MlResultsConnection({ resultData }) {
       }
     }
     settimeSeriesData(tmptimeSeriesData);
+  };
+
+  const selectAxisForCluster = (e, value, keyName) => {
+    let tmpCorrespondenceAnalysis = { ...correspondenceAnalysis };
+    tmpCorrespondenceAnalysis[keyName] = value;
+    let newDefaultVal = [tmpCorrespondenceAnalysis.xLable, tmpCorrespondenceAnalysis.yLable]
+    createObjectForCluster(positiveSatisfactionResult.filterdRow, newDefaultVal, tmpCorrespondenceAnalysis.colList);
   };
 
   const selecttopicSentiment = (e, value, isTime) => {
@@ -3328,7 +3470,8 @@ export default function MlResultsConnection({ resultData }) {
   const filterDemographyAndReg = (selectedCatFor) => {
     setfilterBox(false);
     if (selectedCatFor == "Demography") {
-      let listOfCategoryData = demographicsResult.chartData[demographicsResult.selectedCat];
+      let listOfCategoryData =
+        demographicsResult.chartData[demographicsResult.selectedCat];
       setdemographicsResult((prev) => ({
         ...demographicsResult,
         chartSeries: listOfCategoryData.series,
@@ -3448,8 +3591,8 @@ export default function MlResultsConnection({ resultData }) {
   );
 
   useEffect(() => {
-    let loggedInUser = localStorage.getItem("loggedInUser")
-    setLoggedInUser(loggedInUser)
+    let loggedInUser = localStorage.getItem("loggedInUser");
+    setLoggedInUser(loggedInUser);
     fetchSurveyResult();
 
     if (resultData.mapping_json != undefined) {
@@ -3490,7 +3633,11 @@ export default function MlResultsConnection({ resultData }) {
     setPromptResult(promptResultData);
 
     if (isFilteredChurn != "") {
-      getResultFromS3(isHubspotMerge, mappingResultdata.query_list, ` WHERE s."churn_risk" = '${isFilteredChurn}'`)
+      getResultFromS3(
+        isHubspotMerge,
+        mappingResultdata.query_list,
+        `WHERE s."churn_risk" = '${isFilteredChurn}'`
+      );
       // getFilteredResult(" WHERE churn_risk = " + "'" + isFilteredChurn + "'");
     }
   }, [isFilteredChurn]);
@@ -3565,8 +3712,8 @@ export default function MlResultsConnection({ resultData }) {
               if (item.ques == "Overall Response") {
                 return item.tab_name.split("\n")[0];
               } else {
-                return ( 
-                  item.tab_name.split("% ")[0] + "\n"  + item.ques.split("\n")[0]
+                return (
+                  item.tab_name.split("% ")[0] + "\n" + item.ques.split("\n")[0]
                 );
               }
             });
@@ -3574,14 +3721,13 @@ export default function MlResultsConnection({ resultData }) {
             setexcelHeader(exlheader);
 
             let newdata = [];
-            mappingCrossTab.crosstab.forEach((item, ind2) => { 
+            mappingCrossTab.crosstab.forEach((item, ind2) => {
               newdata.push(
                 item.tableHeader.map((itemn1, ii) => {
                   if (ii != 0 && itemn1.split("\n").length != 0) {
-                    return itemn1.split("\n")[2]
-                  }
-                  else {
-                    return itemn1
+                    return itemn1.split("\n")[2];
+                  } else {
+                    return itemn1;
                   }
                 })
               );
@@ -3652,204 +3798,7 @@ export default function MlResultsConnection({ resultData }) {
   };
 
   /* ------------------------ drag and drop   ------------------------ */
-  const data = [
-    {
-      id: "1",
-      name: "Praesent.",
-    },
-    {
-      id: "2",
-      name: "Fix Styling",
-    },
-    {
-      id: "3",
-      name: "Handle Door Specs",
-    },
-    {
-      id: "4",
-      name: "morbi",
-    },
-    {
-      id: "5",
-      name: "proin",
-    },
-  ];
-
-  const columnsFromBackend = {
-    abcd: {
-      title: "To-do",
-      items: [
-        {
-          id: "1",
-          name: "Praesent.",
-        },
-        {
-          id: "2",
-          name: "a Styling",
-        },
-      ],
-    },
-    acd: {
-      title: "In Progress",
-      items: [
-        {
-          id: "1",
-          name: "Praesent.",
-        },
-      ],
-    },
-  };
-
-  const [columns, setColumns] = useState({
-    //    "0": {
-    //         "items": [
-    //             {
-    //                 "id": "00",
-    //                 "name": "consumer",
-    //                 "qus": "Are you a consumer or professional user?"
-    //             },
-    //             {
-    //                 "id": "11",
-    //                 "name": "professional",
-    //                 "qus": "Are you a consumer or professional user?"
-    //             }
-    //         ]
-    //     },
-    //     "1": {
-    //         "items": [
-    //             {
-    //                 "id": "22",
-    //                 "name": "Online",
-    //                 "qus": "From where would you most likely purchase products?"
-    //             },
-    //             {
-    //                 "id": "33",
-    //                 "name": "Offline",
-    //                 "qus": "From where would you most likely purchase products?"
-    //             }
-    //         ]
-    //     },
-    //     "2": {
-    //         "items": [
-    //             {
-    //                 "id": "44",
-    //                 "name": "Yes",
-    //                 "qus": "Have you purchased from the brand in the last 12 months?"
-    //             }
-    //         ]
-    //     },
-    //     "3": {
-    //         "items": [
-    //             {
-    //                 "id": "55",
-    //                 "name": "1",
-    //                 "qus": "How likely are you to recommend us to a friend or colleague?"
-    //             },
-    //             {
-    //                 "id": "66",
-    //                 "name": "3",
-    //                 "qus": "How likely are you to recommend us to a friend or colleague?"
-    //             }
-    //         ]
-    //     }
-    // "0": {
-    //     "items": [
-    //         {
-    //             "id": "11",
-    //             "name": "consumer",
-    //             "qus": "Are you a consumer or professional user?"
-    //         },
-    //         {
-    //             "id": "22",
-    //             "name": "professional",
-    //             "qus": "Are you a consumer or professional user?"
-    //         }
-    //     ]
-    // },
-    // "1": {
-    //     "items": [
-    //         {
-    //             "id": "33",
-    //             "name": "Online",
-    //             "qus": "From where would you most likely purchase products?"
-    //         },
-    //         {
-    //             "id": "44",
-    //             "name": "Offline",
-    //             "qus": "From where would you most likely purchase products?"
-    //         }
-    //     ]
-    // },
-    // "2": {
-    //     "items": [
-    //         {
-    //             "id": "55",
-    //             "name": "Yes",
-    //             "qus": "Have you purchased from the brand in the last 12 months?"
-    //         }
-    //     ]
-    // },
-    // "3": {
-    //     "items": [
-    //         {
-    //             "id": "66",
-    //             "name": "1",
-    //             "qus": "How likely are you to recommend us to a friend or colleague?"
-    //         },
-    //         {
-    //             "id": "77",
-    //             "name": "5",
-    //             "qus": "How likely are you to recommend us to a friend or colleague?"
-    //         }
-    //     ]
-    // },
-    // "4": {
-    //     "items": [
-    //         {
-    //             "id": "0",
-    //             "name": "Strongly Agree",
-    //             "qus": "I feel I know a lot about the brand"
-    //         },
-    //         {
-    //             "id": "1",
-    //             "name": "Disagree",
-    //             "qus": "I feel I know a lot about the brand"
-    //         }
-    //     ]
-    // },
-    // "5": {
-    //     "items": [
-    //         {
-    //             "id": "0",
-    //             "name": "Agree",
-    //             "qus": "I frequently see or hear about this brand in the media, online, or in advertising"
-    //         },
-    //         {
-    //             "id": "1",
-    //             "name": "Disagree",
-    //             "qus": "I frequently see or hear about this brand in the media, online, or in advertising"
-    //         }
-    //     ]
-    // },
-    // "6": {
-    //     "items": [
-    //         {
-    //             "id": "0",
-    //             "name": "Agree",
-    //             "qus": "I like this brand"
-    //         }
-    //     ]
-    // },
-    // "7": {
-    //     "items": [
-    //         {
-    //             "id": "0",
-    //             "name": "Agree",
-    //             "qus": "I trust this brand"
-    //         }
-    //     ]
-    // }
-  });
+  const [columns, setColumns] = useState({});
   const onDragEnd = (result, columns, setColumns) => {
     if (!result.destination) return;
     const { source, destination } = result;
@@ -3893,102 +3842,15 @@ export default function MlResultsConnection({ resultData }) {
 
   const [excelHeader, setexcelHeader] = useState([]);
   const [excelRowData, setexcelRowData] = useState([]);
-
-  // const createObservable=({ replay = false } = {}) =>{
-  //  let buffer = [];
-  //  let errorReceived = null;
-  //  let isCompleted = false;
-  //  let isReplayObservable = false;
-  //  let subscribers = new Set();
-
-  //  const observer = {
-  //   next: value => console.log('Received:', value),
-  //   error: error => console.error('Error:', error),
-  //   complete: () => console.log('Completed')
-  // };
-
-  //   function complete() {
-  //     isCompleted = true;
-  //     subscribers.forEach(observer => observer.complete && observer.complete());
-  //   }
-
-  //   function error(error) {
-  //     errorReceived = true;
-  //     subscribers.forEach(observer => observer.error && observer.error(error));
-  //   }
-
-  //   function next(value) {
-  //     if (!errorReceived && !isCompleted) {
-  //       buffer.push(value);
-  //       subscribers.forEach(observer => observer.next && observer.next(value));
-  //     }
-  //   }
-
-  //   function pipe(...operators) {
-  //     let observable = this;
-  //     for (const operator of operators) {
-  //       observable = operator(observable);
-  //     }
-  //     return observable;
-  //   }
-
-  //   function reset() {
-  //     buffer = [];
-  //     errorReceived = false;
-  //     isCompleted = false;
-  //   }
-
-  //   function subscribe(observer) {
-  //     subscribers.add(observer);
-
-  //     // Send buffer to observer if it's a replay observable
-  //     if (replay && buffer.length > 0) {
-  //       sendBufferToObserver(observer);
-  //     }
-
-  //     return {
-  //       unsubscribe: () => {
-  //         subscribers.delete(observer);
-  //       }
-  //     };
-  //   }
-
-  //   function unsubscribe(observer) {
-  //     subscribers.delete(observer);
-  //   }
-
-  //   function sendBufferToObserver(observer) {
-  //     for (const value of buffer) {
-  //       observer.next && observer.next(value);
-  //     }
-  //   }
-
-  //   return {
-  //     buffer,
-  //     errorReceived,
-  //     isCompleted,
-  //     isReplayObservable,
-  //     subscribers
-  //   };
-  // }
-
-  // const onClickPrompt = () => {
-  //   const observable = createObservable({ replay: true });
-  //   let Prompt = "Hello"
-  //   streamAdapter.streamText(Prompt, observable)
-  // }
-
   const getPromptData = async () => {
     localStorage.setItem("selectedUser_Id", resultData.user_id);
-    localStorage.setItem("selectedProjectId", resultData._id)
-    let url = resultData.user_id + "/" + resultData._id
+    localStorage.setItem("selectedProjectId", resultData._id);
+    let url = resultData.user_id + "/" + resultData._id;
     await axios
-      .get(
-        `http://54.84.56.97/questions/` + url
-      )
+      .get(`http://54.84.56.97/questions/` + url)
       .then(async (resp) => {
         if (resp !== undefined && resp.status === 200) {
-          setPromptResult(resp.data.questions)
+          setPromptResult(resp.data.questions);
           setIsSliderHide(false);
         }
       })
@@ -3998,15 +3860,126 @@ export default function MlResultsConnection({ resultData }) {
   };
 
   const adapter = useMemo(() => streamAdapter, []);
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleClose = () => { setAnchorEl(null); };
+
+  /* _____________________ Custom chart genrate  _____________________ */
+
+  const [colorPatternList, setcolorPatternList] = useState(false);
+  const [resultvalueKeys, setresultvalueKeys] = useState([false]);
+  const [rowgridData, setrowgridData] = useState({})
+  const [customChartOpertaion, setcustomChartOpertaion] = useState([
+    {name:'Sum',  calby:'x'},
+    {name:'Average',  calby:'x'} 
+  ])
+  const [customChartDataGen, setcustomChartDataGen] = useState({
+    series: [{
+    data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
+  }],
+    chart: {
+    type: 'bar',
+    height: 350
+  },
+  plotOptions: {
+    bar: {
+      borderRadius: 4,
+      borderRadiusApplication: 'end',
+      horizontal: true,
+    }
+  },
+  dataLabels: {
+    enabled: false
+  },
+  xaxis: {
+    categories: ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan',
+      'United States', 'China', 'Germany'
+    ],
+  }
+  }) 
+
+
+  const [filtercustomChartRange, setfiltercustomChartRange] = React.useState([null, null]);
+  const [customaxis, setcustomaxis] = useState({
+    project_name: resultData.project_name,
+    xaxis: '',
+    yaxis: '',
+    operationName: '', 
+    // colorPattern:selectedcolorspattern,
+  });
+
+  const colorspatternList = [
+    {
+      id: 1,
+      name: 'color1',
+      colorspattern: ['#546E7A',]
+    },
+  ]
+  const showcolorpattern = () => { setcolorPatternList(!colorPatternList) }
+  const [customchartData, setcustomchartData] = useState([{ data:null }]);
+  
+  const [customchartloader, setcustomchartloader] = useState(false);
+
+
+  const selectChartaxis = (e, val, label) => {
+    let tmpcustomaxis = { ...customaxis, }
+    tmpcustomaxis[label] = val  
+    setcustomaxis(tmpcustomaxis);
+    console.log(customaxis)
+  }
+
+  const applyCustomChart = async () => {
+    // let daterang = {'operation':customaxis.operationName, 'axis': customaxis.xaxis}
+    let daterang = { "operation": "sum", "axis": "x" }
+    let requestCustomchart = {
+      project_name: resultData.project_name,
+      project_id: resultData._id,
+      user_id: resultData.user_id,
+      template: resultData.template,
+      mapping_json: resultData.mapping_json,
+      graph_id: 'customaxis' + customaxis.xaxis,
+      xaxis: customaxis.xaxis,
+      yaxis:customaxis.yaxis,
+      operationName:daterang,
+        // operationName: {"operation": "sum", "axis": "x"},
+      timerange:filtercustomChartRange,
+      colorPattern: "null",
+      chart_type: "bar",
+    } 
+    fetch(`${process.env.REACT_APP_API_URL}/survey/createCustomGraph`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(requestCustomchart),
+    }) 
+    .then((res) => res.json()) 
+     .then((res) => {
+        if (res.success==true) {
+          setcustomchartloader(false)  
+          let customdatares = JSON.parse(res.data); 
+          let  customdataresn=JSON.parse(customdatares);    
+          setcustomchartData(customdataresn)       
+        } 
+        else{ 
+          console.log("fesdfdfgfd")
+        }
+        
+      })
+      .catch((err) => {
+        setcustomchartloader(true) 
+        setTimeout(() => {
+          setcustomchartloader(false) 
+        }, 5000);
+        console.log("Error: " + err);
+      });
   };
+  /* _____________________ Custom chart genrate  _____________________ */
+
 
 
   return (
@@ -4037,7 +4010,6 @@ export default function MlResultsConnection({ resultData }) {
           </Button>
         )}
 
-
         <Button
           size="small"
           color="primary"
@@ -4051,14 +4023,16 @@ export default function MlResultsConnection({ resultData }) {
           Table
         </Button>
 
-        <Button onClick={(e) => openFilterBox(e, "Dashboard")}
-          color="primary"  
-          variant={activeTopButton?'contained':'outlined'}
+        <Button
+          onClick={(e) => openFilterBox(e, "Dashboard")}
+          color="primary"
+          variant={activeTopButton ? "contained" : "outlined"}
           className="icon-btn-sm mr-2"
         >
           <i className="fa fa-filter"></i>
         </Button>
-        <Button onClick={(e) => openAlertsDialogBox(e, resultData.template)}
+        <Button
+          onClick={(e) => openAlertsDialogBox(e, resultData.template)}
           color="primary"
           variant="outlined"
           className="icon-btn-sm"
@@ -4088,8 +4062,8 @@ export default function MlResultsConnection({ resultData }) {
             className="fa fa-close float-right"
           ></a>{" "}
           <h4 className="m-0">
-            <i className="fa fa-filter"> </i> Filter    
-             {filterForBoxString == "Churn" ? "Word Cloud" : filterForBoxString}   
+            <i className="fa fa-filter"> </i> Filter
+            {filterForBoxString == "Churn" ? "Word Cloud" : filterForBoxString}
           </h4>
           {filterForBoxString == "Time Series" ? (
             <>
@@ -4149,29 +4123,30 @@ export default function MlResultsConnection({ resultData }) {
                     )
                   )}
                 </Select>
-              </FormControl> 
+              </FormControl>
               <br />
               <Stack direction="row" spacing={1}>
-              <Button
-                sx={{ mt: { xs: 2, sm: 0 } }}
-                color="primary"
-                variant="outlined"
-                onClick={() => {
-                  filterTimeSeries();
-                }}
-              >
-              Apply  Filter
-              </Button>
-              <Button 
-                color="primary"
-                variant="outlined"
-                onClick={() => {
-                  clearfilter('timeseries');
-                }}
-              >
-                Clear 
-              </Button>
-              </Stack> 
+                <Button
+                  sx={{ mt: { xs: 2, sm: 0 } }}
+                  color="primary"
+                  variant="outlined"
+                  onClick={() => {
+                    filterTimeSeries();
+                  }}
+                >
+                  Apply Filter
+                </Button>
+                <Button
+                  color="primary"
+                  variant="text"
+                  onClick={() => {
+                    clearfilter("timeseries");
+                  }}
+                  className="clearbtn"
+                >
+                  Clear
+                </Button>
+              </Stack>
             </>
           ) : filterForBoxString == "Demography" ||
             filterForBoxString == "Regression" ||
@@ -4295,24 +4270,25 @@ export default function MlResultsConnection({ resultData }) {
               </FormControl>
               <br />
               <Stack direction="row" spacing={1}>
-              <Button 
-                color="primary"
-                variant="outlined"
-                onClick={() => {
-                  filterDemographyAndReg(filterForBoxString);
-                }}
-              >
-              Apply Filter
-              </Button>
-              <Button 
-                color="primary"
-                variant="outlined"
-                onClick={() => {
-                  clearfilter(filterForBoxString);
-                }}
-              >
-                Clear  
-              </Button>
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  onClick={() => {
+                    filterDemographyAndReg(filterForBoxString);
+                  }}
+                >
+                  Apply Filter
+                </Button>
+                <Button
+                  color="primary"
+                  variant="text"
+                  onClick={() => {
+                    clearfilter(filterForBoxString);
+                  }}
+                  className="clearbtn"
+                >
+                  Clear
+                </Button>
               </Stack>
             </>
           ) : (
@@ -4370,7 +4346,7 @@ export default function MlResultsConnection({ resultData }) {
                 <DateRangePickerComponent
                   placeholder="Select Time range"
                   cssClass="e-outline"
-                  value={filterDateRange} 
+                  value={filterDateRange}
                   change={(ev) => {
                     setfilterDateRange(ev.value);
                   }}
@@ -4410,13 +4386,12 @@ export default function MlResultsConnection({ resultData }) {
                 <Button
                   disabled={
                     showLoderVisual ||
-                    selectedSurveyListForFilter.form_ids.length == 0
+                    selectedSurveyListForFilter.form_ids.length == 0 || filterDateRange[0] == null
                   }
-
                   color="primary"
-                  variant={activeTopButton?'contained':'outlined'}
+                  variant={activeTopButton ? "contained" : "outlined"}
                   onClick={() => {
-                    filterGlobalFilterOk('filter');
+                    filterGlobalFilterOk("filter");
                   }}
                 >
                   Apply Filter
@@ -4427,11 +4402,13 @@ export default function MlResultsConnection({ resultData }) {
                     selectedSurveyListForFilter.form_ids.length == 0
                   }
                   color="primary"
-                  variant="outlined"
-                  onClick={(e) => clearfilter('globelFilter')}
+                  variant="text"
+                  onClick={(e) => clearfilter("globelFilter")}
+                  className="clearbtn"
                 >
                   Clear
-                </Button></Stack>
+                </Button>
+              </Stack>
               {errorFilterBox.show && (
                 // <span className="error-text"></span>
                 <p className="error-text">{errorFilterBox.message}</p>
@@ -4524,11 +4501,10 @@ export default function MlResultsConnection({ resultData }) {
                                           <>
                                             {iii == 0 && (
                                               <div className="checkbox-list">
-                                                <Checkbox
-                                                  checked={checkedSelectedSegmentation(
-                                                    itemHeader,
-                                                    itemBodydata
-                                                  )}
+                                                <FormControlLabel control={<Checkbox checked={checkedSelectedSegmentation(
+                                                  itemHeader,
+                                                  itemBodydata
+                                                )}
                                                   onChange={(event) => {
                                                     handleSelectSegmentOption(
                                                       event.target.checked,
@@ -4537,8 +4513,7 @@ export default function MlResultsConnection({ resultData }) {
                                                       null
                                                     );
                                                   }}
-                                                />{" "}
-                                                {itemBodydata}
+                                                />} label={itemBodydata} />
                                               </div>
                                             )}
                                           </>
@@ -4739,7 +4714,7 @@ export default function MlResultsConnection({ resultData }) {
                               ) : (
                                 ""
                               )}
-                              <div className="customtooltip"> 
+                              <div className="customtooltip">
                                 {tableTopHeader.tab_name.split("% ")[0]}
                                 <span class="tooltiptext">
                                   {tableTopHeader.ques}
@@ -4767,7 +4742,7 @@ export default function MlResultsConnection({ resultData }) {
                               {i != 0 && itemHeader != "Respondent"
                                 ? itemHeader.split("\n")[2]
                                 : itemHeader}
-                            </b> 
+                            </b>
                             {i != 0 && itemHeader != "Respondent" ? (
                               mappingListCrossTab[itemHeader] != undefined &&
                                 mappingListCrossTab[itemHeader].length <= 0 ? (
@@ -4801,7 +4776,7 @@ export default function MlResultsConnection({ resultData }) {
                                 "text-align": ii == 0 ? `left` : "center",
                               }}
                             >
-                              {itemBodydata}
+                              <span className={itemBodydata == '100.0%' ? 'text-highlighter' : ''}> {itemBodydata} </span>
                             </div>
                           </td>
                         ))}
@@ -4895,22 +4870,27 @@ export default function MlResultsConnection({ resultData }) {
             {/* <h4 className="text-grey">Some Key takeaways fron this dashboard insights</h4> */}
             {/* <div style={{ width: "100%", height: "70vh", overflow: 'auto' }} ></div> */}
 
-            {
-              dataInsights === "insights" ? (
-                // <div className="filterBox" style={{ width: "500px", height: "63vh", overflow: 'auto' }} dangerouslySetInnerHTML={{
-                //   __html: (generativeInsights == "" || generativeInsights == "null" ? "Data insights is being generated, Try again in sometime to view the results" : generativeInsights)
-                // }} />
+            {dataInsights === "insights" ? (
+              // <div className="filterBox" style={{ width: "500px", height: "63vh", overflow: 'auto' }} dangerouslySetInnerHTML={{
+              //   __html: (generativeInsights == "" || generativeInsights == "null" ? "Data insights is being generated, Try again in sometime to view the results" : generativeInsights)
+              // }} />
 
-                <div className="App chartBots">
-                  <h1>Hello, {loggedInUser}</h1>
-                  <h2>Take a look at the top insights?</h2>
-                  <br />
-                  <div className="filterBox" style={{ width: "100%", height: "57vh", overflow: 'auto' }} dangerouslySetInnerHTML={{
-                    __html: (generativeInsights == "" || generativeInsights == "null" ? "Data insights is being generated, Try again in sometime to view the results" : generativeInsights)
-                  }} />
+              <div className="App chartBots">
+                <h1>Hello, {loggedInUser}</h1>
+                <h2>Take a look at the top insights?</h2>
+                <br />
+                <div
+                  className="filterBox"
+                  style={{ width: "100%", height: "57vh", overflow: "auto" }}
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      generativeInsights == "" || generativeInsights == "null"
+                        ? "Data insights is being generated, Try again in sometime to view the results"
+                        : generativeInsights,
+                  }}
+                />
 
-
-                  {/* <div className="questionlist">
+                {/* <div className="questionlist">
                     <div className="q-list">
                       <div className="ques">
                         {" "}
@@ -5012,48 +4992,54 @@ export default function MlResultsConnection({ resultData }) {
                       </div>
                     </div>
                   </div>  */}
-                </div>
-              ) : dataInsights === "history" ? (
-                <>
+              </div>
+            ) : dataInsights === "history" ? (
+              <>
+                <div>
                   <div>
-                    <div>
-                      <Button
-                        sx={{ mb: 1, mr: 1 }}
-                        size="small"
-                        color="primary"
-                        variant="outlined"
-                      >
-                        {/* <img src={InsightIcons} alt="Insight" className="mr-2" /> */}
-                        + New chat
-                      </Button>
-                    </div>
-                    Recents
-                    <div className="chartHistroy">
-                      {chatHistoryData.map((itemBodydata, iii) => (
-                        <>
-                          {
-                            <>
-                              <div className="qus">{itemBodydata.question}</div>{" "}
-                              <span className="date">{itemBodydata.date}</span>
-                              <div className="clearfix"></div>
-                              <hr />
-                            </>
-                          }
-                        </>
-                      ))}
-                    </div>
+                    <Button
+                      sx={{ mb: 1, mr: 1 }}
+                      size="small"
+                      color="primary"
+                      variant="contained"
+                      onClick={(e) => openChanHistory()}
+                    >
+                      <i className="fa fa-plus mr-1" /> New chat
+                    </Button>
                   </div>
-                </>
-              ) : dataInsights === "chat" ? (
-                // <div className="filterBox" style={{ width: "466px", height: "70vh", overflow: 'auto' }} dangerouslySetInnerHTML={{
-                //   __html: ("This is Live chat")
-                // }} />
-                <>
-                  <div className="chartBots">
-                    <h1>Hello, {loggedInUser}</h1>
-                    <h2>How can I help you today?</h2>
-                    <br />
-                    {/* <div className="chat-container">
+                  Recents
+                  <div className="chartHistroy">
+                    {chatHistoryData.map((itemBodydata, iii) => (
+                      <>
+                        {
+                          <>
+                            <div className="qus-box">
+                              <div className="qus">{itemBodydata.question}</div>
+                              <span className="date">{itemBodydata.date}</span>
+                              <span className="action">
+                                <a className="fa fa-pencil mr-2"></a>
+                                <a className="fa fa-trash"></a>
+                              </span>
+                              <div className="clearfix"></div>
+                            </div>
+                            <div className="clearfix"></div>
+                          </>
+                        }
+                      </>
+                    ))}
+                  </div>
+                </div>
+              </>
+            ) : dataInsights === "chat" ? (
+              // <div className="filterBox" style={{ width: "466px", height: "70vh", overflow: 'auto' }} dangerouslySetInnerHTML={{
+              //   __html: ("This is Live chat")
+              // }} />
+              <>
+                <div className="chartBots">
+                  <h1>Hello, {loggedInUser}</h1>
+                  <h2>How can I help you today?</h2>
+                  <br />
+                  {/* <div className="chat-container">
                       {chatbotresponse.map((message, i) => (
                         <>
                           <div className="cml-chart" key={i}>
@@ -5094,7 +5080,7 @@ export default function MlResultsConnection({ resultData }) {
                       )}
                       <div className="cleafix"></div>
                     </div> */}
-                    {/* <input
+                  {/* <input
                       autoComplete="off"
                       type="text"
                       id="prompt"
@@ -5106,21 +5092,20 @@ export default function MlResultsConnection({ resultData }) {
                       <i class="fa fa-paper-plane" aria-hidden="true"></i>
                     </button> */}
 
-                    <AiChat
-                      adapter={adapter}
-                      personaOptions={personas}
-                      layoutOptions={{
-                        height: "55vh",
-                        width: 600,
-                        bottom: 0
-                      }}
-                    />
-                  </div>
-                </>
-              ) : (
-                ""
-              )
-            }
+                  <AiChat
+                    adapter={adapter}
+                    personaOptions={personas}
+                    layoutOptions={{
+                      height: "55vh",
+                      width: 600,
+                      bottom: 0,
+                    }}
+                  />
+                </div>
+              </>
+            ) : (
+              ""
+            )}
           </div>
         ) : null}
       </Popover>
@@ -5182,10 +5167,15 @@ export default function MlResultsConnection({ resultData }) {
                   key={i}
                   onClick={(e) => messagedetails(alert, i)}
                 >
-                
-                  <img src={'/json-media/icons/alerts/' + alert.icons + '.svg'} alt={alert.icons} />
+                  <img
+                    src={"/json-media/icons/alerts/" + alert.icons + ".svg"}
+                    alt={alert.icons}
+                  />
                   {/* <img src={alert.icons} alt={alert.icons} /> */}
-                  <p title={alert.message}>  <h4 className="m-0">{alert.title}</h4> {alert.message}</p>
+                  <p title={alert.message}>
+                    {" "}
+                    <h4 className="m-0">{alert.title}</h4> {alert.message}
+                  </p>
                   <span className="messgetime">{alert.messgetime}</span>
                 </div>
               ))}
@@ -5291,17 +5281,41 @@ export default function MlResultsConnection({ resultData }) {
             </Box>
             <Box sx={{ display: "inline-flex", lineHeight: "55px" }}>
               <div className="d-flex w150">
-                <span className="float-left mr-1" style={{ marginTop: '5px' }}><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="9.00773" cy="8.45524" r="7.35979" stroke="#646464" stroke-width="2" />
-                  <path d="M8.63379 5.0883V8.82935L10.8784 11.074" stroke="#646464" stroke-width="2" stroke-linecap="round" />
-                </svg></span>  Over   </div>
+                <span className="float-left mr-1" style={{ marginTop: "5px" }}>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="9.00773"
+                      cy="8.45524"
+                      r="7.35979"
+                      stroke="#646464"
+                      stroke-width="2"
+                    />
+                    <path
+                      d="M8.63379 5.0883V8.82935L10.8784 11.074"
+                      stroke="#646464"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                </span>{" "}
+                Over{" "}
+              </div>
               <div>
-
                 <FormControl sx={{ m: 1, minWidth: 150 }} size="small">
-                  <InputLabel id="demo-multiple-name-label">Day to Day</InputLabel>
+                  <InputLabel id="demo-multiple-name-label">
+                    Day to Day
+                  </InputLabel>
                   <Select
                     labelId="demo-select-small-label"
-                    id="demo-select-small" label="Day to Day">
+                    id="demo-select-small"
+                    label="Day to Day"
+                  >
                     <MenuItem value={10}>Day to Day</MenuItem>
                   </Select>
                 </FormControl>
@@ -5316,37 +5330,48 @@ export default function MlResultsConnection({ resultData }) {
                 alt="Negative"
                 className="float-left mr-2"
               />
-              Action <span className="heading-small">ConvertML channel must be selected</span>
+              Action{" "}
+              <span className="heading-small">
+                ConvertML channel must be selected
+              </span>
             </h3>
             <hr />
             <Box sx={{ display: "inline-flex", lineHeight: "55px" }}>
               <div className="w150">Integrated </div>
-              <div> 
-                 
+              <div>
+                <Button
+                  id="basic-button"
+                  aria-controls={open ? "basic-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                  onClick={handleClick}
+                >
+                  <img src={slacklogo} alt="cmllogo" width={25} />
+                </Button>
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    "aria-labelledby": "basic-button",
+                  }}
+                >
+                  <MenuItem>
+                    {" "}
+                    <img
+                      src={zendesklogo}
+                      alt="cmllogo"
+                      width={25}
+                      className="float-left mt-3"
+                    />
+                  </MenuItem>
+                </Menu>
 
-                 <Button
-        id="basic-button"
-        aria-controls={open ? 'basic-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        onClick={handleClick}
-      >
-      <img src={slacklogo} alt="cmllogo" width={25}/>
-      </Button>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
-        }}
-      >
-        <MenuItem> <img src={zendesklogo} alt="cmllogo" width={25} className="float-left mt-3" /></MenuItem> 
-      </Menu>
-
-                <FormControl sx={{ m: 1, minWidth: 300 }} size="small" >
-                  <InputLabel id="demo-select-small-label">Select ConvertML channel...</InputLabel>
+                <FormControl sx={{ m: 1, minWidth: 300 }} size="small">
+                  <InputLabel id="demo-select-small-label">
+                    Select ConvertML channel...
+                  </InputLabel>
                   <Select
                     labelId="demo-select-small-label"
                     id="demo-select-small"
@@ -5362,13 +5387,17 @@ export default function MlResultsConnection({ resultData }) {
             </Box>
           </div>
           <br />
-          <Button size="small"
+          <Button
+            size="small"
             color="primary"
             variant="contained"
             className="mr-2"
-          > Save
+          >
+            {" "}
+            Save
           </Button>
-          <Button size="small"
+          <Button
+            size="small"
             color="primary"
             variant="outlined"
             onClick={(e) => setopenAlertsSetting(false)}
@@ -5388,7 +5417,13 @@ export default function MlResultsConnection({ resultData }) {
       >
         <DialogTitle id="alert-dialog-title">
           <h2 className="m-0">
-            <img src={'/json-media/icons/alerts/' + messagedetailsData.icons + '.svg'} alt={messagedetailsData.icons} className="float-left mr-2" />
+            <img
+              src={
+                "/json-media/icons/alerts/" + messagedetailsData.icons + ".svg"
+              }
+              alt={messagedetailsData.icons}
+              className="float-left mr-2"
+            />
 
             {messagedetailsData.title}
           </h2>
@@ -5457,7 +5492,7 @@ export default function MlResultsConnection({ resultData }) {
                               "Count of unique Email IDs ingested from Hubspots."
                             }
                           >
-                            <i className="fa fa-info-circle icon-size float-left"></i>
+                            <i className="fa fa-info-circle small-md-icons float-left"></i>
                           </Tooltip>
                           <br /> <img src={total_contacts} alt="convertml" />
                           <span className="count-number" title={item.count}>
@@ -5481,7 +5516,7 @@ export default function MlResultsConnection({ resultData }) {
                               "Average revenue generated by the customer during their lifetime"
                             }
                           >
-                            <i className="fa fa-info-circle icon-size float-left"></i>
+                            <i className="fa fa-info-circle small-md-icons float-left"></i>
                           </Tooltip>
                           <br /> <img src={total_contacts} alt="convertml" />
                           <span
@@ -5508,7 +5543,7 @@ export default function MlResultsConnection({ resultData }) {
                               "The rate at which customers have churned in the given time period."
                             }
                           >
-                            <i className="fa fa-info-circle icon-size float-left"></i>
+                            <i className="fa fa-info-circle small-md-icons float-left"></i>
                           </Tooltip>
                           <br /> <img src={total_contacts} alt="convertml" />
                           <span
@@ -5536,7 +5571,7 @@ export default function MlResultsConnection({ resultData }) {
                               "Count of unique responses ingested from Typeform surveys."
                             }
                           >
-                            <i className="fa fa-info-circle icon-size float-left"></i>
+                            <i className="fa fa-info-circle small-md-icons float-left"></i>
                           </Tooltip>
                           <br />
                           <img src={totalResponded} alt="convertml" />
@@ -5561,7 +5596,7 @@ export default function MlResultsConnection({ resultData }) {
                               "Response percentage indicates the proportion of participants who answered a particular question or expressed a specific sentiment, relative to the total number of respondents."
                             }
                           >
-                            <i className="fa fa-info-circle float-left icon-size"></i>
+                            <i className="fa fa-info-circle float-left small-md-icons"></i>
                           </Tooltip>
                           <br />
                           <img src={totalResponsePercent} alt="convertml" />
@@ -5598,7 +5633,7 @@ export default function MlResultsConnection({ resultData }) {
                                   : "An aggregated score ranging from 0-1 indicating the overall sentiment based over all the sentiment related questions."
                               }
                             >
-                              <i className="fa fa-info-circle float-left icon-size"></i>
+                              <i className="fa fa-info-circle float-left small-md-icons"></i>
                             </Tooltip>
                             <br />
                             <img src={cltv} alt="convertml" />
@@ -5623,7 +5658,7 @@ export default function MlResultsConnection({ resultData }) {
                               "Net Promoter Score (NPS) is a customer satisfaction metric that quantifies the willingness of customers to recommend a product, service, or brand to others."
                             }
                           >
-                            <i className="fa fa-info-circle float-left icon-size"></i>
+                            <i className="fa fa-info-circle float-left small-md-icons"></i>
                           </Tooltip>
                           <br />
                           <img src={nps} alt="convertml" />
@@ -5639,25 +5674,216 @@ export default function MlResultsConnection({ resultData }) {
                   </div>
                 ))}
               </div>
-              {resultData.template !== "Churn Prediction" && resultData.template != "Market Research" && (
+              {resultData.template !== "Churn Prediction" &&
+                resultData.template != "Market Research" && (
+                  <Grid container spacing={1}>
+                    <Grid item xs={4}>
+                      <Card
+                        className={
+                          selectedGridBox ==
+                            ` WHERE s."sat_category" = 'positive'` ||
+                            selectedGridBox ==
+                            ` WHERE s."sat_category" = 'Promoter'`
+                            ? "cardBox selectCard"
+                            : "cardBox "
+                        }
+                      >
+                        <CardContent
+                          onClick={() => {
+                            resultData.template == "Net Promoter Score"
+                              ? getResultFromS3(
+                                isHubspotMerge,
+                                mappingResultdata.query_list,
+                                ` WHERE s."nps_category" = 'Promoter'`
+                              )
+                              : getResultFromS3(
+                                isHubspotMerge,
+                                mappingResultdata.query_list,
+                                ` WHERE s."sat_category" = 'positive'`
+                              );
+                          }}
+                        >
+                          <img
+                            src={positivechart}
+                            alt="Positive"
+                            className="float-right"
+                          />
+                          <div
+                            className="float-left"
+                            style={{ width: "145px" }}
+                          >
+                            <img
+                              src={positiveIcons}
+                              width={30}
+                              alt="Positive"
+                              className="float-left"
+                              style={{ marginTop: "-5px" }}
+                            />{" "}
+                            &nbsp;
+                            <b>
+                              {resultData.template == "Net Promoter Score"
+                                ? "Promoter"
+                                : "Positive"}
+                            </b>
+                            &nbsp;
+                            <Tooltip
+                              title={
+                                "Highly satisfied respondents express contentment and positive sentiment towards their overall experience."
+                              }
+                            >
+                              <i className="fa fa-info-circle small-md-icons"></i>
+                            </Tooltip>
+                            <div className="clearfix"></div>
+                            <div className="count-number">
+                              {satisfactionResult?.positive}%
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Card
+                        className={
+                          selectedGridBox ==
+                            ` WHERE sat_category = 'neutral'` ||
+                            selectedGridBox == ` WHERE sat_category = 'Passive'`
+                            ? "cardBox selectCard"
+                            : "cardBox"
+                        }
+                      >
+                        <CardContent
+                          onClick={() => {
+                            resultData.template == "Net Promoter Score"
+                              ? getResultFromS3(
+                                isHubspotMerge,
+                                mappingResultdata.query_list,
+                                `WHERE s."nps_category" = 'Passive'`
+                              )
+                              : getResultFromS3(
+                                isHubspotMerge,
+                                mappingResultdata.query_list,
+                                ` WHERE s."sat_category" = 'neutral'`
+                              );
+                          }}
+                        >
+                          <img
+                            src={neutralchart}
+                            alt="Positive"
+                            className="float-right"
+                          />
+                          <div
+                            className="float-left"
+                            style={{ width: "145px" }}
+                          >
+                            <img
+                              src={neutralIcons}
+                              width={30}
+                              alt="Neutral"
+                              className="float-left"
+                              style={{ marginTop: "-5px" }}
+                            />{" "}
+                            &nbsp;
+                            <b>
+                              {resultData.template == "Net Promoter Score"
+                                ? "Passive"
+                                : "Neutral"}
+                            </b>{" "}
+                            <Tooltip
+                              title={
+                                "Moderate contentment with the overall experience, neither exceptionally pleased nor dissatisfied."
+                              }
+                            >
+                              <i className="fa fa-info-circle small-md-icons"></i>
+                            </Tooltip>
+                            <div className="clearfix"></div>
+                            <div className="count-number">
+                              {satisfactionResult?.neutral}%
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                    <Grid item xs={4}>
+                      {/* {(data.row.sat_category != undefined &&
+              data.row.sat_category.toLowerCase() == "negative") ||
+              (data.row.sat_category != undefined &&
+                data.row.sat_category.toLowerCase() == "detractor") ? */}
+                      <Card
+                        className={
+                          selectedGridBox ==
+                            ` WHERE sat_category = 'negative'` ||
+                            selectedGridBox == ` WHERE sat_category = 'Detractor'`
+                            ? "cardBox selectCard"
+                            : "cardBox"
+                        }
+                        onClick={() => {
+                          resultData.template == "Net Promoter Score"
+                            ? getResultFromS3(
+                              isHubspotMerge,
+                              mappingResultdata.query_list,
+                              ` WHERE s."nps_category" = 'Detractor'`
+                            )
+                            : getResultFromS3(
+                              isHubspotMerge,
+                              mappingResultdata.query_list,
+                              ` WHERE s."sat_category" = 'negative'`
+                            );
+                        }}
+                      >
+                        <CardContent>
+                          <img
+                            src={negativechart}
+                            alt="Positive"
+                            className="float-right"
+                          />
+                          <div
+                            className="float-left"
+                            style={{ width: "145px" }}
+                          >
+                            <img
+                              src={negativeIcons}
+                              width={30}
+                              alt="Negative"
+                              className="float-left"
+                              style={{ marginTop: "-5px" }}
+                            />
+                            &nbsp;
+                            <b>
+                              {resultData.template == "Net Promoter Score"
+                                ? "Detractor"
+                                : "Negative"}
+                            </b>
+                            &nbsp;
+                            <Tooltip
+                              title={
+                                "Survey respondents expressed dissatisfaction with the provided service, citing various concerns and shortcomings."
+                              }
+                            >
+                              <i className="fa fa-info-circle small-md-icons"></i>
+                            </Tooltip>
+                            <div className="clearfix"></div>
+                            <div className="count-number">
+                              {satisfactionResult?.negative}%
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  </Grid>
+                )}
+
+              {resultData.template === "Churn Prediction" && (
                 <Grid container spacing={1}>
                   <Grid item xs={4}>
                     <Card
                       className={
-                        (selectedGridBox == ` WHERE s."sat_category" = 'positive'` || selectedGridBox == ` WHERE s."sat_category" = 'Promoter'`)
+                        selectedGridBox == ` WHERE sat_category = 'positive'` ||
+                          selectedGridBox == ` WHERE sat_category = 'Promoter'`
                           ? "cardBox selectCard"
                           : "cardBox "
                       }
                     >
-                      <CardContent
-
-                        onClick={() => {
-                          resultData.template == "Net Promoter Score"
-                            ? getResultFromS3(isHubspotMerge, mappingResultdata.query_list, ` WHERE s."nps_category" = 'Promoter'`)
-                            :
-                            getResultFromS3(isHubspotMerge, mappingResultdata.query_list, ` WHERE s."sat_category" = 'positive'`)
-                        }}
-                      >
+                      <CardContent>
                         <img
                           src={positivechart}
                           alt="Positive"
@@ -5665,29 +5891,25 @@ export default function MlResultsConnection({ resultData }) {
                         />
                         <div className="float-left" style={{ width: "145px" }}>
                           <img
-                            src={positiveIcons}
+                            src={neutralIcons}
                             width={30}
                             alt="Positive"
                             className="float-left"
                             style={{ marginTop: "-5px" }}
                           />{" "}
                           &nbsp;
-                          <b>
-                            {resultData.template == "Net Promoter Score"
-                              ? "Promoter"
-                              : "Positive"}
-                          </b>
+                          <b>{"High"}</b>
                           &nbsp;
                           <Tooltip
                             title={
-                              "Highly satisfied respondents express contentment and positive sentiment towards their overall experience."
+                              "Percentage of customers who are at predicted to have a high risk of Churning."
                             }
                           >
-                            <i className="fa fa-info-circle icon-size"></i>
+                            <i className="fa fa-info-circle small-md-icons"></i>
                           </Tooltip>
                           <div className="clearfix"></div>
                           <div className="count-number">
-                            {satisfactionResult?.positive}%
+                            {churnSatisfactionResult?.high_Risk}%
                           </div>
                         </div>
                       </CardContent>
@@ -5702,157 +5924,7 @@ export default function MlResultsConnection({ resultData }) {
                           : "cardBox"
                       }
                     >
-                      <CardContent
-                        onClick={() => {
-                          resultData.template == "Net Promoter Score"
-                            ? getResultFromS3(isHubspotMerge, mappingResultdata.query_list, `WHERE s."nps_category" = 'Passive'`)
-                            : getResultFromS3(isHubspotMerge, mappingResultdata.query_list, ` WHERE s."sat_category" = 'neutral'`)
-                        }}
-                      >
-                        <img
-                          src={neutralchart}
-                          alt="Positive"
-                          className="float-right"
-                        />
-                        <div className="float-left" style={{ width: "145px" }}>
-                          <img
-                            src={neutralIcons}
-                            width={30}
-                            alt="Neutral"
-                            className="float-left"
-                            style={{ marginTop: "-5px" }}
-                          />{" "}
-                          &nbsp;
-                          <b>
-                            {resultData.template == "Net Promoter Score"
-                              ? "Passive"
-                              : "Neutral"}
-                          </b>{" "}
-                          <Tooltip
-                            title={
-                              "Moderate contentment with the overall experience, neither exceptionally pleased nor dissatisfied."
-                            }
-                          >
-                            <i className="fa fa-info-circle icon-size"></i>
-                          </Tooltip>
-                          <div className="clearfix"></div>
-                          <div className="count-number">
-                            {satisfactionResult?.neutral}%
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                  <Grid item xs={4}>
-                    {/* {(data.row.sat_category != undefined &&
-              data.row.sat_category.toLowerCase() == "negative") ||
-              (data.row.sat_category != undefined &&
-                data.row.sat_category.toLowerCase() == "detractor") ? */}
-                    <Card
-                      className={
-                        selectedGridBox == ` WHERE sat_category = 'negative'` ||
-                          selectedGridBox == ` WHERE sat_category = 'Detractor'`
-                          ? "cardBox selectCard"
-                          : "cardBox"
-                      }
-                      onClick={() => {
-                        resultData.template == "Net Promoter Score"
-                          ? getResultFromS3(isHubspotMerge, mappingResultdata.query_list, ` WHERE s."nps_category" = 'Detractor'`)
-                          : getResultFromS3(isHubspotMerge, mappingResultdata.query_list, ` WHERE s."sat_category" = 'negative'`);
-                      }}
-                    >
                       <CardContent>
-                        <img
-                          src={negativechart}
-                          alt="Positive"
-                          className="float-right"
-                        />
-                        <div className="float-left" style={{ width: "145px" }}>
-                          <img
-                            src={negativeIcons}
-                            width={30}
-                            alt="Negative"
-                            className="float-left"
-                            style={{ marginTop: "-5px" }}
-                          />
-                          &nbsp;
-                          <b>
-                            {resultData.template == "Net Promoter Score"
-                              ? "Detractor"
-                              : "Negative"}
-                          </b>
-                          &nbsp;
-                          <Tooltip
-                            title={
-                              "Survey respondents expressed dissatisfaction with the provided service, citing various concerns and shortcomings."
-                            }
-                          >
-                            <i className="fa fa-info-circle icon-size"></i>
-                          </Tooltip>
-                          <div className="clearfix"></div>
-                          <div className="count-number">
-                            {satisfactionResult?.negative}%
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                </Grid>
-              )}
-
-              {resultData.template === "Churn Prediction" && (
-                <Grid container spacing={1}>
-                  <Grid item xs={4}>
-                    <Card className={
-                      selectedGridBox == ` WHERE sat_category = 'positive'` ||
-                        selectedGridBox == ` WHERE sat_category = 'Promoter'`
-                        ? "cardBox selectCard"
-                        : "cardBox "
-                    }>
-                      <CardContent
-                      >
-                        <img
-                          src={positivechart}
-                          alt="Positive"
-                          className="float-right"
-                        />
-                        <div className="float-left" style={{ width: "145px" }}>
-                          <img
-                            src={neutralIcons}
-                            width={30}
-                            alt="Positive"
-                            className="float-left"
-                            style={{ marginTop: "-5px" }}
-                          />{" "}
-                          &nbsp;
-                          <b>
-                            {"High"}
-                          </b>
-                          &nbsp;
-                          <Tooltip
-                            title={
-                              "Percentage of customers who are at predicted to have a high risk of Churning."
-                            }
-                          >
-                            <i className="fa fa-info-circle icon-size"></i>
-                          </Tooltip>
-                          <div className="clearfix"></div>
-                          <div className="count-number">
-                            {churnSatisfactionResult?.high_Risk}%
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Card className={
-                      selectedGridBox == ` WHERE sat_category = 'neutral'` ||
-                        selectedGridBox == ` WHERE sat_category = 'Passive'`
-                        ? "cardBox selectCard"
-                        : "cardBox"
-                    }>
-                      <CardContent
-                      >
                         <img
                           src={neutralchart}
                           alt="Positive"
@@ -5867,12 +5939,13 @@ export default function MlResultsConnection({ resultData }) {
                             style={{ marginTop: "-5px" }}
                           />{" "}
                           &nbsp;
-                          <b>
-                            {"Low"}
-                          </b>{" "}
+                          <b>{"Low"}</b>{" "}
                           <Tooltip
-                            title={"Percentage of customers who are at a low risk of churning."}>
-                            <i className="fa fa-info-circle icon-size"></i>
+                            title={
+                              "Percentage of customers who are at a low risk of churning."
+                            }
+                          >
+                            <i className="fa fa-info-circle small-md-icons"></i>
                           </Tooltip>
                           <div className="clearfix"></div>
                           <div className="count-number">
@@ -5884,10 +5957,170 @@ export default function MlResultsConnection({ resultData }) {
                   </Grid>
                 </Grid>
               )}
-<div style={{height:9}}></div>
 
+              <div style={{ height: 9 }}></div>
+              {/* ---------------- custom chart  ----------------  */}
               <Grid container spacing={1}>
+                <Grid item xs={8}>
+                  <Card className="cardBox">
+                    <CardContent>
+                      <Grid container spacing={1}>
+                        <Grid item xs={6}>
+                          <Stack spacing={2}>
+                            <h4 className="m-0">Custom</h4>
+                            <FormControl sx={{ minWidth: '100%' }} size="small">
+                              <InputLabel id="cxaxis">X-axis</InputLabel>
+                              <Select
+                                labelId="cxaxis"
+                                id="cxaxis"
+                                value={setcustomaxis.xaxis}
+                                label="X-axis"
+                              >
+                                {resultvalueKeys.map(
+                                  (item, i) => (
+                                    <MenuItem
+                                      key={item}
+                                      value={item}
+                                      onClick={(e) => {
+                                        selectChartaxis(e, item, 'xaxis');
+                                      }}
+                                    >
+                                      <ListItemText primary={item} />
+                                    </MenuItem>
+                                  )
+                                )}
+                              </Select>
+                            </FormControl>
 
+                            <FormControl sx={{ minWidth: '100%' }} size="small">
+                              <InputLabel id="cyaxis">Y-axis</InputLabel>
+                              <Select
+                                labelId="cxaxis"
+                                id="cxaxis"
+                                value={setcustomaxis.yaxis}
+                                label="X-axis"
+                              >
+                                {resultvalueKeys.map(
+                                  (item, i) => (
+                                    <MenuItem
+                                      key={item}
+                                      value={item}
+                                      onClick={(e) => {
+                                        selectChartaxis(e, item, 'yaxis');
+                                      }}
+                                    >
+                                      <ListItemText primary={item} />
+                                    </MenuItem>
+                                  )
+                                )}
+                              </Select>
+                            </FormControl>
+
+                            <FormControl sx={{ minWidth: '100%' }} size="small">
+                              <InputLabel id="cyaxis">Data Operation</InputLabel>
+                              <Select
+                                labelId="cxaxis"
+                                id="cxaxis"
+                                value={setcustomaxis.operationName}
+                                label="X-axis"
+                              >
+                                {customChartOpertaion.map(
+                                  (item, i) => (
+                                    <MenuItem
+                                      key={item}
+                                      value={item}
+                                      onClick={(e) => {
+                                        selectChartaxis(e, item,'operation');
+                                      }}
+                                    >
+                                      <ListItemText primary={item} />
+                                    </MenuItem>
+                                  )
+                                )}
+                              </Select>
+                            </FormControl>
+                            <Box sx={{ mt: 2 }}>
+                              <DateRangePickerComponent
+                                placeholder="Select Time range"
+                                cssClass="e-outline"
+                                value={filtercustomChartRange}
+                                change={(ev) => {
+                                  setfiltercustomChartRange(ev.value);
+                                }}
+                              >
+                                <PresetsDirective>
+                                  <PresetDirective
+                                    label="Current Week"
+                                    start={weekStart}
+                                    end={weekEnd}
+                                  ></PresetDirective>
+                                  <PresetDirective
+                                    label="Last Week"
+                                    start={lastweekStart}
+                                    end={lastweekEnd}
+                                  ></PresetDirective>
+                                  <PresetDirective
+                                    label="Current Month"
+                                    start={monthStart}
+                                    end={monthEnd}
+                                  ></PresetDirective>
+                                  <PresetDirective
+                                    label="Last Month"
+                                    start={lastStart}
+                                    end={lastEnd}
+                                  ></PresetDirective>
+                                  <PresetDirective
+                                    label="Last Year"
+                                    start={yearStart}
+                                    end={yearEnd}
+                                  ></PresetDirective>
+                                </PresetsDirective>
+                              </DateRangePickerComponent>
+                            </Box>
+                          </Stack><br />
+                          <Stack direction="row" spacing={1}>
+                            <Button
+                              color="primary"
+                              variant="outlined"
+                              onClick={() => {
+                                clearfilter("timeseries");
+                              }}
+
+                            >
+                              <i className="fa fa-close mr-1" />  Clear All
+                            </Button>
+                            <Button
+                              color="primary"
+                              variant="outlined"
+                              onClick={() => {
+                                clearfilter("timeseries");
+                              }}
+                            >
+                              <i className="fa fa-exchange mr-1" />  Swap
+                            </Button>
+                            <Button
+                              sx={{ mt: { xs: 2, sm: 0 } }}
+                              color="primary"
+                              variant="contained"
+                              onClick={(e) => applyCustomChart()}
+                            >
+                              Apply
+                            </Button>
+                          </Stack>
+
+
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Box sx={{ height: 300, width: "100%" }}>
+                            {customchartloader?<div className="text-center"><br/><br/><br/><br/><CircularProgress /><br/> <br/>Thank you for your patience...</div>:<><CustomChart customchartData={customchartData} /></>}
+                          
+                          </Box>
+
+                        </Grid>
+                      </Grid>
+                    </CardContent>
+                  </Card>
+                </Grid>
                 {featureImportanceData.chartSeries.length != 0 ? (
                   <>
                     {" "}
@@ -5906,14 +6139,14 @@ export default function MlResultsConnection({ resultData }) {
                                 "A list of important features which impact churn behaviour in customers. The values denote the relative importance of each feature on the churn behaviour."
                               }
                             >
-                              <i className="fa fa-info-circle icon-size"></i>
+                              <i className="fa fa-info-circle small-md-icons"></i>
                             </Tooltip>
                           </div>
                           <div className="clearfix"></div>
-                          <Box sx={{ height: 230, width: "100%" }}>
+                          <Box sx={{ height: 290, width: "100%" }}>
                             <div id="chart122a1">
                               <Chart
-                                height={230}
+                                height={290}
                                 width={"100%"}
                                 options={featureImportancechart}
                                 series={featureImportanceData.chartSeries}
@@ -5935,13 +6168,15 @@ export default function MlResultsConnection({ resultData }) {
                           style={{ letterSpacing: 0.6 }}
                           title={"Revenue ARR by Category"}
                         >
-                          Revenue ARR by Category 
+                          Revenue ARR by Category
                         </h3>
                         <div className="result-toolbar">
                           <Tooltip
-                            title={"The net revenue generated by customers belonging to each Churn bucket."}
+                            title={
+                              "The net revenue generated by customers belonging to each Churn bucket."
+                            }
                           >
-                            <i className="fa fa-info-circle icon-size"></i>
+                            <i className="fa fa-info-circle small-md-icons"></i>
                           </Tooltip>
                         </div>
                         <div className="clearfix"></div>
@@ -5961,10 +6196,63 @@ export default function MlResultsConnection({ resultData }) {
                   </Grid>
                 ) : null}
 
-              {/* </Grid> */}
+                {heatMapDataForResult.chartSeries.length != 0 ? (
+                  <>
+                    <Grid item xs={chartHalfheat} className={chartOne}>
+                      <Card className="cardBox">
+                        <CardContent>
+                          <h3
+                            title={"HeatMap"}
+                          >
+                            HeatMap
+                          </h3>
+                          <div className="result-toolbar">
+                            <Tooltip
+                              title={
+                                "Better understand your core variables by tracking them over time, such as by months, quarters, years, or a specific time period. "
+                              }
+                            >
+                              <i className="fa fa-info-circle small-md-icons"></i>
+                            </Tooltip>
+                            <a
+                              className={"-  " + hideButtonheat}
+                              onClick={(e) => closeenlarge("heatMap")}
+                            >
+                              <i className="fa fa-compress"> </i>
+                            </a>
+                            <a
+                              className={"-  " + showButtonheat}
+                              onClick={(e) => chartenlarge("heatMap")}
+                            >
+                              <i className="fa fa-expand"> </i>
+                            </a>
+                            {/* <a>
+                              <i
+                                className="fa fa-filter"
+                                onClick={(e) => openFilterBox(e, "heatMap")}
+                              ></i>
+                            </a> */}
+                          </div>
+                          <div className="clearfix"></div>
+                          <Box sx={{ height: chartBoxHeightheat, width: "100%" }}>
+                            <div id="chart11er1">
+                              <Chart
+                                height={chartBoxHeightheat}
+                                width={"100%"}
+                                options={heatmapChartOption}
+                                series={heatMapDataForResult.chartSeries}
+                                type="heatmap"
+                              />
+                            </div>
+                          </Box>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  </>
+                ) : null}
 
-              {/* <div style={{ height: 10 }}></div> */}
-              {/* <Grid container spacing={1}> */}
+                {/* <div style={{ height: 10 }}></div> */}
+                {/* <Grid container spacing={1}> */}
                 {topicSentimentResult1.length != 0 && (
                   <Grid
                     item
@@ -5990,7 +6278,7 @@ export default function MlResultsConnection({ resultData }) {
                               "Identify what your customers are talking about and their tone. Find out the most frequently used topics or phrases in your customer feedback. "
                             }
                           >
-                            <i className="fa fa-info-circle icon-size"></i>
+                            <i className="fa fa-info-circle small-md-icons"></i>
                           </Tooltip>
                           <a
                             className={"-  " + hideButtonST}
@@ -6012,6 +6300,7 @@ export default function MlResultsConnection({ resultData }) {
                               }
                             ></i>
                           </a>
+                          
                         </div>
                         <div className="clearfix"></div>
 
@@ -6019,7 +6308,7 @@ export default function MlResultsConnection({ resultData }) {
                         <Box
                           sx={{
                             maxHeight: chartBoxHeightST,
-                            minHeight: chartHalfST == 4 ? "230px" : "auto",
+                            minHeight: chartHalfST == 4 ? "292px" : "auto",
                             width: "100%",
                             overflow: "auto",
                           }}
@@ -6034,23 +6323,40 @@ export default function MlResultsConnection({ resultData }) {
                                   {baritem.topic}
                                 </label>
                                 <div className="bars">
-
                                   <div
-                                    onClick={(e) => getResultFromS3(isHubspotMerge, mappingResultdata.query_list, `WHERE CAST(s."${baritem.topic}" as FLOAT) BETWEEN 4 AND 5 `)}
+                                    onClick={(e) =>
+                                      getResultFromS3(
+                                        isHubspotMerge,
+                                        mappingResultdata.query_list,
+                                        `WHERE CAST(s."${baritem.topic}" as FLOAT) BETWEEN 4 AND 5 `
+                                      )
+                                    }
                                     className="promoter"
                                     style={{ width: baritem.positive + "%" }}
                                   >
                                     <span>{baritem.positive + "%"}</span>
                                   </div>
                                   <div
-                                    onClick={(e) => getResultFromS3(isHubspotMerge, mappingResultdata.query_list, `WHERE CAST(s."${baritem.topic}" as FLOAT) BETWEEN 2 AND 3.9999`)}
+                                    onClick={(e) =>
+                                      getResultFromS3(
+                                        isHubspotMerge,
+                                        mappingResultdata.query_list,
+                                        `WHERE CAST(s."${baritem.topic}" as FLOAT) BETWEEN 2 AND 3.9999`
+                                      )
+                                    }
                                     className="passive"
                                     style={{ width: baritem.neutral + "%" }}
                                   >
                                     <span>{baritem.neutral + "%"}</span>
                                   </div>
                                   <div
-                                    onClick={(e) => getResultFromS3(isHubspotMerge, mappingResultdata.query_list, `WHERE CAST(s."${baritem.topic}" as FLOAT) < 2`)}
+                                    onClick={(e) =>
+                                      getResultFromS3(
+                                        isHubspotMerge,
+                                        mappingResultdata.query_list,
+                                        `WHERE CAST(s."${baritem.topic}" as FLOAT) < 2`
+                                      )
+                                    }
                                     className="detractor"
                                     style={{ width: baritem.negative + "%" }}
                                   >
@@ -6086,7 +6392,7 @@ export default function MlResultsConnection({ resultData }) {
                                     "Revenue ARR by category refers to the annual recurring revenue (ARR) generated by a business segmented according to Net Promoter Score (NPS) categories. The NPS categories, including Promoters (loyal customers), Detractors (unhappy customers), and Passives (neutral customers), help analyze how different customer segments contribute to the company's overall revenue. This metric provides insights into the financial impact of customer satisfaction levels."
                                   }
                                 >
-                                  <i className="fa fa-info-circle icon-size"></i>
+                                  <i className="fa fa-info-circle small-md-icons"></i>
                                 </Tooltip>
                               </div>
                               <div className="clearfix"></div>
@@ -6108,11 +6414,10 @@ export default function MlResultsConnection({ resultData }) {
                     ) : null}
                   </>
                 ) : (
-                  <>
-                    {" "}
+                  <> 
                     {demographicsResult.chartSeries.length != 0 ? (
                       <>
-                        <Grid item xs={4}>
+                        <Grid item xs={chartHalfdonutChart}>
                           <Card className="cardBox">
                             <CardContent>
                               <h3 title={`${demographicsResult.selectedCat}`}>
@@ -6124,9 +6429,22 @@ export default function MlResultsConnection({ resultData }) {
                                     "Get granular-level insights into your customers by segmenting them by age, gender, region, and other demographic variables."
                                   }
                                 >
-                                  <i className="fa fa-info-circle icon-size"></i>
+                                  <i className="fa fa-info-circle small-md-icons"></i>
                                 </Tooltip>
+                               
                                 <a
+                              className={"-  " + hideButtondonutChart}
+                              onClick={(e) => closeenlarge("donutChart")}
+                            >
+                              <i className="fa fa-compress"> </i>{" "}
+                            </a>
+                            <a
+                              className={"-  " + showButtondonutChart}
+                              onClick={(e) => chartenlarge("donutChart")}
+                            >
+                              <i className="fa fa-expand"> </i>
+                            </a>
+                            <a
                                   onClick={(e) =>
                                     openFilterBox(e, "Demography")
                                   }
@@ -6134,10 +6452,11 @@ export default function MlResultsConnection({ resultData }) {
                                   <i className="fa fa-filter"></i>
                                 </a>
                               </div>
+                              
                               <div className="clearfix"></div>
                               <Box
                                 sx={{
-                                  height: 230,
+                                  height: chartBoxHeightdonutChart,
                                   width: "100%",
                                   margin: "auto",
                                 }}
@@ -6147,7 +6466,7 @@ export default function MlResultsConnection({ resultData }) {
                                   style={{ margin: "auto", width: "100%" }}
                                 >
                                   <Chart
-                                    height={260}
+                                    height={chartBoxHeightdonutChart}
                                     width={"100%"}
                                     options={polarAreachartOptions}
                                     series={demographicsResult.chartSeries}
@@ -6163,19 +6482,19 @@ export default function MlResultsConnection({ resultData }) {
                   </>
                 )}
 
-                {timeSeriesData.chartSeries.length != 0 && resultData.template !=="Churn Prediction" ? (
+                {timeSeriesData.chartSeries.length != 0 &&
+                  resultData.template !== "Churn Prediction" ? (
                   <>
                     <Grid item xs={chartHalfTs} className={chartOne}>
                       <Card className="cardBox">
                         <CardContent>
                           <h3
-                            title={`Time Series: ${
-                              timeSeriesData.selectedTimeSeriesTimeOption.filter(
-                                (ele) =>
-                                  ele.value ==
-                                  timeSeriesData.selectedTimeSeriesTime
-                              )[0].name
-                            }`}
+                            title={`Time Series: ${timeSeriesData.selectedTimeSeriesTimeOption.filter(
+                              (ele) =>
+                                ele.value ==
+                                timeSeriesData.selectedTimeSeriesTime
+                            )[0].name
+                              }`}
                           >
                             Time Series:{" "}
                             {
@@ -6196,7 +6515,7 @@ export default function MlResultsConnection({ resultData }) {
                                 "Better understand your core variables by tracking them over time, such as by months, quarters, years, or a specific time period. "
                               }
                             >
-                              <i className="fa fa-info-circle icon-size"></i>
+                              <i className="fa fa-info-circle small-md-icons"></i>
                             </Tooltip>
                             <a
                               className={"-  " + hideButton}
@@ -6235,21 +6554,21 @@ export default function MlResultsConnection({ resultData }) {
                   </>
                 ) : null}
 
-            {timeSeriesData.chartSeries.length != 0 && resultData.template =="Churn Prediction" ? (
+                {timeSeriesData.chartSeries.length != 0 &&
+                  resultData.template == "Churn Prediction" ? (
                   <>
                     <Grid item xs={chartHalfTs} className={chartOne}>
                       <Card className="cardBox">
                         <CardContent>
                           <h3
-                            title={`Churn Across Customer Journey: ${
-                              timeSeriesData.selectedTimeSeriesTimeOption.filter(
-                                (ele) =>
-                                  ele.value ==
-                                  timeSeriesData.selectedTimeSeriesTime
-                              )[0].name
-                            }`}
+                            title={`Churn Across Customer Journey: ${timeSeriesData.selectedTimeSeriesTimeOption.filter(
+                              (ele) =>
+                                ele.value ==
+                                timeSeriesData.selectedTimeSeriesTime
+                            )[0].name
+                              }`}
                           >
-                           Churn Across Customer Journey:
+                            Churn Across Customer Journey:
                             {
                               timeSeriesData.selectedTimeSeriesTimeOption.filter(
                                 (ele) =>
@@ -6268,7 +6587,7 @@ export default function MlResultsConnection({ resultData }) {
                                 "Better understand your core variables by tracking them over time, such as by months, quarters, years, or a specific time period. "
                               }
                             >
-                              <i className="fa fa-info-circle icon-size"></i>
+                              <i className="fa fa-info-circle small-md-icons"></i>
                             </Tooltip>
                             <a
                               className={"-  " + hideButton}
@@ -6329,7 +6648,7 @@ export default function MlResultsConnection({ resultData }) {
                                 "Understand how the overall customer satisfaction varies in relation to your products, customer care, and other services."
                               }
                             >
-                              <i className="fa fa-info-circle icon-size"></i>
+                              <i className="fa fa-info-circle small-md-icons"></i>
                             </Tooltip>
                             <a
                               className={"- " + showButtonTM}
@@ -6388,7 +6707,7 @@ export default function MlResultsConnection({ resultData }) {
                                 "This metric assesses the level of interest and value attributed to different topics that a potential customer is thinking of regarding your company."
                               }
                             >
-                              <i className="fa fa-info-circle icon-size"></i>
+                              <i className="fa fa-info-circle small-md-icons"></i>
                             </Tooltip>
                             <a
                               className={"- " + showButton}
@@ -6424,32 +6743,103 @@ export default function MlResultsConnection({ resultData }) {
                     <Grid item xs={chartHalfCR} className={chartThree}>
                       <Card className="cardBox">
                         <CardContent>
-                          <h3
-                            title={
-                              "Clustering Analysis" +
-                              correspondenceAnalysis?.overall
-                            }
-                          >
-                            Clustering Analysis{" "}
-                            {correspondenceAnalysis?.overall}
-                          </h3>
-                          <div className="result-toolbar">
-                            <Tooltip
+                          <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={1}>
+                            <div><h3 style={{ minWidth: 250 }}
                               title={
-                                "Clustering analysis in market analysis involves grouping survey responses based on shared characteristics or preferences, revealing distinct customer segments for targeted marketing strategies and product offerings. This method uncovers valuable insights for tailoring marketing efforts and enhancing customer satisfaction."
+                                "Clustering Analysis" +
+                                correspondenceAnalysis?.overall
                               }
                             >
-                              <i className="fa fa-info-circle icon-size mr-1"></i>
-                            </Tooltip>
-                            <i
-                              className={"fa fa-expand " + showButtonCR}
-                              onClick={(e) => chartenlarge("companyCR")}
-                            ></i>
-                            <i
-                              className={"fa fa-compress " + hideButtonCR}
-                              onClick={(e) => closeenlarge("companyCR")}
-                            ></i>
-                          </div>
+                              Clustering Analysis
+                              {correspondenceAnalysis?.overall}
+                            </h3>
+                            </div>
+                            <div>{
+                              showButtonCR == "d-none" ? <>
+                                <Grid container spacing={2}>
+                                  <Grid item xs={6} md={6}>
+                                    <FormControl size="small" sx={{ minWidth: 250, width: "100%" }} >
+                                      <InputLabel id="X-axis-label">X-axis</InputLabel>
+                                      <Select
+                                        labelId="X-axis-label"
+                                        id="X-axis-label"
+                                        label="X-axis"
+                                        value={correspondenceAnalysis.xLable}
+                                      >
+                                        {correspondenceAnalysis.colList.map(
+                                          (item, i) => (
+                                            <MenuItem
+                                              key={item}
+                                              value={item}
+                                              onClick={(e) => {
+                                                selectAxisForCluster(e, item, "xLable");
+                                              }}
+                                            >
+                                              {/* <Checkbox /> */}
+                                              <ListItemText primary={item} />
+                                            </MenuItem>
+                                          )
+                                        )}
+                                      </Select>
+                                    </FormControl>
+                                  </Grid>
+                                  <Grid item xs={6} md={6}>
+                                    <FormControl size="small" sx={{ minWidth: 250, width: "100%" }}>
+                                      <InputLabel id="Y-axis-label">X-axis</InputLabel>
+                                      <Select
+                                        labelId="Y-axis-label"
+                                        id="Y-axis-label"
+                                        label="Y-axis"
+                                        value={correspondenceAnalysis.yLable}
+                                      >
+                                        {correspondenceAnalysis.colList.map(
+                                          (item, i) => (
+                                            <MenuItem
+                                              key={item}
+                                              value={item}
+                                              onClick={(e) => {
+                                                selectAxisForCluster(e, item, "yLable");
+                                              }}
+                                            >
+                                              {/* <Checkbox /> */}
+                                              <ListItemText primary={item} />
+                                            </MenuItem>
+                                          )
+                                        )}
+                                      </Select>
+                                    </FormControl>
+                                  </Grid>
+                                </Grid>
+                              </> : ""
+                            } </div>
+                            <div className="result-toolbar" >
+                              <Tooltip
+                                title={
+                                  "Clustering analysis in market analysis involves grouping survey responses based on shared characteristics or preferences, revealing distinct customer segments for targeted marketing strategies and product offerings. This method uncovers valuable insights for tailoring marketing efforts and enhancing customer satisfaction."
+                                }
+                              >
+                                <i className="fa fa-info-circle cursorpointer small-md-icons mr-1"></i>
+                              </Tooltip>
+                              <i
+                                className={"fa fa-expand cursorpointer " + showButtonCR}
+                                onClick={(e) => chartenlarge("companyCR")}
+                              ></i>
+                              <i
+                                className={"fa fa-compress cursorpointer " + hideButtonCR}
+                                onClick={(e) => closeenlarge("companyCR")}
+                              ></i>
+                            </div>
+                          </Stack>
+
+                          <Grid container spacing={2}>
+                            <Grid item xs={3} md={showButtonCR ? 8 : 3}>
+
+                            </Grid>
+
+                            <Grid item xs={3} md={showButtonCR ? 4 : 3}>
+
+                            </Grid>
+                          </Grid>
                           <div className="clearfix"></div>
                           <Box sx={{ height: chartBoxHeightCR, width: "100%" }}>
                             <div id="chart12b">
@@ -6483,7 +6873,7 @@ export default function MlResultsConnection({ resultData }) {
                                 "Word clouds visually represent the most frequently mentioned words in the customer feedback."
                               }
                             >
-                              <i className="fa fa-info-circle icon-size"></i>
+                              <i className="fa fa-info-circle small-md-icons"></i>
                             </Tooltip>
                             <a>
                               {" "}
@@ -6528,158 +6918,9 @@ export default function MlResultsConnection({ resultData }) {
                     </Grid>
                   </>
                 ) : null}
-                {correspondenceAnalysis.chartSeries.length != 0 ? (
-                  <>
-                    <Grid item xs={chartHalfCR} className={chartThreeCopy}>
-                      <Card className="cardBox">
-                        <CardContent>
-                          <h3
-                            title={
-                              "Clustering Analysis " +
-                              correspondenceAnalysis?.overall
-                            }
-                          >
-                            Clustering Analysis{" "}
-                            {correspondenceAnalysis?.overall}
-                          </h3>
-                          <div className="result-toolbar">
-                            <Tooltip
-                              title={
-                                "Clustering analysis in market analysis involves grouping survey responses based on shared characteristics or preferences, revealing distinct customer segments for targeted marketing strategies and product offerings. This method uncovers valuable insights for tailoring marketing efforts and enhancing customer satisfaction."
-                              }
-                            >
-                              <i className="fa fa-info-circle icon-size"></i>
-                            </Tooltip>
-                            <a
-                              className={"fa fa-expand " + showButtonCR}
-                              onClick={(e) => chartenlarge("companyCR")}
-                            ></a>
-                            <a
-                              className={"fa fa-compress " + hideButtonCR}
-                              onClick={(e) => closeenlarge("companyCR")}
-                            ></a>
-                          </div>
-                          <Box sx={{ height: chartBoxHeightCR, width: "100%" }}>
-                            <div id="chart12c">
-                              <Chart
-                                height={chartHeightCR}
-                                options={chartOptions2}
-                                series={correspondenceAnalysis.chartSeries}
-                                type="scatter"
-                              />
-                            </div>
-                          </Box>
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                  </>
-                ) : null}
-                {resultData.template == "Market Research" && (
-                  <>
-                    <Grid item xs={4}>
-                      <Card className="cardBox">
-                        <CardContent>
-                          <h3 className="float-left mr-2">Radar Graph</h3>
-                          {/* <Tooltip title={" "}>
-                            <i className="fa fa-info-circle icon-size"></i>
-                          </Tooltip>
-                           <a
-                            className={
-                              "fa fa-expand float-right mt-1 " + showButton
-                            }
-                            onClick={(e) => chartenlarge("companyC")}
-                          ></a> */}
-                          {/* <a
-                            className={
-                              "fa fa-compress float-right mt-1 " + hideButton
-                            }
-                            onClick={(e) => closeenlarge("companyC")}
-                          ></a> */}
 
-                          <Box sx={{ height: "250px", width: "100%" }}>
-                            <div id="chart11">
-                              <img
-                                src={NetPromoterScoreComingSoon}
-                                alt="convertml"
-                                width={"100%"}
-                                height={230}
-                              />
-                            </div>
-                          </Box>
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                    <Grid item xs={4}>
-                      <Card className="cardBox">
-                        <CardContent>
-                          <h3 className="float-left mr-2">
-                            Popularity Comparison
-                          </h3>
-                          {/* <Tooltip title={"This metric assesses the level of interest and value attributed to different topics that a potential customer is thinking of regarding your company."}>
-                            <i className="fa fa-info-circle icon-size"></i>
-                          </Tooltip>
-                          <a
-                            className={
-                              "fa fa-expand float-right mt-1 " + showButton
-                            }
-                            onClick={(e) => chartenlarge("companyC")}
-                          ></a> */}
-                          {/* <a
-                            className={
-                              "fa fa-compress float-right mt-1 " + hideButton
-                            }
-                            onClick={(e) => closeenlarge("companyC")}
-                          ></a> */}
-
-                          <Box sx={{ height: "250px", width: "100%" }}>
-                            <div id="chart11">
-                              <img
-                                src={stackedBarChartsComingSoon}
-                                alt="convertml"
-                                width={"100%"}
-                                height={230}
-                              />
-                            </div>
-                          </Box>
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                    <Grid item xs={4}>
-                      <Card className="cardBox">
-                        <CardContent>
-                          <h3 className="float-left mr-2">Spending Range</h3>
-                          {/* <Tooltip title={"This metric assesses the level of interest and value attributed to different topics that a potential customer is thinking of regarding your company."}>
-                            <i className="fa fa-info-circle icon-size"></i>
-                          </Tooltip>
-                          <a
-                            className={
-                              "fa fa-expand float-right mt-1 " + showButton
-                            }
-                            onClick={(e) => chartenlarge("companyC")}
-                          ></a>   */}
-                          {/* <a
-                            className={
-                              "fa fa-compress float-right mt-1 " + hideButton
-                            }
-                            onClick={(e) => closeenlarge("companyC")}
-                          ></a> */}
-
-                          <Box sx={{ height: "250px", width: "100%" }}>
-                            <div id="chart11">
-                              <img
-                                src={HistogramsComingSoon}
-                                alt="convertml"
-                                width={"100%"}
-                                height={230}
-                              />
-                            </div>
-                          </Box>
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                  </>
-                )}
               </Grid>
+              {/* ---------------- custom chart  ----------------  */}
               <div className="clearfix"></div>
             </Box>
           </div>

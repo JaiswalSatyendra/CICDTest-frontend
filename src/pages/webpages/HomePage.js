@@ -2,22 +2,33 @@ import React, { useEffect, useState } from "react";
 import HeroSection from "../../components/HeroSection";
 import Navbar from "../../components/molecules/Navbar";
 import { Button, Grid } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
-import marketResearchInsights from "../../assets/icons/marketResearchInsights.svg";
+import { Link, useNavigate } from "react-router-dom";  
 
-import customerSuccess from "../../assets/icons/customerSuccess.svg";
-import marketing from "../../assets/icons/marketing.svg";
-import productManagement from "../../assets/icons/productManagement.svg";
+import zeroPartyData from "../../assets/img/home-pagebanner/zeropartyData-banner.png"; 
+import marketInsights from "../../assets/img/home-pagebanner/marketInsights.svg";
+import customerSuccess from "../../assets/img/home-pagebanner/customerSuccess.svg";  
+import copilotBanner from "../../assets/img/home-pagebanner/copilot-banner.png"; 
 
-import zeropartyData from "../../assets/img/home-pagebanner/zeropartyData.webp";
-import competitiveadvantage from "../../assets/img/home-pagebanner/competitiveadvant.webp";
-import sittingingoldine from "../../assets/img/home-pagebanner/sittingingold-ine.webp";
+import diversePlatforms from "../../assets/img/home-pagebanner/diversePlatforms.svg"; 
 
-import arrown from "../../assets/icons/arrown.svg";
+import advancedAnalytics from "../../assets/img/home-pagebanner/advancedAnalytics.png";
+import crossTabAnalysis from "../../assets/img/home-pagebanner/crossTabAnalysis.png";
+import AIGeneratedInsights from "../../assets/img/home-pagebanner/AIGeneratedInsights.svg";
+ 
 
-import analyticalmodel1 from "../../assets/img/home-pagebanner/analyticalmodel1.png";
-import analyticalmodel2 from "../../assets/img/home-pagebanner/analyticalmodel2.png";
-import analyticalmodel3 from "../../assets/img/home-pagebanner/analyticalmodel3.png";
+import marketResearch from "../../assets/icons/home-page-icons/marketResearch.svg";
+import brandLoyalty from "../../assets/icons/home-page-icons/brandLoyalty.svg";
+import netPromoterScore from "../../assets/icons/home-page-icons/netPromoterScore.svg";
+import churnPrediction from "../../assets/icons/home-page-icons/churnPrediction.svg";
+import customerSatisfaction  from "../../assets/icons/home-page-icons/customerSatisfaction.svg";
+import leadGeneration from "../../assets/icons/home-page-icons/leadGeneration.svg";
+
+
+
+import marketing from "../../assets/img/home-pagebanner/marketing.svg"; 
+
+
+import whyConvertML from "../../assets/img/home-pagebanner/Why-ConvertML.png"; 
 import HomeFooter from "../../components/home-footer";
 import { Helmet } from "react-helmet";
 import { homeStructuredData } from "../../assets/data/schema-markup";
@@ -64,25 +75,98 @@ function HomePage() {
       <h1 className="d-none">The Ultimate Customer Insights  Platform</h1>
       <Navbar />
       <HeroSection />
-      <div className="container-home">
-        <div className="builtfor-section">
-          <h2 className="fw-600"> Built For</h2>
-          <Link to="../solutions/roles/market-insights">
-            <img src={marketResearchInsights} alt={marketResearchInsights} />{" "}
-            Market Insights{" "}
-          </Link>
-          <Link to="../solutions/roles/customer-success-software">
-            <img src={customerSuccess} alt={customerSuccess} /> Customer Success{" "}
-          </Link>
-          <Link to="../solutions/roles/marketing">
-            <img src={marketing} alt={marketing} /> Marketing
-          </Link>
-          <Link to="#">
-            <img src={productManagement} alt={productManagement} /> Product
-            Management{" "}
-          </Link>
-        </div>
+      <div className="web-view"><br/><br/><br/> </div>
+      
+      <section className="section-skyblue">
+          <div className="container-home text-center">  
+      <h2 className="text-center"><b> Why ConvertML?</b></h2>
+          <Grid
+            container
+            spacing={8}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Grid item  xs={12} md={9} lg={9}> 
+            <img
+                src={whyConvertML}
+                alt="why ConvertML"
+                className="img-responsive"  
+              />
+              <h3>Gain unparalleled understanding of your customers!</h3>
+              <p>Struggling with data coming from diverse sources and not able to derive actionable insights quickly? Our AI engine seamlessly integrates and standardizes data from diverse sources, empowering you with rich predictive and prescriptive insights for immediate action and future strategies. Think of it as having an in-house analytics team with key metrics like CSAT, NPS, Churn Prediction, Lead Generation and more at a fraction of the cost. 
+</p>
+            </Grid>
+            </Grid>
+       
       </div>
+      </section> 
+       <div className="home-roles-page">
+        <div className="container-home">
+        <h2 className="text-center"><b><h2 className="text-center"><b> Built for Customer-Centric teams!</b></h2></b></h2><br/><br/><br/>
+          <Grid
+            container
+            spacing={4}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Grid item  xs={12} md={3} lg={3}> 
+<div className="skybluebox">
+  <img src={marketInsights} alt='Market Insights'/>
+  <div className="heading">Market Insights</div>
+  <p>Lift success with NPS insights, tackle risks through Churn Analysis, and blend user feedback for a comprehensive view.</p> 
+   
+  <Link to='/solutions/roles/market-insights'>Learn more</Link>
+</div>   </Grid>
+<Grid item  xs={12} md={3} lg={3}> 
+<div className="skybluebox">
+  <img src={customerSuccess} alt='Customer Success'/>
+  <div className="heading">Customer Success</div>
+  <p>Hyper-personalize marketing effortlessly with a 360° customer view—no scripts, no codes, less data scientist reliance.</p> 
+   
+  <Link to='/solutions/roles/market-insights'>Learn more</Link>
+</div>   </Grid>
+<Grid item  xs={12} md={3} lg={3}> 
+<div className="skybluebox">
+  <img src={marketing} alt='Marketing'/>
+  <div className="heading">Marketing</div>
+  <p>Uncover insights by merging qualitative and quantitative data from CRMs, surveys, and social media for new opportunities.</p> 
+   
+  <Link to='/solutions/roles/market-insights'>Learn more</Link>
+</div>   </Grid>
+          </Grid>
+        </div> 
+       
+      </div>  
+      <br/>
+      <section className="section-skyblue mt-4">
+          <div className="container-home"> 
+          <Grid
+            container
+            spacing={8}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+          >
+              <Grid item  xs={12} md={5} lg={5}> 
+               <h2>Meet <b className="brandtext-color">ConvertML Copilot</b>  Like ChatGPT but much more.  </h2>
+              <p>
+              Through Copilot, you can converse with data like you’d talk to an expert and get instant answers all through a simple chat interface. You can then ask follow-up questions without providing additional context each time, with all your chat histories saved and backed up for future conversations or referencing.
+              </p><br/>
+              <Link to='/contactus' className="link-btn">Contact us</Link><br/><br/><br/>
+             </Grid>
+            <Grid item  xs={12} md={7} lg={7}> 
+            <img
+                src={copilotBanner}
+                alt="why ConvertML"
+                className="img-responsive"
+              />
+            </Grid>
+            </Grid>
+       
+      </div>
+      </section>
       <div className="banner-content-section">
         <div className="container-home">
           <Grid
@@ -94,27 +178,15 @@ function HomePage() {
           >
             <Grid item  xs={12} md={6} lg={6}> 
 
-              <h2>You’re Sitting on a Goldmine of Untapped Potential</h2>
+              <h2>Go Deep by Connecting Diverse Platforms</h2>
               <p>
-                As a high-growth company, you have data that is unique to you
-                and it’s being unused. This is zero-party data that is buried
-                deep in your surveys, comments, and user generated content just
-                waiting to be harnessed. If used properly, this is data that
-                could elevate CLTV, enhance revenue predictability, bolster
-                investor confidence, and give you a competitive advantage in
-                your market.
-              </p>
-              <p>
-                However, given the complexity and multifaceted nature of
-                connecting zero-party data with transactional data, there was no
-                tool powerful enough without breaking the bank for nimble teams
-                like yours to access. Until now.
-              </p>
+              Integrate data from diverse platforms with just a few clicks and get actionable insights! Get the best of both the worlds by combining Qualitative and Quantitative data. From data cleaning and processing, our powerful AI is working for you to streamline your workflow and access a comprehensive suite of analytical models — all in one place.
+              </p> 
               <br />
             </Grid>
             <Grid item  xs={12} md={6} lg={6}>
               <img
-                src={sittingingoldine}
+                src={diversePlatforms}
                 alt="sitting in Goldmine"
                 className="img-responsive"
               />
@@ -131,28 +203,23 @@ function HomePage() {
               justifyContent="center"
               alignItems="center"
             >
-              <Grid  item xs={12} md={7} lg={7} className="d-md-block">
+              <Grid  item xs={12} md={6} lg={6} className="d-md-block">
                 <img
-                  src={competitiveadvantage}
+                  src={advancedAnalytics}
                   alt="Your Competitive Advantage"
                   className="img-responsive"
                 />
               </Grid>
 
-              <Grid item  xs={12} md={5} lg={5}>
-                <h2>Your Competitive Advantage</h2>
+              <Grid item  xs={12} md={6} lg={6}>
+                <h2>All-in-One Dashboard for Advanced Analytics</h2>
                 <p>
-                  ConvertML was specifically designed to empower nimble
-                  marketing teams by leveraging zero-party data and data from
-                  places like web analytics, CRM, Social Media, Point-of-Sales
-                  Systems, and Surveys - all at once - so you can predict
-                  customer behavior and build your competitive advantage.
-                </p>
-                <b>No data scientist or coding required</b>
+                Simplify your analysis process with ConvertML's intuitive dashboard. Unlock new levels of customer and market insights and get a holistic view of your customer sentiments and behavior to ensure a strategic advantage. You can further automate feedback analysis with advanced LLM-driven clustering to quickly identify prevalent themes and trends in customer sentiment. (radar graph + Cluster)
+                </p> 
               </Grid>
               <Grid item  xs={12} md={6} lg={6} className="d-xs-block">
-                <img
-                  src={competitiveadvantage}
+              <img
+                  src={advancedAnalytics}
                   alt="Your Competitive Advantage"
                   className="img-responsive"
                 />
@@ -169,354 +236,166 @@ function HomePage() {
             justifyContent="center"
             alignItems="center"
           >
-            <Grid item  xs={12} md={5} lg={5}>
-              <h2>ConvertML’s Unique Zero-Party Data Approach</h2>
+            <Grid item  xs={12} md={6} lg={6}>
+              <h2>Instant Clarity Instant Reports</h2>
               <p>
-                Zero-party data is an invaluable asset that offers unparalleled
-                insights into your customers. Unfortunately, it is frequently
-                overlooked and undervalued.
-              </p>
-              <p>
-                ConvertML is the only platform to harness Zero-Party data at
-                scale, along with other types of customer data, consolidating
-                proprietary insights within a unified platform, enabling you to
-                gain insights on your customers at an unprecedented level.
-              </p>
+              Say goodbye to manually digging through data or waiting on ad hoc reports and get the answers you need instantly. With ConvertML, get quick, insightful answers about your customers just by asking questions. Work complete? Automate report generation with a single click so you can focus more on your data storytelling! With ConvertML, spend less time figuring out complex insights and repetitive report-making and more time on the 'why' and 'how.' 
+              </p> 
             </Grid>
-            <Grid item  xs={12} md={7} lg={7}>
+            <Grid item  xs={12} md={6} lg={6}>
               <img
-                src={zeropartyData}
+                src={AIGeneratedInsights}
                 alt="ConvertML’s Unique Zero-Party Data Approach"
                 className="img-responsive"
               />
             </Grid>
           </Grid>
         </div>
-      </div>
-      <br />
-      <br />
-      <br />
-      <div className="container-home">
-        <div className="howitworks">
-          <h2>How it works</h2>
-          <Grid
-            container
-            direction="row"
-            justifyContent="space-around"
-            alignItems="center"
-          >
-            <Grid item xs={12} md={3} lg={3}>
-              <div className="box">
+        <br /> <br /> <br />
+        <section className="section-gray">
+          <div className="container-home">
+            <Grid
+              container
+              spacing={8}
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Grid  item xs={12} md={6} lg={6} className="d-md-block">
                 <img
-                  src={"/images/connect.png"}
-                  alt="convertml"
-                  className="float-left mr-2"
+                  src={crossTabAnalysis}
+                  alt="Cross-Tab Analysis"
+                  className="img-responsive"
                 />
-                <span className="heading">Connect</span>
+              </Grid>
+
+              <Grid item  xs={12} md={6} lg={6}>
+                <h2>Intelligent Cross-Tab Analysis</h2>
                 <p>
-                  Connect to multiple sources at once, from surveys and
-                  transactions to CRMs, with a few short clicks
-                </p>
-              </div>
-            </Grid>
-            <Grid item xs={12} md={1} lg={1}>
-              <div className="text-center">
-                {" "}
-                <img src={arrown} alt="convertml" className="d-inline" />
-              </div>
-            </Grid>
-            <Grid xs={12} md={3} lg={3}>
-              <div className="box middleBox">
-                <img
-                  src={"/images/predict.png"}
-                  alt="convertml"
-                  className="float-left mr-2"
+                Effortlessly analysis of how specific groups of respondents answered various questions in the survey and how it compares to the rest of the population. Discover the correlation between different sets of features to understand complex relationships. Use the insights uncovered to make business decisions, develop marketing strategies, or refine product offerings. 
+                </p> 
+              </Grid>
+              <Grid item  xs={12} md={6} lg={6} className="d-xs-block">
+              <img
+                  src={advancedAnalytics}
+                  alt="Your Competitive Advantage"
+                  className="img-responsive"
                 />
-                <span className="heading">Predict</span>
-                <p>
-                  Leverage advanced, code-free, predictive insights about your
-                  customers on one dashboard. Stay one step ahead so you can
-                  take the right intervention steps and know what customers what
-                  they want before they want it.
-                </p>
-              </div>
+              </Grid>
             </Grid>
-            <Grid item xs={12} md={1} lg={1}>
-              <div className="text-center">
-                <img src={arrown} alt="convertml" className="d-inline" />
-              </div>
-            </Grid>
-            <Grid item xs={12} md={3} lg={3}>
-              <div className="box">
-                <img
-                  src={"/images/convert.png"}
-                  alt="convertml"
-                  className="float-left mr-2"
-                />
-                <span className="heading">Convert</span>
-                <p>
-                  Leverage the data-driven insights from ConvertML to swiftly
-                  target customers who are most likely to churn by delivering
-                  personalized promotions tailored to their specific needs.
-                </p>
-              </div>
-            </Grid>
-          </Grid>
-          <div className="clearfix"></div>
-          <br />
-          <br />
-          <div className="text-center">
-            <button onClick={getstartedClick} className="link-btn">
-              <i className="fa fa-play-circle"> </i> Get Started
-            </button>
           </div>
-        </div>
-      </div>
+        </section><br/><br/>
 
-      <br />
-      <br />
-      <br />
-
-      <section className="section-gray">
-        <div className="am-section container-home">
-          <h2 className="text-center  fw-600">Our No-Code Analytical Models</h2>
+        <section className="section-skyblue">
+          <div className="container-home">
           <Grid
             container
             spacing={8}
             direction="row"
             justifyContent="center"
-            alignItems="top"
+            alignItems="center"
           >
-            <Grid  item xs={12} md={5} lg={5}>
-              <div className="d-md-block">
-                <br />
-                <br />
-                <br />
-                <br />
-              </div>
-              <Button
-                className={
-                  selectTab == "gainDeeper"
-                    ? "selected-button"
-                    : "default-button"
-                }
-                onClick={(e) => analyticalTabs("gainDeeper")}
-              >
-                Gain Deeper Customer Understanding
-              </Button>{" "}
-              <br />
-              <br />
-              <Button
-                className={
-                  selectTab == "identifyAt"
-                    ? "selected-button"
-                    : "default-button"
-                }
-                onClick={(e) => analyticalTabs("identifyAt")}
-              >
-                Identify At-Risk Customers
-              </Button>
-              <br /> <br />
-              <Button
-                className={
-                  selectTab == "predictBuying"
-                    ? "selected-button"
-                    : "default-button"
-                }
-                onClick={(e) => analyticalTabs("predictBuying")}
-              >
-                Predict Buying Behavior
-              </Button>
+              <Grid item  xs={12} md={5} lg={5}> 
+               <h2>Unique  <span className="brandtext-color"> Zero-Party Data</span>  Approach </h2>
+              <p>
+              Are you relying on third-party data for customer insights? Warning: It’s turning obsolete. 90% of the companies are headed toward the ultimate source of truth: Zero Party Data.  </p>
+              <p>
+With ConvertML you can integrate zero-party data with other first-party data sources like surveys, and feedback forms–to understand the who, what, where, how, and why of your customers. We call it the Code Free Quant + Qual Magic! 
+              </p> 
+             </Grid>
+            <Grid item  xs={12} md={7} lg={7}> 
+            <img
+                src={zeroPartyData}
+                alt="why ConvertML"
+                className="img-responsive"
+              />
             </Grid>
-            <Grid item  xs={12} md={7} lg={7}>
-              {selectTab == "gainDeeper" ? (
-                <div>
-                  {" "}
-                  <img
-                    src={analyticalmodel1}
-                    alt="analyticalModels"
-                    className="img-responsive"
-                  />{" "}
-                  <br />
-                </div>
-              ) : (
-                ""
-              )}
-
-              {selectTab == "identifyAt" ? (
-                <div>
-                  <img
-                    src={analyticalmodel2}
-                    alt="analyticalModels2"
-                    className="img-responsive"
-                  />{" "}
-                  <br />
-                </div>
-              ) : (
-                ""
-              )}
-
-              {selectTab == "predictBuying" ? (
-                <div>
-                  <img
-                    src={analyticalmodel3}
-                    alt="analyticalModels3"
-                    className="img-responsive"
-                  />{" "}
-                  <br />
-                </div>
-              ) : (
-                ""
-              )}
             </Grid>
-          </Grid>
-        </div>
-      </section>
-      <br />
-      <br /> 
-      <section className="blog-home-list">
-        <div className="container-home postbloglist">
-          <div className="text-center">
-            <h2 className="fw-600">Blogs</h2>
           </div>
-          <Grid
+        </section>
+      </div> 
+      <section className="no-CodeAnalytical mt-3">
+          <div className="container-home">  
+      <h2 className="text-center"> Our No-Code Analytical Models</h2>
+      <Grid
             container
             spacing={2}
             direction="row"
-            justifyContent="left"
+            justifyContent="center"
             alignItems="center"
           >
-            {blogListData.map(
-              (blog, index) =>
-                index < 4 && (
-                  <Grid item  xs={12} md={3} lg={3}>
-                    <Link to={blog.path}>
-                      <div className="blogBox">
-                        <div className="imgbox">
-                          <img
-                            src={
-                              "/json-media/img/blogs/" + blog.thumbnail + ".png"
-                            }
-                            alt={blog.thumbnail}
-                          />
-                        </div>
-                        <div className="clearfix"></div>
-                        <span className="name">{blog.name}</span>
-                        <Link to={blog.path} className="readmore">
-                          {" "}
-                          Read more{" "}
-                        </Link>
-                      </div>{" "}
-                    </Link>
-                  </Grid>
-                )
-            )}
-          </Grid><br/>
-          <Link to={"./blogs"} className="float-right">
-            see more blogs
-          </Link><br/>
-        </div>
-      </section>
-
-      <br />
-      <div className="am-section container-home">
-        <h2 className="text-center  fw-600">
-          Our Complete List of No-Code Models
-        </h2>
-        <Grid
-          container
-          spacing={2}
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Grid item  xs={12} md={4} lg={4}>
-            <div className="content-box">
-              <img src={"/images/crosssell.png"} alt="crosssell" />
-              <h3>Cross sell & up sell Analysis</h3>
-              <p>
-                Cross sell and upsell are ways to increase customer value. The
-                magic of successful cross sell is to make a relevant offer to
-                the right customer at the right time and using the right
-                communication channel. A solution to this problem is not easy
-                and involves a lot of analytics.
-              </p>
-            </div>
-          </Grid>
-
-          <Grid  item xs={12} md={4} lg={4}>
-            <Link to={"../net-promoter-score"}>
-              <div className="content-box">
-                <img src={"/images/netPromoter.png"} alt="netPromoter" />
-                <h3>Net Promoter Score Analysis</h3>
-                <p>
-                  NPS is a customer experience metric that shows how likely
-                  clients are to recommend a given service or product. But it
-                  can be even more valuable if you perform diligent analysis of
-                  qualitative feedback.
-                </p>
-              </div>
-            </Link>
-            <br />
-
-            <Link to={"../churn-analysis"}>
-              <div className="content-box">
-                <img
-                  src={"/images/predictiveChurn.png"}
-                  alt="predictiveChurn"
-                />
-                <h3>Predictive Churn Analysis</h3>
-                <p>
-                  Churn Prediction Model is a predictive model that calculates,
-                  on an individual customer basis, the likelihood (or
-                  susceptibility) that a customer will stop doing business with
-                  the company.
-                </p>
-              </div>
-            </Link>
-            <br />
-
-            <Link to={"../customer-satisfaction-analysis"}>
-              <div className="content-box">
-                <img
-                  src={"/images/customerSatisfaction.png"}
-                  alt="customerSatisfaction"
-                />
-                <h3>Customer Satisfaction Analysis</h3>
-                <p>
-                  A CSAT (short for customer satisfaction) survey is a feedback
-                  survey used to measure customers' satisfaction levels with
-                  your company's product, service, or a particular interaction.
-                </p>
-              </div>{" "}
-            </Link>
-          </Grid>
-          <Grid item  xs={12} md={4} lg={4}>
-            <div className="content-box">
-              <img src={"/images/leadScoring.png"} alt="leadScoring" />
-              <h3>Lead Scoring</h3>
-              <p>
-                Lead scoring is a methodology used by sales and marketing
-                departments to determine the worthiness of leads, or potential
-                customers, by attaching values to them based on their behavior
-                relating to their interest in products or services.
-              </p>
-            </div>
-            <br />
-            <div className="dark-box">
-              <h5>Get started today</h5>
-              <p>
-                ConvertML collects events from 100+ data sources and provides a
-                complete ML toolkit to every team in your company
-              </p>
-              <br />
-              <a className="white-btn" href="#getStarted">
-                Request a demo
-              </a>
-            </div>
-          </Grid>
-        </Grid>
+              <Grid item  xs={12} md={4} lg={4}> 
+                <div className="panel-box">
+                    <img
+                  src={marketResearch}
+                  alt="Your Competitive Advantage"
+                  className="img-responsive"
+                /> 
+              <div className="heading">Market Research </div> 
+              <p><hr className="hr1"/>  Get actionable insights from market research data to optimize customer engagement and data-driven decisions.</p>
+                  </div>  
+              </Grid>
+              <Grid item  xs={12} md={4} lg={4}> 
+                <div className="panel-box">
+                    <img
+                  src={brandLoyalty}
+                  alt="Your Competitive Advantage"
+                  className="img-responsive"
+                /> 
+              <div className="heading">Brand Loyalty </div> 
+              <p><hr className="hr2"/>  Measure your brand perception to understand customer loyalty to the brand
+</p>
+                  </div>  
+              </Grid>
+              <Grid item  xs={12} md={4} lg={4}> 
+                <div className="panel-box">
+                    <img
+                  src={netPromoterScore}
+                  alt="Net Promoter Score"
+                  className="img-responsive"
+                /> 
+              <div className="heading">Net Promoter Score  </div> 
+              <p><hr className="hr3"/> Segment detractors and promoters based on their loyalty, lifetime value, and other critical metrics.</p>
+                  </div>  
+              </Grid>
+              <Grid item  xs={12} md={4} lg={4}> 
+                <div className="panel-box">
+                    <img
+                  src={customerSatisfaction}
+                  alt="Customer Satisfaction"
+                  className="img-responsive"
+                /> 
+              <div className="heading">Customer Satisfaction </div> 
+              <p><hr className="hr4"/> Stay ahead of customer satisfaction based on interactions and feedback
+</p>
+                  </div>  
+              </Grid>
+              <Grid item  xs={12} md={4} lg={4}> 
+                <div className="panel-box">
+                    <img
+                  src={leadGeneration}
+                  alt="Lead Generation"
+                  className="img-responsive"
+                /> 
+              <div className="heading">Lead Generation  </div> 
+              <p><hr className="hr5"/> Segment detractors and promoters based on their loyalty, lifetime value, and other critical metrics.</p>
+                  </div>  
+              </Grid>
+              <Grid item  xs={12} md={4} lg={4}> 
+                <div className="panel-box">
+                    <img
+                  src={churnPrediction}
+                  alt="Churn Prediction"
+                  className="img-responsive"
+                /> 
+              <div className="heading">Churn Prediction</div> 
+              <p><hr className="hr3"/> Identify at-risk customers before they churn using factors such as financial transactions, feedback, product/service usage, and much more
+</p>
+                  </div>  
+              </Grid>
+              </Grid>
       </div>
+      </section> 
       <br />
       <br />
       <br />

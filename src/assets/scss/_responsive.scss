@@ -29,6 +29,12 @@
     .new-banner::after{left:-58px; top:350px; height: 255px;} 
     .howitworks h2{  font-size:40px}
     .slide {     height: 240px;} 
+    
+      .banneraction-button{   padding: 10px;  width: 300px; margin-bottom: 15px; 
+    //     .btn1{ width: 130px;  font-size: 14px;  }
+    //     .btn2{  width: 130px;  font-size: 14px;  }
+       }
+    .home-roles-page .skybluebox{margin-top: 100px;}
     .footerContainer-new .subscription-section .from input[type=text]{ width: 100%;}
 
     .footerContainer-new .subscription-section{ padding: 15px 15px;   margin: -62px   0px 0px 0px;}
@@ -46,13 +52,14 @@
     .footerContainer-home .subscription-section h2{ margin: 0px;}
     .footerContainer-home .subscription-section p{margin: 0px;}
     .footerContainer-home .subscription-section .from input[type=text]{ width: 100%;}
-    .footerContainer-home .subscription-section{ margin: -175px 10px 0px 10px;padding: 20px 20px;}
-    .footerContainer-home .footerBanner{ width: 100%;}
-    .footerContainer-home .footerBanner img{ width: 100%;}
+    // .footerContainer-home .subscription-section{ margin: -175px 10px 0px 10px;padding: 20px 20px;}
+    // .footerContainer-home .footerBanner{ width: 100%;}
+    // .footerContainer-home .footerBanner img{ width: 100%;}
     
     .plan-cards{ margin: 10px 0px;} 
   
-    .footerContainer-home .copyright{padding:10px 10px;}
+    .footerContainer-home .copyright{padding:10px 10px;font-size:14px; .text-right{ text-align: left;}}
+    .footerContainer-home .footer-link-section .subscribeform input[type=text]{ width: 100%;}
     .page-local-nav-fixed{ position: relative!important; top: 0px!important;}
     .top-navbar .price-plans::after{ background: transparent!important; box-shadow:none!important;}
     .top-navbar .freePlan-nav button{ float: none!important;}

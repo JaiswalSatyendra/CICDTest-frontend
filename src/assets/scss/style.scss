@@ -41,18 +41,26 @@ button{font-family: $font_Manrope;}
 .d-inline-block{ display: inline-block;}
 .d-block{ display: block;}
 .d-none{ display: none;}
+.d-flex{ display: flex;}
 
 .float-left {  float: left;}
 .float-right {  float: right;}
 .m-0{ margin: 0;}
 
-.m-2{ margin: 15px;}
+.m-1{ margin: 10px;} 
+.m-2{ margin: 15px;} 
 
 .mt-1{ margin-top: 5px!important;}
 .mt-2{ margin-top: 10px!important;}
 .mt-3{ margin-top: 15px!important;}
 .mt-4{ margin-top: 20px!important;}
-.mt-5{ margin-top: 25px!important;} 
+.mt-5{ margin-top: 25px!important;}
+
+.mb-1{ margin-bottom: 5px!important;}
+.mb-2{ margin-bottom: 10px!important;}
+.mb-3{ margin-bottom: 15px!important;}
+.mb-4{ margin-bottom: 20px!important;}
+.mb-5{ margin-bottom: 25px!important;} 
 
 .mt-n1{ margin-top: -5px!important;}
 .mt-n2{ margin-top: -10px!important;}
@@ -91,6 +99,7 @@ button{font-family: $font_Manrope;}
  
 .liststylenone{ list-style: none;}
 
+.text-highlighter{background:hwb(54 31% 0%); }
 .text-grey{ color: #929292;}
 .text-link{ color: #0049e1;}
 .text-center {  text-align: center;}
@@ -98,6 +107,48 @@ button{font-family: $font_Manrope;}
 .text-left {  text-align: left;}
 .tracking-tight {  letter-spacing: -.025em;}
 
+// -------------------- button style
+.clearbtn{ color: #1f1f1f!important; font-size: 13px!important;}
+.link-text{ color:$primaryblue;}
+.icon-btn-sm{ min-height: 34px; min-width: 45px!important; @extend .linkbtn; i{ font-size:15px;} }
+.icon-btn{ min-height: 34px; min-width: 45px!important; @extend .linkbtn; i{ font-size: 20px;} }
+  .linkbtn{ padding: 10px 16px;     align-items: center; border-radius: 8px;  }
+  .outline-btn{ @extend .linkbtn;     border: 1px solid #DFE2E5;    background: #FFF;}
+  .link-btn{ @extend .linkbtn; text-decoration: none;     border: 1px solid $primaryblue; color:#fff!important;    background: $primaryblue;}
+
+  .lightblue-btn{   color:  $primaryblue!important; border: none;    padding: 6px 12px;    justify-content: center;    align-items: center;     border-radius: 8px;     background: #F4FAFF!important;}
+  .connect-btn{width: 100%;  color:  $primaryblue!important;    padding: 6px 12px;    justify-content: center;    align-items: center;    gap: 8px; border-radius: 8px;  border: 1px solid  #DFE2E5!important;    background: #FFF!important;}
+  .getstart-btn{width: 100%;  color:  $primaryblue!important;    padding: 6px 12px;    justify-content: center;    align-items: center;    gap: 8px; border-radius: 8px;  border: 1px solid  #DFE2E5!important;    background: #FFF!important;}
+  .disconnect-btn{ width: 100%; background: #c2ffad!important; color: #39901a!important; text-align: center; font-weight: 700;     padding: 10px 12px;    justify-content: center;    align-items: center;    gap: 8px; border-radius: 8px; border: 1px solid  #c2ffad!important; 
+  a{ color: $text-color; font-size: 18px;  text-decoration: none; }
+  }
+
+  
+small{font-family: $font_Manrope;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px; }
+.count-number{font-family: $font_Manrope;  font-size: 24px;  font-style: normal;  font-weight: 600;   }
+.btn-white{ background: #fff; }
+.btn-small{   padding: 4px 12px!important;  border-radius: 100px; line-height: 25px;}
+ 
+.btn-active{  color: #fff;   border: 1px solid  $primaryblue; background: $primaryblue;}
+.btn-grey{    border: 1px solid  #DFE2E5; background: #F8F9FA;}
+ .chip-status{
+  .sbox{
+    font-family: $font_Manrope;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 142.857% */}
+  .low{color:  #4A9E17; background:#A4E27E; @extend.sbox}
+  .medium{color:  #A98D00; background:#EED65A; @extend.sbox}
+  .high{color:  #CA1F1F; background:#FC9B9B; @extend.sbox}
+  .normals{color:#79A3FB; background:#E3ECFF; @extend.sbox }
+ }
+
+.brandtext-color{ color: #FF26C2;}
 .error-text{ color: #f00f00; font-size: 12px;/* text-transform: capitalize;*/}
 .warring-text{ color: #fff07b; font-size: 12px;}
 .text-validation { @extend .error-text;  padding: 0px 0px;}
@@ -219,8 +270,10 @@ hr {  margin: 15px 0px;  border-top: rgb(208, 208, 208) solid 1px;}
 .blue-hr{ background: #0049e1; border: none; height: 5px; border-radius: 5px;}
 .pink-btn{     background: #ff2caa!important;  font-size: 18px!important;}
 
-.chips-btn{ background: #e4eefd; border: #b0c0d5 solid 1px; border-radius: 5px;padding: 7px 10px; line-height: 20px; 
+.chips-btn{ position: relative; background: #e4eefd; border: #b0c0d5 solid 1px; border-radius: 5px;padding: 7px 10px; line-height: 20px; 
   i{ font-size: 18px; color: #0049e1;margin-left: 5px; float: right; margin-top: 3px;}
+  .selectType{ text-transform: capitalize; position:absolute; background: #0049e1; font-size: 12px; padding: 2px 10px; border-radius: 15px; color: #fff; top: -16px;
+    left: 0;}
 }
 .switchBtn{ border: #b2b2b2 solid 1px; border-radius: 10px; text-align: center; display: block;
   margin: auto;
@@ -239,7 +292,7 @@ hr {  margin: 15px 0px;  border-top: rgb(208, 208, 208) solid 1px;}
   top: -6px;
   color: #000;
   box-shadow: #000 1px 0px 2px;}
-.add-edit-btn::before{ content: "\f040";  font-family: $font_Awesome;  font-size: 12px; font-weight: 400;    }
+.add-edit-btn::before{ content: "\f040";  font-family: $font_Awesome;  font-size: 12px; font-weight: 400;     }
 
 .table-responsive{overflow-x: auto;}
 
@@ -458,7 +511,7 @@ box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   ul{list-style: none; padding: 0px; margin: 0px;}
   li{ cursor: pointer;     border-bottom: #dfe2e5 solid 1px;}
   a{ width: 100%; display: block; padding: 20px 15px 20px 10px; color:#666666;}
-  .active {    color: #6644F1;     font-weight: 600;    }
+  .active {    color: #6644F1;     font-weight: 600; border-left: #6644f1 solid 2px;    }
   .selected{ border-right:#6644F1 solid 5px;  border-left:#6644F1 solid 5px; color: #6644F1;  background:linear-gradient(0deg, #f8f9fa 91%, #e9eaeb 100%)}
   li ul{ margin-left: 20px;}
   li  ul li a{ padding: 10px 15px 10px 0px;}
@@ -944,9 +997,9 @@ a,
     .panel-box-bg {
       background: #F7F7F7;
 
-      .img-box {
+      .img-box-connection {
         width: 80px;
-        margin-right: 15px;
+        // margin-right: 15px;
         background: #fff;
         padding: 24px 10px;
         border: 1px solid #ddd;

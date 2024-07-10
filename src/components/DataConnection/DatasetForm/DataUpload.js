@@ -167,34 +167,34 @@ function DataUpload() {
   //sass platform json
 
   const sassPlatform = [
-    { id: 1, img: '/images/partners/typeform-sm.svg', name: 'Typeform', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false },
-    { id: 2, img: '/images/partners/hubspot-sm.svg', name: 'Hubspot', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false },
-    { id: 3, img: '/images/partners/salesforce.svg', name: 'Salesforce', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false },
-    { id: 4, img: '/images/partners/sass-platform.svg', name: 'SaaS Platforms', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false }
+    { id: 1, img: '/json-media/img/partners/typeform-sm.svg', name: 'Typeform', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false },
+    { id: 2, img: '/json-media/img/partners/hubspot-sm.svg', name: 'Hubspot', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false },
+    { id: 3, img: '/json-media/img/partners/salesforce.svg', name: 'Salesforce', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false },
+    { id: 4, img: '/json-media/img/partners/sass-platform.svg', name: 'SaaS Platforms', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false }
   ];
 
   //databases json
 
   const databases = [
-    { id: 1, img: '/images/partners/google-bigquery-sm.svg', name: 'Google BigQuery', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false },
-    { id: 2, img: '/images/partners/couchdb-sm.svg', name: 'CouchDB', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false },
-    { id: 3, img: '/images/partners/document-database.svg', name: 'Document Database', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false },
-    { id: 4, img: '/images/partners/gridgain.svg', name: 'Gridgain', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false }
+    { id: 1, img: '/json-media/img/partners/google-bigquery-sm.svg', name: 'Google BigQuery', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false },
+    { id: 2, img: '/json-media/img/partners/couchdb-sm.svg', name: 'CouchDB', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false },
+    { id: 3, img: '/json-media/img/partners/document-database.svg', name: 'Document Database', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false },
+    { id: 4, img: '/json-media/img/partners/gridgain.svg', name: 'Gridgain', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false }
   ];
 
   //upload a file json
 
   const uploadFile = [
-    { id: 1, img: '/images/partners/azure.svg', name: 'Azure', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false },
-    { id: 2, img: '/images/partners/s3-bucket.svg', name: 'S3 Bucket', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false },
+    { id: 1, img: '/json-media/img/partners/azure.svg', name: 'Azure', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false },
+    { id: 2, img: '/json-media/img/partners/s3-bucket.svg', name: 'S3 Bucket', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', btnLink: '', active: false },
   ];
 
   //selected form data
 
   const selectedForm = [
-    { id: 1, name: 'Typeform', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.', img: '/images/partners/typeform-sm.svg' },
-    { id: 2, name: 'Salesforce', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.', img: '/images/partners/salesforce.svg' },
-    { id: 3, name: 'Hubspot', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.', img: '/images/partners/hubspot-sm.svg' }
+    { id: 1, name: 'Typeform', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.', img: '/json-media/img/partners/typeform-sm.svg' },
+    { id: 2, name: 'Salesforce', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.', img: '/json-media/img/partners/salesforce.svg' },
+    { id: 3, name: 'Hubspot', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.', img: '/json-media/img/partners/hubspot-sm.svg' }
   ];
 
   //step2

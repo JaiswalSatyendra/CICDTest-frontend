@@ -528,6 +528,9 @@ const Navbar = () => {
                 <li>
                   <Link to="/about-us">About Us</Link>
                 </li>
+                <li>
+                  <Link to="/integration-multiple-platforms">Integration</Link>
+                </li>
               </ul>
             </div>
             {!isNav ? (
@@ -880,6 +883,9 @@ const Navbar = () => {
                   <li>
                     <Link to="/about-us">About Us</Link>
                   </li>
+                  <li>
+                  <Link to="/integration-multiple-platforms">Integration</Link>
+                </li>
                   <li>
                   <Box display="flex">
               {session.token ? (<>

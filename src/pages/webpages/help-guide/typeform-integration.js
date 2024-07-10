@@ -13,7 +13,7 @@ function TypeformIntegrationPage() {
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
-      setScroll(window.scrollY > 175);
+      setScroll(window.scrollY > 200);
     });
   }, []);
    
@@ -32,9 +32,11 @@ function navHighlighter() {
       scrollY > sectionTop &&
       scrollY <= sectionTop + sectionHeight
     ){
-      document.querySelector(".localPageNav a[href*=" + sectionId + "]").classList.add("active");
+      document.querySelector(".localPageNav a[href*=" + sectionId + "]")
+      .classList.add("selected");
     } else {
-      document.querySelector(".localPageNav a[href*=" + sectionId + "]").classList.remove("active");
+      document.querySelector(".localPageNav a[href*=" + sectionId + "]")
+      .classList.remove("selected");
     }
   });
 }

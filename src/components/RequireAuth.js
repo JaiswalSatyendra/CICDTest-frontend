@@ -6,7 +6,6 @@ import utils from "../utils/index";
 
 function RequireAuth({ children }) {
   const [session] = useContext(SessionContext);
-
   if (!session.token) {
     return <Navigate to="/login" />;
   }

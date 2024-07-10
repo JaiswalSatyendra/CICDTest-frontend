@@ -10,7 +10,10 @@ $font_Manrope: "Manrope", sans-serif;
 $font_Awesome: FontAwesome;
 $font_Awesome: FontAwesome;
  
-
+$fontsize-lg:22px;
+$fontsize-md:18px;
+$fontsize-sm:14px; 
+$fontsize-xs:14px;
 
 $primary: #009efb;
 $color_porcelain_approx: #ebedee;
@@ -18,7 +21,9 @@ $color_gothic_approx: #6f9199;
 $text-color:#535560;
 
 $primaryblue:#0051FA;
+$primarybluen:#224EFF;
 $black:#000000;
+$white:#ffffff;
 
 /*-------------------------pipelinemonotring ---------------*/
 .pipelinecout span {    background: $primary;    } 

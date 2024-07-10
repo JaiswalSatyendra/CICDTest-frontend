@@ -30,11 +30,11 @@ function ConvertMLUserGuidePage() {
       if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
         document
           .querySelector(".localPageNav a[href*=" + sectionId + "]")
-          .classList.add("active");
+          .classList.add("selected");
       } else {
         document
           .querySelector(".localPageNav a[href*=" + sectionId + "]")
-          .classList.remove("active");
+          .classList.remove("selected");
       }
     });
   }
@@ -124,11 +124,11 @@ function ConvertMLUserGuidePage() {
                     HubSpot integration best practices
                   </a>
                 </li> */}
-                <li>
+                {/* <li>
                   <a href="#datamappingbestpractices">
                     Data mapping best practices
                   </a>
-                </li>
+                </li> */}
                 <li>
                   <a href="#analysisCSATNPSBrandloyalty">
                     Analysis - CSAT, NPS, Brand loyalty
@@ -206,7 +206,7 @@ function ConvertMLUserGuidePage() {
             </div>
           </Grid>
           <Grid item xs={12} md={8} lg={8}>
-            <section>
+            <section id="convertMLBasicsstartyourFirstProject">
               <p>
                 <h2 className="d-none">ConvertML Basics & Start your First Project</h2>
                 <div className="heading4">ConvertML Basics & Start your First Project</div>
@@ -270,7 +270,7 @@ function ConvertMLUserGuidePage() {
                 </ul>
               </p>
             </section>
-            <section >
+            <section id="typeformintegrationbestpractices">
               <p>
                 <h1 className="d-none">Typeform integration best practices </h1>
                 <div className="heading4">Typeform integration best practices</div>
@@ -299,7 +299,7 @@ function ConvertMLUserGuidePage() {
                 </ul>
               </p>
             </section>
-            <section >
+            <section id="howcanImeasurecustomersatisfaction">
             <h2 className="d-none">How to design your survey for effective analysis </h2>
               <div className="heading4">How to design your survey for effective analysis </div>
               <span  id="responses"></span>
@@ -307,7 +307,7 @@ function ConvertMLUserGuidePage() {
                 Though ConvertML works on all kinds of forms, designing your
                 survey by following the guidelines below can improve the quality
                 of the analysis. Here’s how you can design your survey to
-                improve your analysis:<br/><br/>
+                improve your analysis:<br/><br/> 
                 <b>Responses </b>
                 <ul>
                   <li>
@@ -373,7 +373,7 @@ function ConvertMLUserGuidePage() {
                 </li>
               </ul>
             </section>
-            <section>
+            <section >
               <h3>Pro tip: </h3>
               <p>
                 You may incorporate the following questions in your survey to
@@ -409,7 +409,7 @@ function ConvertMLUserGuidePage() {
               <h3> HubSpot integration best practices </h3>
             </section> */}
           
-            <section >
+            <section  >
               <h3>Data mapping best practices</h3>
               <p>
                 Data mapping is a unique feature that ConvertML provides to help
@@ -454,7 +454,7 @@ function ConvertMLUserGuidePage() {
                 your focus on product utility.
               </p>
             </section>
-            <section>
+            <section id="analysisCSATNPSBrandloyalty">
               <h3>Analysis - CSAT, NPS, Brand loyalty</h3>
               <p>ConvertML filters</p>
               <p>

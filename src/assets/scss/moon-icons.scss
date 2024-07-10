@@ -1,34 +1,52 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('../fonts/icomoon.eot?yv5ttr');
-  src:  url('../fonts/icomoon.eot?yv5ttr#iefix') format('embedded-opentype'),
-    url('../fonts/icomoon.ttf?yv5ttr') format('truetype'),
-    url('../fonts/icomoon.woff?yv5ttr') format('woff'),
-    url('../fonts/icomoon.svg?yv5ttr#icomoon') format('svg');
+  src:  url('../fonts/icomoon.eot?9gcvp7');
+  src:  url('../fonts/icomoon.eot?9gcvp7#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?9gcvp7') format('truetype'),
+    url('../fonts/icomoon.woff?9gcvp7') format('woff'),
+    url('../fonts/icomoon.svg?9gcvp7#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
 }
 
-// [class^="icon-"], [class*=" icon-"] {
-//   /* use !important to prevent issues with browser extensions that change fonts */
-//   font-family: 'icomoon';
-//   speak: never;
-//   font-style: normal;
-//   font-weight: normal;
-//   font-variant: normal;
-//   text-transform: none;
-//   line-height: 1;
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon';
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
 
-//   /* Better Font Rendering =========== */
-//   -webkit-font-smoothing: antialiased;
-//   -moz-osx-font-smoothing: grayscale;
-// }
-.icons{font-family: 'icomoon';   font-style: normal;    font-weight: normal;    font-variant: normal;    text-transform: none;}
- 
-.icon-Market-Research-Analysis:before {@extend.icons;
-  content: "\e900";
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-.icon-data-refresh:before { @extend.icons;
-  content: "\c001";
+
+.icon-feedback:before {
+  content: "\c001"; 
+}
+.icon-user-icon:before {
+  content: "\c002";
+  
+}
+.icon-Customer-Satisfaction:before {
+  content: "\c003"; 
+}
+.icon-Brand-Loyalty:before {
+  content: "\c004"; 
+}
+.icon-Churn-Prediction:before {
+  content: "\c005"; 
+}
+.icon-Net-Promoter-Score:before {
+  content: "\c006"; 
+}
+.icon-data-refresh:before {
+  content: "\c007";
+}
+.icon-Market-Research-Analysis:before {
+  content: "\c008";
 }
