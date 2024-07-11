@@ -61,6 +61,7 @@ import AnticipatingCustomer from "../pages/webpages/blogs/2024/march/anticipatin
 import AttentionTypeform from "../pages/webpages/blogs/2024/april/attentionTypeform";
 import Theonlywinwinstrategy from "../pages/webpages/blogs/2024/april/the-only-win-win-strategy-for-survey-data-analytics";
 import IntegrationMultiplePlatforms from "../pages/webpages/integration-multiple-platforms";
+import ScheduleDemo from "../pages/webpages/schedule-demo";
 
 // import HiddenfieldsSuperenhance from "../pages/webpages/blogs/2024/feb/hidden-fields-Super-enhance-your-ConvertML-analysis";
 
@@ -191,6 +192,11 @@ const router = [
     exact: true,
     element: <TypeformIntegrationPage />,
   },
+  {
+    path: "/scheduleDemo",
+    exact: true,
+    element: <ScheduleDemo />,
+  }, 
   {
     path: "/privacy-policy",
     exact: true,

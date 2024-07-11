@@ -184,6 +184,21 @@ export const homepage=
       locale:'en_US',
       type:'insights',
     }  
+    export  const scheduleDemo={  
+      page:'scheduleDemo',
+      title:'Schedule a Demo Seamless integration with multiple platforms',
+      description:'ConvertMLs resources, scheduleDemo, and support options for assistance. Find solutions, contact information, and enhance your experience with ConvertMLs support services.',
+      keywords:'Help Resources: scheduleDemo, Contact Us, Support | ConvertML',
+      url:'https://convertml.ai/scheduleDemo',
+      canonical:'https://convertml.ai/scheduleDemo',
+      image:'https://convertml.ai/json-media/img/convertmlLogoicon.png',
+      publisher:'ConvertML',
+      author:'ConvertML',
+      site_name:'ConvertML',
+      locale:'en_US',
+      type:'insights',
+    } 
+    
     
     export  const contactUsMeta={  
       page:'contactUs',

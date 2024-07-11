@@ -1088,8 +1088,16 @@ export default function MlResultsConnection({ resultData }) {
       colors: ["#fff"],
     },
     tooltip: {
-      shared: true,
-      intersect: false,
+      x: {
+        show: false
+      },
+      y: {
+        title: {
+          formatter: function (val, opts) {
+            return opts.w.globals.labels[opts.dataPointIndex]
+          }
+        }
+      }
     },
     xaxis: {
       categories: nrrBreakdownData.labels,

@@ -96,7 +96,7 @@ button{font-family: $font_Manrope;}
 .d-inline{ display:inline-block!important;}
 .clearfix{ clear: both;}
 .m-auto{ margin: auto;}
- 
+.w150{ width: 150px!important;}
 .liststylenone{ list-style: none;}
 
 .text-highlighter{background:hwb(54 31% 0%); }
@@ -162,12 +162,16 @@ small{font-family: $font_Manrope;
 label{padding: 10px; display: inline-block; font-size: 14px;border:#E7E7E7 solid 1px; }
 .selected-label{ color: #9992D2; border: #9992D2 solid 1px;}
 }
+
 form{  
   .inputBox { width: 100%;}
-  .Mui-disabled input{ background-color: rgba(0, 0, 0, 0.03)!important;} 
-  
+  .Mui-disabled input{ background-color: rgba(0, 0, 0, 0.03)!important;}  
 }
-.w150{ width: 150px!important;}
+.from { margin: 0px 15px 0px 15px;  input[type=text]{border: none; width: 100%;   border: 1px solid  #DFE2E5; border-radius: 8px;     float: left;  padding: 12px 10px; }
+        input[type=submit]{border: none; background: #E947AD; font-weight: 800;   width: 100%;   padding: 12px 10px;color:  #FFF;   border-radius: 8px;  }
+        button{border: none; background: #0065FF;  font-weight: 800;     padding: 10px 50px;color:  #FFF;   border-radius: 8px;  }
+        }
+
 
 .ptag-3line { 
   display: -webkit-box;

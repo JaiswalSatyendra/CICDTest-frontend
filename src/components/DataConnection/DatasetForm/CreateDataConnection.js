@@ -1223,6 +1223,7 @@ function CreateDataConnection() {
       // });
     }
     fetchTokenklaviyo();
+    fetchTokenIntercom();
   }, []);
 
   const setCatMappingOption = (catOptionList) => {
@@ -1500,10 +1501,8 @@ function CreateDataConnection() {
         console.log(err);
         // setLoaderShow(false)
       });
-  };
-
+  }; 
   const fetchTokenklaviyo = async (ev) => {
-
     let search = window.location.search;
     let params = new URLSearchParams(search);
     let newParam = params.get("code");
@@ -1512,7 +1511,7 @@ function CreateDataConnection() {
       grant_type: 'authorization_code', 
       code: newParam,
       code_verifier: 'code_challenge',
-      redirect_uri: 'http://localhost:3000/dashboard/data-platform/create-data-connection',
+      redirect_uri: 'http://localhost:3000/dashboard/data-platform/create-data-connection', 
     })
     .then((response) => {
       console.log(response)
@@ -1526,29 +1525,35 @@ function CreateDataConnection() {
     .catch((err) => {
       console.log(err);
       // setLoaderShow(false)
-    });
-    // await axios
-    //   .post(`https://a.klaviyo.com/oauth/token`, {
-    //     grant_type: 'authorization_code',
-    //     code: newParam,
-    //     code_verifier: 'code_challenge',
-    //     redirect_uri: 'http://localhost:3000/dashboard/data-platform/create-data-connection',
-    //   })
-    //   .then((response) => {
-    //     console.log(response + '11')
-    //     // settokenName(response.data.access_token);
-    //     // setRefreshtokenName(response.data.refresh_token);
-    //     // getWorkspaceList(
-    //     //   // { token: response.data.access_token },
-    //     //   response.data.refresh_token
-    //     // );
-    //   })
-    //   .catch((err) => {
-    //     console.log(err + 'false');
-    //     // setLoaderShow(false)
-    //   });
-  };
-
+    }); 
+  }; 
+   
+  const fetchTokenIntercom = async (ev) => {
+    let search = window.location.search;
+    let params = new URLSearchParams(search);
+    let newParam = params.get("code");
+    await axios
+    .post(`${process.env.REACT_APP_API_URL}/user/fetchTokenIntercom`, {
+      grant_type: 'authorization_code', 
+      code: newParam,
+      code_verifier: 'code_challenge',
+      redirect_uri: 'http://localhost:3000/dashboard/data-platform/create-data-connection', 
+    })
+    .then((response) => {
+      console.log(response)
+      // settokenName(response.data.access_token);
+      // setRefreshtokenName(response.data.refresh_token);
+      // getWorkspaceList(
+      //   { token: response.data.access_token },
+      //   response.data.refresh_token
+      // );
+    })
+    .catch((err) => {
+      console.log(err);
+      // setLoaderShow(false)
+    }); 
+  }; 
+  
   const fetchTokenHubspotList = (ev, newParam) => {
     setOpenHubspot(true);
     setisOpenPopupHubspot(true);
@@ -1576,6 +1581,7 @@ function CreateDataConnection() {
         // setLoaderShow(false)
       });
   };
+
 
   const connectDataForIngestion = (ev, value) => {
     ev.stopPropagation();

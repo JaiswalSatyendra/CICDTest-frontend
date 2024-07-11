@@ -30,20 +30,19 @@ function HeroSection() {
     { id: 2, name: silder2, link: "mia-luz.com" },
   ];
   const navigate = useNavigate();
-  const handleClick = () => navigate("/signup");
+  const handleClick = () => navigate("/scheduleDemo");
 
   return (
     <div className="new-banner">
       <section className="container-home text-center">
         <div className="h1-heading">
-          The Ultimate Customer{" "}
+        The Ultimate Customer 
           <b>
             <br /> Insights  Platform
           </b>
         </div>
         <p>
-          ConvertML is a predictive customer insights platform specifically
-          designed to predict customer behavior for fast growing companies.
+        First GenAI enabled platform for all your customer experience and behavioural analytics. 
         </p>
         <Carousel
           showArrows={false}
@@ -61,7 +60,7 @@ function HeroSection() {
         </Carousel>{" "}
         <br />
         <div className="survey-list-home">
-          <Box sx={{ flexGrow: 1 }}>
+          <Box sx={{ flexGrow: 1 }}> 
             <Grid
               container
               spacing={2}
@@ -70,32 +69,33 @@ function HeroSection() {
               alignItems="center"
             >
               <Grid item xs={6} md={2} lg={2}>
-                <input type='checkbox' className="float-left" name="marketResearch" />
-                <div class="icons icon-Market-Research-Analysis fa-3x"></div>{" "}
-                <h4>Market Research</h4>{" "}
+              <input type='checkbox' className="float-left" name="marketResearch" id="marketResearch" />
+     <label for="marketResearch"> <div class="icons icon-Market-Research-Analysis fa-3x"> </div> 
+                <h4 for="marketResearch">Market Research</h4></label> 
+               
+              
               </Grid>
               <Grid item xs={6} md={2} lg={2}>
-                <input type='checkbox' className="float-left" name="customerSatisfaction" />
-                <div class="icons icon-Customer-Satisfaction fa-3x"></div>{" "}
-                <h4>Customer Satisfaction</h4>{" "}
+                <input type='checkbox' className="float-left" name="customerSatisfaction" id="customerSatisfaction" />
+                <label for="customerSatisfaction"><div class="icons icon-Customer-Satisfaction fa-3x"></div>{" "}
+                <h4>Customer Satisfaction</h4></label>
               </Grid>
               <Grid item xs={6} md={2} lg={2}>
-              <input type='checkbox' className="float-left" name="brandLoyalty" />
-                <div class="icons icon-Brand-Loyalty fa-3x"></div> 
+              <input type='checkbox' className="float-left" name="brandLoyalty"  id="brandLoyalty" />
+              <label for="brandLoyalty"> <div class="icons icon-Brand-Loyalty fa-3x"></div> 
                 <h4>
-                  Brand
-                  <br /> Loyalty{" "}
-                </h4>{" "}
+               Brand  <br />Loyalty 
+                </h4></label>
               </Grid>
               <Grid item xs={6} md={2} lg={2}>
-              <input type='checkbox' className="float-left" name="netPromoterScore" />
-                <div class="icons icon-Net-Promoter-Score fa-3x"></div>{" "}
-                <h4>Net Promoter Score</h4>{" "}
+              <input type='checkbox' className="float-left" name="netPromoterScore" id="netPromoterScore" />
+              <label for="netPromoterScore"> <div class="icons icon-Net-Promoter-Score fa-3x"></div>{" "}
+                <h4>Net Promoter Score</h4></label> 
               </Grid>
               <Grid item xs={6} md={2} lg={2}>
-              <input type='checkbox' className="float-left" name="churnPrediction" />
-                <div class="icons icon-Churn-Prediction fa-3x"></div>{" "}
-                <h4>Churn Prediction</h4>{" "}
+              <input type='checkbox' className="float-left" name="churnPrediction" id="churnPrediction" />
+              <label for="churnPrediction"> <div class="icons icon-Churn-Prediction fa-3x"></div>{" "}
+                <h4>Churn Prediction</h4></label> 
               </Grid>
             </Grid>
           </Box>

@@ -212,14 +212,30 @@ li{    padding-top: 5px;  padding-bottom: 5px; padding-left:0px}
   background: linear-gradient(0deg, rgba(248,249,250,1) 91%, rgba(233,234,235,1) 100%); margin-top: 117px;   
   .heading3{ margin:20px 0px; font-size: 40px; font-style: normal; font-weight: 700;  line-height: 50px; b{ color: #6644F1;} }
   h1{ margin: 20px 0px; font-size: 80px; font-style: normal; font-weight: 700;  line-height: 100%; b{ color: #6644F1;} }
-      h2{ margin: 20px 0px; font-size: 60px; font-style: normal; font-weight: 700; line-height: 100%; b{ color: #6644F1;} }
+      h2{ margin: 20px 0px; font-size: 60px; font-style: normal; font-weight: 700; line-height: 100%; b{ color: #6644F1;}  }
       h3{ margin:20px 0px; font-size: 40px; font-style: normal; font-weight: 700;  line-height: 50px; b{ color: #6644F1;} }
       p{font-size: 18px;  font-style: normal; font-weight: 400; line-height: 28px; margin: 0px; color: $text-color;}
       .bannerimg{ width:70%; margin: 30px 0px;}
     }
+  .pinkbanner-onlyheading{ background: #ea48ae;  margin-top: 117px;   
+      .heading3{ margin:20px 0px; font-size: 40px; font-style: normal; font-weight: 700;  line-height: 50px; b{ color: #6644F1;} color: #fff;}
+      h1{ margin: 20px 0px; font-size: 80px; font-style: normal; font-weight: 700;  line-height: 100%; b{ color: #6644F1;} color: #fff;}
+          h2{ margin: 20px 0px; font-size: 60px; font-style: normal; font-weight: 700; line-height: 100%; b{ color: #6644F1;} color: #fff;}
+          h3{ margin:20px 0px; font-size: 40px; font-style: normal; font-weight: 700;  line-height: 50px; b{ color: #6644F1;} }
+          p{font-size: 18px;  font-style: normal; font-weight: 400; line-height: 28px; margin: 0px; color: $white;}
+          .bannerimg{ width:70%; margin: 30px 0px;}
+        }
 .survey-list-home{ @extend.box-shadow-card; border-radius: 20px; padding: 20px; z-index: 10; 
+  label{ position: relative; display: inline-block;  cursor: pointer; padding-top: 35px;}
+  input{ position: absolute; }
   .icons{ color: $primarybluen; }
 h4{ font-weight: 800;}
+}
+.schedule-demo-form{ background: #fff; border-radius: 50px; padding: 30px;
+  button{ background: #ea48ae !important; }
+h3{ color: #ea48ae;}
+p{ font-size: 14px; line-height: 18px;  color: $text-color;}
+.emailsuccessfulsubmitfooter{ position: relative; color: $text-color; a{ color: $text-color;}}
 }
   
 
@@ -229,7 +245,7 @@ h4{ font-weight: 800;}
 }
 
 .home-roles-page{ margin: 20px 0px;
-  .skybluebox{ text-align: center; background: #D7EEFF; height: 300px; border: $primarybluen solid 1px; padding: 15px;  border-radius: 20px;
+  .skybluebox{ text-align: center; background: #D7EEFF; height: 270px; border: $primarybluen solid 1px; padding: 15px;  border-radius: 20px;
   img{ margin: -100px 0px 0px 0px; height: 100px;}  }
   .heading{ color: $primarybluen; font-size: $fontsize-md; font-weight: 600;}
 
@@ -238,7 +254,7 @@ h4{ font-weight: 800;}
 
 .no-CodeAnalytical{ position: relative;  /*background: url(../img/home-pagebanner/no-CodeAnalytical.jpg) 100%; color: #fff;*/
    .heading{ font-weight: 800;}
-.panel-box{ background: #D7EEFF; position: relative;    border-radius: 10px;  padding: 15px; height: 335px;  
+.panel-box{ background: #D7EEFF; position: relative;    border-radius: 10px;  padding: 15px; height: 300px;  
 }
  .hrstyle{height: 5px; margin:10px 0; padding: 0; width: 100px; border-radius: 10px; border:none}
 .hr1{ background: #2FCDF4; @extend.hrstyle; }
@@ -285,11 +301,7 @@ p{font-size: 16px;  font-style: normal;  font-weight: 400;
     h2{   font-size: 40px;      font-style: normal;      font-weight: 600; color: $white;         }
     h3{   font-size: 25px;      font-style: normal;      font-weight: 600; color: $white;         }
       p{       font-size: 14px;        font-style: normal;        font-weight: 400; line-height: 24px; }
-      
-      .from { margin: 0px 15px 0px 15px;  input[type=text]{border: none; width: 100%;   border: 1px solid  #DFE2E5; border-radius: 8px;     float: left;  padding: 12px 10px; }
-        input[type=submit]{border: none; background: #E947AD; font-weight: 800;   width: 100%;   padding: 12px 10px;color:  #FFF;   border-radius: 8px;  }
-        button{border: none; background: #0065FF;  font-weight: 800;     padding: 10px 50px;color:  #FFF;   border-radius: 8px;  }
-        }
+       
         a{color: $white;}
     }
     
@@ -936,3 +948,25 @@ span{ color: #868D9E;}
    li b{ width: 15px; height: 15px; float: left; margin:2px;} 
   } 
    /* ---------------  Customchart ---------------*/
+
+
+   /* ------------- scheduleDemo -------------  */ 
+   .whathappens::before{width: 110%;
+    height: 750px;
+    content: " ";
+    position: absolute;
+    background: #d7eeff;
+    border-radius: 20px 1200px 50px 1018px;
+    transform: rotate(-7deg);
+    top: 150px;
+    left: -5%;
+    z-index: -2;  }
+
+    p{ margin: 0; font-size: 14px;}
+   .whathappens{    position: relative;    z-index: 0;    padding: 250px 0px 250px 0px; position: relative;
+  .heading{ margin-bottom: 50px; text-align: center; color: #803eeb; font-size: 48px; line-height: 40px; font-weight: 800; .sub-heading{ font-size: 22px; color: $black;line-height: 30px;} img{ position: absolute;  margin: -110px 0px 0px 0px;}}
+  h3{ color:#ea48ae; margin: 0;  font-size: 22px;}
+}
+
+   
+   /* ------------- scheduleDemo -------------  */ 

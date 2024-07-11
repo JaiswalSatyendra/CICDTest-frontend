@@ -9,22 +9,15 @@ function HomeFooter() {
   const [data, setData] = useState({
     fname: '',
     lname: '',
-    email: ''
+    email: '',
+    phone: ''
   })
   const [subsibeEmail, setSubsibeEmail] = useState("")
   const [isSubmitShedule, setisSubmitShedule] = useState(false);
   const [isSubmitSubscribe, setisSubmitSubscribe] = useState(false);
 
 
-  function submitForm() {
-    sendMail(data.fname, data.email, "shedule_demo");
-    setData({
-      fname: '',
-      lname: '',
-      email: ''
-    })
-    setisSubmitShedule(true);
-  }
+   
 
   function subscribeEmail() {
     sendMail(null, subsibeEmail, "subscribe_email")
@@ -32,14 +25,15 @@ function HomeFooter() {
     setisSubmitSubscribe(true)
   }
 
-  function sendMail(userName, userEmail, mailtype) {
+   
+  function sendMail(userName,userLastName,userEmail, userPhone, mailtype) {
     fetch(`${process.env.REACT_APP_API_URL}/survey/sendMailSheduleDemo`, {
       method: "POST",
       credentials: "include",
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify({ "userName": userName, "userEmail": userEmail, mailType: mailtype })
+      body: JSON.stringify({ "userName": userName,"userLastName": userLastName, "userEmail": userEmail, "userPhone": userPhone, mailType: mailtype })
     })
       .then((res) => res.json())
       .then((res) => {
@@ -49,14 +43,26 @@ function HomeFooter() {
       })
   }
 
+  function submitForm() {
+    sendMail(data.fname, data.lname,data.email,data.phone, "shedule_demo");
+    setData({
+      fname: '',
+      lname: '',
+      email: '',
+      phone: ''
+    })
+    setisSubmitShedule(true);
+  }
 
   function handle(e) {
     let newData = { ...data }
     newData[e.target.id] = e.target.value
     setData(newData)
-    console.log(newData)
-
+    console.log(newData) 
   }
+
+
+ 
   return (
     <div className="footerContainer-home" id="getStarted">
       <div className="subscription-section">
@@ -95,9 +101,13 @@ function HomeFooter() {
                           <Grid item xs={12} sm={6} lg={6}>
                             <input type="text" placeholder="Last Name" onChange={(e) => handle(e)} name="lname" value={data.lname} id="lname" />
                           </Grid>
-                          <Grid item xs={12} sm={12} lg={12}>
+                          <Grid item xs={12} sm={6} lg={6}>
                             <input type="text" placeholder="Email Address" onChange={(e) => handle(e)} name="email" value={data.email} id="email" required />
-                          </Grid><Grid item xs={12} sm={12} lg={12}>
+                          </Grid>
+                          <Grid item xs={12} sm={6} lg={6}>
+                            <input type="text" placeholder="Phone" onChange={(e) => handle(e)} name="phone" value={data.phone} id="phone" required />
+                          </Grid>
+                          <Grid item xs={12} sm={12} lg={12}>
                             <input type={'checkbox'} name='check' />
                           I consent to send my submitted data via email as outlined in the <Link to={'/privacy-policy'}><u>Privacy Policy</u>.</Link></Grid>
                           <Grid item xs={12} sm={12} lg={12}><div className="text-center"> 
