@@ -1508,10 +1508,14 @@ function CreateDataConnection() {
     let newParam = params.get("code");
     await axios
     .post(`${process.env.REACT_APP_API_URL}/user/fetchTokenKlaviyo`, {
-      grant_type: 'authorization_code', 
-      code: newParam,
-      code_verifier: 'code_challenge',
-      redirect_uri: 'http://localhost:3000/dashboard/data-platform/create-data-connection', 
+      grant_type: 'authorization_code',
+      refresh_token:'',
+      code:newParam,
+      client_id: process.env.REACT_APP_klaviyo_CLIENT_ID,
+      client_secret: process.env.REACT_APP_klaviyo_Client_Secret, 
+      redirect_uri: process.env.REACT_APP_klaviyo_REDIRECT_URI, 
+      user_id: user._id,
+      code_verifier:process.env.REACT_APP_klaviyo_code_verifier
     })
     .then((response) => {
       console.log(response)
