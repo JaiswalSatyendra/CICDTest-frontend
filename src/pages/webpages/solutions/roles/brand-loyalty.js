@@ -22,23 +22,19 @@ import hootsuite from "../../../../assets/icons/hootsuite.png";
 import typeform from "../../../../assets/icons/typeform.png";
 import googleForms from "../../../../assets/icons/googleForms.png";
 import surveymonkey from "../../../../assets/icons/surveymonkey.png";
-import leadGenerationAnalysisBanner from "../../../../assets/img/leadGenerationAnalysis.png";
+import brandLoyaltyBanner from "../../../../assets/img/brandLoyalty.png";
 import productDevelopment from "../../../../assets/img/solutions/churnproductdevelopment.png";
 import marketing from "../../../../assets/img/solutions/churnmarketing.png";
 import HomeFooter from "../../../../components/home-footer";
 import { Helmet } from "react-helmet";
 import {
   CustomerSuccessMeta,
-  DataSourcesList,
-  insightsActionDataCS,
-  leadGenerationAnalysisData,
-  mainHeading,
-  midContentDataCS,
+  DataSourcesList,brandLoyaltyData
 } from "../../../../assets/data/roles";
 import { customerSuccessData } from "../../../../assets/data/schema-markup";
 import { customerSuccess } from "../../../../assets/data/metadata-list";
 
-export default function LeadGenerationAnalysis() {
+export default function BrandLoyalty() {
   useEffect(() => {}, []);
   const navigate = useNavigate();
   const getstartedClick = () => navigate("/signup");
@@ -74,20 +70,13 @@ export default function LeadGenerationAnalysis() {
         <section className="container-home ">
           <Grid container spacing={3} direction="row">
             <Grid item xs={12} md={5} lg={5}>
-              <div className="banner-top-heading">Lead Generation Analysis</div>{" "}
+              <div className="banner-top-heading">Brand Loyalty</div> 
               <br />
-              <h4>
-                {" "}
-                Data Centric Approach to identify, engage, and convert
-                high-quality leads effectively
+              <h4> 
+              Superpower Loyalty with AI-Driven Loyalty Scoring and Engagement Tracking
               </h4>
               <p>
-                Current lead generation analysis relies on minimal methods and
-                data from disparate sources, leading marketers to stick to
-                single-channel analysis. ConvertML consolidates data from
-                various sources, tracks multiple customer touch points, and
-                comprehensively follows the lead-to-customer journey and track
-                key metrics.
+              With ConvertML’s Brand Loyalty template you’re well positioned to understand, measure, and enhance customer loyalty towards your brand: you don’t need more tools in your bag, you need ConvertML. With a bundle of features including loyalty score calculation, customer engagement tracking across social media channels, sentiment analysis, and our star offering “CoPilot” you’re sure to up those loyalty numbers in no time!
               </p>
               <div className="clearfix"></div> <br />
               <button onClick={getstartedClick} className="link-btn">
@@ -97,7 +86,7 @@ export default function LeadGenerationAnalysis() {
             <Grid item xs={12} md={7} lg={7}>
               <br />
               <img
-                src={leadGenerationAnalysisBanner}
+                src={brandLoyaltyBanner}
                 title={"banner"}
                 alt={"banner"}
                 className="img-responsive"
@@ -135,7 +124,7 @@ export default function LeadGenerationAnalysis() {
         </div> 
       </section>
 
-      {leadGenerationAnalysisData.map((content) => (
+      {brandLoyaltyData.map((content) => (
             <section className={content.bannerdirection == "right"?'section-skyblue':''}>
               <div className="container-home">
               <div className="web-view">
@@ -151,7 +140,7 @@ export default function LeadGenerationAnalysis() {
                       <Grid item xs={12} md={6} lg={6}>
                         {" "}
                         <img
-                          src={"/json-media/img/solutions/leadGenerationAnalysis/" + content.bannerName + ".png"}
+                          src={"/json-media/img/solutions/brandLoyalty/" + content.bannerName + ".png"}
                           alt="sitting in Goldmine"
                           className="img-responsive"
                         />{" "}
@@ -169,7 +158,7 @@ export default function LeadGenerationAnalysis() {
                             >
                               <b>{content.heading}</b>{" "}
                             </div>
-                            <p> {content.content}</p>
+                            <p> {content.content}<div className="mt-3"></div></p>
                           </>
                         ))}
                       </Grid>
@@ -189,14 +178,14 @@ export default function LeadGenerationAnalysis() {
                             >
                               <b>{content.heading}</b>{" "}
                             </div>
-                            <p> {content.content}</p>
+                            <p> {content.content}<div className="mt-3"></div> </p>
                           </>
                         ))}
                       </Grid>
                       <Grid item xs={12} md={6} lg={6}>
                         {" "}
                         <img
-                          src={"/json-media/img/solutions/leadGenerationAnalysis/" + content.bannerName + ".png"}
+                          src={"/json-media/img/solutions/brandLoyalty/" + content.bannerName + ".png"}
                           alt="sitting in Goldmine"
                           className="img-responsive"
                         />{" "}
@@ -233,7 +222,7 @@ export default function LeadGenerationAnalysis() {
                   <Grid item xs={12} md={6} lg={6}>
                     {" "}
                     <img
-                      src={"/json-media/img/solutions/leadGenerationAnalysis/" + content.bannerName + ".png"}
+                      src={"/json-media/img/solutions/brandLoyalty/" + content.bannerName + ".png"}
                       alt="sitting in Goldmine"
                       className="img-responsive"
                     />{" "}

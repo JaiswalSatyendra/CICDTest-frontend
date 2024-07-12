@@ -225,6 +225,17 @@ li{    padding-top: 5px;  padding-bottom: 5px; padding-left:0px}
           p{font-size: 18px;  font-style: normal; font-weight: 400; line-height: 28px; margin: 0px; color: $white;}
           .bannerimg{ width:70%; margin: 30px 0px;}
         }
+
+ .pinkbannercusve-onlyheading{ background: #ea48ae;  margin-top: 117px; border-radius: 0px 0px 150px 150px;   
+  .banner-top-heading{ min-width:250px; display: inline-block;    margin:auto;  background: $white; border-radius: 50px; padding:10px 30px;  font-size: 20px;}
+          .heading3{ margin:20px 0px; font-size: 40px; font-style: normal; font-weight: 700;  line-height: 50px; b{ color: #6644F1;} color: #fff;}
+          h1{ margin: 20px 0px; font-size: 80px; font-style: normal; font-weight: 700;  line-height: 100%; b{ color: #6644F1;} color: #fff;}
+              h2{ margin: 20px 0px; font-size: 60px; font-style: normal; font-weight: 700; line-height: 100%; b{ color: #6644F1;} color: #fff;}
+              h3{ margin:20px 0px; font-size: 40px; font-style: normal; font-weight: 700;  line-height: 50px; b{ color: #6644F1;} color: #fff;}
+              h4{ margin:10px 0px; font-size: 25px; font-style: normal; font-weight: 700;  line-height: 30px; b{ color: #6644F1;} color: #fff;}
+              p{font-size: 18px;  font-style: normal; font-weight: 400; line-height: 28px; margin: 0px; color: $white;}
+              .bannerimg{ width:70%; margin: 30px 0px;}
+            }
 .survey-list-home{ @extend.box-shadow-card; border-radius: 20px; padding: 20px; z-index: 10; 
   label{ position: relative; display: inline-block;  cursor: pointer; padding-top: 35px;}
   input{ position: absolute; }

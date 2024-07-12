@@ -6217,7 +6217,7 @@ export default function MlResultsConnection({ resultData }) {
                           <div className="result-toolbar">
                             <Tooltip
                               title={
-                                "Better understand your core variables by tracking them over time, such as by months, quarters, years, or a specific time period. "
+                                "Track your important variables over time to understand customer behaviour."
                               }
                             >
                               <i className="fa fa-info-circle small-md-icons"></i>

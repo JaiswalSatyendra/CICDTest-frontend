@@ -523,13 +523,13 @@ function CreateDataConnection() {
     } else {
       let typeFormConnectedList = isShowSurveyMapp.filter((ele) => ele.dataType == "Typeform");
 
-    if (typeFormConnectedList.length > 1) {
-      isShowSurveyMapp.forEach((ele) => {
-        if (ele.dataType == "Typeform") {
-          ele.listMapping = typeFormConnectedList[typeFormConnectedList.length-1].listMapping
-        }
-      });
-    }
+      if (typeFormConnectedList.length > 1) {
+        isShowSurveyMapp.forEach((ele) => {
+          if (ele.dataType == "Typeform") {
+            ele.listMapping = typeFormConnectedList[typeFormConnectedList.length - 1].listMapping
+          }
+        });
+      }
       let found1 = isShowSurveyMapp.map((ele) => ele.listMapping).flat();
       let found2 = found1.filter((ele) => {
         return !ele.is_mapped;
@@ -1157,8 +1157,8 @@ function CreateDataConnection() {
             setSelectedProjectId(newValLocalStorage1);
             setProjectName(newValLocalStorage);
             setisConnectedTypeForm(true);
-            fetchTokenTypeform(null, newParam); 
-          } 
+            fetchTokenTypeform(null, newParam);
+          }
           else {
             setisConnectedTypeForm(false);
           }
@@ -1288,7 +1288,7 @@ function CreateDataConnection() {
                       data.row.module = value;
                       data.row.weightage = "L";
                       data.row.is_mapped =
-                        data.row.module != null ? true : false;
+                        (data.row.module != null && data.row.module != "") ? true : false;
                     }
                   }}
                   renderInput={(params) => (
@@ -1399,7 +1399,7 @@ function CreateDataConnection() {
                       event.stopPropagation();
                       data.row.module = value;
                       data.row.weightage = "L";
-                      data.row.is_mapped = data.row.module != null ? true : false;
+                      data.row.is_mapped = (data.row.module != null && data.row.module != "") ? true : false;
                     }
                   }}
                   renderInput={(params) => (
@@ -1445,7 +1445,7 @@ function CreateDataConnection() {
 
   //databases json
 
- 
+
 
   //upload a file json
 
@@ -1501,63 +1501,63 @@ function CreateDataConnection() {
         console.log(err);
         // setLoaderShow(false)
       });
-  }; 
+  };
   const fetchTokenklaviyo = async (ev) => {
     let search = window.location.search;
     let params = new URLSearchParams(search);
     let newParam = params.get("code");
     await axios
-    .post(`${process.env.REACT_APP_API_URL}/user/fetchTokenKlaviyo`, {
-      grant_type: 'authorization_code',
-      refresh_token:'',
-      code:newParam,
-      client_id: process.env.REACT_APP_klaviyo_CLIENT_ID,
-      client_secret: process.env.REACT_APP_klaviyo_Client_Secret, 
-      redirect_uri: process.env.REACT_APP_klaviyo_REDIRECT_URI, 
-      user_id: user._id,
-      code_verifier:process.env.REACT_APP_klaviyo_code_verifier
-    })
-    .then((response) => {
-      console.log(response)
-      // settokenName(response.data.access_token);
-      // setRefreshtokenName(response.data.refresh_token);
-      // getWorkspaceList(
-      //   { token: response.data.access_token },
-      //   response.data.refresh_token
-      // );
-    })
-    .catch((err) => {
-      console.log(err);
-      // setLoaderShow(false)
-    }); 
-  }; 
-   
+      .post(`${process.env.REACT_APP_API_URL}/user/fetchTokenKlaviyo`, {
+        grant_type: 'authorization_code',
+        refresh_token: '',
+        code: newParam,
+        client_id: process.env.REACT_APP_klaviyo_CLIENT_ID,
+        client_secret: process.env.REACT_APP_klaviyo_Client_Secret,
+        redirect_uri: process.env.REACT_APP_klaviyo_REDIRECT_URI,
+        user_id: user._id,
+        code_verifier: process.env.REACT_APP_klaviyo_code_verifier
+      })
+      .then((response) => {
+        console.log(response)
+        // settokenName(response.data.access_token);
+        // setRefreshtokenName(response.data.refresh_token);
+        // getWorkspaceList(
+        //   { token: response.data.access_token },
+        //   response.data.refresh_token
+        // );
+      })
+      .catch((err) => {
+        console.log(err);
+        // setLoaderShow(false)
+      });
+  };
+
   const fetchTokenIntercom = async (ev) => {
     let search = window.location.search;
     let params = new URLSearchParams(search);
     let newParam = params.get("code");
     await axios
-    .post(`${process.env.REACT_APP_API_URL}/user/fetchTokenIntercom`, {
-      grant_type: 'authorization_code', 
-      code: newParam,
-      code_verifier: 'code_challenge',
-      redirect_uri: 'http://localhost:3000/dashboard/data-platform/create-data-connection', 
-    })
-    .then((response) => {
-      console.log(response)
-      // settokenName(response.data.access_token);
-      // setRefreshtokenName(response.data.refresh_token);
-      // getWorkspaceList(
-      //   { token: response.data.access_token },
-      //   response.data.refresh_token
-      // );
-    })
-    .catch((err) => {
-      console.log(err);
-      // setLoaderShow(false)
-    }); 
-  }; 
-  
+      .post(`${process.env.REACT_APP_API_URL}/user/fetchTokenIntercom`, {
+        grant_type: 'authorization_code',
+        code: newParam,
+        code_verifier: 'code_challenge',
+        redirect_uri: 'http://localhost:3000/dashboard/data-platform/create-data-connection',
+      })
+      .then((response) => {
+        console.log(response)
+        // settokenName(response.data.access_token);
+        // setRefreshtokenName(response.data.refresh_token);
+        // getWorkspaceList(
+        //   { token: response.data.access_token },
+        //   response.data.refresh_token
+        // );
+      })
+      .catch((err) => {
+        console.log(err);
+        // setLoaderShow(false)
+      });
+  };
+
   const fetchTokenHubspotList = (ev, newParam) => {
     setOpenHubspot(true);
     setisOpenPopupHubspot(true);
@@ -3206,14 +3206,14 @@ className={
                               </Grid>
                             ))}
 
- <Grid xs={12} md={12} lg={12}>
+                            <Grid xs={12} md={12} lg={12}>
                               <div className="mt-3"></div>
                               <Typography
                                 variant="h6"
                                 component="h6"
                                 className="ml-4"
                               >
-                               E-commerce
+                                E-commerce
                               </Typography>
                             </Grid>
                             {ecommerceListData.map((item, i) => (
@@ -3508,7 +3508,7 @@ className={
                                           )}
                                         </section>
                                       </Grid>
-                                    )} 
+                                    )}
                                   {
                                     errorListDisplay.map(
                                       (itemMessage, i) => (
@@ -3596,141 +3596,141 @@ className={
 
 
                                 {!showLoder && !typeformIngestionStatus.status ?
-                                  isShowSurveyMapp.map((label, index) => ( 
-                                    <> 
-                                      <Typography  style={{margin:'15px'}}   
-                                                variant="span"
-                                                className="text-primary datasources"
-                                              >
-                                                <span className="datasources-type">
-                                                  {label.dataType}
-                                                </span>
-                                                <span className="datasources-list">
-                                                  {label.survey.label}
-                                                </span>
-                                                <Button
-                                                  color="primary"
-                                                  size="small"
-                                                  variant="outlined"
-                                                  onClick={() => {
-                                                    handleRemoveSurvey(index);
-                                                  }}
-                                                >
-                                                  <CloseIcon /> Remove
-                                                </Button>
-                                              </Typography> 
+                                  isShowSurveyMapp.map((label, index) => (
+                                    <>
+                                      <Typography style={{ margin: '15px' }}
+                                        variant="span"
+                                        className="text-primary datasources"
+                                      >
+                                        <span className="datasources-type">
+                                          {label.dataType}
+                                        </span>
+                                        <span className="datasources-list">
+                                          {label.survey.label}
+                                        </span>
+                                        <Button
+                                          color="primary"
+                                          size="small"
+                                          variant="outlined"
+                                          onClick={() => {
+                                            handleRemoveSurvey(index);
+                                          }}
+                                        >
+                                          <CloseIcon /> Remove
+                                        </Button>
+                                      </Typography>
 
-                                          {label.dataType == "Typeform" && label.survey.value == (isShowSurveyMapp.filter((ele) => ele.dataType == "Typeform")[isShowSurveyMapp.filter((ele) => ele.dataType == "Typeform").length-1]).survey.value ?
-                                            <Box
-                                              sx={{
-                                                height: 520,
-                                                width: "98.5%", 
-                                                margin:'15px',
-                                                paddingBottom: "10px",
-                                              }}
-                                            >
-                                              <DataGrid
-                                                rows={label.listMapping}
-                                                columns={
-                                                  label.dataType == "Typeform"
-                                                    ? gridDataForGrid.columns
-                                                    : gridDataForGrid.columns1
-                                                }
-                                                pageSizeOptions={[5, 10, 50, 100]}
-                                                checkboxSelection={true}
-                                                disableSelectionOnClick
-                                                rowHeight={65}
-                                                selectionModel={
-                                                  label.checkedAllList
-                                                }
-                                                onSelectionModelChange={(
-                                                  e
-                                                ) => {
-                                                  setSelectionModel(e);
-                                                  const selectedIDs = new Set(e);
-                                                  const selectedRows =
-                                                    label.listMapping.filter(
-                                                      (r) => selectedIDs.has(r.id)
-                                                    );
-                                                  setSelectedRows(selectedRows);
-                                                }}
-                                                onCellKeyDown={(
-                                                  params,
-                                                  event
-                                                ) => {
-                                                  event.stopPropagation();
-                                                  event.defaultMuiPrevented = true;
-                                                }}
-                                                pagination={false}
-                                                hideFooterRowCount={true}
-                                                hideFooter={true}
-                                                editable
-                                              />
-                                            </Box>
-                                            : ""}
-
-                                          {label.dataType !== "Typeform" ? <Box
-                                            sx={{
-                                              height: 520,
-                                              width: "98.5%", 
-                                              margin:'15px', 
+                                      {label.dataType == "Typeform" && label.survey.value == (isShowSurveyMapp.filter((ele) => ele.dataType == "Typeform")[isShowSurveyMapp.filter((ele) => ele.dataType == "Typeform").length - 1]).survey.value ?
+                                        <Box
+                                          sx={{
+                                            height: 520,
+                                            width: "98.5%",
+                                            margin: '15px',
+                                            paddingBottom: "10px",
+                                          }}
+                                        >
+                                          <DataGrid
+                                            rows={label.listMapping}
+                                            columns={
+                                              label.dataType == "Typeform"
+                                                ? gridDataForGrid.columns
+                                                : gridDataForGrid.columns1
+                                            }
+                                            pageSizeOptions={[5, 10, 50, 100]}
+                                            checkboxSelection={true}
+                                            disableSelectionOnClick
+                                            rowHeight={65}
+                                            selectionModel={
+                                              label.checkedAllList
+                                            }
+                                            onSelectionModelChange={(
+                                              e
+                                            ) => {
+                                              setSelectionModel(e);
+                                              const selectedIDs = new Set(e);
+                                              const selectedRows =
+                                                label.listMapping.filter(
+                                                  (r) => selectedIDs.has(r.id)
+                                                );
+                                              setSelectedRows(selectedRows);
                                             }}
-                                          >
-                                            <DataGrid
-                                              rows={label.listMapping}
-                                              columns={
-                                                label.dataType == "Typeform"
-                                                  ? gridDataForGrid.columns
-                                                  : gridDataForGrid.columns1
-                                              }
-                                              pageSizeOptions={[5, 10, 50, 100]}
-                                              checkboxSelection={true}
-                                              disableSelectionOnClick
-                                              rowHeight={65}
-                                              selectionModel={
-                                                label.checkedAllList
-                                              }
-                                              onSelectionModelChange={(
-                                                e
-                                              ) => {
-                                                setSelectionModel(e);
-                                                const selectedIDs = new Set(e);
-                                                const selectedRows =
-                                                  label.listMapping.filter(
-                                                    (r) => selectedIDs.has(r.id)
-                                                  );
-                                                setSelectedRows(selectedRows);
-                                              }}
-                                              // rowSelectionModel={
-                                              //   label.checkedAllList
-                                              // }
-                                              // onRowSelectionModelChange={(
-                                              //   e
-                                              // ) => {
-                                              //   setSelectionModel(e);
-                                              //   const selectedIDs = new Set(e);
-                                              //   const selectedRows =
-                                              //     label.listMapping.filter(
-                                              //       (r) => selectedIDs.has(r.id)
-                                              //     );
-                                              //   setSelectedRows(selectedRows);
-                                              // }}
-                                              onCellKeyDown={(
-                                                params,
-                                                event
-                                              ) => {
-                                                event.stopPropagation();
-                                                event.defaultMuiPrevented = true;
-                                              }}
-                                              pagination={false}
-                                              hideFooterRowCount={true}
-                                              hideFooter={true}
-                                              editable
-                                            />
-                                          </Box>
-                                            : ''} 
-                                             
-                                      </> 
+                                            onCellKeyDown={(
+                                              params,
+                                              event
+                                            ) => {
+                                              event.stopPropagation();
+                                              event.defaultMuiPrevented = true;
+                                            }}
+                                            pagination={false}
+                                            hideFooterRowCount={true}
+                                            hideFooter={true}
+                                            editable
+                                          />
+                                        </Box>
+                                        : ""}
+
+                                      {label.dataType !== "Typeform" ? <Box
+                                        sx={{
+                                          height: 520,
+                                          width: "98.5%",
+                                          margin: '15px',
+                                        }}
+                                      >
+                                        <DataGrid
+                                          rows={label.listMapping}
+                                          columns={
+                                            label.dataType == "Typeform"
+                                              ? gridDataForGrid.columns
+                                              : gridDataForGrid.columns1
+                                          }
+                                          pageSizeOptions={[5, 10, 50, 100]}
+                                          checkboxSelection={true}
+                                          disableSelectionOnClick
+                                          rowHeight={65}
+                                          selectionModel={
+                                            label.checkedAllList
+                                          }
+                                          onSelectionModelChange={(
+                                            e
+                                          ) => {
+                                            setSelectionModel(e);
+                                            const selectedIDs = new Set(e);
+                                            const selectedRows =
+                                              label.listMapping.filter(
+                                                (r) => selectedIDs.has(r.id)
+                                              );
+                                            setSelectedRows(selectedRows);
+                                          }}
+                                          // rowSelectionModel={
+                                          //   label.checkedAllList
+                                          // }
+                                          // onRowSelectionModelChange={(
+                                          //   e
+                                          // ) => {
+                                          //   setSelectionModel(e);
+                                          //   const selectedIDs = new Set(e);
+                                          //   const selectedRows =
+                                          //     label.listMapping.filter(
+                                          //       (r) => selectedIDs.has(r.id)
+                                          //     );
+                                          //   setSelectedRows(selectedRows);
+                                          // }}
+                                          onCellKeyDown={(
+                                            params,
+                                            event
+                                          ) => {
+                                            event.stopPropagation();
+                                            event.defaultMuiPrevented = true;
+                                          }}
+                                          pagination={false}
+                                          hideFooterRowCount={true}
+                                          hideFooter={true}
+                                          editable
+                                        />
+                                      </Box>
+                                        : ''}
+
+                                    </>
                                   )) :
                                   <>
                                     <Box className='text-center'><br />
@@ -4012,7 +4012,7 @@ className={
                         disabled={
                           (activeStep + 1 == 2 && showLoder == true) || (activeStep + 1 == 2 && checked.length == 0) ||
                           showLoderVisual == true ||
-                          isRunningIngestion == true 
+                          isRunningIngestion == true
                         }
                         onClick={handleNext}
                       >

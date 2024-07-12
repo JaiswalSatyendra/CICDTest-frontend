@@ -22,7 +22,7 @@ import hootsuite from "../../../../assets/icons/hootsuite.png";
 import typeform from "../../../../assets/icons/typeform.png";
 import googleForms from "../../../../assets/icons/googleForms.png";
 import surveymonkey from "../../../../assets/icons/surveymonkey.png";
-import leadGenerationAnalysisBanner from "../../../../assets/img/leadGenerationAnalysis.png";
+import marketResearchBanner from "../../../../assets/img/marketResearch.png";
 import productDevelopment from "../../../../assets/img/solutions/churnproductdevelopment.png";
 import marketing from "../../../../assets/img/solutions/churnmarketing.png";
 import HomeFooter from "../../../../components/home-footer";
@@ -30,15 +30,15 @@ import { Helmet } from "react-helmet";
 import {
   CustomerSuccessMeta,
   DataSourcesList,
-  insightsActionDataCS,
-  leadGenerationAnalysisData,
+  insightsActionDataCS, 
   mainHeading,
+  marketResearchData,
   midContentDataCS,
 } from "../../../../assets/data/roles";
 import { customerSuccessData } from "../../../../assets/data/schema-markup";
 import { customerSuccess } from "../../../../assets/data/metadata-list";
 
-export default function LeadGenerationAnalysis() {
+export default function MarketResearch() {
   useEffect(() => {}, []);
   const navigate = useNavigate();
   const getstartedClick = () => navigate("/signup");
@@ -74,20 +74,13 @@ export default function LeadGenerationAnalysis() {
         <section className="container-home ">
           <Grid container spacing={3} direction="row">
             <Grid item xs={12} md={5} lg={5}>
-              <div className="banner-top-heading">Lead Generation Analysis</div>{" "}
+              <div className="banner-top-heading">Market Research</div> 
               <br />
-              <h4>
-                {" "}
-                Data Centric Approach to identify, engage, and convert
-                high-quality leads effectively
+              <h4> 
+              ConvertML: Revolutionize Your Market Insights with AI-Powered Precision
               </h4>
               <p>
-                Current lead generation analysis relies on minimal methods and
-                data from disparate sources, leading marketers to stick to
-                single-channel analysis. ConvertML consolidates data from
-                various sources, tracks multiple customer touch points, and
-                comprehensively follows the lead-to-customer journey and track
-                key metrics.
+              ConvertML’s Market Research template is a one-stop solution to all your marketing needs. Before you explore multipurpose model templates to suit your specific needs, the Market Research feature gets you a quick overview of your data. As part of this offering, you’re equipped with tons of features such as sentiment analytics, multidimensional cross-tab segmentation, customer segmentation, generative AI Data Insights, and our top-of-the-line offering, ConvertML Copilot.
               </p>
               <div className="clearfix"></div> <br />
               <button onClick={getstartedClick} className="link-btn">
@@ -97,7 +90,7 @@ export default function LeadGenerationAnalysis() {
             <Grid item xs={12} md={7} lg={7}>
               <br />
               <img
-                src={leadGenerationAnalysisBanner}
+                src={marketResearchBanner}
                 title={"banner"}
                 alt={"banner"}
                 className="img-responsive"
@@ -135,7 +128,7 @@ export default function LeadGenerationAnalysis() {
         </div> 
       </section>
 
-      {leadGenerationAnalysisData.map((content) => (
+      {marketResearchData.map((content) => (
             <section className={content.bannerdirection == "right"?'section-skyblue':''}>
               <div className="container-home">
               <div className="web-view">
@@ -151,7 +144,7 @@ export default function LeadGenerationAnalysis() {
                       <Grid item xs={12} md={6} lg={6}>
                         {" "}
                         <img
-                          src={"/json-media/img/solutions/leadGenerationAnalysis/" + content.bannerName + ".png"}
+                          src={"/json-media/img/solutions/marketResearch/" + content.bannerName + ".png"}
                           alt="sitting in Goldmine"
                           className="img-responsive"
                         />{" "}
@@ -164,7 +157,7 @@ export default function LeadGenerationAnalysis() {
                               className={
                                 content.heading == null
                                   ? ""
-                                  : "check-heading mb-1"
+                                  : "check-heading mb-1 mt-1"
                               }
                             >
                               <b>{content.heading}</b>{" "}
@@ -184,7 +177,7 @@ export default function LeadGenerationAnalysis() {
                               className={
                                 content.heading == null
                                   ? ""
-                                  : "check-heading mb-1"
+                                  : "check-heading mb-1 mt-1"
                               }
                             >
                               <b>{content.heading}</b>{" "}
@@ -196,7 +189,7 @@ export default function LeadGenerationAnalysis() {
                       <Grid item xs={12} md={6} lg={6}>
                         {" "}
                         <img
-                          src={"/json-media/img/solutions/leadGenerationAnalysis/" + content.bannerName + ".png"}
+                          src={"/json-media/img/solutions/marketResearch/" + content.bannerName + ".png"}
                           alt="sitting in Goldmine"
                           className="img-responsive"
                         />{" "}
@@ -233,7 +226,7 @@ export default function LeadGenerationAnalysis() {
                   <Grid item xs={12} md={6} lg={6}>
                     {" "}
                     <img
-                      src={"/json-media/img/solutions/leadGenerationAnalysis/" + content.bannerName + ".png"}
+                      src={"/json-media/img/solutions/marketResearch/" + content.bannerName + ".png"}
                       alt="sitting in Goldmine"
                       className="img-responsive"
                     />{" "}
