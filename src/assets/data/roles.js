@@ -477,7 +477,7 @@ exports.insightsActionData= [
     {  id: 4, imgname:'quickBooks',},
     {  id: 5, imgname:'bigQuery',},
     {  id: 6, imgname:'typeform',},
-    {  id: 7, imgname:'AWSRedshift',},    
+    {  id: 7, imgname:'awsRedshift',},    
     {  id: 7, imgname:'salesforce',},    
     {  id: 7, imgname:'hubspot',},    
     {  id: 7, imgname:'stripe',} 
@@ -749,7 +749,7 @@ exports.insightsActionData= [
           content:'ConvertML Copilot, our premium offering, is your marketing buddy who never gets tired!'
         }, 
       ],
-       bannerName:'Copilot',
+       bannerName:'CoPilot',
        bannerdirection:'left',
     }, 
     {

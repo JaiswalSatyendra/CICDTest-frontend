@@ -4784,7 +4784,7 @@ export default function MlResultsConnection({ resultData }) {
                                 "text-align": ii == 0 ? `left` : "center",
                               }}
                             >
-                              <span className={itemBodydata == '100.0%' ? 'text-highlighter' : ''}> {itemBodydata} </span>
+                               {itemBodydata}  
                             </div>
                           </td>
                         ))}

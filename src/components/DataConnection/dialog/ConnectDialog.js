@@ -600,7 +600,8 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
     }
     else if (seltype == 'klaviyo') {
       localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_klaviyo_CLIENT_ID); 
-      window.location = 'https://www.klaviyo.com/oauth/authorize?response_type=code&client_id=' + process.env.REACT_APP_klaviyo_CLIENT_ID + '&redirect_uri=' + process.env.REACT_APP_klaviyo_REDIRECT_URI+'&scope=lists:accounts:read%20accounts:write%20events:read%20events:write%20profiles:read%20profiles:write%20campaigns:read%20campaigns:write%20lists:write%20metrics:read&code_challenge_method=S256&code_challenge=eOMWaNXLASXynd_pmDcbaxjMNFDN9bBhwRZ_n6IhWmk&selected_account=true' 
+      window.location = 'https://www.klaviyo.com/oauth/authorize?response_type=code&client_id=9b70672a-fe0d-4d12-962e-0e99f54e752d&redirect_uri=https://convertml.ai/dashboard/data-platform/create-data-connection&scope=accounts:read%20accounts:write%20events:read%20events:write%20profiles:read%20profiles:write%20campaigns:read%20campaigns:write%20lists:write%20metrics:read&code_challenge_method=S256&code_challenge=eOMWaNXLASXynd_pmDcbaxjMNFDN9bBhwRZ_n6IhWmk&selected_account=true'
+      // window.location = 'https://www.klaviyo.com/oauth/authorize?response_type=code&client_id=' + process.env.REACT_APP_klaviyo_CLIENT_ID + '&redirect_uri=' + process.env.REACT_APP_klaviyo_REDIRECT_URI+'&scope=lists:accounts:read%20accounts:write%20events:read%20events:write%20profiles:read%20profiles:write%20campaigns:read%20campaigns:write%20lists:write%20metrics:read&code_challenge_method=S256&code_challenge=eOMWaNXLASXynd_pmDcbaxjMNFDN9bBhwRZ_n6IhWmk&selected_account=true' 
 
 
       // https://www.klaviyo.com/oauth/authorize?response_type=code&client_id=9b70672a-fe0d-4d12-962e-0e99f54e752d
@@ -705,7 +706,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
         setselectedFeedbackSurvey(val)
       } else {
         // setcheckDuplicateSurveyList("If you are selecting multiple surveys, ensure identical questions sets")
-        seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Question Mapping Error', message: ["If you are selecting multiple surveys, ensure identical questions sets"] }]);
+        seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Question Mapping Error', message: ["If you are selecting multiple surveys, ensure identical questions sets."] }]);
 
       }
 
@@ -853,7 +854,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
               newgridData.push({ "formName": selectedFormDetail[0].title, "formId": element.formId, "isCollapse": false, "formFields": newMappedList, "selectedRow": newChekedList });
 
             } else {
-              seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Question Mapping Error', message: ["If you are selecting multiple surveys, ensure identical questions sets"] }]);
+              seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Question Mapping Error', message: ["If you are selecting multiple surveys, ensure identical questions sets."] }]);
 
               // setcheckDuplicateSurveyList("If you are selecting multiple surveys, ensure identical questions sets")
             }

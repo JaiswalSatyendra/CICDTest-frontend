@@ -1519,6 +1519,7 @@ function CreateDataConnection() {
       })
       .then((response) => {
         console.log(response)
+        alert(response)
         // settokenName(response.data.access_token);
         // setRefreshtokenName(response.data.refresh_token);
         // getWorkspaceList(
@@ -1526,7 +1527,7 @@ function CreateDataConnection() {
         //   response.data.refresh_token
         // );
       })
-      .catch((err) => {
+      .catch((err) => { 
         console.log(err);
         // setLoaderShow(false)
       });
