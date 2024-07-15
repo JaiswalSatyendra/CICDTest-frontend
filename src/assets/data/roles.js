@@ -708,7 +708,7 @@ exports.insightsActionData= [
           content:'ConvertML normalizes CRM & survey data, performs clustering, and uses dimensionality reduction to create and display various customer segments that share similar behavior and sentiment. You can then have targeted marketing strategies for distinct customer segments to improve customer engagement.'
         }, 
       ],
-       bannerName:'clusteringAnalysis',
+       bannerName:'clusterAnalysis',
        bannerdirection:'right',
     }, 
     {

@@ -164,7 +164,7 @@ export default function LeadGenerationAnalysis() {
                               className={
                                 content.heading == null
                                   ? ""
-                                  : "check-heading mb-1"
+                                  : "check-heading mb-1 mt-1"
                               }
                             >
                               <b>{content.heading}</b>{" "}
@@ -184,7 +184,7 @@ export default function LeadGenerationAnalysis() {
                               className={
                                 content.heading == null
                                   ? ""
-                                  : "check-heading mb-1"
+                                  : "check-heading mb-1 mt-1"
                               }
                             >
                               <b>{content.heading}</b>{" "}
@@ -220,7 +220,7 @@ export default function LeadGenerationAnalysis() {
                       <>
                         <h4
                           className={
-                            content.heading == null ? "" : "check-heading mb-1"
+                            content.heading == null ? "" : "check-heading mb-1 mt-1"
                           }
                         >
                           {" "}

@@ -85,9 +85,8 @@ function HomePage() {
       <div className="web-view">
         <br />
         <br />
-        <br />{" "}
-      </div>
-
+      </div> 
+      <br /> 
       <section className="section-skyblue">
         <div className="container-home text-center">
           <h2 className="text-center">
@@ -132,8 +131,8 @@ function HomePage() {
               </h2>
             </b>
           </h2>
-          <br />
-          <br />
+          <div className="web-view"> <br />
+          <br /></div> 
           <br />
           <Grid
             container
@@ -256,7 +255,7 @@ function HomePage() {
             </Grid>
           </Grid>
         </div>
-        <br /> <br /> <br />
+        <br /> <br />  
         <section className="section-gray">
           <div className="container-home">
             <Grid
@@ -272,8 +271,7 @@ function HomePage() {
                   alt="Your Competitive Advantage"
                   className="img-responsive"
                 />
-              </Grid>
-
+              </Grid> 
               <Grid item xs={12} md={6} lg={6}>
                 <h2>All-in-One Dashboard for Advanced Analytics</h2>
                 <p>
@@ -290,7 +288,7 @@ function HomePage() {
             </Grid>
           </div>
         </section>
-        <br /> <br /> <br />
+        <br /> <br />  
         <div className="container-home">
           <Grid
             container
@@ -314,7 +312,9 @@ function HomePage() {
             </Grid>
           </Grid>
         </div>
-        <br /> <br /> <br />
+        <div className="web-view"> <br />
+          <br />
+          <br /></div> 
         <section className="section-gray">
           <div className="container-home">
             <Grid
@@ -348,8 +348,7 @@ function HomePage() {
             </Grid>
           </div>
         </section>
-        <br />
-        <br />
+        <div className="web-view"> <br />  <br /></div> 
         <section className="section-skyblue">
           <div className="container-home">
             <Grid
@@ -477,10 +476,7 @@ With ConvertML you can integrate zero-party data with other first-party data sou
             </Grid>
           </Grid>
         </div>
-      </section>
-      <br />
-      <br />
-      <br />
+      </section><div className="web-view"> <br /> <br /> <br /></div>  
       <HomeFooter />
     </>
   );
