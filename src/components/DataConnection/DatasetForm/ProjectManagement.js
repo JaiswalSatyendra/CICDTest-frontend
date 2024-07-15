@@ -663,7 +663,7 @@ function ProjectManagement() {
           )}
           {!showLoder && (
             <Box sx={{ height: "59.5vh", width: "100%" }}>
-              <DataGrid
+              <DataGridPro
                 slots={{
                   noRowsOverlay: CustomNoRowsOverlay,
                 }}
@@ -671,25 +671,17 @@ function ProjectManagement() {
                 columns={gridDataForGrid.columns}
                 pagination={true}
                 pageSizeOptions={[20, 50, 100]}
-                
+                getRowHeight={() => "auto"}
                 hideFooterRowCount={true}
                 checkboxSelection={true}
-
-                
-                onSelectionModelChange={(ids) => {
+                // rowSelectionModel={ selectedRows }
+                onRowSelectionModelChange={(ids) => {
                   const selectedIDs = new Set(ids);
                   const selectedRows = gridDataForGrid.rows.filter((row) =>
                     selectedIDs.has(row.id)
                   );
                   setSelectedRows(selectedRows);
                 }}
-                // onRowSelectionModelChange={(ids) => {
-                //   const selectedIDs = new Set(ids);
-                //   const selectedRows = gridDataForGrid.rows.filter((row) =>
-                //     selectedIDs.has(row.id)
-                //   );
-                //   setSelectedRows(selectedRows);
-                // }}
                 initialState={{
                   pagination: {
                     paginationModel: {

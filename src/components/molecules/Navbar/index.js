@@ -329,6 +329,63 @@ const Navbar = () => {
                                   </p>
                                 </Link>
                               </Grid>
+                              <Grid item xs={12} md={4} lg={4}>
+                                <Link to="/solutions/roles/leadGenerationAnalysis">
+
+                                  <b>
+                                    <img
+                                      src={
+                                        "/json-media/img/nav/marketingInsight.svg"
+                                      }
+                                      alt="test"
+                                    />
+                                   Lead Generation Analysis
+                                  </b>
+                                  <p>
+                                    Uncover insights by merging qualitative
+                                    and quantitative data from CRMs, surveys,
+                                    and social media for new opportunities.
+                                  </p>
+                                </Link>
+                              </Grid>
+                              <Grid item xs={12} md={4} lg={4}>
+                                <Link to="/solutions/roles/brandLoyalty">
+
+                                  <b>
+                                    <img
+                                      src={
+                                        "/json-media/img/nav/marketingInsight.svg"
+                                      }
+                                      alt="test"
+                                    />
+                                    Brand Loyalty
+                                  </b>
+                                  <p>
+                                    Uncover insights by merging qualitative
+                                    and quantitative data from CRMs, surveys,
+                                    and social media for new opportunities.
+                                  </p>
+                                </Link>
+                              </Grid>
+                              <Grid item xs={12} md={4} lg={4}>
+                                <Link to="/solutions/roles/marketResearch">
+
+                                  <b>
+                                    <img
+                                      src={
+                                        "/json-media/img/nav/marketingInsight.svg"
+                                      }
+                                      alt="test"
+                                    />
+                                    Market Research
+                                  </b>
+                                  <p>
+                                    Uncover insights by merging qualitative
+                                    and quantitative data from CRMs, surveys,
+                                    and social media for new opportunities.
+                                  </p>
+                                </Link>
+                              </Grid>
                             </Grid>
                           </div>
 

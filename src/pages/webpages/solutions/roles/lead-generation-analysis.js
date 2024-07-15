@@ -10,7 +10,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { Grid } from "@mui/material";
 import { Container } from "postcss";
 
-
 import salesforce from "../../../../assets/icons/salesforce.png";
 import hubsport from "../../../../assets/icons/hubsport.png";
 import zendesk from "../../../../assets/icons/zendesk.png";
@@ -23,170 +22,96 @@ import hootsuite from "../../../../assets/icons/hootsuite.png";
 import typeform from "../../../../assets/icons/typeform.png";
 import googleForms from "../../../../assets/icons/googleForms.png";
 import surveymonkey from "../../../../assets/icons/surveymonkey.png";
-
-import productDevelopment from "../../../../assets/img/solutions/churnproductdevelopment.png"; 
+import leadGenerationAnalysisBanner from "../../../../assets/img/leadGenerationAnalysis.png";
+import productDevelopment from "../../../../assets/img/solutions/churnproductdevelopment.png";
 import marketing from "../../../../assets/img/solutions/churnmarketing.png";
 import HomeFooter from "../../../../components/home-footer";
 import { Helmet } from "react-helmet";
 import {
   CustomerSuccessMeta,
+  DataSourcesList,
   insightsActionDataCS,
+  leadGenerationAnalysisData,
   mainHeading,
   midContentDataCS,
 } from "../../../../assets/data/roles";
 import { customerSuccessData } from "../../../../assets/data/schema-markup";
 import { customerSuccess } from "../../../../assets/data/metadata-list";
 
-function CustomerSuccessPage() {
+export default function LeadGenerationAnalysis() {
   useEffect(() => {}, []);
   const navigate = useNavigate();
-  const getstartedClick = () => navigate('/signup');
+  const getstartedClick = () => navigate("/signup");
   return (
     <>
-     <script
+      <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(customerSuccessData),
         }}
       />
 
-<Helmet> 
-        <title>{customerSuccess.title}  </title>
-        <meta name="description" content={customerSuccess.description } data-react-helmet="true" />
-        <meta name="keywords"  content={customerSuccess.keywords} />
+      <Helmet>
+        <title>{customerSuccess.title} </title>
+        <meta
+          name="description"
+          content={customerSuccess.description}
+          data-react-helmet="true"
+        />
+        <meta name="keywords" content={customerSuccess.keywords} />
         <meta property="image" content={customerSuccess.image} />
         <meta property="url" content={customerSuccess.url} />
         <meta property="publisher" content={customerSuccess.publisher} />
         <meta property="author " content={customerSuccess.author} />
         <meta property="site_name" content={customerSuccess.site_name} />
         <meta property="locale" content={customerSuccess.locale} />
-        <meta property="type" content={customerSuccess.type}/>
+        <meta property="type" content={customerSuccess.type} />
         <link rel="canonical" href={customerSuccess.canonical} />
-      </Helmet> 
+      </Helmet>
       <Navbar />
       {/* ------------------- banner   ------------------- */}
-      <div className="new-banner">
-        <section className="container-home text-center">
-          <div className="banner-top-heading">Customer Success</div> <br />
-          <h1 className="m-0 d-none">
-            Navigate Satisfaction Dynamics with Agility &  Actionable Insights 
-          </h1>
-          <div className="m-0 heading3">
-            Navigate Satisfaction Dynamics with Agility &{" "}
-            <b>Actionable Insights </b>
-          </div>
-          <p>
-            Elevate customer success with ConvertML’s Real-time NPS, seamless
-            integration, and swift risk identification. Our intuitive dashboard
-            offers a 360-degree view for targeted improvements, transforming
-            customer success into a proactive, data-driven powerhouse.
-          </p>
-          <br />
-          <button  onClick={getstartedClick} className="link-btn">
-            <i className="fa fa-play-circle"> </i> Get Started  
-    </button> 
-          <br />
-          <img src={customerSuccessBanner} alt="churn Analysis" className="bannerimg" /> 
+      <div className="pinkbannercusve-onlyheading">
+        <section className="container-home ">
+          <Grid container spacing={3} direction="row">
+            <Grid item xs={12} md={5} lg={5}>
+              <div className="banner-top-heading">Lead Generation Analysis</div>{" "}
+              <br />
+              <h4>
+                {" "}
+                Data Centric Approach to identify, engage, and convert
+                high-quality leads effectively
+              </h4>
+              <p>
+                Current lead generation analysis relies on minimal methods and
+                data from disparate sources, leading marketers to stick to
+                single-channel analysis. ConvertML consolidates data from
+                various sources, tracks multiple customer touch points, and
+                comprehensively follows the lead-to-customer journey and track
+                key metrics.
+              </p>
+              <div className="clearfix"></div> <br />
+              <button onClick={getstartedClick} className="link-btn">
+                <i className="fa fa-play-circle mr-1"> </i> Get Started
+              </button>
+            </Grid>
+            <Grid item xs={12} md={7} lg={7}>
+              <br />
+              <img
+                src={leadGenerationAnalysisBanner}
+                title={"banner"}
+                alt={"banner"}
+                className="img-responsive"
+              />
+            </Grid>
+          </Grid>
         </section>
       </div>
-      {/* ------------------- banner   ------------------- */} 
+      {/* ------------------- banner   ------------------- */}
       <section>
         <div className="container-home">
-        <h2 className="text-center fw-600">{mainHeading}</h2>
-          {midContentDataCS.map((content) => (
-            <section>
-             <div className="web-view">
-               <Grid
-                container
-                spacing={8}
-                direction="row"
-                justifyContent="center"
-                alignItems="center"
-              > 
-                {content.bannerdirection=='left'?<><Grid item xs={12} md={5} lg={5}> <img
-                 src={'/json-media/img/'+content.bannerName+'.png'}
-                  alt="sitting in Goldmine"
-                  className="img-responsive"
-                /> </Grid>  <Grid item xs={12} md={7} lg={7}><div className="heading2"> {content.heading}</div>
-                {content.listContent.map((content) => (
-                  <>
-                    <div className="check-heading mb-1"><b>{content.heading}</b> </div>
-                    <p> {content.content}</p>
-                  </>
-                ))} 
-                </Grid>
-                </>:<>  <Grid item xs={12} md={7} lg={7}><div className="heading2"> {content.heading}</div>
-                {content.listContent.map((content) => (
-                  <>
-                    <div className="check-heading mb-1"> <b> {content.heading}</b> </div>
-                    <p> {content.content}</p>
-                  </>
-                ))} 
-                </Grid>
-                <Grid item xs={12} md={5} lg={5}> <img
-                 src={'/json-media/img/'+content.bannerName+'.png'}
-                  alt="sitting in Goldmine"
-                  className="img-responsive"
-                /> </Grid> </>}
-                 </Grid>  
-</div>
-
-<div className="mobile-view"> 
-<Grid
-                container
-                spacing={8}
-                direction="row"
-                justifyContent="center"
-                alignItems="center"
-              > 
-<Grid item xs={12} md={7} lg={7}><h2> {content.heading}</h2>
-                {content.listContent.map((content) => (
-                  <>
-                    <h4 className="check-heading mb-1"> {content.heading}</h4>
-                    <p> {content.content}</p>
-                  </>
-                ))} 
-                </Grid>
-                <Grid item xs={12} md={5} lg={5}> <img
-                 src={'/json-media/img/'+content.bannerName+'.png'}
-                  alt="sitting in Goldmine"
-                  className="img-responsive"
-                /> </Grid>
-                 </Grid>  
-
-</div>
-
-               
-
-                {/* {content.bannerdirection=='left'?<><Grid item xs={12} md={5} lg={5}> <img
-                 src={'/json-media/img/'+content.bannerName+'.png'}
-                  alt="sitting in Goldmine"
-                  className="img-responsive"
-                /> </Grid></>:<> <Grid item xs={12} md={7} lg={7}><h2> {content.heading}</h2>
-                {content.listContent.map((content) => (
-                  <>
-                    <h4 className="check-heading mb-1"> {content.heading}</h4>
-                    <p> {content.content}</p>
-                  </>
-                ))} </Grid> </>}   */}
-
-                {/* {content.bannerdirection=='left'?<><Grid item xs={12} md={7} lg={7}> <h2> {content.heading}</h2>
-                  {content.listContent.map((content) => (
-                    <>
-                      <h4 className="check-heading mb-1"> {content.heading}</h4>
-                      <p> {content.content}</p>
-                    </>
-                  ))}</Grid></>:<> <Grid item xs={12} md={5} lg={5}>
-                   <img 
-                  src={'/json-media/img/'+content.bannerName+'.png'}
-                  alt="sitting in Goldmine"
-                  className="img-responsive"
-                /></Grid></>}   */}
-             
-            </section>
-          ))} 
-
-<section className="am-section">
+          <h4 className="text-center fw-600">
+            All Your Data Sources In A Single Dashboard
+          </h4>
           <Grid
             container
             spacing={2}
@@ -194,35 +119,132 @@ function CustomerSuccessPage() {
             justifyContent="center"
             alignItems="center"
           >
-            <Grid item xs={12} md={6} lg={6}>
-              <h2 className="text-center fw-600">
-              Use Cases
-              </h2>
-            </Grid>
-          </Grid>
-          <Grid container spacing={2} direction="row">
-            {insightsActionDataCS.map((action) => (
+            {DataSourcesList.map((item) => (
               <>
-                <Grid item xs={12} md={4} lg={4} key={action.id}>
-                  <div className="content-box" style={{ height: 420 }}>
-                    <img src={'/json-media/icons/'+action.img+'.svg'} alt={action.img} title={action.img} width={100} />
-                    <h3> 
-                      {action.title} <br />
-                      {action.title1}{" "}
-                    </h3>
-                    <p> {action.content} </p>
-                  </div>
-                </Grid>
+                <Grid item xs={3} md={1} lg={1}> 
+                  <img
+                    src={"/json-media/img/partners/" + item.imgname + "-sm.svg"}
+                    alt={item.imgname}
+                    title={item.imgname}
+                    width={35}
+                  /> 
+                </Grid> 
               </>
             ))}
-          </Grid>
-        </section> 
-        </div>
-      </section> 
-  
+          </Grid> 
+        </div> 
+      </section>
+
+      {leadGenerationAnalysisData.map((content) => (
+            <section className={content.bannerdirection == "right"?'section-skyblue':''}>
+              <div className="container-home">
+              <div className="web-view">
+                <Grid
+                  container
+                  spacing={8}
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  {content.bannerdirection == "left" ? (
+                    <>
+                      <Grid item xs={12} md={6} lg={6}>
+                        {" "}
+                        <img
+                          src={"/json-media/img/solutions/leadGenerationAnalysis/" + content.bannerName + ".png"}
+                          alt="sitting in Goldmine"
+                          className="img-responsive"
+                        />{" "}
+                      </Grid>{" "}
+                      <Grid item xs={12} md={6} lg={6}>
+                        <div className="heading2"> {content.heading}</div>
+                        {content.listContent.map((content) => (
+                          <>
+                            <div
+                              className={
+                                content.heading == null
+                                  ? ""
+                                  : "check-heading mb-1 mt-1"
+                              }
+                            >
+                              <b>{content.heading}</b>{" "}
+                            </div>
+                            <p> {content.content}</p>
+                          </>
+                        ))}
+                      </Grid>
+                    </>
+                  ) : (
+                    <> 
+                      <Grid item xs={12} md={6} lg={6}>
+                        <div className="heading2"> {content.heading}</div>
+                        {content.listContent.map((content) => (
+                          <>
+                            <div
+                              className={
+                                content.heading == null
+                                  ? ""
+                                  : "check-heading mb-1 mt-1"
+                              }
+                            >
+                              <b>{content.heading}</b>{" "}
+                            </div>
+                            <p> {content.content}</p>
+                          </>
+                        ))}
+                      </Grid>
+                      <Grid item xs={12} md={6} lg={6}>
+                        {" "}
+                        <img
+                          src={"/json-media/img/solutions/leadGenerationAnalysis/" + content.bannerName + ".png"}
+                          alt="sitting in Goldmine"
+                          className="img-responsive"
+                        />{" "}
+                      </Grid>{" "}
+                    </>
+                  )}
+                </Grid>
+              </div>
+
+              <div className="mobile-view">
+                <Grid
+                  container
+                  spacing={8}
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Grid item xs={12} md={6} lg={6}>
+                    <h2> {content.heading}</h2>
+                    {content.listContent.map((content) => (
+                      <>
+                        <h4
+                          className={
+                            content.heading == null ? "" : "check-heading mb-1 mt-1"
+                          }
+                        >
+                          {" "}
+                          {content.heading}
+                        </h4>
+                        <p> {content.content}</p>
+                      </>
+                    ))}
+                  </Grid>
+                  <Grid item xs={12} md={6} lg={6}>
+                    {" "}
+                    <img
+                      src={"/json-media/img/solutions/leadGenerationAnalysis/" + content.bannerName + ".png"}
+                      alt="sitting in Goldmine"
+                      className="img-responsive"
+                    />{" "}
+                  </Grid>
+                </Grid>
+              </div>
+              </div>
+            </section>
+          ))}
+
       <HomeFooter />
     </>
   );
 }
-
-export default CustomerSuccessPage;

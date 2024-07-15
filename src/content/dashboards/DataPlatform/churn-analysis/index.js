@@ -53,10 +53,8 @@ import Chart from "react-apexcharts";
 import axios from "axios";
 
 import addWeeks from "date-fns/addWeeks";
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-// import LocalizationProvider from "@mui/x-date-pickers";
-// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { LocalizationProvider } from '@mui/x-date-pickers';
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DateRangePicker from "@mui/lab/DateRangePicker";
 
 
@@ -114,7 +112,6 @@ import nps from "../../../../assets/icons/nps.svg";
 
 
 import { gridDataForGridRowData } from "../../../../assets/data/data";
-import { DateRangePickerComponent } from "@syncfusion/ej2-react-calendars";
 
 function getWeeksAfter(date, amount) {
   return date ? addWeeks(date, amount) : undefined;
@@ -1820,11 +1817,11 @@ export default function ChurnAnalysisResult({ resultData }) {
               </Select>
             </FormControl>
             <br /> 
-            {/* <LocalizationProvider
+            <LocalizationProvider
               dateAdapter={AdapterDateFns}
               sx={{ mt: 2, minWidth: "100%" }}
             >
-              <DateRangePickerComponent
+              <DateRangePicker
                 disablePast
                 value={value}
                 maxDate={getWeeksAfter(value[0], 4)}
@@ -1839,7 +1836,7 @@ export default function ChurnAnalysisResult({ resultData }) {
                   </React.Fragment>
                 )}
               />
-            </LocalizationProvider> */}
+            </LocalizationProvider>
           </div>
         </>
       ) : (
