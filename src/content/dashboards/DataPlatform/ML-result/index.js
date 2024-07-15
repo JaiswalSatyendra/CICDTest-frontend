@@ -1,34 +1,21 @@
 import * as React from "react";
 import {
-  Autocomplete,
   Box,
   Button,
   FormControl,
-  FormLabel,
   Grid,
-  styled,
   TextField,
-  Typography,
-  InputAdornment,
   CardContent,
   Card,
-  List,
-  ListItem,
-  ListItemAvatar,
-  Avatar,
   ListItemText,
-  ListItemButton,
   CircularProgress,
   InputLabel,
   MenuItem,
   Select,
   CardHeader,
-  Divider,
   Tooltip,
-  OutlinedInput,
   Popover,
   IconButton,
-  Popper,
   Stack,
   Menu,
   FormControlLabel,
@@ -53,23 +40,11 @@ import Chip from "@mui/material/Chip";
 import "tippy.js/dist/tippy.css";
 import "tippy.js/animations/scale.css";
 // import CardActions from "@mui/material/CardActions";
-import CardMedia from "@mui/material/CardMedia";
-import CheckIcon from "@mui/icons-material/Check";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import Collapse from "@mui/material/Collapse";
-import Switch from "@mui/material/Switch";
-import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
-import PieChartIcon from "@mui/icons-material/PieChart";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
-import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import Chart from "react-apexcharts";
 import axios from "axios";
 
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Accordion from "@mui/material/Accordion";
-import AccordionActions from "@mui/material/AccordionActions";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -77,10 +52,10 @@ import NetPromoterScoreComingSoon from "../../../../assets/img/NetPromoterScoreC
 import stackedBarChartsComingSoon from "../../../../assets/img/stackedBarChartsComingSoon.jpg";
 import HistogramsComingSoon from "../../../../assets/img/HistogramsComingSoon.jpg";
 import cmllogo from "../../../../assets/icons/cml-logo.png";
-import userPic from "../../../../assets/icons/usericon.png";
-import arrowIcons from "../../../../assets/icons/usericon.png";
 
-import { CSVLink, CSVDownload } from "react-csv";
+import CustomChart from "../custom-chart/custom-chart";
+
+import { CSVLink } from "react-csv";
 // import DatabasesDialog from '../dialog/DatabasesDialog';
 import positiveIcons from "../../../../assets/icons/positive.svg";
 import neutralIcons from "../../../../assets/icons/neutral.svg";
@@ -88,24 +63,12 @@ import negativeIcons from "../../../../assets/icons/negative.svg";
 import positivechart from "../../../../assets/icons/positivechart.png";
 import neutralchart from "../../../../assets/icons/neutralchart.png";
 import negativechart from "../../../../assets/icons/negativechart.png";
-import demographyChart from "../../../../assets/icons/demographyChart.png";
-import userIcon from "../../../../assets/icons/usericon.png";
 import SplitterLayout from "react-splitter-layout";
 import "react-splitter-layout/lib/index.css";
-import DateFnsAdapter from "@mui/lab/AdapterDateFns";
 import { DataGrid } from "@mui/x-data-grid";
 import {
-  churnRateRows,
-  companyConsiderationColumnsData,
-  companyConsiderationRows,
-  companyTrustMetricColumnsData,
-  companyTrustMetricRows,
-  contactLevelRowsData,
-  correspondenceRateRows,
   positiveSatisfactionColumnsData,
   positiveSatisfactionRowsData,
-  sentimentResultColumnsData,
-  sentimentResultRowsData,
   totalResultCountData,
 } from "../../../../assets/data/result";
 import { useTheme } from "@emotion/react";
@@ -123,6 +86,7 @@ import alertactionIcons from "../../../../assets/icons/alertactionIcons.svg";
 
 import slacklogo from "../../../../assets/icons/slacklogo.svg";
 import zendesklogo from "../../../../assets/icons/zendesk.svg";
+import Slider from '@mui/material/Slider';
 
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -131,21 +95,16 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Checkbox from "@mui/material/Checkbox";
 import addWeeks from "date-fns/addWeeks";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DateRangePicker from "@mui/lab/DateRangePicker";
-import { gridDataForGridRowData } from "../../../../assets/data/data";
+// import {AdapterDateFns} from "@mui/x-date-pickers";
+// import LocalizationProvider from "@mui/x-date-pickers";
+// import { LocalizationProvider } from '@mui/x-date-pickers-pro';
 import ReactWordcloud from "react-wordcloud";
-import { de } from "date-fns/locale";
 import {
   DateRangePickerComponent,
   PresetsDirective,
   PresetDirective,
 } from "@syncfusion/ej2-react-calendars";
-import InsightSegmentation from "../insight-segemetation";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { v4 as uuidv4 } from "uuid";
-import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import CloseIcon from "@mui/icons-material/Close";
 import { useMemo } from "react";
 import {
@@ -156,10 +115,12 @@ import {
   marketResearchAlertList,
 } from "../../../../assets/data/alerts-trigger";
 import { AiChat } from "@nlux/react";
-import "@nlux/themes/nova.css";
-import { streamAdapter } from "./adapter";
-import { personas } from "./personas";
-import CustomChart from "../custom-chart/custom-chart";
+import '@nlux/themes/nova.css';
+import { streamAdapter } from './adapter';
+import { personas } from './personas';
+import CanvasJSReact from '@canvasjs/react-charts';
+var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+
 
 function getWeeksAfter(date, amount) {
   return date ? addWeeks(date, amount) : undefined;
@@ -183,17 +144,17 @@ export default function MlResultsConnection({ resultData }) {
   const [chartOne, setIschartOne] = useState("d-inline-block");
   const [chartOneCopy, setIschartOneCopy] = useState("d-none");
 
-  const [chartHalfheat, setIschartHalfheat] = useState(4); 
-  const [chartBoxHeightheat, setIschartBoxHeightheat] = useState(230); 
-  const [hideButtonheat, setIshideButtonheat] = useState("d-none"); 
-  const [showButtonheat, setIsshowButtonheat] = useState("d-inline-block");  
-  
-  
-  const [chartHalfdonutChart, setIschartHalfdonutChart] = useState(4); 
-  const [chartBoxHeightdonutChart, setIschartBoxHeightdonutChart] = useState(230); 
-  const [hideButtondonutChart, setIshideButtondonutChart] = useState("d-none"); 
+  const [chartHalfheat, setIschartHalfheat] = useState(4);
+  const [chartBoxHeightheat, setIschartBoxHeightheat] = useState(230);
+  const [hideButtonheat, setIshideButtonheat] = useState("d-none");
+  const [showButtonheat, setIsshowButtonheat] = useState("d-inline-block");
+
+
+  const [chartHalfdonutChart, setIschartHalfdonutChart] = useState(4);
+  const [chartBoxHeightdonutChart, setIschartBoxHeightdonutChart] = useState(230);
+  const [hideButtondonutChart, setIshideButtondonutChart] = useState("d-none");
   const [showButtondonutChart, setIsshowButtondonutChart] = useState("d-inline-block");
-  
+
 
   const [chartHalfTM, setIschartHalfTM] = useState(4);
   const [chartBoxHeightTM, setIschartBoxHeightTM] = useState(250);
@@ -223,6 +184,7 @@ export default function MlResultsConnection({ resultData }) {
   const [chartFontSize, setIschartFontSize] = useState("7px");
   const [dataTable, setDataTable] = useState(true);
   const [filterBox, setfilterBox] = useState(false);
+  const [rangeBox, setRangeBox] = useState(false);
   const [errorFilterBox, seterrorFilterBox] = useState({
     message: "",
     show: false,
@@ -239,10 +201,37 @@ export default function MlResultsConnection({ resultData }) {
   const [text, setText] = useState("");
   const [isSliderHide, setIsSliderHide] = useState(false);
   const [promptResult, setPromptResult] = useState(false);
+  const [masterResult, setmasterResult] = useState([]);
   const [featureImportanceData, setFeatureImportanceData] = useState({
     chartSeries: [],
     labels: [],
   });
+
+  const [psvalone, setPsoneValue] = useState([0, 0]);
+  const [psvaltwo, setPsvaltwo] = useState([0, 0]);
+
+  const handleChangeRange = (event, newValue) => {
+    setPsoneValue(newValue);
+
+  };
+
+  const handleChangePsRange = (event, newValue) => {
+    setPsvaltwo(newValue);
+
+  };
+
+  const clearRangefilter = () => {
+    setPsoneValue([0, 0]);
+    setPsvaltwo([0, 0]);
+    setpositiveSatisfactionResult({
+      filterdRow: masterResult,
+      filterdCol: positiveSatisfactionResult.filterdCol
+    })
+
+  }
+
+
+
   // const [timeframeSeriesList, settimeframeSeriesList] = useState([]);
 
   const [nrrBreakdownData, setNrrBreakdownData] = useState({
@@ -255,9 +244,75 @@ export default function MlResultsConnection({ resultData }) {
     yPosition: 0,
   });
 
+  const [canvaChart, setCanvaChart] = useState([
+  ]);
+
+  const [canvaChartMeter, setcanvaChartMeter] = useState({
+    minx: 0,
+    maxx: 0,
+    miny: 0,
+    maxy: 0,
+    yLable: "",
+    xLable: "",
+    colList: [],
+  });
+
+
+
+
   const [s3listOfkey, sets3listOfkey] = useState([]);
   // let s3listOfkey = []
 
+  const options = {
+    theme: "light",
+    height: 250,
+    animationEnabled: true,
+    zoomEnabled: true,
+    title: {
+      text: " "
+    },
+    axisX: {
+      title: canvaChartMeter.xLable,
+      lineColor: "#ccc",
+      tickColor: "#ccc",
+      minimum: canvaChartMeter.minx,
+      maximum: canvaChartMeter.maxx,
+      suffix: "",
+      gridThickness: 0,
+      crosshair: {
+        enabled: true,
+        snapToDataPoint: true
+      }
+    },
+    axisY: {
+      tickThickness: 0,
+      lineThickness: 0,
+      gridThickness: 0,
+      minimum: canvaChartMeter.miny,
+      maximum: canvaChartMeter.maxy,
+      title: canvaChartMeter.yLable,
+      includeZero: false,
+      crosshair: {
+        enabled: true,
+        snapToDataPoint: true
+      }
+    },
+    legend: {
+      cursor: "pointer",
+      itemclick: toggleDataSeries
+    },
+    data: canvaChart
+
+  }
+
+  function toggleDataSeries(e) {
+    if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+      e.dataSeries.visible = false;
+    } else {
+      e.dataSeries.visible = true;
+    }
+    e.chart.render();
+  }
   const promptResultData = [
     "1. What age groups are most actively purchasing CCG products, and how does this correlate with their spending habits on single cards, sealed products, and digital assets?",
     "2. How do preferences for premium or exclusive cards (like foils, alt art, etc.) vary across different demographics such as age and country?",
@@ -1019,8 +1074,8 @@ export default function MlResultsConnection({ resultData }) {
       },
     },
     yaxis: {
-      title: { text: "No of Churned" },
-      categories: timeSeriesData.yaxisList,
+      title: { text: "No of Churned", },
+      categories: timeSeriesData.yaxisList
     },
     tooltip: {
       shared: false,
@@ -1147,8 +1202,8 @@ export default function MlResultsConnection({ resultData }) {
       show: false,
     },
 
-    legend: { 
-      show: showButtondonutChart=='d-none'?true:false,
+    legend: {
+      show: showButtondonutChart == 'd-none' ? true : false,
       position: 'bottom',
       fontSize: '14px',
       labels: {
@@ -1472,6 +1527,7 @@ export default function MlResultsConnection({ resultData }) {
       },
       height: 350,
       type: "scatter",
+
       selection: {
         enabled: selectionTool,
         type: "xy",
@@ -1497,11 +1553,11 @@ export default function MlResultsConnection({ resultData }) {
       toolbar: {
         show: true,
         tools: {
-          download: true,
+          download: false,
           selection: true,
-          zoom: false,
-          zoomin: false,
-          zoomout: false,
+          zoom: true,
+          zoomin: true,
+          zoomout: true,
           pan: false,
           reset: false,
           customIcons: [
@@ -1520,22 +1576,7 @@ export default function MlResultsConnection({ resultData }) {
           ],
         },
       },
-      zoom: {
-        enabled: true,
-        type: "xy",
-        autoScaleYaxis: true,
-        zoomedArea: {
-          fill: {
-            color: "#90CAF9",
-            opacity: 0.4,
-          },
-          stroke: {
-            color: "#0D47A1",
-            opacity: 0.4,
-            width: 1,
-          },
-        }, //CAST(mean as DOUBLE) BETWEEN
-      },
+
       autoSelected: "zoom",
       events: {
         selection: function (chartContext, { xaxis, yaxis }) {
@@ -1568,6 +1609,7 @@ export default function MlResultsConnection({ resultData }) {
         },
       },
     },
+
     // states: {
     //   normal: {
     //     filter: {
@@ -1601,10 +1643,11 @@ export default function MlResultsConnection({ resultData }) {
     grid: {
       show: false,
     },
+
     xaxis: {
       type: "numeric",
-      min: correspondenceAnalysis.xAxisMinMax[0],
-      max: correspondenceAnalysis.xAxisMinMax[1],
+      min: -2,
+      max: 6,
       tickAmount: 5,
       labels: {
         formatter: function (val) {
@@ -1617,9 +1660,7 @@ export default function MlResultsConnection({ resultData }) {
     },
 
     yaxis: {
-      // min: -3,
-      // max: 4,
-      // tickAmount: 5,
+      tickAmount: 5,
       labels: {
         formatter: function (val) {
           return parseInt(val);
@@ -1777,6 +1818,8 @@ export default function MlResultsConnection({ resultData }) {
       }
     };
   }
+
+
 
   const getSatisfactionResult = async (
     tableDetails,
@@ -2402,7 +2445,7 @@ export default function MlResultsConnection({ resultData }) {
       setIshideButtondonutChart("d-inline-block");
       setIsshowButtondonutChart("d-none");
       setIschartFontSize("12px");
-    } 
+    }
     else if (selectChart == "companyTM") {
       setlabelHide(true);
       setIschartHalfTM(12);
@@ -2494,8 +2537,25 @@ export default function MlResultsConnection({ resultData }) {
     setfilterForBoxString(dialogHeader);
   };
 
+  const openRangePopupBox = (e, dialogHeader) => {
+    e.stopPropagation();
+    setRangeBox(true);
+    setfilterPopup({
+      xPosition: e.pageX - 250,
+      yPosition: e.pageY + 10,
+    });
+    setfilterForBoxString(dialogHeader);
+  };
+
+
+
+
   const closeFilterBox = () => {
     setfilterBox(false);
+  };
+
+  const closeRangePopupBox = () => {
+    setRangeBox(false);
   };
 
   const openSegmentaionDialogBox = (e, dialogHeader) => {
@@ -2553,14 +2613,47 @@ export default function MlResultsConnection({ resultData }) {
         bucket: "convertml-test-data",
         key: `${resultData.user_id}/gold/contact_satisfaction_${resultData._id}.csv`,
         whereClouse: wherCondition,
+        colList: queryList,
+        templateName: resultData.template,
+        defaultAxisForcluster: clustringData==undefined?null:clustringData.default_pair
       })
       .then(async (responsee) => {
         setLoderVisual(false);
         seterrorFilterBox({ message: "", show: false });
         closeFilterBox();
         if (responsee.data.success) {
-          let response1a = JSON.parse(responsee.data.data); //CSVToJSON(responsee.data.data, wherCondition,s3listOfkey);
-          let response1 = response1a.filter((ele) => ele.response_id != "");
+          let xLabel = "";
+          let yLabel = "";
+          let optionAxisList = []
+          let rdataForCanvas = responsee.data.data;
+          if (clustringData == undefined) {
+            if (resultData.template === "Churn Prediction") {
+              xLabel = "PC1";
+              yLabel = "PC2"
+            } else {
+              xLabel = "mean";
+              yLabel = "PC2"
+            }
+          } else {
+            xLabel = clustringData.default_pair[0];
+            yLabel = clustringData.default_pair[1];
+            optionAxisList = clustringData.factor_list
+          }
+
+
+          setcanvaChartMeter({
+            minx: Math.min(...rdataForCanvas.map(item => item.x)) - 1,
+            maxx: Math.max(...rdataForCanvas.map(item => item.x)) + 1,
+            miny: Math.min(...rdataForCanvas.map(item => item.y)) - 1,
+            maxy: Math.max(...rdataForCanvas.map(item => item.y)) + 1,
+            yLable: yLabel,
+            xLable: xLabel,
+            colList: optionAxisList,
+          });
+
+
+          let response1a = responsee.data.data  //CSVToJSON(responsee.data.data, wherCondition,s3listOfkey);
+          let response1 = response1a.filter(ele => ele.response_id != "");
           let newArrr1 = response1.map((ele, ind) => ({
             ...ele,
             id: ind + 1,
@@ -2577,7 +2670,8 @@ export default function MlResultsConnection({ resultData }) {
             (ele) => queryList.indexOf(ele.field) != -1
           );
 
-          setpositiveSatisfactionResult({
+          setmasterResult(newArrr1)
+          setpositiveSatisfactionResult({  //for table
             filterdRow:
               csCol.length == 0 || npsCols.length == 0 ? [] : newArrr1,
             filterdCol: hubspotMergeStatus ? csCol : npsCols,
@@ -2587,16 +2681,30 @@ export default function MlResultsConnection({ resultData }) {
           let keysvalue = (Object.keys(newArrr1[0]))
           setresultvalueKeys(keysvalue)
           // wherequery == null && queryList.indexOf("PC1") != -1
+
           if (wherCondition == "") {
-            if (clustringData == undefined) {
-              if (resultData.template === "Churn Prediction") {
-                await createObjectForCluster(response1, ["PC1", "PC2"], []);
-              } else {
-                await createObjectForCluster(response1, ["mean", "PC2"], []);
+
+            let getAllCluster = response1.map((ele) => ele.cluster);
+            let listAllClusterCanva = [...new Set(getAllCluster)];
+            let colorList = ["#FEAC00", "#FA586C", "#10BA5C", "#008FFB", "#775DD0", "#C21460", "#FEFE33", "#347C98", "#FF0080"];
+            const tempData = []
+            listAllClusterCanva.forEach((node,ind) => {
+              // let clusterInd = listAllClusterCanva.findIndex(ele => ele == node.cluster);
+              var nodeval = {
+                type: "scatter",
+                borderColor: "green",
+                name: node,
+                color: colorList[ind],
+                showInLegend: true,
+                toolTipContent: "<span style=\"color:#4F81BC \">Mean: {mean}</span>",
+                dataPoints: rdataForCanvas.filter((n) => {
+                  return n.cluster == node;
+                })
               }
-            } else {
-              await createObjectForCluster(response1, clustringData.default_pair, clustringData.factor_list);
-            }
+              tempData.push(nodeval)
+
+            })
+            setCanvaChart(tempData)
           }
         } else {
           console.log(responsee.data.error.message);
@@ -3000,7 +3108,7 @@ export default function MlResultsConnection({ resultData }) {
       setIsshowButtondonutChart("d-blok");
       setIschartFontSize("6px");
     }
-    
+
     else if (selectChart == "companyPC") {
       if (
         mappingResultdata.word_cloud != undefined &&
@@ -3545,6 +3653,29 @@ export default function MlResultsConnection({ resultData }) {
     }
   };
 
+  const rangeFilter = () => {
+
+
+
+    let result = [...masterResult].filter((node) => {
+
+      return (
+        node.PC1 > psvalone[0] && node.PC1 < psvalone[1] &&
+        node.PC2 > psvaltwo[0] && node.PC2 < psvaltwo[1]
+      )
+
+    })
+
+
+    setpositiveSatisfactionResult({
+      filterdRow: result,
+      filterdCol: positiveSatisfactionResult.filterdCol,
+
+    })
+
+
+  }
+
   const weekStart = new Date(
     new Date(
       new Date().setDate(new Date().getDate() - ((new Date().getDay() + 7) % 7))
@@ -3880,34 +4011,34 @@ export default function MlResultsConnection({ resultData }) {
   const [colorPatternList, setcolorPatternList] = useState(false);
   const [resultvalueKeys, setresultvalueKeys] = useState([false]);
   const [rowgridData, setrowgridData] = useState({})
-  const [customChartOpertaion, setcustomChartOpertaion] = useState([
-    {name:'Sum',  calby:'x'},
-    {name:'Average',  calby:'x'} 
+  const [customChartOpertaion, setcustomChartOpertaion] = useState(['Sum','Average'
+    // {name:'Sum',  calby:'x'},
+    // {name:'Average',  calby:'x'} 
   ])
   const [customChartDataGen, setcustomChartDataGen] = useState({
     series: [{
-    data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
-  }],
+      data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
+    }],
     chart: {
-    type: 'bar',
-    height: 350
-  },
-  plotOptions: {
-    bar: {
-      borderRadius: 4,
-      borderRadiusApplication: 'end',
-      horizontal: true,
+      type: 'bar',
+      height: 350
+    },
+    plotOptions: {
+      bar: {
+        borderRadius: 4,
+        borderRadiusApplication: 'end',
+        horizontal: true,
+      }
+    },
+    dataLabels: {
+      enabled: false
+    },
+    xaxis: {
+      categories: ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan',
+        'United States', 'China', 'Germany'
+      ],
     }
-  },
-  dataLabels: {
-    enabled: false
-  },
-  xaxis: {
-    categories: ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan',
-      'United States', 'China', 'Germany'
-    ],
-  }
-  }) 
+  })
 
 
   const [filtercustomChartRange, setfiltercustomChartRange] = React.useState([null, null]);
@@ -3915,7 +4046,7 @@ export default function MlResultsConnection({ resultData }) {
     project_name: resultData.project_name,
     xaxis: '',
     yaxis: '',
-    operationName: '', 
+    operationName: '',
     // colorPattern:selectedcolorspattern,
   });
 
@@ -3927,14 +4058,14 @@ export default function MlResultsConnection({ resultData }) {
     },
   ]
   const showcolorpattern = () => { setcolorPatternList(!colorPatternList) }
-  const [customchartData, setcustomchartData] = useState([{ data:null }]);
-  
+  const [customchartData, setcustomchartData] = useState([{ data: null }]);
+
   const [customchartloader, setcustomchartloader] = useState(false);
 
 
   const selectChartaxis = (e, val, label) => {
     let tmpcustomaxis = { ...customaxis, }
-    tmpcustomaxis[label] = val  
+    tmpcustomaxis[label] = val
     setcustomaxis(tmpcustomaxis);
     console.log(customaxis)
   }
@@ -3950,13 +4081,13 @@ export default function MlResultsConnection({ resultData }) {
       mapping_json: resultData.mapping_json,
       graph_id: 'customaxis' + customaxis.xaxis,
       xaxis: customaxis.xaxis,
-      yaxis:customaxis.yaxis,
-      operationName:daterang,
-        // operationName: {"operation": "sum", "axis": "x"},
-      timerange:filtercustomChartRange,
+      yaxis: customaxis.yaxis,
+      operationName: daterang,
+      // operationName: {"operation": "sum", "axis": "x"},
+      timerange: filtercustomChartRange,
       colorPattern: "null",
       chart_type: "bar",
-    } 
+    }
     fetch(`${process.env.REACT_APP_API_URL}/survey/createCustomGraph`, {
       method: "POST",
       credentials: "include",
@@ -3964,24 +4095,24 @@ export default function MlResultsConnection({ resultData }) {
         "Content-type": "application/json",
       },
       body: JSON.stringify(requestCustomchart),
-    }) 
-    .then((res) => res.json()) 
-     .then((res) => {
-        if (res.success==true) {
-          setcustomchartloader(false)  
-          let customdatares = JSON.parse(res.data); 
-          let  customdataresn=JSON.parse(customdatares);    
-          setcustomchartData(customdataresn)       
-        } 
-        else{ 
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success == true) {
+          setcustomchartloader(false)
+          let customdatares = JSON.parse(res.data);
+          let customdataresn = JSON.parse(customdatares);
+          setcustomchartData(customdataresn)
+        }
+        else {
           console.log("fesdfdfgfd")
         }
-        
+
       })
       .catch((err) => {
-        setcustomchartloader(true) 
+        setcustomchartloader(true)
         setTimeout(() => {
-          setcustomchartloader(false) 
+          setcustomchartloader(false)
         }, 5000);
         console.log("Error: " + err);
       });
@@ -4049,6 +4180,96 @@ export default function MlResultsConnection({ resultData }) {
         </Button>
       </div>
       <div className="clearfix"></div>
+
+
+      {/* ------------filter box range slider------------ */}
+
+      <Popover
+        open={rangeBox}
+        close={(e) => closeRangePopupBox()}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+        style={{ left: filterPopup.xPosition, top: filterPopup.yPosition }}
+      >    <div className="filterBox">
+          <a
+            onClick={(e) => closeRangePopupBox()}
+            className="fa fa-close float-right"
+          ></a>{" "}
+          <h4 className="m-0">
+            <i className="fa fa-filter"> </i> Filter {filterForBoxString}
+          </h4>
+          <label>PC1</label>
+          <FormControl
+            sx={{ mt: 0.5, mb: 1, minWidth: "100%", maxWidth: "100%" }}
+          >
+
+            <Slider
+              getAriaLabel={() => 'PC1'}
+              value={psvalone}
+              onChange={handleChangeRange}
+              valueLabelDisplay="auto"
+              min={canvaChartMeter.minx}
+              step={0.1}
+              max={canvaChartMeter.maxx}
+              disableSwap
+            />
+
+          </FormControl>
+          <label>PC2</label>
+          <FormControl
+            sx={{ mt: 0.5, mb: 1, minWidth: "100%", maxWidth: "100%" }}
+          >
+
+
+
+            <Slider
+              getAriaLabel={() => 'PC2'}
+              value={psvaltwo}
+              onChange={handleChangePsRange}
+              valueLabelDisplay="auto"
+              min={canvaChartMeter.miny}
+              step={0.1}
+              max={canvaChartMeter.maxy}
+              disableSwap
+            />
+          </FormControl>
+          <br />
+
+
+          <Stack direction="row" spacing={1}>
+            <Button
+              color="primary"
+              variant="outlined"
+              onClick={() => {
+                rangeFilter();
+              }}
+            >
+              Apply Filter
+            </Button>
+            <Button
+              color="primary"
+              variant="outlined"
+              onClick={() => {
+                clearRangefilter();
+              }}
+            >
+              Clear
+            </Button>
+          </Stack>
+
+
+
+        </div>
+
+      </Popover>
+
+
 
       {/* ------------filter box ------------ */}
       <Popover
@@ -4784,7 +5005,7 @@ export default function MlResultsConnection({ resultData }) {
                                 "text-align": ii == 0 ? `left` : "center",
                               }}
                             >
-                               {itemBodydata}  
+                              <span className={itemBodydata == '100.0%' ? 'text-highlighter' : ''}> {itemBodydata} </span>
                             </div>
                           </td>
                         ))}
@@ -5967,8 +6188,8 @@ export default function MlResultsConnection({ resultData }) {
               )}
 
               <div style={{ height: 9 }}></div>
-              {/* ---------------- custom chart  ----------------  */}
-              <Grid container spacing={1}>
+             {/* ---------------- custom chart  ----------------  */}
+             <Grid container spacing={1}>
                 <Grid item xs={8}>
                   <Card className="cardBox">
                     <CardContent>
@@ -6120,8 +6341,7 @@ export default function MlResultsConnection({ resultData }) {
                         </Grid>
                         <Grid item xs={6}>
                           <Box sx={{ height: 300, width: "100%" }}>
-                            {customchartloader?<div className="text-center"><br/><br/><br/><br/><CircularProgress /><br/> <br/>Thank you for your patience...</div>:<><CustomChart customchartData={customchartData} /></>}
-                          
+                            {customchartloader?<div className="text-center"><br/><br/><br/><br/><CircularProgress /><br/> <br/>Thank you for your patience...</div>:<><CustomChart customchartData={customchartData} /></>} 
                           </Box>
 
                         </Grid>
@@ -6929,9 +7149,9 @@ export default function MlResultsConnection({ resultData }) {
 
               </Grid>
               {/* ---------------- custom chart  ----------------  */}
-              <div className="clearfix"></div>
-            </Box>
-          </div>
+              < div className="clearfix" ></div >
+            </Box >
+          </div >
           {dataTable && (
             <div>
               <Box
@@ -6950,7 +7170,7 @@ export default function MlResultsConnection({ resultData }) {
                   </Box>
                 )}
                 {!showLoder && (
-                  <DataGridPro
+                  <DataGrid
                     className="table"
                     sx={{
                       height: "calc(100vh - 13.8em)",
@@ -6963,7 +7183,7 @@ export default function MlResultsConnection({ resultData }) {
                     pageSizeOptions={[20, 50, 100]}
                     checkboxSelection={false}
                     disableSelectionOnClick
-                    getRowHeight={() => "auto"}
+                    // getRowHeight={() => "auto"}
                     initialState={{
                       pagination: {
                         paginationModel: {
@@ -6978,9 +7198,10 @@ export default function MlResultsConnection({ resultData }) {
                 )}
               </Box>
             </div>
-          )}
-        </SplitterLayout>
-      </div>
-    </div>
+          )
+          }
+        </SplitterLayout >
+      </div >
+    </div >
   );
 }
