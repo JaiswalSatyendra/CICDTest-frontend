@@ -24,8 +24,8 @@ jobs:
 
       - name: Build
         env:
-          REACT_APP_API_URL: https://algo.convertml.ai
-          REACT_APP_ALGO_API_URL: https://algo.convertml.ai
+          REACT_APP_API_URL: http://algo.convertml.ai
+          REACT_APP_ALGO_API_URL: http://algo.convertml.ai
         run: CI=false npm run build
         
       - name: Invalidate CloudFront
