@@ -410,13 +410,13 @@ function PricingPlan() {
           </p>
           <br />
           <div className="custom-switch-btn">
-            <a
+            <a style={{margin:'-1px 1px 0px -2px', borderRadius:'12px'}}
               className={splan == "annually" ? "link-btn" : ""}
               onClick={(e) => selectedPlan("annually")}
             > 
               Bill Monthly 
             </a>
-            <a
+            <a style={{margin:'-1px -2px 0px 1px', borderRadius:'12px'}}
               className={splan == "annually" ? "" : "link-btn"}
               onClick={(e) => selectedPlan("monthly")}
             >

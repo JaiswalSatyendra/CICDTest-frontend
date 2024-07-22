@@ -173,8 +173,8 @@ function CreateDataConnection() {
   const [isOpenPopupTypeform, setisOpenPopupTypeform] = React.useState(false);
   const [isConnectedHubspot, setisConnectedHubspot] = React.useState(false);
   const [isOpenPopupHubspot, setisOpenPopupHubspot] = React.useState(false); 
-  const [isOpenPopupKlaviyo, setisOpenPopupKlaviyo] = React.useState(true);
-  
+  const [isOpenPopupKlaviyo, setisOpenPopupKlaviyo] = React.useState(true); 
+  const [isOpenPopupIntercom, setisOpenPopupIntercom] = React.useState(true);
   const [isUpload, setIsUpload] = React.useState(false);
   const [isTypeform, setIsTypeform] = React.useState(false);
   const [showLoder, setLoaderShow] = useState(false);
@@ -1226,6 +1226,7 @@ function CreateDataConnection() {
     setecommerceList(ecommerceListData)
     fetchTokenklaviyo();
     fetchTokenIntercom();
+    fetchTokenShopify();
   }, []);
 
   const setCatMappingOption = (catOptionList) => {
@@ -1546,6 +1547,48 @@ function CreateDataConnection() {
       });
   };
 
+
+  const fetchTokenShopify = async (ev) => { 
+    let search = window.location.search;
+    let params = new URLSearchParams(search);
+    let newParam = params.get("code");
+    await axios
+      .post(`${process.env.REACT_APP_API_URL}/user/fetchTokenShopify`, { 
+        code: newParam,
+        client_id: process.env.REACT_APP_Shopify_CLIENT_ID,
+        client_secret: process.env.REACT_APP_Shopify_Client_Secret,
+        redirect_uri: process.env.REACT_APP_Shopify_REDIRECT_URI,
+        shop:process.env.REACT_APP_Shopify_shop,
+        user_id: user._id, 
+      })
+      .then((response) => { 
+         settokenName(response.data.access_token);
+         console.log(response.data.access_token)
+         setRefreshtokenName(response.data.refresh_token);
+         let ecomlist=[...ecommerceListData];
+         console.log(ecomlist)
+
+        //  setprojectNameValid((prev) => ({
+        //   ...isValiedProject,
+        //   inPatternMatch: true,
+        //   textMessage: "Enter project name",
+        // }));
+
+         setisConnected(true)
+         setOpenKlaviyo(true);
+         setisOpenPopupKlaviyo(false);
+        // getWorkspaceList(
+        //   { token: response.data.access_token },
+        //   response.data.refresh_token
+        // );
+      })
+      .catch((err) => {
+        console.log(err);
+        // setLoaderShow(false)
+      });
+  };
+
+
   const fetchTokenIntercom = async (ev) => { 
     let search = window.location.search;
     let params = new URLSearchParams(search);
@@ -1555,14 +1598,14 @@ function CreateDataConnection() {
         grant_type: process.env.REACT_APP_TYPEFORM_GRANT_TYPE,
         refresh_token: "",
         code: newParam,
-        client_id: process.env.REACT_APP_HUBSPOT_CLIENT_ID,
-        client_secret: process.env.REACT_APP_HUBSPOT_CLIENT_SECRET,
-        redirect_uri: process.env.REACT_APP_HUBSPOT_REDIRECT_URI,
-        token_url: process.env.REACT_APP_HUBSPOT_REDIRECT_URI,
+        client_id: process.env.REACT_APP_Intercom_CLIENT_ID,
+        client_secret: process.env.REACT_APP_Intercom_Client_Secret,
+        redirect_uri: process.env.REACT_APP_Intercom_REDIRECT_URI, 
         user_id: user._id,
       })
       .then((response) => {
         console.log(response)
+        setisOpenPopupIntercom(false);
         // settokenName(response.data.access_token);
         // setRefreshtokenName(response.data.refresh_token);
         // getWorkspaceList(
@@ -4064,6 +4107,7 @@ className={
             openInstagram={openInstagram}
             openKlaviyo={openKlaviyo}            
             isOpenPopupKlaviyo={isOpenPopupKlaviyo}
+            isOpenPopupIntercom={isOpenPopupIntercom}
             openIntercom={openIntercom}
             openShopify={openShopify}
             token={tokenName}

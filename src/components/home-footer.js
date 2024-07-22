@@ -120,7 +120,7 @@ function HomeFooter() {
                 } 
               </div>
           </div>
-        
+        <br/><br/> 
             
         </Grid>
         <Grid item xs={12} sm={3} lg={3}>
@@ -205,7 +205,7 @@ function HomeFooter() {
             justifyContent="center"
           >
             <Grid xs={12} md={6}>
-              © Copyright 2023. ConvertML All Right Reserved
+              © Copyright 2024. ConvertML All Right Reserved
             </Grid>
             <Grid xs={12} md={6}>
               <div className='text-right'>

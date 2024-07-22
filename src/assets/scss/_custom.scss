@@ -305,8 +305,8 @@ p{font-size: 16px;  font-style: normal;  font-weight: 400;
  
 
   .footerContainer-home::before{ width: 100%;  height: 320px;  content: ' ';  position: absolute;   top: 0px;  background: #ffffff;}
-  .footerContainer-home{    background-size: 50%  50%; position: relative;    padding:0px 0px  0px  0px; 
-     .banner-img{ margin: 0px 0px -5px 0px;}
+  .footerContainer-home{ background: #fff;    background-size: 50%  50%; position: relative;    padding:0px 0px  0px  0px; 
+     .banner-img{ margin: 0px 0px -5px 0px;position: absolute;      bottom: 4px;      width: 400px;}
     .container-home{ position: relative;}
     .subscription-section{  position:  relative;  background: #E947AD; 
     h2{   font-size: 40px;      font-style: normal;      font-weight: 600; color: $white;         }
@@ -403,7 +403,7 @@ p{font-size: 16px;  font-style: normal;  font-weight: 400;
     float: left;
     margin-right: 10px;
     margin-top: -6px;}
-  .emailsuccessfulsubmitfooter{ position: relative; color: #fff; a{ color: #fff;}}
+  .emailsuccessfulsubmitfooter{ position: relative;   a{ color: $text-color;}}
  
 
   .emailsuccessfulsubmit::before{background:#fff url(../img/email-submit.png) no-repeat;  content: ' '; width: 50px;
@@ -716,7 +716,7 @@ button{border-radius: 8px; padding: 8px; margin-bottom: 5px; background: transpa
 }
 
 .postbloglist{ 
-  .blogBox{ background: #fff; @extend.box-shadow-card; border-radius: 10px; border: 1px solid #DCDCDC; padding: 15px;    height: 310px; position: relative; 
+  .blogBox{ background: #fff; @extend.box-shadow-card; border-radius: 10px; border: 1px solid #DCDCDC; padding: 15px;    height: 330px; position: relative; 
     img{ width: 100%;}
   .name{color: $black;    font-family: $font_Manrope;    font-size: 20px;    font-style: normal;
     font-weight: 700;    line-height: normal;  overflow: hidden;    text-overflow: ellipsis;

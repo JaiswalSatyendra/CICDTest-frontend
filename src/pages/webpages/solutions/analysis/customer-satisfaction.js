@@ -374,14 +374,14 @@ function CustomerSatisfaction() {
               <p>
                 <h4 className="check-heading  mb-1"> Harmonization of Customer Satisfaction Data  </h4>
                 <p> Integrate survey, user feedback, and transactional data effortlessly.  <br/> Obtain instant, comprehensive insights for targeted marketing decisions.</p> 
-              </p> 
+              </p> <br/>
               <p>
                 <h4 className="check-heading  mb-1"> Contact-Level Precision  </h4>
                 <p> Access personalized details, including names and sentiments.   <br/>  Leverage topic-based sentiment analysis for a deeper understanding.</p> 
-              </p> 
+              </p> <br/>
               <p>
                 <h4 className="check-heading  mb-1"> Comprehensive Brand Perception Metrics  </h4>
-                <p> Gain insights into brand consideration, trust, responsiveness, and churn rates.   <br/> Drive data-driven decisions and proactively address customer support issues.</p> 
+                <p> Gain insights into brand consideration, trust, responsiveness, and churn rates. <br/>  <br/> Drive data-driven decisions and proactively address customer support issues.</p> 
               </p> 
             </Grid>
             <Grid item xs={12} md={6} lg={6}>
@@ -491,7 +491,7 @@ Identify areas with the most significant improvement potential and align develop
           >
             <Grid item xs={12} md={8} lg={8}>
               <h2 className="text-center fw-600">
-              Real-world Business Scenarios 
+              Real-World Business Scenarios 
               </h2>
             </Grid>
           </Grid>

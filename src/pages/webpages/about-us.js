@@ -308,18 +308,14 @@ function AboutUs() {
                 Customer Lifetime Value (CLTV), streamlining revenue
                 predictions, instilling investor confidence, and gaining that
                 competitive edge – all by tapping into your untapped zero-party
-                data reserves. We understand the complexity, but worry not!
+                data reserves.<br/> <br/> We understand the complexity, but worry not!
                 ConvertML brings you a robust and cost-effective solution
                 tailor-made for nimble teams like yours.
               </p>
-              <p>
-                We understand the complexity, but worry not! ConvertML brings
-                you a robust and cost-effective solution tailor-made for nimble
-                teams like yours.
-              </p>
+             
               <br />
               <a href="#getStarted" className="link-btn">
-                Contact sales
+                Get Started
               </a>
             </Grid>
             <Grid item xs={12} md={6} lg={6}>
