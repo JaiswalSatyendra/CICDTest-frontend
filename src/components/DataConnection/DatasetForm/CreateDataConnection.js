@@ -152,11 +152,10 @@ function CreateDataConnection() {
   const [value, setValue] = React.useState(0); //selected tab for integration and upload
   const [checked, setChecked] = React.useState(new Array());
   const [selected, setSelected] = React.useState(new Array());
-  const [open, setOpen] = React.useState(false); 
-  const [isConnected, setisConnected] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
   const [openHubspot, setOpenHubspot] = React.useState(false);
   const [openZendesk, setOpenZendesk] = React.useState(false);
-  const [isConnectedZendesk, setisConnectedZendesk] = React.useState(false); 
+  const [isConnectedZendesk, setisConnectedZendesk] = React.useState(false);
   const [openFacebook, setOpenFacebook] = React.useState(false);
   const [openTwitter, setOpenTwitter] = React.useState(false);
   const [openFeshdesk, setOpenFeshdesk] = React.useState(false);
@@ -172,9 +171,7 @@ function CreateDataConnection() {
   const [isConnectedTypeForm, setisConnectedTypeForm] = React.useState(false);
   const [isOpenPopupTypeform, setisOpenPopupTypeform] = React.useState(false);
   const [isConnectedHubspot, setisConnectedHubspot] = React.useState(false);
-  const [isOpenPopupHubspot, setisOpenPopupHubspot] = React.useState(false); 
-  const [isOpenPopupKlaviyo, setisOpenPopupKlaviyo] = React.useState(true); 
-  const [isOpenPopupIntercom, setisOpenPopupIntercom] = React.useState(true);
+  const [isOpenPopupHubspot, setisOpenPopupHubspot] = React.useState(false);
   const [isUpload, setIsUpload] = React.useState(false);
   const [isTypeform, setIsTypeform] = React.useState(false);
   const [showLoder, setLoaderShow] = useState(false);
@@ -188,8 +185,6 @@ function CreateDataConnection() {
     rows: [],
     columns1: []
   });
-
-  const [ecommerceList,setecommerceList]=React.useState([])
 
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [isShowSurveyMapp, setIsShowSurveyMapp] = useState([]);
@@ -421,7 +416,6 @@ function CreateDataConnection() {
     setOpenKlaviyo(false);
     setOpenIntercom(false);
     setOpenShopify(false);
-    setisOpenPopupKlaviyo(true);
   };
 
   const handleUploadClose = () => {
@@ -516,6 +510,7 @@ function CreateDataConnection() {
       } else if (selected.length == 0) {
         setisError(false)
         seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Data Source Connection Error', message: ['Select at least one data source'] }])
+
         errorRef.current.scrollIntoView({ behavior: 'smooth' })
       } else {
         localStorage.setItem('projectName', projectName.trim());
@@ -526,6 +521,7 @@ function CreateDataConnection() {
       }
     } else {
       let typeFormConnectedList = isShowSurveyMapp.filter((ele) => ele.dataType == "Typeform");
+
       if (typeFormConnectedList.length > 1) {
         isShowSurveyMapp.forEach((ele) => {
           if (ele.dataType == "Typeform") {
@@ -543,9 +539,11 @@ function CreateDataConnection() {
       } else {
         setisError(false)
         seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Category Mapping Error', message: ['Please map question with category'] }])
+
         errorRef.current.scrollIntoView({ behavior: 'smooth' })
       }
     }
+
   };
 
   const handleGetSurveyMapp = async (dataSource, formName, formId, templacteName, questions) => {
@@ -1223,10 +1221,8 @@ function CreateDataConnection() {
       //   console.log(err);
       // });
     }
-    setecommerceList(ecommerceListData)
     fetchTokenklaviyo();
     fetchTokenIntercom();
-    fetchTokenShopify();
   }, []);
 
   const setCatMappingOption = (catOptionList) => {
@@ -1291,7 +1287,7 @@ function CreateDataConnection() {
                       data.row.module = value;
                       data.row.weightage = "L";
                       data.row.is_mapped =
-                        (data.row.module != null && data.row.module != "") ? true : false;
+                        data.row.module != null ? true : false;
                     }
                   }}
                   renderInput={(params) => (
@@ -1402,7 +1398,7 @@ function CreateDataConnection() {
                       event.stopPropagation();
                       data.row.module = value;
                       data.row.weightage = "L";
-                      data.row.is_mapped = (data.row.module != null && data.row.module != "") ? true : false;
+                      data.row.is_mapped = data.row.module != null ? true : false;
                     }
                   }}
                   renderInput={(params) => (
@@ -1505,37 +1501,21 @@ function CreateDataConnection() {
         // setLoaderShow(false)
       });
   };
-
-  const fetchTokenklaviyo = async (ev) => { 
+  const fetchTokenklaviyo = async (ev) => {
     let search = window.location.search;
     let params = new URLSearchParams(search);
     let newParam = params.get("code");
     await axios
       .post(`${process.env.REACT_APP_API_URL}/user/fetchTokenKlaviyo`, {
-        refresh_token: '',
+        grant_type: 'authorization_code',
         code: newParam,
-        client_id: process.env.REACT_APP_klaviyo_CLIENT_ID,
-        client_secret: process.env.REACT_APP_klaviyo_Client_Secret,
-        redirect_uri: process.env.REACT_APP_klaviyo_REDIRECT_URI,
-        user_id: user._id,
-        code_verifier: process.env.REACT_APP_klaviyo_Code_verifier, 
+        code_verifier: 'code_challenge',
+        redirect_uri: 'http://localhost:3000/dashboard/data-platform/create-data-connection',
       })
-      .then((response) => { 
-         settokenName(response.data.access_token);
-         console.log(response.data.access_token)
-         setRefreshtokenName(response.data.refresh_token);
-         let ecomlist=[...ecommerceListData];
-         console.log(ecomlist)
-
-        //  setprojectNameValid((prev) => ({
-        //   ...isValiedProject,
-        //   inPatternMatch: true,
-        //   textMessage: "Enter project name",
-        // }));
-
-         setisConnected(true)
-         setOpenKlaviyo(true);
-         setisOpenPopupKlaviyo(false);
+      .then((response) => {
+        console.log(response)
+        // settokenName(response.data.access_token);
+        // setRefreshtokenName(response.data.refresh_token);
         // getWorkspaceList(
         //   { token: response.data.access_token },
         //   response.data.refresh_token
@@ -1547,65 +1527,19 @@ function CreateDataConnection() {
       });
   };
 
-
-  const fetchTokenShopify = async (ev) => { 
-    let search = window.location.search;
-    let params = new URLSearchParams(search);
-    let newParam = params.get("code");
-    await axios
-      .post(`${process.env.REACT_APP_API_URL}/user/fetchTokenShopify`, { 
-        code: newParam,
-        client_id: process.env.REACT_APP_Shopify_CLIENT_ID,
-        client_secret: process.env.REACT_APP_Shopify_Client_Secret,
-        redirect_uri: process.env.REACT_APP_Shopify_REDIRECT_URI,
-        shop:process.env.REACT_APP_Shopify_shop,
-        user_id: user._id, 
-      })
-      .then((response) => { 
-         settokenName(response.data.access_token);
-         console.log(response.data.access_token)
-         setRefreshtokenName(response.data.refresh_token);
-         let ecomlist=[...ecommerceListData];
-         console.log(ecomlist)
-
-        //  setprojectNameValid((prev) => ({
-        //   ...isValiedProject,
-        //   inPatternMatch: true,
-        //   textMessage: "Enter project name",
-        // }));
-
-         setisConnected(true)
-         setOpenKlaviyo(true);
-         setisOpenPopupKlaviyo(false);
-        // getWorkspaceList(
-        //   { token: response.data.access_token },
-        //   response.data.refresh_token
-        // );
-      })
-      .catch((err) => {
-        console.log(err);
-        // setLoaderShow(false)
-      });
-  };
-
-
-  const fetchTokenIntercom = async (ev) => { 
+  const fetchTokenIntercom = async (ev) => {
     let search = window.location.search;
     let params = new URLSearchParams(search);
     let newParam = params.get("code");
     await axios
       .post(`${process.env.REACT_APP_API_URL}/user/fetchTokenIntercom`, {
-        grant_type: process.env.REACT_APP_TYPEFORM_GRANT_TYPE,
-        refresh_token: "",
+        grant_type: 'authorization_code',
         code: newParam,
-        client_id: process.env.REACT_APP_Intercom_CLIENT_ID,
-        client_secret: process.env.REACT_APP_Intercom_Client_Secret,
-        redirect_uri: process.env.REACT_APP_Intercom_REDIRECT_URI, 
-        user_id: user._id,
+        code_verifier: 'code_challenge',
+        redirect_uri: 'http://localhost:3000/dashboard/data-platform/create-data-connection',
       })
       .then((response) => {
         console.log(response)
-        setisOpenPopupIntercom(false);
         // settokenName(response.data.access_token);
         // setRefreshtokenName(response.data.refresh_token);
         // getWorkspaceList(
@@ -1770,14 +1704,6 @@ function CreateDataConnection() {
       });
   };
 
-
-  const removeKlaviyoToken = async (ev,connectionName) => {
-    if(connectionName=='Klaviyo'){ setisConnected(false)  }
-
-}
-
-
-
   const getContactList = async (newBodyObj, refreshToken) => {
     getlistListOfContact([]);
     axios
@@ -1921,7 +1847,7 @@ function CreateDataConnection() {
   };
 
   const onProjectName1 = async (event, val) => {
-    if(projectName.trim() !==""){
+    if (projectName.trim() !== "") {
       if (await checkProjectNameExist()) {
         localStorage.setItem("selectedProjectName", projectName);
       }
@@ -2481,7 +2407,12 @@ className={
                                       {item.description}
                                     </Typography>
                                   </CardContent>
-                                  <CardActions> 
+                                  <CardActions>
+                                    {/* <button   onClick={(ev) => {
+                                  getUpdateSurveyList(ev, item.name);
+                                }}>servay connect</button> */}
+                                    {/* <Button className='connect-btn' >Ingest New Form</Button>     getUpdateSurveyList(ev, item.name);*/}
+
                                     {(isConnectedTypeForm == true &&
                                       ["Typeform"].indexOf(item.name) !=
                                       -1) ||
@@ -2494,7 +2425,9 @@ className={
                                             connectDataForIngestion(ev, item.name);
                                           }}></a>   <a className="fa fa-close" onClick={(ev) => {
                                             clearDataForIngestion(ev, item.name);
-                                          }}></a></span></div>) : <Button className="connect-btn">Connect Dataset</Button>} 
+                                          }}></a></span></div>) : <Button className="connect-btn">Connect Dataset</Button>}
+
+
                                       </>
                                     ) : (
                                       <>
@@ -3280,7 +3213,7 @@ className={
                                 E-commerce
                               </Typography>
                             </Grid>
-                            {ecommerceList.map((item, i) => (
+                            {ecommerceListData.map((item, i) => (
                               <Grid
                                 item
                                 xs={12}
@@ -3306,15 +3239,16 @@ className={
                                     image={item.img}
                                     title={item.name}
                                   />
-                                  {isConnected ? (
-                                    <>  <label class="switch" onClick={(ev) => {
-                                      removeKlaviyoToken(ev, item.name);
+                                  {(isConnectedTypeForm == true && ["Typeform"].indexOf(item.name) != -1) ||
+                                    (isConnectedHubspot == true && ["Hubspot"].indexOf(item.name) != -1) || (isConnectedZendesk == true && ["Zendesk"].indexOf(item.name) != -1) ? (
+                                    <> <label class="switch" onClick={(ev) => {
+                                      removeTypeformToken(ev, item.name);
                                     }}>
                                       <input type="checkbox" checked={true} disabled={item.active} />
                                       <span class="slider round"></span>
                                     </label> </>
                                   ) : (
-                                    <>  <label class="switch" onClick={(e) => {
+                                    <> <label class="switch" onClick={(e) => {
                                       handleOpen(e, item.name);
                                     }} >
                                       <input type="checkbox" checked={false} />
@@ -3749,7 +3683,6 @@ className={
                                           pageSizeOptions={[5, 10, 50, 100]}
                                           checkboxSelection={true}
                                           disableSelectionOnClick
-                                          rowHeight={65}
                                           selectionModel={
                                             label.checkedAllList
                                           }
@@ -4105,9 +4038,7 @@ className={
             openSalesforce={openSalesforce}
             openbraze={openbraze}
             openInstagram={openInstagram}
-            openKlaviyo={openKlaviyo}            
-            isOpenPopupKlaviyo={isOpenPopupKlaviyo}
-            isOpenPopupIntercom={isOpenPopupIntercom}
+            openKlaviyo={openKlaviyo}
             openIntercom={openIntercom}
             openShopify={openShopify}
             token={tokenName}

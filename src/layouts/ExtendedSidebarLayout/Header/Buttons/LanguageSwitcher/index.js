@@ -20,14 +20,14 @@ import WarningTwoToneIcon from "@mui/icons-material/WarningTwoTone";
 import internationalization from "../../../../../i18n/i18n";
 import { useTranslation } from "react-i18next";
 
-import deFlag from "country-flag-icons/3x2/DE.svg";
-import usFlag from "country-flag-icons/3x2/US.svg";
-import esFlag from "country-flag-icons/3x2/ES.svg";
-import frFlag from "country-flag-icons/3x2/FR.svg";
-import cnFlag from "country-flag-icons/3x2/CN.svg";
-import aeFlag from "country-flag-icons/3x2/AE.svg";
-import inFlag from "country-flag-icons/3x2/IN.svg";
-import ruFlag from "country-flag-icons/3x2/RU.svg";
+const deFlag = "";
+const usFlag = "";
+const esFlag = "";
+const frFlag = "";
+const cnFlag = "";
+const aeFlag = "";
+const inFlag = "";
+const ruFlag = "";
 
 
 const SectionHeading = styled(Typography)(
@@ -110,12 +110,7 @@ function LanguageSwitcher() {
             },
           }}
         >
-          {lang == "ru" && <ImageWrapper alt="Russian" src={ruFlag} />}
-          {lang == "en" && <ImageWrapper alt="English" src={usFlag} />}
-          {lang == "fr" && <ImageWrapper alt="French" src={frFlag} />}
-          {lang == "hi" && <ImageWrapper alt="Arabic" src={inFlag} />}
-          {lang == "es" && <ImageWrapper alt="Spanish" src={esFlag} />}
-          {lang == "de" && <ImageWrapper alt="German" src={deFlag} />}
+          
         </IconButtonWrapper>
       </Tooltip>
       <Popover

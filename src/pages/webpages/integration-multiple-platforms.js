@@ -27,7 +27,6 @@ import {
   faqsListResources,
   faqsListTypeform,
 } from "../../assets/data/fasq";
-import { useNavigate } from "react-router-dom";
 import { IntegrationMultiplePlatform } from "../../assets/data/metadata-list";
 import { IntegrationMultiplePlatformMarkup } from "../../assets/data/schema-markup";
 import {
@@ -123,8 +122,6 @@ function IntegrationMultiplePlatforms() {
         });
       });
   }
-  const navigate = useNavigate();
-  const handleClick = () => navigate("/scheduleDemo");
 
   useEffect(() => {
     setfaqListp(faqsListp);
@@ -186,10 +183,7 @@ function IntegrationMultiplePlatforms() {
               </h3>
               <span>Richer insights with the synergized power of multiple data streams.</span>
               <div className="clearfix"></div><br/>
-              <Button onClick={handleClick}    color="primary"
-                  variant="contained" className="btn1">
-              <b> Book Demo</b>
-            </Button>
+              <Link  to='../contactus' className="link-btn">Book a demo </Link> 
               </Grid>
             </Grid>
         </section>

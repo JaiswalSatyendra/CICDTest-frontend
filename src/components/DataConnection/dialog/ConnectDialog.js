@@ -18,6 +18,7 @@ import MuiAccordionSummary, {
   AccordionSummaryProps,
 } from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
+import { DataGrid } from "@mui/x-data-grid";
 import { DataGridPro } from "@mui/x-data-grid-pro";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import { useTranslation } from "react-i18next";
@@ -89,7 +90,7 @@ const AvatarSuccess = styled(Avatar)(
 //   borderTop: '1px solid rgba(0, 0, 0, .125)',
 // }));
 
-function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebook, openTwitter, openFeshdesk, openSalesforce,openbraze, openInstagram,openKlaviyo,isOpenPopupKlaviyo,openIntercom,isOpenPopupIntercom, openShopify, listOfWorkspace, listListOfContact, checkedMappingForSurvey, checkedMappingForHubspot, isOpenPopupTypeform, isOpenPopupHubspot, token, hubspotTokenName, hubspotRefreshtokenName, isTypeFormEmptyData, isHubspotEmptyData, selectedWorkspace }) {
+function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebook, openTwitter, openFeshdesk, openSalesforce,openbraze, openInstagram,openKlaviyo,openIntercom,openShopify, listOfWorkspace, listListOfContact, checkedMappingForSurvey, checkedMappingForHubspot, isOpenPopupTypeform, isOpenPopupHubspot, token, hubspotTokenName, hubspotRefreshtokenName, isTypeFormEmptyData, isHubspotEmptyData, selectedWorkspace }) {
 
   // const [isConfirm, setIsConfirm] = React.useState(false);
 
@@ -599,15 +600,8 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
       /* -------------- Don't delete --------------  */
     }
     else if (seltype == 'klaviyo') {
-      localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_klaviyo_CLIENT_ID);  
-      window.location = 'https://www.klaviyo.com/oauth/authorize?response_type=code&client_id=' + process.env.REACT_APP_klaviyo_CLIENT_ID + '&redirect_uri=' + process.env.REACT_APP_klaviyo_REDIRECT_URI+'&scope=accounts:read%20accounts:write%20events:read%20events:write%20profiles:read%20profiles:write%20campaigns:read%20campaigns:write%20lists:write%20metrics:read&code_challenge_method=S256&code_challenge=eOMWaNXLASXynd_pmDcbaxjMNFDN9bBhwRZ_n6IhWmk&selected_account=true'
-     
-      // window.location = 'https://www.klaviyo.com/oauth/authorize?response_type=code&client_id=' + process.env.REACT_APP_klaviyo_CLIENT_ID + '&redirect_uri=' + process.env.REACT_APP_klaviyo_REDIRECT_URI+'&scope=lists:accounts:read%20accounts:write%20events:read%20events:write%20profiles:read%20profiles:write%20campaigns:read%20campaigns:write%20lists:write%20metrics:read&code_challenge_method=S256&code_challenge=' + process.env.REACT_APP_klaviyo_Code_challenge + '=&selected_account=true' 
-
-      console.log(window.location)
-       
-      // https://www.klaviyo.com/oauth/authorize?response_type=code&client_id=9b70672a-fe0d-4d12-962e-0e99f54e752d
-      // &redirect_uri=https://convertml.ai/dashboard/data-platform/create-data-connection&scope=accounts:read%20accounts:write%20events:read%20events:write%20profiles:read%20profiles:write%20campaigns:read%20campaigns:write%20lists:write%20metrics:read&code_challenge_method=S256&code_challenge=eOMWaNXLASXynd_pmDcbaxjMNFDN9bBhwRZ_n6IhWmk&selected_account=true
+      localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_klaviyo_CLIENT_ID);
+      window.location = 'https://www.klaviyo.com/oauth/authorize?response_type=code&client_id=' + process.env.REACT_APP_klaviyo_CLIENT_ID + '&redirect_uri=' + process.env.REACT_APP_klaviyo_REDIRECT_URI+'&scope=lists:write campaigns:write metrics:read&code_challenge_method=S256&code_challenge=' + process.env.REACT_APP_klaviyo_Client_Secre +'' 
       
       /* --------------  Don't delete --------------  */
       // login: https://www.klaviyo.com/manage-apps/01J1ACW9WJZXXRS5C9PJDBXQ8M
@@ -625,8 +619,8 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
     }
     else if (seltype == 'shopify') {
       localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_Shopify_CLIENT_ID);
-      window.location = 'https://cmlstore1.myshopify.com/admin/oauth/authorize?client_id=' + process.env.REACT_APP_Shopify_CLIENT_ID + '&scope=read_products,write_orders&redirect_uri=' + process.env.REACT_APP_Shopify_REDIRECT_URI+'' 
-
+      window.location = 'https://admin.shopify.com/oauth/install_custom_app?client_id=' + process.env.REACT_APP_Intercom_CLIENT_ID + '&no_redirect=true&signature=' + process.env.REACT_APP_Shopify_signature+''
+        
       /* --------------  Don't delete --------------  */        
       // id- aman.chaurasia@convertml.ai
       // pssd- Tech@5050 
@@ -1090,14 +1084,15 @@ console.log(filterlistContactMapping)
                                     }
                                   </Box>
                                   <Box sx={{ height: 300, width: '100%', paddingBottom: '10px' }}>
-                                    <DataGridPro
+                                    <DataGrid
                                       rows={item.formFields}
                                       columns={colList}
                                       pageSizeOptions={[5, 10, 50, 100]}
                                       checkboxSelection={true}
-                                      getRowHeight={() => 'auto'}
-                                      rowSelectionModel={item.selectedRow}
-                                      onRowSelectionModelChange={(e) => {
+                                     
+
+                                      selectionModel={item.selectedRow}
+                                      onSelectionModelChange={(e) => {
                                         let newList1 = [...listMapping]
                                         newList1[index].selectedRow = e;
                                         setlistMapping(newList1);
@@ -1399,10 +1394,35 @@ console.log(filterlistContactMapping)
                                                             <span onClick={(ev) => {editObjgrid(index,item.hs_object);}}>{item.displayName}</span> <i className='fa fa-times-circle' onClick={(ev) => {
                                                               handleRemoveSurvey(ev, index);
                                                             }}></i>
-                                                          </button> 
-                                                          <br /> <div className='mt-2'></div>  
-                                                {!item.ptag?<></>:<> <Box  sx={{  height: 280, width:1100  }}>
-                                                  <DataGridPro
+                                                          </button>
+                                                          <br /><div className='mt-2'></div> 
+                                                          <Box  sx={{
+                                          height: 280, width:'99%'  
+                                        }}
+                                        
+                                      >
+                                        <DataGrid
+                                    rows={item.colList}
+                                    columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
+                                    pageSizeOptions={[5, 10, 50, 100]}
+                                    checkboxSelection={true}
+                                    isRowSelectable={(params) => (params.row.used == "False" ? false : true)}
+                                    disableSelectionOnClick
+                                   
+                                    selectionModel={item.selectedRow}
+                                    // onSelectionModelChange={(e) => {
+                                    //   let newList1 = [...listContactMapping]
+                                    //   newList1[index].selectedRow = e;
+                                    //   setlistContactMapping(newList1);
+                                    //   // item.selectedRow = e;
+                                    // }}
+
+                                    pagination={false}
+                                    hideFooterRowCount={true}
+                                    hideFooter={true}
+                                    editable
+                                  />
+                                                          {/* <DataGridPro
                                                             rows={item.colList}
                                                             columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
                                                             pageSizeOptions={[5, 10, 50, 100]}
@@ -1413,13 +1433,13 @@ console.log(filterlistContactMapping)
                                                             rowSelectionModel={item.selectedRow} 
                                                             pagination={false}
                                                             hideFooterRowCount={true}
-                                                            hideFooter={true} 
-                                                            editable       
-                                                          />  <div className='mt-2 mb-2'></div> 
-                                                          <Button variant='contained' size="small"   onClick={(ev) => {hideObjgrid(index,item.hs_object);}}  >Done</Button> 
-                                                          </Box><br /><br />  </>} 
-                                                        <div className='clearfix'></div> <br/>
-                                                         </div>  
+                                                            hideFooter={true}
+                                                            editable
+                                                          /> */}
+                                                          </Box> 
+                                                        <div className='clearfix'></div> 
+                                                            </div> 
+
                                                     ) 
                                                     )}
                                                     
@@ -1697,16 +1717,16 @@ console.log(filterlistContactMapping)
                                   } */}
                                 </Box><br />
                                 <Box sx={{ height: 300, width: '100%', paddingBottom: '10px' }}>
-                                  <DataGridPro
+                                  <DataGrid
                                     rows={item.colList}
                                     columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
                                     pageSizeOptions={[5, 10, 50, 100]}
                                     checkboxSelection={true}
                                     isRowSelectable={(params) => (params.row.used == "False" ? false : true)}
                                     disableSelectionOnClick
-                                    getRowHeight={() => 'auto'}
-                                    rowSelectionModel={item.selectedRow}
-                                    // onRowSelectionModelChange={(e) => {
+                                   
+                                    selectionModel={item.selectedRow}
+                                    // onSelectionModelChange={(e) => {
                                     //   let newList1 = [...listContactMapping]
                                     //   newList1[index].selectedRow = e;
                                     //   setlistContactMapping(newList1);
@@ -1998,16 +2018,16 @@ console.log(filterlistContactMapping)
                                   } */}
                                 </Box><br />
                                 <Box sx={{ height: 300, width: '100%', paddingBottom: '10px' }}>
-                                  <DataGridPro
+                                  <DataGrid
                                     rows={item.colList}
                                     columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
                                     pageSizeOptions={[5, 10, 50, 100]}
                                     checkboxSelection={true}
                                     isRowSelectable={(params) => (params.row.used == "False" ? false : true)}
                                     disableSelectionOnClick
-                                    getRowHeight={() => 'auto'}
-                                    rowSelectionModel={item.selectedRow}
-                                    // onRowSelectionModelChange={(e) => {
+                                   
+                                    selectionModel={item.selectedRow}
+                                    // onSelectionModelChange={(e) => {
                                     //   let newList1 = [...listContactMapping]
                                     //   newList1[index].selectedRow = e;
                                     //   setlistContactMapping(newList1);
@@ -2298,16 +2318,16 @@ console.log(filterlistContactMapping)
                                   } */}
                                 </Box><br />
                                 <Box sx={{ height: 300, width: '100%', paddingBottom: '10px' }}>
-                                  <DataGridPro
+                                  <DataGrid
                                     rows={item.colList}
                                     columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
                                     pageSizeOptions={[5, 10, 50, 100]}
                                     checkboxSelection={true}
                                     isRowSelectable={(params) => (params.row.used == "False" ? false : true)}
                                     disableSelectionOnClick
-                                    getRowHeight={() => 'auto'}
-                                    rowSelectionModel={item.selectedRow}
-                                    // onRowSelectionModelChange={(e) => {
+                                   
+                                    selectionModel={item.selectedRow}
+                                    // onSelectionModelChange={(e) => {
                                     //   let newList1 = [...listContactMapping]
                                     //   newList1[index].selectedRow = e;
                                     //   setlistContactMapping(newList1);
@@ -2598,16 +2618,16 @@ console.log(filterlistContactMapping)
                                   } */}
                                 </Box><br />
                                 <Box sx={{ height: 300, width: '100%', paddingBottom: '10px' }}>
-                                  <DataGridPro
+                                  <DataGrid
                                     rows={item.colList}
                                     columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
                                     pageSizeOptions={[5, 10, 50, 100]}
                                     checkboxSelection={true}
                                     isRowSelectable={(params) => (params.row.used == "False" ? false : true)}
                                     disableSelectionOnClick
-                                    getRowHeight={() => 'auto'}
-                                    rowSelectionModel={item.selectedRow}
-                                    // onRowSelectionModelChange={(e) => {
+                                   
+                                    selectionModel={item.selectedRow}
+                                    // onSelectionModelChange={(e) => {
                                     //   let newList1 = [...listContactMapping]
                                     //   newList1[index].selectedRow = e;
                                     //   setlistContactMapping(newList1);
@@ -2897,16 +2917,16 @@ console.log(filterlistContactMapping)
                                   } */}
                                 </Box><br />
                                 <Box sx={{ height: 300, width: '100%', paddingBottom: '10px' }}>
-                                  <DataGridPro
+                                  <DataGrid
                                     rows={item.colList}
                                     columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
                                     pageSizeOptions={[5, 10, 50, 100]}
                                     checkboxSelection={true}
                                     isRowSelectable={(params) => (params.row.used == "False" ? false : true)}
                                     disableSelectionOnClick
-                                    getRowHeight={() => 'auto'}
-                                    rowSelectionModel={item.selectedRow}
-                                    // onRowSelectionModelChange={(e) => {
+                                   
+                                    selectionModel={item.selectedRow}
+                                    // onSelectionModelChange={(e) => {
                                     //   let newList1 = [...listContactMapping]
                                     //   newList1[index].selectedRow = e;
                                     //   setlistContactMapping(newList1);
@@ -3170,16 +3190,16 @@ console.log(filterlistContactMapping)
                                   } */}
                                 </Box><br />
                                 <Box sx={{ height: 300, width: '100%', paddingBottom: '10px' }}>
-                                  <DataGridPro
+                                  <DataGrid
                                     rows={item.colList}
                                     columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
                                     pageSizeOptions={[5, 10, 50, 100]}
                                     checkboxSelection={true}
                                     isRowSelectable={(params) => (params.row.used == "False" ? false : true)}
                                     disableSelectionOnClick
-                                    getRowHeight={() => 'auto'}
-                                    rowSelectionModel={item.selectedRow}
-                                    // onRowSelectionModelChange={(e) => {
+                                   
+                                    selectionModel={item.selectedRow}
+                                    // onSelectionModelChange={(e) => {
                                     //   let newList1 = [...listContactMapping]
                                     //   newList1[index].selectedRow = e;
                                     //   setlistContactMapping(newList1);
@@ -3470,16 +3490,16 @@ console.log(filterlistContactMapping)
                                   } */}
                                 </Box><br />
                                 <Box sx={{ height: 300, width: '100%', paddingBottom: '10px' }}>
-                                  <DataGridPro
+                                  <DataGrid
                                     rows={item.colList}
                                     columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
                                     pageSizeOptions={[5, 10, 50, 100]}
                                     checkboxSelection={true}
                                     isRowSelectable={(params) => (params.row.used == "False" ? false : true)}
                                     disableSelectionOnClick
-                                    getRowHeight={() => 'auto'}
-                                    rowSelectionModel={item.selectedRow}
-                                    // onRowSelectionModelChange={(e) => {
+                                   
+                                    selectionModel={item.selectedRow}
+                                    // onSelectionModelChange={(e) => {
                                     //   let newList1 = [...listContactMapping]
                                     //   newList1[index].selectedRow = e;
                                     //   setlistContactMapping(newList1);
@@ -3546,8 +3566,9 @@ console.log(filterlistContactMapping)
           <Box className='panel-body'>
             <Box width={'100%'}>
               <React.Fragment>
-                {isOpenPopupKlaviyo ? (
-                  <Box> 
+                {true ? (
+                  <Box>
+
                     <Box sx={{ display: 'flex', flexDirection: 'row' }} className='panel-box-bg'>
                       <Grid item xs={12} className='flex justify-center items-center'>
                         <Typography variant="span" component="span" gutterBottom>
@@ -3588,26 +3609,38 @@ console.log(filterlistContactMapping)
                             width: '100%'
                           }}>
                             <Grid item xs={12} spacing={2}>
-                              <Stack sx={{ width: '100%' }}> 
-                               <Autocomplete
-                                  id="tags-filled" 
-                                  // value={selectedDefaultHubspotModule}
-                                  onChange={(ev, val) => { handleClick12(ev, val) }}
-                                  getOptionLabel={(option) => option.displayName}
-                                  options={hubspotModule}
-                                  // groupBy={(option) => option.type}
-                                  value={selectedDefaultHubspotModule}
-                                  renderInput={(params) => (
-                                    <TextField
-                                      {...params}
-                                      label="List/Segments"
-                                      placeholder="List/Segments"
-                                    />
-                                  )}
-                                />
-                                <br />
+                              <Stack sx={{ width: '100%' }}>
+
+                                {/* <TextField fullWidth onClick={(ev) => { ev.stopPropagation(); setisShowHubspotObject(!isShowHubspotObject) }} id="standard-search" label="Select Object" value={selectedDefaultHubspotModule.displayName} />
+                                  `<List className='custom-list' style={{ marginTop: '-23px' }} component="nav" aria-labelledby="nested-list-subheader">
+                                    {!isShowHubspotObject == true ? "" :
+                                      hubspotModule1.map((item, i) => (
+                                        <>
+                                          <ListItemButton style={{ background: '#F7F7F7' }} onClick={(ev) => { ev.stopPropagation(); handleClick11(i) }}>
+                                            {item.isopen ? <ExpandLess /> : <ExpandMore />}
+                                            <ListItemText primary={item.displayName} />
+                                          </ListItemButton>
+                                          <Box style={{ maxHeight: 150, overflowY: 'scroll' }}>
+                                            {item.children.map((childItem, i) => (
+                                              <Collapse in={item.isopen} timeout="auto" unmountOnExit>
+                                                <List component="div" disablePadding>
+                                                  <ListItemButton sx={{ pl: 4 }} onClick={() => { handleClick12(childItem.name, childItem.displayName) }}>
+                                                    <ListItemText primary={childItem.displayName} />
+                                                  </ListItemButton>
+                                                </List>
+                                              </Collapse>
+                                            ))}
+                                          </Box>
+                                        </>
+                                      ))}
+                                  </List> `   
+                                  {
+                                    displayNotification == true && selectedDefaultHubspotModule.displayName != "" ? <FormHelperText style={{ margin: '0px' }}>No data is available</FormHelperText> : ''
+                                  } */}
+
                                 <Autocomplete
-                                  id="tags-filled" 
+                                  id="tags-filled"
+
                                   // value={selectedDefaultHubspotModule}
                                   onChange={(ev, val) => { handleClick12(ev, val) }}
                                   getOptionLabel={(option) => option.displayName}
@@ -3617,25 +3650,8 @@ console.log(filterlistContactMapping)
                                   renderInput={(params) => (
                                     <TextField
                                       {...params}
-                                      label="Campaign"
-                                      placeholder="Campaign"
-                                    />
-                                  )}
-                                />
-                                <br />
-                                <Autocomplete
-                                  id="tags-filled" 
-                                  // value={selectedDefaultHubspotModule}
-                                  onChange={(ev, val) => { handleClick12(ev, val) }}
-                                  getOptionLabel={(option) => option.displayName}
-                                  options={hubspotModule}
-                                  // groupBy={(option) => option.type}
-                                  value={selectedDefaultHubspotModule}
-                                  renderInput={(params) => (
-                                    <TextField
-                                      {...params}
-                                      label="Flows"
-                                      placeholder="Flows"
+                                      label="Select Object"
+                                      placeholder="Select Object"
                                     />
                                   )}
                                 />
@@ -3850,8 +3866,9 @@ console.log(filterlistContactMapping)
           <Box className='panel-body'>
             <Box width={'100%'}>
               <React.Fragment>
-                {isOpenPopupIntercom ? (
-                  <Box> 
+                {true ? (
+                  <Box>
+
                     <Box sx={{ display: 'flex', flexDirection: 'row' }} className='panel-box-bg'>
                       <Grid item xs={12} className='flex justify-center items-center'>
                         <Typography variant="span" component="span" gutterBottom>
@@ -3892,7 +3909,7 @@ console.log(filterlistContactMapping)
                           }}>
                             <Grid item xs={12} spacing={2}>
                               <Stack sx={{ width: '100%' }}>
-                            Intercom successfull Authorizated
+
                                 {/* <TextField fullWidth onClick={(ev) => { ev.stopPropagation(); setisShowHubspotObject(!isShowHubspotObject) }} id="standard-search" label="Select Object" value={selectedDefaultHubspotModule.displayName} />
                                   `<List className='custom-list' style={{ marginTop: '-23px' }} component="nav" aria-labelledby="nested-list-subheader">
                                     {!isShowHubspotObject == true ? "" :
@@ -3920,7 +3937,7 @@ console.log(filterlistContactMapping)
                                     displayNotification == true && selectedDefaultHubspotModule.displayName != "" ? <FormHelperText style={{ margin: '0px' }}>No data is available</FormHelperText> : ''
                                   } */}
 
-                                {/* <Autocomplete
+                                <Autocomplete
                                   id="tags-filled"
 
                                   // value={selectedDefaultHubspotModule}
@@ -3936,7 +3953,7 @@ console.log(filterlistContactMapping)
                                       placeholder="Select Object"
                                     />
                                   )}
-                                /> */}
+                                />
                                 <br />
                               </Stack>
 
@@ -4189,8 +4206,157 @@ console.log(filterlistContactMapping)
                           <Grid container item spacing={2} xs={12} style={{
                             width: '100%'
                           }}>
-                            <Grid item xs={12} spacing={2}> 
-                              Access the shopify login
+                            <Grid item xs={12} spacing={2}>
+                              <Stack sx={{ width: '100%' }}>
+
+                                {/* <TextField fullWidth onClick={(ev) => { ev.stopPropagation(); setisShowHubspotObject(!isShowHubspotObject) }} id="standard-search" label="Select Object" value={selectedDefaultHubspotModule.displayName} />
+                                  `<List className='custom-list' style={{ marginTop: '-23px' }} component="nav" aria-labelledby="nested-list-subheader">
+                                    {!isShowHubspotObject == true ? "" :
+                                      hubspotModule1.map((item, i) => (
+                                        <>
+                                          <ListItemButton style={{ background: '#F7F7F7' }} onClick={(ev) => { ev.stopPropagation(); handleClick11(i) }}>
+                                            {item.isopen ? <ExpandLess /> : <ExpandMore />}
+                                            <ListItemText primary={item.displayName} />
+                                          </ListItemButton>
+                                          <Box style={{ maxHeight: 150, overflowY: 'scroll' }}>
+                                            {item.children.map((childItem, i) => (
+                                              <Collapse in={item.isopen} timeout="auto" unmountOnExit>
+                                                <List component="div" disablePadding>
+                                                  <ListItemButton sx={{ pl: 4 }} onClick={() => { handleClick12(childItem.name, childItem.displayName) }}>
+                                                    <ListItemText primary={childItem.displayName} />
+                                                  </ListItemButton>
+                                                </List>
+                                              </Collapse>
+                                            ))}
+                                          </Box>
+                                        </>
+                                      ))}
+                                  </List> `   
+                                  {
+                                    displayNotification == true && selectedDefaultHubspotModule.displayName != "" ? <FormHelperText style={{ margin: '0px' }}>No data is available</FormHelperText> : ''
+                                  } */}
+
+                                <Autocomplete
+                                  id="tags-filled"
+
+                                  // value={selectedDefaultHubspotModule}
+                                  onChange={(ev, val) => { handleClick12(ev, val) }}
+                                  getOptionLabel={(option) => option.displayName}
+                                  options={hubspotModule}
+                                  // groupBy={(option) => option.type}
+                                  value={selectedDefaultHubspotModule}
+                                  renderInput={(params) => (
+                                    <TextField
+                                      {...params}
+                                      label="Select Object"
+                                      placeholder="Select Object"
+                                    />
+                                  )}
+                                />
+                                <br />
+                              </Stack>
+
+                              {isFetchedFeedbackList == true &&
+                                <Box className='text-center'>
+                                  <div><CircularProgress />  </div><br />
+                                  <div className='ml-3'>
+                                    <p>Syncing data from your Hubspot account, thank you for your patience...</p> </div>
+                                </Box>
+
+
+                              }
+
+
+                              {
+                                isFetchedFeedbackList == false && displayNotification == false && <Stack sx={{ width: '100%', }}>
+                                  <Autocomplete
+                                    id="tags-filled"
+
+                                    onChange={(ev, val) => { selectFeedbackSurvey(ev, val) }}
+                                    getOptionLabel={(option) => option.displayName}
+                                    options={contactList}
+                                    value={selectedFeedbackSurvey}
+
+
+                                    renderInput={(params) => (
+                                      <TextField
+                                        {...params}
+                                        label="Select List"
+                                        placeholder="Select List"
+                                      />
+                                    )}
+                                  />
+                                  {/* <FormHelperText style={{ margin: '0px' }}>You can select several forms</FormHelperText> */}
+                                </Stack>
+                              }
+                              {
+                                isFetchedFeedbackList == false && displayNotificationFeedback == false && <Stack sx={{ width: '100%', }}>
+
+                                  <Autocomplete
+                                    id="tags-filled"
+                                    onChange={(ev, val) => { selectFeedbackSurvey(ev, val) }}
+                                    getOptionLabel={(option) => option.displayName}
+                                    options={listOfFeedbackSurvey}
+                                    value={selectedFeedbackSurvey}
+                                    renderInput={(params) => (
+                                      <TextField
+                                        {...params}
+                                        label="Select Survey"
+                                        placeholder="Select Survey"
+                                      />
+                                    )}
+                                  />
+
+
+                                  {/* <FormHelperText style={{ margin: '0px' }}>{checkDuplicateSurveyList}</FormHelperText> */}
+                                </Stack>
+                              }
+
+                              {
+                                errorListDisplay.map(
+                                  (itemMessage, i) => (
+                                    <section style={{ height: (itemMessage.isCollapsable == true ? '50px' : 'auto') }}
+                                      className={`message-box mt-2 ${itemMessage.alertType}`}
+                                    >
+                                      <span>{itemMessage.short_text}</span>
+                                      <a
+                                        onClick={(val, ind) => {
+
+                                          collapseAndExpandError(val, i)
+                                        }
+                                        }
+                                      >
+                                        <i
+                                          className={
+                                            !itemMessage.isCollapsable
+                                              ? "fa fa-angle-up"
+                                              : "fa fa-angle-down"
+                                          }
+                                        ></i>
+                                      </a>
+                                      {!itemMessage.isCollapsable ? (
+                                        <>
+                                          <ul>
+                                            {
+                                              itemMessage.message.map((mssgList, ii) => (
+                                                <li>{mssgList} </li>
+                                              ))
+                                            }
+                                          </ul>
+                                        </>
+                                      ) : (
+                                        <> </>
+                                      )}
+
+                                    </section>
+                                  ))
+                              }
+
+
+                              {/* {
+                                  checkDuplicateSurveyList != "" &&
+                                  <p className="error-text">{checkDuplicateSurveyList}</p>
+                                } */}
 
                             </Grid>
 

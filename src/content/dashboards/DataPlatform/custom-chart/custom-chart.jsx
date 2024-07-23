@@ -5,41 +5,49 @@ import { useContext, useEffect, useState } from "react";
 import { Button, linearProgressClasses, Stack } from "@mui/material";
 import { set } from "nprogress";
 function CustomChart(customchartData) {
-  const [customChartType, setcustomChartType] = useState("bar");    
+  const [customChartType, setcustomChartType] = useState("bar");
 
-  const [customChartOption1, setcustomChartOption1] = useState({ 
-    series: [{
-      data:[]
-  } 
-  ],
-    options: {
-      chart: {
-      type: "bar",
-      height: 350
-    }, 
-      plotOptions: {}, 
-      dataLabels: {},
-      xaxis: { 
-        categories: []
-      }
-    },  
+  const [options, setOptions] = useState({
+    chart: {},
+    plotOptions: {
+      bar: {
+        borderRadius: 4,
+        borderRadiusApplication: "end",
+        horizontal: true,
+      },
+    },
+    xaxis: {
+      categories: [],
+    },
   });
 
-  
-  useEffect(() => {    
-  let seriestemp={...customChartOption1};
-  seriestemp.series=customchartData.customchartData.series;
-  seriestemp.options.plotOptions=customchartData.customchartData.plotOptions;
-  seriestemp.options.dataLabels=customchartData.customchartData.dataLabels;
-  seriestemp.options.xaxis=customchartData.customchartData.xaxis;
- 
+  const [series, setSeries] = useState([
+    {
+      name: "series-1",
+      data: [],
+    },
+  ]);
 
-  setcustomChartOption1(
-    seriestemp
-  )
-   
+  useEffect(() => {
+    if (
+      customchartData.customchartData != undefined &&
+      customchartData.customchartData != null
+    ) {
+      setOptions({
+        ...options,
+        xaxis: {
+          ...options.xaxis,
+          categories: customchartData.customchartData.xaxis.categories,
+        },
+      });
+      setSeries([
+        {
+          name: "series-1",
+          data: customchartData.customchartData.series[0].data,
+        },
+      ]);
+    }
   }, [customchartData]);
-
   return (
     <>
       <Stack spacing={1} direction="row">
@@ -52,19 +60,22 @@ function CustomChart(customchartData) {
           <i className="fa fa fa-bar-chart mr-1" /> Bar
         </Button>
         <Button
+          disabled={true}
           color="primary"
           variant={customChartType == "line" ? "contained" : "outlined"}
           size="small"
           onClick={() => setcustomChartType("line")}
         >
           <i className="fa  fa-line-chart mr-1" /> Line
-        </Button> 
-      </Stack> 
-    
+        </Button>
+      </Stack>
 
-     {customChartType=="bar" ? (   
-     <Chart options={customChartOption1.options} series={customChartOption1.series} type={customChartOption1.options.chart.type}  height={300} /> ): null }
-    {/* { customChartType=="line" ? (<Chart  id='chart2' options={customChartOption} series={customChartseries} type={'line'} height={300} />): null }     */}
+      {customChartType == "bar" ? (
+        <Chart options={options} series={series} type="bar" height={300} />
+      ) : null}
+      {/* {customChartType == "line" ? (
+        <Chart options={options} series={series} type="line" height={300} />
+      ) : null} */}
     </>
   );
 }

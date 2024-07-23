@@ -95,7 +95,7 @@ button{font-family: $font_Manrope;}
 
 .d-inline{ display:inline-block!important;}
 .clearfix{ clear: both;}
-.m-auto{ margin: auto;} 
+.m-auto{ margin: auto;}
 .w150{ width: 150px!important;}
 .liststylenone{ list-style: none;}
 
@@ -458,8 +458,7 @@ box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
-    line-height: normal;margin-top: 10px;
-  }
+    line-height: normal;}
     .freePlan-nav{border-radius: 10px; padding: 15px; margin-top: 15px;      background: #FFFDF4; 
     button{border-radius: 5px; padding: 15px; float: right; color: #000!important;      border: 1px solid #F8D088;      background: #FFFEFB;  margin: 20px 0px 0px 0px;}  
   }
@@ -1075,3 +1074,5 @@ a,
 }
 
 
+ .clear-both 
+ {clear: both;}
