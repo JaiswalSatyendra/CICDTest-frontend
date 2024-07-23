@@ -85,9 +85,8 @@ function HomePage() {
       <div className="web-view">
         <br />
         <br />
-        <br />{" "}
-      </div>
-
+      </div> 
+      <br /> 
       <section className="section-skyblue">
         <div className="container-home text-center">
           <h2 className="text-center">
@@ -132,8 +131,8 @@ function HomePage() {
               </h2>
             </b>
           </h2>
-          <br />
-          <br />
+          <div className="web-view"> <br />
+          <br /></div> 
           <br />
           <Grid
             container
@@ -164,7 +163,7 @@ function HomePage() {
                   to get a micro and macroscopic view of customers’ journeys!
                 </p>
 
-                <Link to="/solutions/roles/market-insights">Learn more</Link>
+                <Link to="/solutions/roles/customer-satisfaction-analysis">Learn more</Link>
               </div>{" "}
             </Grid>
             <Grid item xs={12} md={3} lg={3}>
@@ -176,7 +175,7 @@ function HomePage() {
                   view with granular segmentation and prescriptive insights.
                 </p>
 
-                <Link to="/solutions/roles/market-insights">Learn more</Link>
+                <Link to="/solutions/roles/marketing">Learn more</Link>
               </div>{" "}
             </Grid>
           </Grid>
@@ -256,7 +255,7 @@ function HomePage() {
             </Grid>
           </Grid>
         </div>
-        <br /> <br /> <br />
+        <br /> <br />  
         <section className="section-gray">
           <div className="container-home">
             <Grid
@@ -272,8 +271,7 @@ function HomePage() {
                   alt="Your Competitive Advantage"
                   className="img-responsive"
                 />
-              </Grid>
-
+              </Grid> 
               <Grid item xs={12} md={6} lg={6}>
                 <h2>All-in-One Dashboard for Advanced Analytics</h2>
                 <p>
@@ -290,7 +288,7 @@ function HomePage() {
             </Grid>
           </div>
         </section>
-        <br /> <br /> <br />
+        <br /> <br />  
         <div className="container-home">
           <Grid
             container
@@ -314,7 +312,9 @@ function HomePage() {
             </Grid>
           </Grid>
         </div>
-        <br /> <br /> <br />
+        <div className="web-view"> <br />
+          <br />
+          <br /></div> 
         <section className="section-gray">
           <div className="container-home">
             <Grid
@@ -348,8 +348,7 @@ function HomePage() {
             </Grid>
           </div>
         </section>
-        <br />
-        <br />
+        <div className="web-view"> <br />  <br /></div> 
         <section className="section-skyblue">
           <div className="container-home">
             <Grid
@@ -366,12 +365,12 @@ function HomePage() {
                   Approach{" "}
                 </h2>
                 <p>
-                Are you relying on third-party data for customer insights? Warning: It’s turning obsolete. 90% of the companies are headed toward the ultimate source of truth: Zero Party Data.
+                Are you relying on third-party data for customer insights?<br/><br/> <b>Warning:</b> It’s turning obsolete. 90% of the companies are headed toward the ultimate source of<br/> <b>truth:</b> Zero Party Data.
                 </p><br/>
                 <p> 
 With ConvertML you can integrate zero-party data with other first-party data sources like surveys, and feedback forms–to understand the who, what, where, how, and why of your customers. We call it the Code Free Quant + Qual Magic!
 
-                </p>
+                </p><br/><br/>
               </Grid>
               <Grid item xs={12} md={7} lg={7}>
                 <img
@@ -477,10 +476,7 @@ With ConvertML you can integrate zero-party data with other first-party data sou
             </Grid>
           </Grid>
         </div>
-      </section>
-      <br />
-      <br />
-      <br />
+      </section><div className="web-view"> <br /> <br /> <br /></div>  
       <HomeFooter />
     </>
   );

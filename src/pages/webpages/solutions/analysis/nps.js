@@ -316,7 +316,7 @@ function NPSPage() {
                 interactions, and relevant sources. Attain an instant and
                 comprehensive understanding of customer loyalty to drive
                 targeted marketing strategies.
-              </p>
+              </p><br/>
               <p>
                 <h4 className="check-heading">Customer Segmentation</h4>
                 Segment customers based on NPS scores, ARRs, country, gender,

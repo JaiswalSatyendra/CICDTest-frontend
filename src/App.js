@@ -13,7 +13,7 @@ import { SnackbarProvider } from "notistack";
 import ThemeProvider from "./theme/ThemeProvider";
 import router from "./router";
 import { SessionProvider } from "./contexts/SessionContext";
-import { Detector, Offline, Online } from "react-detect-offline";
+//import { Detector, Offline, Online } from "react-detect-offline";
 
 function App() {
   const content = useRoutes(router);
