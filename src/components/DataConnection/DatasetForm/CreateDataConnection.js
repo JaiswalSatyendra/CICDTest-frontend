@@ -1518,7 +1518,7 @@ function CreateDataConnection() {
         client_secret: process.env.REACT_APP_klaviyo_Client_Secret,
         redirect_uri: process.env.REACT_APP_klaviyo_REDIRECT_URI,
         user_id: user._id,
-        code_verifier: process.env.REACT_APP_klaviyo_Code_verifier 
+        code_verifier: process.env.REACT_APP_klaviyo_Code_verifier, 
       })
       .then((response) => { 
          settokenName(response.data.access_token);

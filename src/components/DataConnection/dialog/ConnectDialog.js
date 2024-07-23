@@ -599,9 +599,8 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
       /* -------------- Don't delete --------------  */
     }
     else if (seltype == 'klaviyo') {
-      localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_klaviyo_CLIENT_ID); 
-     
-      window.location = 'https://www.klaviyo.com/oauth/authorize?response_type=code&client_id=9b70672a-fe0d-4d12-962e-0e99f54e752d&redirect_uri=http://localhost:3000/dashboard/data-platform/create-data-connection&scope=accounts:read%20accounts:write%20events:read%20events:write%20profiles:read%20profiles:write%20campaigns:read%20campaigns:write%20lists:write%20metrics:read&code_challenge_method=S256&code_challenge=eOMWaNXLASXynd_pmDcbaxjMNFDN9bBhwRZ_n6IhWmk&selected_account=true'
+      localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_klaviyo_CLIENT_ID);  
+      window.location = 'https://www.klaviyo.com/oauth/authorize?response_type=code&client_id=' + process.env.REACT_APP_klaviyo_CLIENT_ID + '&redirect_uri=' + process.env.REACT_APP_klaviyo_REDIRECT_URI+'&scope=accounts:read%20accounts:write%20events:read%20events:write%20profiles:read%20profiles:write%20campaigns:read%20campaigns:write%20lists:write%20metrics:read&code_challenge_method=S256&code_challenge=eOMWaNXLASXynd_pmDcbaxjMNFDN9bBhwRZ_n6IhWmk&selected_account=true'
      
       // window.location = 'https://www.klaviyo.com/oauth/authorize?response_type=code&client_id=' + process.env.REACT_APP_klaviyo_CLIENT_ID + '&redirect_uri=' + process.env.REACT_APP_klaviyo_REDIRECT_URI+'&scope=lists:accounts:read%20accounts:write%20events:read%20events:write%20profiles:read%20profiles:write%20campaigns:read%20campaigns:write%20lists:write%20metrics:read&code_challenge_method=S256&code_challenge=' + process.env.REACT_APP_klaviyo_Code_challenge + '=&selected_account=true' 
 
@@ -626,10 +625,8 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
     }
     else if (seltype == 'shopify') {
       localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_Shopify_CLIENT_ID);
+      window.location = 'https://cmlstore1.myshopify.com/admin/oauth/authorize?client_id=' + process.env.REACT_APP_Shopify_CLIENT_ID + '&scope=read_products,write_orders&redirect_uri=' + process.env.REACT_APP_Shopify_REDIRECT_URI+'' 
 
-      window.location = 'https://cmlstore1.myshopify.com/admin/oauth/authorize?client_id=' + process.env.REACT_APP_Shopify_CLIENT_ID + '&scope=read_products,write_orders&redirect_uri=' + process.env.REACT_APP_Shopify_REDIRECT_URI+''
-      // window.location = 'https://cmlstore1.myshopify.com/admin/oauth/authorize?client_id=' + process.env.REACT_APP_Shopify_CLIENT_ID + '&scope=read_products,write_orders='+'&redirect_uri=' + process.env.REACT_APP_Shopify_REDIRECT_URI+''
-        
       /* --------------  Don't delete --------------  */        
       // id- aman.chaurasia@convertml.ai
       // pssd- Tech@5050 
