@@ -54,10 +54,8 @@ import Chart from "react-apexcharts";
 import axios from "axios";
 
 import addWeeks from "date-fns/addWeeks";
-import {AdapterDateFns} from "@mui/x-date-pickers";
-// import LocalizationProvider from "@mui/x-date-pickers";
-// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-// import { LocalizationProvider } from '@mui/x-date-pickers-pro';
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DateRangePicker from "@mui/lab/DateRangePicker";
 
 
@@ -130,7 +128,6 @@ import AccordionActions from '@mui/material/AccordionActions';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { LocalizationProvider } from "@mui/x-date-pickers";
 
 
 
@@ -2560,7 +2557,7 @@ setradarmaxValue(maxValue);
               </Select>
             </FormControl>
             <br />
-            {/* <LocalizationProvider
+            <LocalizationProvider
               dateAdapter={AdapterDateFns}
               sx={{ mt: 2, minWidth: "100%" }}
             >
@@ -2579,7 +2576,7 @@ setradarmaxValue(maxValue);
                   </React.Fragment>
                 )}
               />
-            </LocalizationProvider> */}
+            </LocalizationProvider>
           </div>
         </>
       ) : (
