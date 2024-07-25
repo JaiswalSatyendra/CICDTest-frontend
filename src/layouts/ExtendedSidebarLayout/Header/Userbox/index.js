@@ -1,4 +1,5 @@
 import { useRef, useState, useContext,  } from "react";
+import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import { SessionContext } from "../../../../contexts/SessionContext";
 import React, { useEffect, } from "react"; 
@@ -154,7 +155,13 @@ function HeaderUserbox() {
     await axios
     .post(`${process.env.REACT_APP_API_URL}/user/updateFirstTimeLogin`, {
       user_id: user._id,
-    },{ withCredentials: true })
+    },{
+        headers: {
+          "Content-type": "application/json",
+        "token":Cookies.get("token")
+        },
+        withCredentials: true,
+      })
     .then((response) => {
       if(response.data.success){
         setopenpopUP(true);

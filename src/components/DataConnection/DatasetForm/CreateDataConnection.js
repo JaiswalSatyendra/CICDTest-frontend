@@ -456,7 +456,13 @@ function CreateDataConnection() {
       if (ev != null && ev.target.checked != false) {
         axios.post(`${process.env.REACT_APP_API_URL}/survey/setNewQuestionMapping`, {
           template: name
-        },{ withCredentials: true }).then(async (response1) => {
+        },{
+        headers: {
+          "Content-type": "application/json",
+          "token": Cookies.get("token")
+        },
+        withCredentials: true,
+      }).then(async (response1) => {
           if (response1.data.success) {
             setisError(true)
           } else {
@@ -561,7 +567,13 @@ function CreateDataConnection() {
         form_id: formId,
         analysis_template: templacteName,
         questions: questions,
-      },{ withCredentials: true })
+      },{
+        headers: {
+          "Content-type": "application/json",
+          "token": Cookies.get("token")
+        },
+        withCredentials: true,
+      })
       .then(async (response1) => {
         if (response1.data.success) {
           setisError(true)
@@ -643,7 +655,13 @@ function CreateDataConnection() {
       `${process.env.REACT_APP_API_URL}/survey/getAnalysisProcessStatus`,
       {
        project_name: projectName
-      },{ withCredentials: true }
+      },{
+        headers: {
+          "Content-type": "application/json",
+          "token": Cookies.get("token")
+        },
+        withCredentials: true,
+      }
     )
       .then(async (response1) => {
         if (response1.data.success && response1.data.data.message.body == "") {
@@ -689,7 +707,13 @@ function CreateDataConnection() {
       {
         user_id: user._id,
         analysis_template: selectedTemplacte[0].name,
-      },{ withCredentials: true }
+      },{
+        headers: {
+          "Content-type": "application/json",
+          "token": Cookies.get("token")
+        },
+        withCredentials: true,
+      }
     ).then(async (response1) => {
       setTypeformIngestionStatus((response1.data.data.mapping_info.status == "completed" ? { status: false, percentage: response1.data.data.mapping_info.progress } : { status: true, percentage: response1.data.data.mapping_info.progress }));
       if (response1.data.data.mapping_info.status == "completed") {
@@ -1491,7 +1515,13 @@ function CreateDataConnection() {
         client_secret: process.env.REACT_APP_TYPEFORM_CLIENT_SECRET,
         redirect_uri: process.env.REACT_APP_TYPEFORM_REDIRECT_URI,
         token_url: process.env.REACT_APP_TYPEFORMTOKEN_URL,
-      },{ withCredentials: true })
+      },{
+        headers: {
+          "Content-type": "application/json",
+          "token": Cookies.get("token")
+        },
+        withCredentials: true,
+      })
       .then((response) => {
         settokenName(response.data.access_token);
         setRefreshtokenName(response.data.refresh_token);
@@ -1518,7 +1548,13 @@ function CreateDataConnection() {
         redirect_uri: process.env.REACT_APP_klaviyo_REDIRECT_URI,
         user_id: user._id,
         code_verifier: process.env.REACT_APP_klaviyo_Code_verifier, 
-      },{ withCredentials: true })
+      },{
+        headers: {
+          "Content-type": "application/json",
+          "token": Cookies.get("token")
+        },
+        withCredentials: true,
+      })
       .then((response) => { 
          settokenName(response.data.access_token);
          console.log(response.data.access_token)
@@ -1582,10 +1618,14 @@ function CreateDataConnection() {
         grant_type: process.env.REACT_APP_TYPEFORM_GRANT_TYPE,
         refresh_token: "",
         code: newParam,
-        client_id: process.env.REACT_APP_Intercom_CLIENT_ID,
-        client_secret: process.env.REACT_APP_Intercom_Client_Secret,
-        redirect_uri: process.env.REACT_APP_Intercom_REDIRECT_URI, 
-        user_id: user._id,
+        code_verifier: 'code_challenge',
+        redirect_uri: 'http://localhost:3000/dashboard/data-platform/create-data-connection',
+      },{
+        headers: {
+          "Content-type": "application/json",
+          "token": Cookies.get("token")
+        },
+        withCredentials: true,
       })
       .then((response) => {
         console.log(response)
@@ -1726,7 +1766,13 @@ function CreateDataConnection() {
     axios
       .post(`${process.env.REACT_APP_API_URL}/user/removeTypeformToken`, {
         isRemoveTypeForm: value == "Typeform" ? true : false,
-      },{ withCredentials: true })
+      },{
+        headers: {
+          "Content-type": "application/json",
+          "token": Cookies.get("token")
+        },
+        withCredentials: true,
+      })
       .then((response) => {
         console.log(checkProgressDatasetStatus);
         if (value == "Typeform") {
@@ -1793,7 +1839,13 @@ function CreateDataConnection() {
                 client_secret: process.env.REACT_APP_HUBSPOT_CLIENT_SECRET,
                 redirect_uri: process.env.REACT_APP_HUBSPOT_REDIRECT_URI,
                 token_url: process.env.REACT_APP_HUBSPOT_REDIRECT_URI,
-              },{ withCredentials: true }
+              },{
+        headers: {
+          "Content-type": "application/json",
+          "token": Cookies.get("token")
+        },
+        withCredentials: true,
+      }
             )
             .then((response) => {
               setHubspotTokenName(response.data.hubspot_access_token);
@@ -1847,7 +1899,13 @@ function CreateDataConnection() {
               client_secret: process.env.REACT_APP_TYPEFORM_CLIENT_SECRET,
               redirect_uri: process.env.REACT_APP_TYPEFORM_REDIRECT_URI,
               token_url: process.env.REACT_APP_TYPEFORMTOKEN_URL,
-            },{ withCredentials: true })
+            },{
+        headers: {
+          "Content-type": "application/json",
+          "token": Cookies.get("token")
+        },
+        withCredentials: true,
+      })
             .then((response) => {
               // if (count == 1) {
               getWorkspaceList(

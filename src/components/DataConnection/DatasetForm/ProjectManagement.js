@@ -14,6 +14,7 @@ import {
   LinearProgress,
   IconButton,
 } from "@mui/material";
+import Cookies from "js-cookie";
 import { Helmet } from "react-helmet-async";
 import CreateDataConnection from "../../../components/DataConnection/DatasetForm/CreateDataConnection";
 import PageHeader from "../../../content/dashboards/Users/PageHeader";
@@ -122,7 +123,13 @@ function ProjectManagement() {
   const getProjectList = async (loader) => {
     setLoaderShow(loader);
     await axios
-      .post(`${process.env.REACT_APP_API_URL}/survey/listAllSurveyProject`, { withCredentials: true })
+      .post(`${process.env.REACT_APP_API_URL}/survey/listAllSurveyProject`, { user_id: user._id }, {
+        headers: {
+          "Content-type": "application/json",
+          "token": Cookies.get("token")
+        },
+        withCredentials: true,
+      })
       .then((response) => {
         setLoaderShow(false);
         let newRows = response.data.data.map((el, ind) => ({
@@ -135,12 +142,12 @@ function ProjectManagement() {
             el.mapping_json == undefined
               ? ""
               : [
-                  ...new Set(
-                    JSON.parse(el.mapping_json).map((eel) => eel.dataType)
-                  ),
-                ]
-                  .sort()
-                  .join(","),
+                ...new Set(
+                  JSON.parse(el.mapping_json).map((eel) => eel.dataType)
+                ),
+              ]
+                .sort()
+                .join(","),
         }));
         setGridDataForGrid({
           columns: new Array(
@@ -156,7 +163,7 @@ function ProjectManagement() {
                   <div style={{ width: "100%" }}>
                     <b className="project-name"> {data.row.project_name}</b>
                     {data.row.status == undefined ||
-                    data.row.status == "running" ? (
+                      data.row.status == "running" ? (
                       <div className="chips-status float-right">
                         {" "}
                         <button
@@ -230,7 +237,7 @@ function ProjectManagement() {
                   </span>
                 ));
                 return (
-                  <div className="project-source-list"> 
+                  <div className="project-source-list">
                     {!data.row.dataupdateloader ? (
                       <>
                         {" "}
@@ -283,48 +290,48 @@ function ProjectManagement() {
                 // console.log("====", data)
                 return (
                   <div
-                    style={{ width: "100%" }} 
-                  > 
+                    style={{ width: "100%" }}
+                  >
                     {data.row.status == undefined ||
-                    data.row.status == "running" ? (
-                      <> 
-                         <IconButton    color="primary" title="delete" aria-label="add an alarm" size="small" onClick={() => {
-                                  deleteProjectDetail(data.row);
-                                }}>
-<i className="fa fa-trash"></i>
-</IconButton>
-<IconButton aria-label="Data Update" title="Data Refresh"  color="primary"   size="small" onClick={() => {
-                                  dataRefreshProject(data.row);
-                                }}>
-<span class="icon-data-refresh"></span>
-</IconButton>
-<Button  className="ml-1"  color="primary"  size="small"  variant="outlined" onClick={() => {
-                            editSaveDraft(data.row);
-                          }}>
-<i class="fa fa-edit  mr-1"></i> Edit
-</Button>
+                      data.row.status == "running" ? (
+                      <>
+                        <IconButton color="primary" title="delete" aria-label="add an alarm" size="small" onClick={() => {
+                          deleteProjectDetail(data.row);
+                        }}>
+                          <i className="fa fa-trash"></i>
+                        </IconButton>
+                        <IconButton aria-label="Data Update" title="Data Refresh" color="primary" size="small" onClick={() => {
+                          dataRefreshProject(data.row);
+                        }}>
+                          <span class="icon-data-refresh"></span>
+                        </IconButton>
+                        <Button className="ml-1" color="primary" size="small" variant="outlined" onClick={() => {
+                          editSaveDraft(data.row);
+                        }}>
+                          <i class="fa fa-edit  mr-1"></i> Edit
+                        </Button>
                       </>
                     ) : (
-                      <>   
-                      <IconButton color="primary" title="delete" aria-label="add an alarm" size="small" onClick={() => {
-                                  deleteProjectDetail(data.row);
-                                }}>
-<i className="fa fa-trash"></i>
-</IconButton>
-<IconButton aria-label="Data Update" color="primary" title="Data Refresh"   size="small" onClick={() => {
-                                  dataRefreshProject(data.row);
-                                }}>
-<span class="icon-data-refresh"></span>
-</IconButton>
+                      <>
+                        <IconButton color="primary" title="delete" aria-label="add an alarm" size="small" onClick={() => {
+                          deleteProjectDetail(data.row);
+                        }}>
+                          <i className="fa fa-trash"></i>
+                        </IconButton>
+                        <IconButton aria-label="Data Update" color="primary" title="Data Refresh" size="small" onClick={() => {
+                          dataRefreshProject(data.row);
+                        }}>
+                          <span class="icon-data-refresh"></span>
+                        </IconButton>
 
-<Button  className="ml-1"  color="primary"  size="small"  variant="outlined"  onClick={() => {
-                            viewResult(data.row);
-                          }}>
-<i className="fa fa-bar-chart mr-1"></i> View Result
-</Button>    
+                        <Button className="ml-1" color="primary" size="small" variant="outlined" onClick={() => {
+                          viewResult(data.row);
+                        }}>
+                          <i className="fa fa-bar-chart mr-1"></i> View Result
+                        </Button>
                       </>
                     )}
-                     </div>
+                  </div>
                 );
               },
             }
@@ -360,20 +367,26 @@ function ProjectManagement() {
     axios
       .post(`${process.env.REACT_APP_API_URL}/survey/removeSurvey`, {
         selectedProjectId: rowData._id,
-      },{ withCredentials: true })
+      }, {
+        headers: {
+          "Content-type": "application/json",
+          "token": Cookies.get("token")
+        },
+        withCredentials: true,
+      })
       .then((response) => {
         if (response.data.success) {
           let newRows = response.data.data.map((el, ind) => ({
             ...el,
-            id: ind + 1, 
+            id: ind + 1,
             data_source:
               el.mapping_json == undefined
                 ? ""
                 : [
-                    ...new Set(
-                      JSON.parse(el.mapping_json).map((eel) => eel.dataType)
-                    ),
-                  ].join(","),
+                  ...new Set(
+                    JSON.parse(el.mapping_json).map((eel) => eel.dataType)
+                  ),
+                ].join(","),
           }));
           setGridDataForGrid((prevState) => {
             return {
@@ -393,7 +406,13 @@ function ProjectManagement() {
     axios
       .post(`${process.env.REACT_APP_API_URL}/survey/removeallSurvey`, {
         selectedProjectId: listItems,
-      },{ withCredentials: true })
+      }, {
+        headers: {
+          "Content-type": "application/json",
+          "token": Cookies.get("token")
+        },
+        withCredentials: true,
+      })
       .then((response) => {
         console.log("200");
         let newMap = new Set(listItems.map((item) => item));
@@ -411,22 +430,22 @@ function ProjectManagement() {
       });
   };
 
-  const submenuOpen =(e,rowData)=>{
-         e.stopPropagation();
-         console.log(rowData._id) 
+  const submenuOpen = (e, rowData) => {
+    e.stopPropagation();
+    console.log(rowData._id)
     let dataForGrid = { ...gridDataForGrid };
     dataForGrid.rows.forEach((row) => {
       if (row._id === rowData._id) {
-        row.menuList= true;
+        row.menuList = true;
       }
     });
-    setGridDataForGrid(dataForGrid);     
+    setGridDataForGrid(dataForGrid);
   }
 
-  const dataRefreshProject = (sid) => { 
-     const listItems = [sid._id]; 
-     console.log(gridDataForGrid) 
-     let dataForGrid = { ...gridDataForGrid }; 
+  const dataRefreshProject = (sid) => {
+    const listItems = [sid._id];
+    console.log(gridDataForGrid)
+    let dataForGrid = { ...gridDataForGrid };
     listItems.forEach((ele) => {
       dataForGrid.rows.forEach((row) => {
         if (row._id === ele) {
@@ -436,7 +455,7 @@ function ProjectManagement() {
       });
     });
     //  setGridDataForGrid(dataForGrid);
-     startSequentialTimeout(listItems); 
+    startSequentialTimeout(listItems);
   };
 
   const multipleDataRefreshProject = () => {
@@ -454,7 +473,7 @@ function ProjectManagement() {
     startSequentialTimeout(listItems);
   };
 
-  const startSequentialTimeout = (listItems) => { 
+  const startSequentialTimeout = (listItems) => {
     listItems.forEach((item, index) => {
       setTimeout(() => {
         setGridDataForGrid((prevData) => {
@@ -477,10 +496,10 @@ function ProjectManagement() {
     <>
       <div
         className="container-full"
-        // onClick={(ev) => {
-        //   ev.stopPropagation();
-        //   setshowMenuitem(null);
-        // }}
+      // onClick={(ev) => {
+      //   ev.stopPropagation();
+      //   setshowMenuitem(null);
+      // }}
       >
         {/* -------------------- header section -------------------- */}
         <div className="after-login-header" style={{ marginBottom: 0 }}>
@@ -633,7 +652,7 @@ function ProjectManagement() {
                   }}
                   className="icon-btn"
                 >
-                 <span class="icon-data-refresh fa-1x"></span>
+                  <span class="icon-data-refresh fa-1x"></span>
                 </Button>
               </Stack>
             </div>
@@ -666,11 +685,11 @@ function ProjectManagement() {
                 columns={gridDataForGrid.columns}
                 pagination={true}
                 pageSizeOptions={[20, 50, 100]}
-                
+
                 hideFooterRowCount={true}
                 checkboxSelection={true}
 
-                
+
                 onSelectionModelChange={(ids) => {
                   const selectedIDs = new Set(ids);
                   const selectedRows = gridDataForGrid.rows.filter((row) =>

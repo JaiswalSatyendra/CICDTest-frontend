@@ -2776,6 +2776,7 @@ export default function MlResultsConnection({ resultData }) {
         credentials: "include",
         headers: {
           "Content-type": "application/json",
+          "token":Cookies.get("token")
         },
         body: JSON.stringify({
           project_name: resultData.project_name,
@@ -3775,6 +3776,7 @@ export default function MlResultsConnection({ resultData }) {
       credentials: "include",
       headers: {
         "Content-type": "application/json",
+        "token":Cookies.get("token")
       },
       body: JSON.stringify({
         project_name: resultData.project_name,
@@ -3869,7 +3871,13 @@ export default function MlResultsConnection({ resultData }) {
         {
           project_name: resultData.project_name,
         },
-        { withCredentials: true }
+        {
+        headers: {
+          "Content-type": "application/json",
+          "token": Cookies.get("token")
+        },
+        withCredentials: true,
+      }
       )
       .then(async (response1) => {
         // setLoderVisual(false);
@@ -4050,6 +4058,7 @@ export default function MlResultsConnection({ resultData }) {
       credentials: "include",
       headers: {
         "Content-type": "application/json",
+        "token":Cookies.get("token")
       },
       body: JSON.stringify(requestCustomchart),
     })

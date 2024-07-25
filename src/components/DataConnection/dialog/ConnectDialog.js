@@ -743,7 +743,13 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
       let cloneContactMap = []//[...listContactMapping];
       let cloneContactMap1 = [];
       setisFetchedFeedbackList(true)
-      await axios.post(`${process.env.REACT_APP_API_URL}/survey/getFeedbackListOfHubspot`, { "token": hubspotTokenName, refresh_token: hubspotRefreshtokenName, hs_object: hsObject },{ withCredentials: true })
+      await axios.post(`${process.env.REACT_APP_API_URL}/survey/getFeedbackListOfHubspot`, { "token": hubspotTokenName, refresh_token: hubspotRefreshtokenName, hs_object: hsObject },{
+        headers: {
+          "Content-type": "application/json",
+          "token": Cookies.get("token")
+        },
+        withCredentials: true,
+      })
         .then(async (response) => {
           console.log(response.data);
           setisFetchedFeedbackList(false)
@@ -836,7 +842,13 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
     // ${process.env.REACT_APP_AMEZON_AWSAPI_URL}/form
     //${process.env.REACT_APP_API_URL}/survey/getTypePreviewListData
     await axios
-      .post(`${process.env.REACT_APP_API_URL}/survey/getTypePreviewListData`, { "token": token, "formidlist": newList },{ withCredentials: true })
+      .post(`${process.env.REACT_APP_API_URL}/survey/getTypePreviewListData`, { "token": token, "formidlist": newList },{
+        headers: {
+          "Content-type": "application/json",
+          "token": Cookies.get("token")
+        },
+        withCredentials: true,
+      })
       .then((response) => {
         setLoaderShow(false);
 
