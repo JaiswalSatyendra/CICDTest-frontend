@@ -54,8 +54,10 @@ import Chart from "react-apexcharts";
 import axios from "axios";
 
 import addWeeks from "date-fns/addWeeks";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import {AdapterDateFns} from "@mui/x-date-pickers";
+// import LocalizationProvider from "@mui/x-date-pickers";
+// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+// import { LocalizationProvider } from '@mui/x-date-pickers-pro';
 import DateRangePicker from "@mui/lab/DateRangePicker";
 
 
@@ -128,6 +130,7 @@ import AccordionActions from '@mui/material/AccordionActions';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { LocalizationProvider } from "@mui/x-date-pickers";
 
 
 
@@ -2459,6 +2462,7 @@ setradarmaxValue(maxValue);
           size="small"
           color="primary"
           variant="outlined"
+          title="Data Insight"
           onClick={(e) => openInsightDialogBox(e, "Dashboard")}
         >
           <img src={InsightIcons} alt="Insight" className="mr-2" />
@@ -2472,6 +2476,7 @@ setradarmaxValue(maxValue);
             size="small"
             color="primary"
             variant="outlined"
+            title="Segmentation"
             onClick={(e) => openSegmentaionDialogBox(e, "Dashboard")}
           >
             <img src={SegmentationIcons} alt="Insight" className="mr-2" />
@@ -2483,6 +2488,7 @@ setradarmaxValue(maxValue);
           size="small"
           color="primary"
           variant="outlined"
+          title="Filter"
           onClick={(e) => hideFilterBox(e)}
         >
           {" "}
@@ -2500,6 +2506,7 @@ setradarmaxValue(maxValue);
           sx={{ mb: 1 }}
           size="small"
           color="primary"
+          title="Hide Table"
           variant="outlined"
           onClick={(e) => hideDataTable(e)}
           className="ml-2"
@@ -2557,7 +2564,7 @@ setradarmaxValue(maxValue);
               </Select>
             </FormControl>
             <br />
-            <LocalizationProvider
+            {/* <LocalizationProvider
               dateAdapter={AdapterDateFns}
               sx={{ mt: 2, minWidth: "100%" }}
             >
@@ -2576,7 +2583,7 @@ setradarmaxValue(maxValue);
                   </React.Fragment>
                 )}
               />
-            </LocalizationProvider>
+            </LocalizationProvider> */}
           </div>
         </>
       ) : (

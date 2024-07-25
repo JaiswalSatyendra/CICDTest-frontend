@@ -156,7 +156,7 @@ function CreateDataConnection() {
   const [isConnected, setisConnected] = React.useState(false);
   const [openHubspot, setOpenHubspot] = React.useState(false);
   const [openZendesk, setOpenZendesk] = React.useState(false);
-  const [isConnectedZendesk, setisConnectedZendesk] = React.useState(false); 
+  const [isConnectedZendesk, setisConnectedZendesk] = React.useState(false);
   const [openFacebook, setOpenFacebook] = React.useState(false);
   const [openTwitter, setOpenTwitter] = React.useState(false);
   const [openFeshdesk, setOpenFeshdesk] = React.useState(false);
@@ -421,7 +421,7 @@ function CreateDataConnection() {
     setOpenKlaviyo(false);
     setOpenIntercom(false);
     setOpenShopify(false);
-    setisOpenPopupKlaviyo(true);
+    setisOpenPopupKlaviyo(false);
   };
 
   const handleUploadClose = () => {
@@ -455,9 +455,8 @@ function CreateDataConnection() {
 
       if (ev != null && ev.target.checked != false) {
         axios.post(`${process.env.REACT_APP_API_URL}/survey/setNewQuestionMapping`, {
-          user_id: user._id,
           template: name
-        }).then(async (response1) => {
+        },{ withCredentials: true }).then(async (response1) => {
           if (response1.data.success) {
             setisError(true)
           } else {
@@ -516,6 +515,7 @@ function CreateDataConnection() {
       } else if (selected.length == 0) {
         setisError(false)
         seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Data Source Connection Error', message: ['Select at least one data source'] }])
+
         errorRef.current.scrollIntoView({ behavior: 'smooth' })
       } else {
         localStorage.setItem('projectName', projectName.trim());
@@ -526,6 +526,7 @@ function CreateDataConnection() {
       }
     } else {
       let typeFormConnectedList = isShowSurveyMapp.filter((ele) => ele.dataType == "Typeform");
+
       if (typeFormConnectedList.length > 1) {
         isShowSurveyMapp.forEach((ele) => {
           if (ele.dataType == "Typeform") {
@@ -543,9 +544,11 @@ function CreateDataConnection() {
       } else {
         setisError(false)
         seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Category Mapping Error', message: ['Please map question with category'] }])
+
         errorRef.current.scrollIntoView({ behavior: 'smooth' })
       }
     }
+
   };
 
   const handleGetSurveyMapp = async (dataSource, formName, formId, templacteName, questions) => {
@@ -556,10 +559,9 @@ function CreateDataConnection() {
         data_source: dataSource,
         form_name: formName,
         form_id: formId,
-        user_id: user._id,
         analysis_template: templacteName,
         questions: questions,
-      })
+      },{ withCredentials: true })
       .then(async (response1) => {
         if (response1.data.success) {
           setisError(true)
@@ -640,8 +642,8 @@ function CreateDataConnection() {
     await axios.post(
       `${process.env.REACT_APP_API_URL}/survey/getAnalysisProcessStatus`,
       {
-        user_id: user._id, project_name: projectName
-      }
+       project_name: projectName
+      },{ withCredentials: true }
     )
       .then(async (response1) => {
         if (response1.data.success && response1.data.data.message.body == "") {
@@ -687,7 +689,7 @@ function CreateDataConnection() {
       {
         user_id: user._id,
         analysis_template: selectedTemplacte[0].name,
-      }
+      },{ withCredentials: true }
     ).then(async (response1) => {
       setTypeformIngestionStatus((response1.data.data.mapping_info.status == "completed" ? { status: false, percentage: response1.data.data.mapping_info.progress } : { status: true, percentage: response1.data.data.mapping_info.progress }));
       if (response1.data.data.mapping_info.status == "completed") {
@@ -905,6 +907,7 @@ function CreateDataConnection() {
       credentials: "include",
       headers: {
         "Content-type": "application/json",
+        "token":Cookies.get("token")
       },
       body: JSON.stringify(dataSourceMailObj)
     })
@@ -1020,11 +1023,11 @@ function CreateDataConnection() {
         credentials: "include",
         headers: {
           "Content-type": "application/json",
+          "token":Cookies.get("token"),
         },
         body: JSON.stringify({
           projectName: projectName,
           form_id: getSelectedFormId,
-          user_id: user._id,
           template:
             selectedTemplacte.length == 0 ? "" : selectedTemplacte[0].name,
           mapping_json: JSON.stringify(isShowSurveyMapp),
@@ -1223,10 +1226,8 @@ function CreateDataConnection() {
       //   console.log(err);
       // });
     }
-    setecommerceList(ecommerceListData)
     fetchTokenklaviyo();
     fetchTokenIntercom();
-    fetchTokenShopify();
   }, []);
 
   const setCatMappingOption = (catOptionList) => {
@@ -1291,7 +1292,7 @@ function CreateDataConnection() {
                       data.row.module = value;
                       data.row.weightage = "L";
                       data.row.is_mapped =
-                        (data.row.module != null && data.row.module != "") ? true : false;
+                        data.row.module != null ? true : false;
                     }
                   }}
                   renderInput={(params) => (
@@ -1402,7 +1403,7 @@ function CreateDataConnection() {
                       event.stopPropagation();
                       data.row.module = value;
                       data.row.weightage = "L";
-                      data.row.is_mapped = (data.row.module != null && data.row.module != "") ? true : false;
+                      data.row.is_mapped = data.row.module != null ? true : false;
                     }
                   }}
                   renderInput={(params) => (
@@ -1490,8 +1491,7 @@ function CreateDataConnection() {
         client_secret: process.env.REACT_APP_TYPEFORM_CLIENT_SECRET,
         redirect_uri: process.env.REACT_APP_TYPEFORM_REDIRECT_URI,
         token_url: process.env.REACT_APP_TYPEFORMTOKEN_URL,
-        user_id: user._id,
-      })
+      },{ withCredentials: true })
       .then((response) => {
         settokenName(response.data.access_token);
         setRefreshtokenName(response.data.refresh_token);
@@ -1505,7 +1505,6 @@ function CreateDataConnection() {
         // setLoaderShow(false)
       });
   };
-
   const fetchTokenklaviyo = async (ev) => { 
     let search = window.location.search;
     let params = new URLSearchParams(search);
@@ -1519,7 +1518,7 @@ function CreateDataConnection() {
         redirect_uri: process.env.REACT_APP_klaviyo_REDIRECT_URI,
         user_id: user._id,
         code_verifier: process.env.REACT_APP_klaviyo_Code_verifier, 
-      })
+      },{ withCredentials: true })
       .then((response) => { 
          settokenName(response.data.access_token);
          console.log(response.data.access_token)
@@ -1533,9 +1532,8 @@ function CreateDataConnection() {
         //   textMessage: "Enter project name",
         // }));
 
-         setisConnected(true)
-         setOpenKlaviyo(true);
-         setisOpenPopupKlaviyo(false);
+        //  setisConnected(true) 
+         setisOpenPopupKlaviyo(true);
         // getWorkspaceList(
         //   { token: response.data.access_token },
         //   response.data.refresh_token
@@ -1566,21 +1564,7 @@ function CreateDataConnection() {
          console.log(response.data.access_token)
          setRefreshtokenName(response.data.refresh_token);
          let ecomlist=[...ecommerceListData];
-         console.log(ecomlist)
-
-        //  setprojectNameValid((prev) => ({
-        //   ...isValiedProject,
-        //   inPatternMatch: true,
-        //   textMessage: "Enter project name",
-        // }));
-
-         setisConnected(true)
-         setOpenKlaviyo(true);
-         setisOpenPopupKlaviyo(false);
-        // getWorkspaceList(
-        //   { token: response.data.access_token },
-        //   response.data.refresh_token
-        // );
+         console.log(ecomlist) 
       })
       .catch((err) => {
         console.log(err);
@@ -1631,7 +1615,6 @@ function CreateDataConnection() {
         client_secret: process.env.REACT_APP_HUBSPOT_CLIENT_SECRET,
         redirect_uri: process.env.REACT_APP_HUBSPOT_REDIRECT_URI,
         token_url: process.env.REACT_APP_HUBSPOT_REDIRECT_URI,
-        user_id: user._id,
       })
       .then((response) => {
         setHubspotTokenName(response.data.hubspot_access_token);
@@ -1742,9 +1725,8 @@ function CreateDataConnection() {
 
     axios
       .post(`${process.env.REACT_APP_API_URL}/user/removeTypeformToken`, {
-        user_id: user._id,
         isRemoveTypeForm: value == "Typeform" ? true : false,
-      })
+      },{ withCredentials: true })
       .then((response) => {
         console.log(checkProgressDatasetStatus);
         if (value == "Typeform") {
@@ -1811,8 +1793,7 @@ function CreateDataConnection() {
                 client_secret: process.env.REACT_APP_HUBSPOT_CLIENT_SECRET,
                 redirect_uri: process.env.REACT_APP_HUBSPOT_REDIRECT_URI,
                 token_url: process.env.REACT_APP_HUBSPOT_REDIRECT_URI,
-                user_id: user._id,
-              }
+              },{ withCredentials: true }
             )
             .then((response) => {
               setHubspotTokenName(response.data.hubspot_access_token);
@@ -1835,14 +1816,20 @@ function CreateDataConnection() {
   };
 
   const getWorkspaceList = async (newBodyObj, refreshToken) => {
-    axios
-      .post(`${process.env.REACT_APP_AMEZON_AWSAPI_URL}/workspace/`, newBodyObj)
+    fetch(`${process.env.REACT_APP_AMEZON_AWSAPI_URL}/workspace/`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(newBodyObj)
+    })
+      .then((res) => res.json())
       .then((response) => {
         console.log("here", response);
         // setLoaderShow(false)
-        if (response.data.status != "failed") {
+        if (response.status != "failed") {
           let newWorkspace = [];
-          response.data.data.forEach((ele) => {
+          response.data.forEach((ele) => {
             newWorkspace.push({
               displayName: ele.name,
               value: ele.id,
@@ -1860,8 +1847,7 @@ function CreateDataConnection() {
               client_secret: process.env.REACT_APP_TYPEFORM_CLIENT_SECRET,
               redirect_uri: process.env.REACT_APP_TYPEFORM_REDIRECT_URI,
               token_url: process.env.REACT_APP_TYPEFORMTOKEN_URL,
-              user_id: user._id,
-            })
+            },{ withCredentials: true })
             .then((response) => {
               // if (count == 1) {
               getWorkspaceList(
@@ -1921,7 +1907,7 @@ function CreateDataConnection() {
   };
 
   const onProjectName1 = async (event, val) => {
-    if(projectName.trim() !==""){
+    if (projectName.trim() !== "") {
       if (await checkProjectNameExist()) {
         localStorage.setItem("selectedProjectName", projectName);
       }
@@ -2169,6 +2155,7 @@ function CreateDataConnection() {
                       <Button
                         color="primary"
                         variant="outlined"
+                        title="Save Draft"
                       // onClick={() => {
                       //   onsaveAsDraft();
                       // }}
@@ -2180,6 +2167,7 @@ function CreateDataConnection() {
                       color={!datarefreshupdated ? 'success' : 'primary'}
                       variant="outlined"
                       className="icon-btn"
+                      title="Data Refresh"
                       onClick={() => {
                         dataRefreshProject();
                       }}
@@ -2191,6 +2179,7 @@ function CreateDataConnection() {
                     <Button
                       color="primary"
                       variant="outlined"
+                      title="Save & Close"
                       onClick={() => {
                         gotoProjectManagementScreen();
                       }}
@@ -2481,7 +2470,12 @@ className={
                                       {item.description}
                                     </Typography>
                                   </CardContent>
-                                  <CardActions> 
+                                  <CardActions>
+                                    {/* <button   onClick={(ev) => {
+                                  getUpdateSurveyList(ev, item.name);
+                                }}>servay connect</button> */}
+                                    {/* <Button className='connect-btn' >Ingest New Form</Button>     getUpdateSurveyList(ev, item.name);*/}
+
                                     {(isConnectedTypeForm == true &&
                                       ["Typeform"].indexOf(item.name) !=
                                       -1) ||
@@ -2494,7 +2488,9 @@ className={
                                             connectDataForIngestion(ev, item.name);
                                           }}></a>   <a className="fa fa-close" onClick={(ev) => {
                                             clearDataForIngestion(ev, item.name);
-                                          }}></a></span></div>) : <Button className="connect-btn">Connect Dataset</Button>} 
+                                          }}></a></span></div>) : <Button className="connect-btn">Connect Dataset</Button>}
+
+
                                       </>
                                     ) : (
                                       <>
@@ -3280,7 +3276,7 @@ className={
                                 E-commerce
                               </Typography>
                             </Grid>
-                            {ecommerceList.map((item, i) => (
+                            {ecommerceListData.map((item, i) => (
                               <Grid
                                 item
                                 xs={12}
@@ -3306,15 +3302,16 @@ className={
                                     image={item.img}
                                     title={item.name}
                                   />
-                                  {isConnected ? (
-                                    <>  <label class="switch" onClick={(ev) => {
-                                      removeKlaviyoToken(ev, item.name);
+                                  {(isConnectedTypeForm == true && ["Typeform"].indexOf(item.name) != -1) ||
+                                    (isConnectedHubspot == true && ["Hubspot"].indexOf(item.name) != -1) || (isConnectedZendesk == true && ["Zendesk"].indexOf(item.name) != -1) ? (
+                                    <> <label class="switch" onClick={(ev) => {
+                                      removeTypeformToken(ev, item.name);
                                     }}>
                                       <input type="checkbox" checked={true} disabled={item.active} />
                                       <span class="slider round"></span>
                                     </label> </>
                                   ) : (
-                                    <>  <label class="switch" onClick={(e) => {
+                                    <> <label class="switch" onClick={(e) => {
                                       handleOpen(e, item.name);
                                     }} >
                                       <input type="checkbox" checked={false} />
@@ -3749,7 +3746,6 @@ className={
                                           pageSizeOptions={[5, 10, 50, 100]}
                                           checkboxSelection={true}
                                           disableSelectionOnClick
-                                          rowHeight={65}
                                           selectionModel={
                                             label.checkedAllList
                                           }
@@ -4105,7 +4101,7 @@ className={
             openSalesforce={openSalesforce}
             openbraze={openbraze}
             openInstagram={openInstagram}
-            openKlaviyo={openKlaviyo}            
+            openKlaviyo={openKlaviyo}
             isOpenPopupKlaviyo={isOpenPopupKlaviyo}
             isOpenPopupIntercom={isOpenPopupIntercom}
             openIntercom={openIntercom}

@@ -1,4 +1,5 @@
 import React, { useState } from "react"; 
+import Cookies from "js-cookie";
 import "./Footer.scss"; 
  
 import { Box,Grid } from "@mui/material";
@@ -32,6 +33,8 @@ function HomeFooter() {
       credentials: "include",
       headers: {
         "Content-type": "application/json",
+        "token":Cookies.get("token")
+
       },
       body: JSON.stringify({ "userName": userName,"userLastName": userLastName, "userEmail": userEmail, "userPhone": userPhone, mailType: mailtype })
     })
@@ -218,6 +221,5 @@ function HomeFooter() {
       </div> 
     </div>
   );
-}
-
+} 
 export default HomeFooter;

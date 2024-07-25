@@ -4,7 +4,7 @@ import AxiosMockAdapter from 'axios-mock-adapter';
 
 const axiosInt = axios.create();
 
-// axios.defaults.headers.common['Authorization'] = Cookies.get("token");
+axios.defaults.headers.common['token'] = Cookies.get("token");
 axiosInt.interceptors.response.use(
   (response) => response,
   (error) =>

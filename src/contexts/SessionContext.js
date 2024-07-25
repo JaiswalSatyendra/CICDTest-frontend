@@ -58,6 +58,7 @@ export const SessionProvider = ({ children }) => {
 
   async function logout() {
     const response = await utils.logout(domain);
+    Cookies.remove("token");
     setSession({
       token: "",
       user: {},

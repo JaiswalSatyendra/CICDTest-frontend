@@ -92,7 +92,7 @@ export default function UserProfile() {
     const [tabsection, setTabsection] = useState('Your Profile');
 
     const [isEditable, setIsEditable] = useState(true);
-    const [userDetail, setUserDetail] = useState({ username: "", last_name: "", company_email: "", phone_number: "", company_name: "", id: "" });
+    const [userDetail, setUserDetail] = useState({ username: "", last_name: "", company_email: "", phone_number: "", company_name: ""});
 
     const [userPassword, setUserPassword] = useState({ newPassword: "", confirmPassword: "" });
     const [validatePasswordMessage, setvalidatePasswordMessage] = useState({ isValid: false, message: "" });
@@ -222,7 +222,7 @@ export default function UserProfile() {
         if (tmpEditable1) {
             await axios.post(
                 `${process.env.REACT_APP_API_URL}/user/updateLoggedUser`,
-                userDetail
+                userDetail,{ withCredentials: true }
             ).then(async (response) => {
                 await updateSession()
                 // console.log(response);
@@ -261,7 +261,7 @@ export default function UserProfile() {
 
             await axios.post(
                 `${process.env.REACT_APP_API_URL}/user/updatePassword`,
-                { newPassword: userPassword.newPassword, confirmPassword: userPassword.confirmPassword, id: user._id }
+                { newPassword: userPassword.newPassword, confirmPassword: userPassword.confirmPassword },{ withCredentials: true }
             ).then(async (response) => {
                 if (response.data.success) {
                     setUserPassword({ newPassword: "", confirmPassword: "" })

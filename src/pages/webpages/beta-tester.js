@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState }from "react"; 
+import Cookies from "js-cookie";
 import HeroSection from "../../components/HeroSection";
 import NavigationLinkSection from "../../components/NavigationLinkSection";
 import ConvertMLMarketingSection from "../../components/ConvertMLMarketingSection";
@@ -71,6 +72,8 @@ function BetaTesterPage() {
       credentials: "include",
       headers: {
         "Content-type": "application/json",
+        "token":Cookies.get("token")
+        
       },
       body: JSON.stringify(dataSourceMailObj)
     })

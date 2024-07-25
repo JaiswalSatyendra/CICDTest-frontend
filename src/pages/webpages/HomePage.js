@@ -124,13 +124,10 @@ function HomePage() {
       </section>
       <div className="home-roles-page">
         <div className="container-home">
-          <h2 className="text-center">
-            <b>
+          
               <h2 className="text-center">
                 <b> Built for Customer-Centric Teams!</b>
-              </h2>
-            </b>
-          </h2>
+              </h2> <br />
           <div className="web-view"> <br />
           <br /></div> 
           <br />

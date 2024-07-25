@@ -62,9 +62,8 @@ import AttentionTypeform from "../pages/webpages/blogs/2024/april/attentionTypef
 import Theonlywinwinstrategy from "../pages/webpages/blogs/2024/april/the-only-win-win-strategy-for-survey-data-analytics";
 import IntegrationMultiplePlatforms from "../pages/webpages/integration-multiple-platforms";
 import ScheduleDemo from "../pages/webpages/schedule-demo";
-import LeadGenerationAnalysis from "../pages/webpages/solutions/roles/lead-generation-analysis";
-import BrandLoyalty from "../pages/webpages/solutions/roles/brand-loyalty";
-import MarketResearch from "../pages/webpages/solutions/roles/market-research";
+import LeadGenration from "../pages/webpages/lead-genration";
+import LeadGenrationFrom from "../pages/webpages/lead-genration";
 
 // import HiddenfieldsSuperenhance from "../pages/webpages/blogs/2024/feb/hidden-fields-Super-enhance-your-ConvertML-analysis";
 
@@ -163,22 +162,6 @@ const router = [
     path: "/solutions/roles/market-insights",
     exact: true,
     element: <MarketInsights />,
-  },
-  {
-    path: "/solutions/roles/leadGenerationAnalysis",
-    exact: true,
-    element: <LeadGenerationAnalysis />,
-  }, 
-  {
-    path: "/solutions/roles/marketResearch",
-    exact: true,
-    element: <MarketResearch />,
-  },   
-  
-  {
-    path: "/solutions/roles/brandLoyalty",
-    exact: true,
-    element: <BrandLoyalty />,
   }, 
   {
     path: "/pricing-plan",
@@ -195,7 +178,11 @@ const router = [
     exact: true,
     element: <IntegrationMultiplePlatforms />,
   },
-  
+  {
+    path: "/lead-genration",
+    exact: true,
+    element: <LeadGenrationFrom />,
+  },
   {
     path: "/power-user-program-convertml",
     exact: true,

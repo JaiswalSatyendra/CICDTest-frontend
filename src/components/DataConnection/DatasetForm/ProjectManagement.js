@@ -122,10 +122,7 @@ function ProjectManagement() {
   const getProjectList = async (loader) => {
     setLoaderShow(loader);
     await axios
-      .post(`${process.env.REACT_APP_API_URL}/survey/listAllSurveyProject`, {
-        user_id: user._id,
-        template: "Customer Satisfaction",
-      })
+      .post(`${process.env.REACT_APP_API_URL}/survey/listAllSurveyProject`, { withCredentials: true })
       .then((response) => {
         setLoaderShow(false);
         let newRows = response.data.data.map((el, ind) => ({
@@ -362,9 +359,8 @@ function ProjectManagement() {
   const deleteProjectDetail = (rowData) => {
     axios
       .post(`${process.env.REACT_APP_API_URL}/survey/removeSurvey`, {
-        user_id: user._id,
         selectedProjectId: rowData._id,
-      })
+      },{ withCredentials: true })
       .then((response) => {
         if (response.data.success) {
           let newRows = response.data.data.map((el, ind) => ({
@@ -394,11 +390,10 @@ function ProjectManagement() {
   };
   const multipledeleteProject = () => {
     const listItems = selectedRows.map((d) => d._id);
-    console.log(listItems); 
     axios
       .post(`${process.env.REACT_APP_API_URL}/survey/removeallSurvey`, {
         selectedProjectId: listItems,
-      })
+      },{ withCredentials: true })
       .then((response) => {
         console.log("200");
         let newMap = new Set(listItems.map((item) => item));
@@ -663,7 +658,7 @@ function ProjectManagement() {
           )}
           {!showLoder && (
             <Box sx={{ height: "59.5vh", width: "100%" }}>
-              <DataGridPro
+              <DataGrid
                 slots={{
                   noRowsOverlay: CustomNoRowsOverlay,
                 }}
@@ -671,17 +666,25 @@ function ProjectManagement() {
                 columns={gridDataForGrid.columns}
                 pagination={true}
                 pageSizeOptions={[20, 50, 100]}
-                getRowHeight={() => "auto"}
+                
                 hideFooterRowCount={true}
                 checkboxSelection={true}
-                // rowSelectionModel={ selectedRows }
-                onRowSelectionModelChange={(ids) => {
+
+                
+                onSelectionModelChange={(ids) => {
                   const selectedIDs = new Set(ids);
                   const selectedRows = gridDataForGrid.rows.filter((row) =>
                     selectedIDs.has(row.id)
                   );
                   setSelectedRows(selectedRows);
                 }}
+                // onRowSelectionModelChange={(ids) => {
+                //   const selectedIDs = new Set(ids);
+                //   const selectedRows = gridDataForGrid.rows.filter((row) =>
+                //     selectedIDs.has(row.id)
+                //   );
+                //   setSelectedRows(selectedRows);
+                // }}
                 initialState={{
                   pagination: {
                     paginationModel: {

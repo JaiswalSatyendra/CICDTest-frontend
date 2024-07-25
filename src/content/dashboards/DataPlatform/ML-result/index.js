@@ -1,34 +1,22 @@
 import * as React from "react";
+import Cookies from "js-cookie";
 import {
-  Autocomplete,
   Box,
   Button,
   FormControl,
-  FormLabel,
   Grid,
-  styled,
   TextField,
-  Typography,
-  InputAdornment,
   CardContent,
   Card,
-  List,
-  ListItem,
-  ListItemAvatar,
-  Avatar,
   ListItemText,
-  ListItemButton,
   CircularProgress,
   InputLabel,
   MenuItem,
   Select,
   CardHeader,
-  Divider,
   Tooltip,
-  OutlinedInput,
   Popover,
   IconButton,
-  Popper,
   Stack,
   Menu,
   FormControlLabel,
@@ -53,23 +41,11 @@ import Chip from "@mui/material/Chip";
 import "tippy.js/dist/tippy.css";
 import "tippy.js/animations/scale.css";
 // import CardActions from "@mui/material/CardActions";
-import CardMedia from "@mui/material/CardMedia";
-import CheckIcon from "@mui/icons-material/Check";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import Collapse from "@mui/material/Collapse";
-import Switch from "@mui/material/Switch";
-import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
-import PieChartIcon from "@mui/icons-material/PieChart";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
-import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import Chart from "react-apexcharts";
 import axios from "axios";
 
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Accordion from "@mui/material/Accordion";
-import AccordionActions from "@mui/material/AccordionActions";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -77,10 +53,10 @@ import NetPromoterScoreComingSoon from "../../../../assets/img/NetPromoterScoreC
 import stackedBarChartsComingSoon from "../../../../assets/img/stackedBarChartsComingSoon.jpg";
 import HistogramsComingSoon from "../../../../assets/img/HistogramsComingSoon.jpg";
 import cmllogo from "../../../../assets/icons/cml-logo.png";
-import userPic from "../../../../assets/icons/usericon.png";
-import arrowIcons from "../../../../assets/icons/usericon.png";
 
-import { CSVLink, CSVDownload } from "react-csv";
+import CustomChart from "../custom-chart/custom-chart";
+
+import { CSVLink } from "react-csv";
 // import DatabasesDialog from '../dialog/DatabasesDialog';
 import positiveIcons from "../../../../assets/icons/positive.svg";
 import neutralIcons from "../../../../assets/icons/neutral.svg";
@@ -88,24 +64,12 @@ import negativeIcons from "../../../../assets/icons/negative.svg";
 import positivechart from "../../../../assets/icons/positivechart.png";
 import neutralchart from "../../../../assets/icons/neutralchart.png";
 import negativechart from "../../../../assets/icons/negativechart.png";
-import demographyChart from "../../../../assets/icons/demographyChart.png";
-import userIcon from "../../../../assets/icons/usericon.png";
 import SplitterLayout from "react-splitter-layout";
 import "react-splitter-layout/lib/index.css";
-import DateFnsAdapter from "@mui/lab/AdapterDateFns";
 import { DataGrid } from "@mui/x-data-grid";
 import {
-  churnRateRows,
-  companyConsiderationColumnsData,
-  companyConsiderationRows,
-  companyTrustMetricColumnsData,
-  companyTrustMetricRows,
-  contactLevelRowsData,
-  correspondenceRateRows,
   positiveSatisfactionColumnsData,
   positiveSatisfactionRowsData,
-  sentimentResultColumnsData,
-  sentimentResultRowsData,
   totalResultCountData,
 } from "../../../../assets/data/result";
 import { useTheme } from "@emotion/react";
@@ -123,6 +87,7 @@ import alertactionIcons from "../../../../assets/icons/alertactionIcons.svg";
 
 import slacklogo from "../../../../assets/icons/slacklogo.svg";
 import zendesklogo from "../../../../assets/icons/zendesk.svg";
+import Slider from '@mui/material/Slider';
 
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -131,21 +96,16 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Checkbox from "@mui/material/Checkbox";
 import addWeeks from "date-fns/addWeeks";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DateRangePicker from "@mui/lab/DateRangePicker";
-import { gridDataForGridRowData } from "../../../../assets/data/data";
+// import {AdapterDateFns} from "@mui/x-date-pickers";
+// import LocalizationProvider from "@mui/x-date-pickers";
+// import { LocalizationProvider } from '@mui/x-date-pickers-pro';
 import ReactWordcloud from "react-wordcloud";
-import { de } from "date-fns/locale";
 import {
   DateRangePickerComponent,
   PresetsDirective,
   PresetDirective,
 } from "@syncfusion/ej2-react-calendars";
-import InsightSegmentation from "../insight-segemetation";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { v4 as uuidv4 } from "uuid";
-import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import CloseIcon from "@mui/icons-material/Close";
 import { useMemo } from "react";
 import {
@@ -156,10 +116,12 @@ import {
   marketResearchAlertList,
 } from "../../../../assets/data/alerts-trigger";
 import { AiChat } from "@nlux/react";
-import "@nlux/themes/nova.css";
-import { streamAdapter } from "./adapter";
-import { personas } from "./personas";
-import CustomChart from "../custom-chart/custom-chart";
+import '@nlux/themes/nova.css';
+import { streamAdapter } from './adapter';
+import { personas } from './personas';
+import CanvasJSReact from '@canvasjs/react-charts';
+var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+
 
 function getWeeksAfter(date, amount) {
   return date ? addWeeks(date, amount) : undefined;
@@ -183,17 +145,17 @@ export default function MlResultsConnection({ resultData }) {
   const [chartOne, setIschartOne] = useState("d-inline-block");
   const [chartOneCopy, setIschartOneCopy] = useState("d-none");
 
-  const [chartHalfheat, setIschartHalfheat] = useState(4); 
-  const [chartBoxHeightheat, setIschartBoxHeightheat] = useState(230); 
-  const [hideButtonheat, setIshideButtonheat] = useState("d-none"); 
-  const [showButtonheat, setIsshowButtonheat] = useState("d-inline-block");  
-  
-  
-  const [chartHalfdonutChart, setIschartHalfdonutChart] = useState(4); 
-  const [chartBoxHeightdonutChart, setIschartBoxHeightdonutChart] = useState(230); 
-  const [hideButtondonutChart, setIshideButtondonutChart] = useState("d-none"); 
+  const [chartHalfheat, setIschartHalfheat] = useState(4);
+  const [chartBoxHeightheat, setIschartBoxHeightheat] = useState(230);
+  const [hideButtonheat, setIshideButtonheat] = useState("d-none");
+  const [showButtonheat, setIsshowButtonheat] = useState("d-inline-block");
+
+
+  const [chartHalfdonutChart, setIschartHalfdonutChart] = useState(4);
+  const [chartBoxHeightdonutChart, setIschartBoxHeightdonutChart] = useState(230);
+  const [hideButtondonutChart, setIshideButtondonutChart] = useState("d-none");
   const [showButtondonutChart, setIsshowButtondonutChart] = useState("d-inline-block");
-  
+
 
   const [chartHalfTM, setIschartHalfTM] = useState(4);
   const [chartBoxHeightTM, setIschartBoxHeightTM] = useState(250);
@@ -223,6 +185,7 @@ export default function MlResultsConnection({ resultData }) {
   const [chartFontSize, setIschartFontSize] = useState("7px");
   const [dataTable, setDataTable] = useState(true);
   const [filterBox, setfilterBox] = useState(false);
+  const [rangeBox, setRangeBox] = useState(false);
   const [errorFilterBox, seterrorFilterBox] = useState({
     message: "",
     show: false,
@@ -230,6 +193,7 @@ export default function MlResultsConnection({ resultData }) {
   const [showLoderVisual, setLoderVisual] = useState(false);
   const [filterForBoxString, setfilterForBoxString] = useState("");
   const [selectedGridBox, setIsselectedGridBox] = useState("");
+  const [selectedcardTemplate, setselectedcardTemplate] = useState("");
   const [isFilteredChurn, setisFilteredChurn] = useState("");
   const [loggedInUser, setLoggedInUser] = useState("");
   const [mappingResultdata, setMappingResultdata] = useState([]);
@@ -239,10 +203,37 @@ export default function MlResultsConnection({ resultData }) {
   const [text, setText] = useState("");
   const [isSliderHide, setIsSliderHide] = useState(false);
   const [promptResult, setPromptResult] = useState(false);
+  const [masterResult, setmasterResult] = useState([]);
   const [featureImportanceData, setFeatureImportanceData] = useState({
     chartSeries: [],
     labels: [],
   });
+
+  const [psvalone, setPsoneValue] = useState([0, 0]);
+  const [psvaltwo, setPsvaltwo] = useState([0, 0]);
+
+  const handleChangeRange = (event, newValue) => {
+    setPsoneValue(newValue);
+
+  };
+
+  const handleChangePsRange = (event, newValue) => {
+    setPsvaltwo(newValue);
+
+  };
+
+  const clearRangefilter = () => {
+    setPsoneValue([0, 0]);
+    setPsvaltwo([0, 0]);
+    setpositiveSatisfactionResult({
+      filterdRow: masterResult,
+      filterdCol: positiveSatisfactionResult.filterdCol
+    })
+
+  }
+
+
+
   // const [timeframeSeriesList, settimeframeSeriesList] = useState([]);
 
   const [nrrBreakdownData, setNrrBreakdownData] = useState({
@@ -255,9 +246,75 @@ export default function MlResultsConnection({ resultData }) {
     yPosition: 0,
   });
 
+  const [canvaChart, setCanvaChart] = useState([
+  ]);
+
+  const [canvaChartMeter, setcanvaChartMeter] = useState({
+    minx: 0,
+    maxx: 0,
+    miny: 0,
+    maxy: 0,
+    yLable: "",
+    xLable: "",
+    colList: [],
+  });
+
+
+
+
   const [s3listOfkey, sets3listOfkey] = useState([]);
   // let s3listOfkey = []
 
+  const options = {
+    theme: "light",
+    height: 250,
+    animationEnabled: true,
+    zoomEnabled: true,
+    title: {
+      text: " "
+    },
+    axisX: {
+      title: canvaChartMeter.xLable,
+      lineColor: "#ccc",
+      tickColor: "#ccc",
+      minimum: canvaChartMeter.minx,
+      maximum: canvaChartMeter.maxx,
+      suffix: "",
+      gridThickness: 0,
+      crosshair: {
+        enabled: true,
+        snapToDataPoint: true
+      }
+    },
+    axisY: {
+      tickThickness: 0,
+      lineThickness: 0,
+      gridThickness: 0,
+      minimum: canvaChartMeter.miny,
+      maximum: canvaChartMeter.maxy,
+      title: canvaChartMeter.yLable,
+      includeZero: false,
+      crosshair: {
+        enabled: true,
+        snapToDataPoint: true
+      }
+    },
+    legend: {
+      cursor: "pointer",
+      itemclick: toggleDataSeries
+    },
+    data: canvaChart
+
+  }
+
+  function toggleDataSeries(e) {
+    if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+      e.dataSeries.visible = false;
+    } else {
+      e.dataSeries.visible = true;
+    }
+    e.chart.render();
+  }
   const promptResultData = [
     "1. What age groups are most actively purchasing CCG products, and how does this correlate with their spending habits on single cards, sealed products, and digital assets?",
     "2. How do preferences for premium or exclusive cards (like foils, alt art, etc.) vary across different demographics such as age and country?",
@@ -1019,8 +1076,8 @@ export default function MlResultsConnection({ resultData }) {
       },
     },
     yaxis: {
-      title: { text: "No of Churned" },
-      categories: timeSeriesData.yaxisList,
+      title: { text: "No of Churned", },
+      categories: timeSeriesData.yaxisList
     },
     tooltip: {
       shared: false,
@@ -1123,13 +1180,16 @@ export default function MlResultsConnection({ resultData }) {
 
       events: {
         dataPointSelection: function (event, chartContext, config) {
+          setIsselectedGridBox("Brand Differentiation")
           // event.stopPropagation();
           let whereCondition = ` WHERE s."${demographicsResult.selectedCat
             }" = '${config.w.config.labels[config.dataPointIndex]}'`;
           getResultFromS3(
             isHubspotMerge,
             mappingResultdata.query_list,
-            whereCondition
+            whereCondition,
+            "",
+            config.w.config.labels[config.dataPointIndex]
           );
         },
       },
@@ -1147,8 +1207,8 @@ export default function MlResultsConnection({ resultData }) {
       show: false,
     },
 
-    legend: { 
-      show: showButtondonutChart=='d-none'?true:false,
+    legend: {
+      show: showButtondonutChart == 'd-none' ? true : false,
       position: 'bottom',
       fontSize: '14px',
       labels: {
@@ -1472,6 +1532,7 @@ export default function MlResultsConnection({ resultData }) {
       },
       height: 350,
       type: "scatter",
+
       selection: {
         enabled: selectionTool,
         type: "xy",
@@ -1497,11 +1558,11 @@ export default function MlResultsConnection({ resultData }) {
       toolbar: {
         show: true,
         tools: {
-          download: true,
+          download: false,
           selection: true,
-          zoom: false,
-          zoomin: false,
-          zoomout: false,
+          zoom: true,
+          zoomin: true,
+          zoomout: true,
           pan: false,
           reset: false,
           customIcons: [
@@ -1520,22 +1581,7 @@ export default function MlResultsConnection({ resultData }) {
           ],
         },
       },
-      zoom: {
-        enabled: true,
-        type: "xy",
-        autoScaleYaxis: true,
-        zoomedArea: {
-          fill: {
-            color: "#90CAF9",
-            opacity: 0.4,
-          },
-          stroke: {
-            color: "#0D47A1",
-            opacity: 0.4,
-            width: 1,
-          },
-        }, //CAST(mean as DOUBLE) BETWEEN
-      },
+
       autoSelected: "zoom",
       events: {
         selection: function (chartContext, { xaxis, yaxis }) {
@@ -1568,6 +1614,7 @@ export default function MlResultsConnection({ resultData }) {
         },
       },
     },
+
     // states: {
     //   normal: {
     //     filter: {
@@ -1601,10 +1648,11 @@ export default function MlResultsConnection({ resultData }) {
     grid: {
       show: false,
     },
+
     xaxis: {
       type: "numeric",
-      min: correspondenceAnalysis.xAxisMinMax[0],
-      max: correspondenceAnalysis.xAxisMinMax[1],
+      min: -2,
+      max: 6,
       tickAmount: 5,
       labels: {
         formatter: function (val) {
@@ -1617,9 +1665,7 @@ export default function MlResultsConnection({ resultData }) {
     },
 
     yaxis: {
-      // min: -3,
-      // max: 4,
-      // tickAmount: 5,
+      tickAmount: 5,
       labels: {
         formatter: function (val) {
           return parseInt(val);
@@ -1768,15 +1814,20 @@ export default function MlResultsConnection({ resultData }) {
     return function (word, event) {
       let newresponsId = word.responseIds.map((x) => `'${x}'`).toString();
       if (word.responseIds != undefined && word.responseIds.length != 0) {
+        setIsselectedGridBox("Word Cloud")
         getResultFromS3(
           isHubspotMerge,
           mappingResultdata.query_list,
-          `WHERE response_id IN( ${newresponsId} )`
+          `WHERE response_id IN( ${newresponsId} )`,
+          "",
+          word.text
         );
         // getFilteredResult(` WHERE response_id IN( ${newresponsId} )`)
       }
     };
   }
+
+
 
   const getSatisfactionResult = async (
     tableDetails,
@@ -1892,13 +1943,24 @@ export default function MlResultsConnection({ resultData }) {
       .catch((err) => { });
   };
 
+  // ------------- Date convet ddmmyyyy---------------
+  const convertToDate = (isoString) => {
+    const date = new Date(isoString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
+  //------------- Date convet ddmmyyyy end---------------
+
   const fetchSurveyResult = () => {
     fetch(`${process.env.REACT_APP_API_URL}/survey/viewResult`, {
       method: "POST",
-      credentials: "include",
       headers: {
         "Content-type": "application/json",
+        "token":Cookies.get("token"),
       },
+      credentials: "include",
       body: JSON.stringify({
         project_name: resultData.project_name, //'churn_heatmap_test', //resultData.project_name,
         user_id: resultData.user_id, //'660d1550e7c1463e26b94592', //resultData.user_id,
@@ -1910,6 +1972,20 @@ export default function MlResultsConnection({ resultData }) {
         if (res.success === true && res.data.length != 0) {
           let mappingResult = res.data[res.data.length - 1].analysis_result;
           setMappingResultdata(mappingResult);
+          if (mappingResult.custom_chart_info !== undefined) {
+            let xkeysvalue = (mappingResult.custom_chart_info.xaxis)
+            setcxaxis(xkeysvalue)
+            let ykeysvalue = (mappingResult.custom_chart_info.yaxis)
+            setcyaxis(ykeysvalue)
+            let cdaterang = (mappingResult.custom_chart_info.timerange)
+            let customdateStart = convertToDate(cdaterang[0]);
+            let customdateEnd = convertToDate(cdaterang[1]);
+            setfiltercustomChartRange([customdateStart, customdateEnd])
+          }
+          //console.log(mappingResult.custom_chart_info.timerange)  
+          // let ctimerange = mappingResult.custom_chart_info.timerange;
+          //   setfiltercustomChartRange(ctimerange)   
+          // console.log(filtercustomChartRange)
 
           let mappingCrossTab1 = res.data[res.data.length - 1].cross_tab;
           let mappingCrossTab =
@@ -2402,7 +2478,7 @@ export default function MlResultsConnection({ resultData }) {
       setIshideButtondonutChart("d-inline-block");
       setIsshowButtondonutChart("d-none");
       setIschartFontSize("12px");
-    } 
+    }
     else if (selectChart == "companyTM") {
       setlabelHide(true);
       setIschartHalfTM(12);
@@ -2494,8 +2570,25 @@ export default function MlResultsConnection({ resultData }) {
     setfilterForBoxString(dialogHeader);
   };
 
+  const openRangePopupBox = (e, dialogHeader) => {
+    e.stopPropagation();
+    setRangeBox(true);
+    setfilterPopup({
+      xPosition: e.pageX - 250,
+      yPosition: e.pageY + 10,
+    });
+    setfilterForBoxString(dialogHeader);
+  };
+
+
+
+
   const closeFilterBox = () => {
     setfilterBox(false);
+  };
+
+  const closeRangePopupBox = () => {
+    setRangeBox(false);
   };
 
   const openSegmentaionDialogBox = (e, dialogHeader) => {
@@ -2542,8 +2635,15 @@ export default function MlResultsConnection({ resultData }) {
     setopenSegmentation(false);
   };
 
-  const getResultFromS3 = (hubspotMergeStatus, queryList, wherCondition, clustringData) => {
+  const refreshDataGrid = (e) => {
+    setIsselectedGridBox("")
+    getResultFromS3(isHubspotMerge,
+      mappingResultdata.query_list, "", mappingResultdata.clustering, "")
+  }
+
+  const getResultFromS3 = (hubspotMergeStatus, queryList, wherCondition, clustringData, selectedField) => {
     console.log(mappingResultdata.query_list);
+    setselectedcardTemplate(selectedField == undefined ? "" : selectedField)
     let categoryCols =
       resultData.template == "Net Promoter Score"
         ? "nps_category"
@@ -2553,14 +2653,17 @@ export default function MlResultsConnection({ resultData }) {
         bucket: "convertml-test-data",
         key: `${resultData.user_id}/gold/contact_satisfaction_${resultData._id}.csv`,
         whereClouse: wherCondition,
+        colList: queryList,
+        templateName: resultData.template,
+        defaultAxisForcluster: clustringData == undefined ? null : clustringData.default_pair
       })
       .then(async (responsee) => {
         setLoderVisual(false);
         seterrorFilterBox({ message: "", show: false });
         closeFilterBox();
         if (responsee.data.success) {
-          let response1a = JSON.parse(responsee.data.data); //CSVToJSON(responsee.data.data, wherCondition,s3listOfkey);
-          let response1 = response1a.filter((ele) => ele.response_id != "");
+          let response1a = responsee.data.data;
+          let response1 = response1a.filter(ele => ele.response_id != "");
           let newArrr1 = response1.map((ele, ind) => ({
             ...ele,
             id: ind + 1,
@@ -2577,26 +2680,18 @@ export default function MlResultsConnection({ resultData }) {
             (ele) => queryList.indexOf(ele.field) != -1
           );
 
-          setpositiveSatisfactionResult({
+          setmasterResult(newArrr1)
+          setpositiveSatisfactionResult({  //for table
             filterdRow:
               csCol.length == 0 || npsCols.length == 0 ? [] : newArrr1,
             filterdCol: hubspotMergeStatus ? csCol : npsCols,
           });
 
-          setrowgridData(newArrr1)
-          let keysvalue = (Object.keys(newArrr1[0]))
-          setresultvalueKeys(keysvalue)
+
           // wherequery == null && queryList.indexOf("PC1") != -1
+
           if (wherCondition == "") {
-            if (clustringData == undefined) {
-              if (resultData.template === "Churn Prediction") {
-                await createObjectForCluster(response1, ["PC1", "PC2"], []);
-              } else {
-                await createObjectForCluster(response1, ["mean", "PC2"], []);
-              }
-            } else {
-              await createObjectForCluster(response1, clustringData.default_pair, clustringData.factor_list);
-            }
+            createObjectForCluster(response1, clustringData);
           }
         } else {
           console.log(responsee.data.error.message);
@@ -2609,93 +2704,60 @@ export default function MlResultsConnection({ resultData }) {
 
 
 
-  const createObjectForCluster = async (response1, clustringDefaultAxis, clustringFactorList) => {
-    let getAllCluster = response1
-      .slice(1, 1000)
-      .map((ele) => ele.cluster);
-    const listAllCluster = [...new Set(getAllCluster)];
-    const seriesData = [];
-    const seriesData1 = [];
-    await listAllCluster.forEach((ele) => {
-      let matchedCluster = {
-        name: ele,
-        color:
-          ele == 1 ? "#FEAC00" : ele == 2 ? "#FA586C" : ele == 0 ? "#10BA5C" : "#008FFB",
-        data: response1
-          .slice(1, 1000)
-          .filter((ele1) => ele1.cluster == ele)
-          .map((ele2) => [
-            parseFloat(ele2[clustringDefaultAxis[0]]).toFixed(3),
-            parseFloat(ele2[clustringDefaultAxis[1]]).toFixed(3),
-          ]),
-      };
-      seriesData.push(matchedCluster);
-      // if (resultData.template === "Churn Prediction") {
-      //   let matchedCluster = {
-      //     name: ele,
-      //     color:
-      //       ele == 1 ? "#FEAC00" : ele == 2 ? "#FA586C" : ele == 0 ? "#10BA5C" : "#008FFB",
-      //     data: response1
-      //       .slice(1, 1000)
-      //       .filter((ele1) => ele1.cluster == ele)
-      //       .map((ele2) => [
-      //         parseFloat(ele2.PC1).toFixed(3),
-      //         parseFloat(ele2.PC2).toFixed(3),
-      //       ]),
-      //   };
-      //   seriesData.push(matchedCluster);
-      // } else {
-      //   let matchedCluster = {
-      //     name: ele,
-      //     color:
-      //       ele == 1 ? "#FEAC00" : ele == 2 ? "#FA586C" : ele == 0 ? "#10BA5C" : "#008FFB",
-      //     data: response1
-      //       .slice(1, 1000)
-      //       .filter((ele1) => ele1.cluster == ele)
-      //       .map((ele2) => [
-      //         parseFloat(ele2.mean).toFixed(3),
-      //         parseFloat(ele2.PC2).toFixed(3),
-      //       ]),
-      //   };
-      //   seriesData.push(matchedCluster);
-      // }
+  const createObjectForCluster = async (response1, clustringData) => {
+    let xLabel = "";
+    let yLabel = "";
+    let optionAxisList = []
+    let rdataForCanvas = response1;
+    if (clustringData == undefined) {
+      if (resultData.template === "Churn Prediction") {
+        xLabel = "PC1";
+        yLabel = "PC2"
+      } else {
+        xLabel = "mean";
+        yLabel = "PC2"
+      }
+    } else {
+      xLabel = clustringData.default_pair[0];
+      yLabel = clustringData.default_pair[1];
+      optionAxisList = clustringData.factor_list
+    }
+
+
+    setcanvaChartMeter({
+      minx: Math.min(...rdataForCanvas.map(item => item.x)) - 1,
+      maxx: Math.max(...rdataForCanvas.map(item => item.x)) + 1,
+      miny: Math.min(...rdataForCanvas.map(item => item.y)) - 1,
+      maxy: Math.max(...rdataForCanvas.map(item => item.y)) + 1,
+      yLable: yLabel,
+      xLable: xLabel,
+      colList: optionAxisList,
     });
 
-    await listAllCluster.forEach((ele) => {
-      let matchedCluster = {
-        name: ele,
-        data: response1
-          .slice(1, 1000)
-          .filter((ele1) => ele1.cluster == ele)
-          .map((ele2) => ({
-            average_purchase_value: ele2.average_purchase_value,
-            purchase_frequency: ele2.purchase_frequency,
-            mean: ele2.mean,
-            pc1: parseFloat(ele2[clustringDefaultAxis[0]]).toFixed(3),
-            pc2: parseFloat(ele2[clustringDefaultAxis[1]]).toFixed(3),
-          })),
-      };
-      seriesData1.push(matchedCluster);
-    });
-
-    let clusterAnalysisXlable =
-      resultData.template == "Net Promoter Score"
-        ? "Likelihood in clustering analysis."
-        : clustringDefaultAxis[0]//"Satisfaction";
-    let tmpxMin = Math.min(...response1.map(o => o[clustringDefaultAxis[0]]));
-    let tmpxMax = Math.max(...response1.map(o => o[clustringDefaultAxis[0]]));
-    setCorrespondenceAnalysis({
-      chartSeries: seriesData,
-      labels: [],
-      overall: "",
-      xLable: clusterAnalysisXlable,
-      xAxisMinMax: [tmpxMin, tmpxMax],
-      yLable: clustringDefaultAxis[1],
-      colList: clustringFactorList,
-      gridData: [],
-      gridDataCols: [],
-      tootltipProp: seriesData1,
-    });
+    let getAllCluster = response1.map((ele) => ele.cluster);
+    let listAllClusterCanva = [...new Set(getAllCluster)];
+    let colorList = ["#FEAC00", "#FA586C", "#10BA5C", "#008FFB", "#775DD0", "#C21460", "#FEFE33", "#347C98", "#FF0080"];
+    const tempData = []
+    listAllClusterCanva.forEach((node, ind) => {
+      var nodeval = {
+        type: "scatter",
+        borderColor: "green",
+        name: node,
+        color: colorList[ind],
+        showInLegend: true,
+        toolTipContent: "<span style=\"color:#4F81BC \">Mean: {mean}</span>",
+        dataPoints: rdataForCanvas.filter((n) => {
+          return n.cluster == node;
+        })
+      }
+      tempData.push(nodeval);
+    })
+    // setCanvaChart(tempData)
+    if (clustringData !== undefined) {
+      setCanvaChart(tempData)
+    } else {
+      setCanvaChart([])
+    }
   };
 
   const openInsightDialogBox = (e, dialogHeader) => {
@@ -2896,7 +2958,6 @@ export default function MlResultsConnection({ resultData }) {
 
     let newObj = {
       project_name: resultData.project_name,
-      user_id: resultData.user_id,
       template: resultData.template,
       corssTabData: JSON.stringify(updateSegmentation),
     };
@@ -2906,6 +2967,7 @@ export default function MlResultsConnection({ resultData }) {
       credentials: "include",
       headers: {
         "Content-type": "application/json",
+        "token":Cookies.get("token")
       },
       body: JSON.stringify(newObj),
     })
@@ -2925,7 +2987,6 @@ export default function MlResultsConnection({ resultData }) {
     let newObj = {
       project_name: resultData.project_name,
       project_id: resultData._id,
-      user_id: resultData.user_id,
       template: resultData.template,
       mapping_json: resultData.mapping_json,
       segments: columns,
@@ -2937,6 +2998,7 @@ export default function MlResultsConnection({ resultData }) {
       credentials: "include",
       headers: {
         "Content-type": "application/json",
+        "token":Cookies.get("token")
       },
       body: JSON.stringify(newObj),
     })
@@ -3000,7 +3062,7 @@ export default function MlResultsConnection({ resultData }) {
       setIsshowButtondonutChart("d-blok");
       setIschartFontSize("6px");
     }
-    
+
     else if (selectChart == "companyPC") {
       if (
         mappingResultdata.word_cloud != undefined &&
@@ -3126,11 +3188,11 @@ export default function MlResultsConnection({ resultData }) {
       credentials: "include",
       headers: {
         "Content-type": "application/json",
+        "token":Cookies.get("token"),
       },
       body: JSON.stringify({
         projectName: resultData.project_name,
         form_id: getSelectedFormId,
-        user_id: resultData.user_id,
         template: resultData.template,
         mapping_json: resultData.mapping_json,
         saveAsDraft: true,
@@ -3333,10 +3395,23 @@ export default function MlResultsConnection({ resultData }) {
   };
 
   const selectAxisForCluster = (e, value, keyName) => {
-    let tmpCorrespondenceAnalysis = { ...correspondenceAnalysis };
-    tmpCorrespondenceAnalysis[keyName] = value;
-    let newDefaultVal = [tmpCorrespondenceAnalysis.xLable, tmpCorrespondenceAnalysis.yLable]
-    createObjectForCluster(positiveSatisfactionResult.filterdRow, newDefaultVal, tmpCorrespondenceAnalysis.colList);
+    let tmpcanvaChartMeter = { ...canvaChartMeter };
+    tmpcanvaChartMeter[keyName] = value;
+    let newDefaultVal = [tmpcanvaChartMeter.xLable, tmpcanvaChartMeter.yLable];
+
+    let newObj = {
+      default_pair: newDefaultVal,
+      factor_list: canvaChartMeter.colList
+    }
+
+    let newSelectedAxisData = [...positiveSatisfactionResult.filterdRow];
+    let tmpAxisListData = newSelectedAxisData.map(node => ({
+      ...node,
+      x: parseFloat(node[tmpcanvaChartMeter.xLable]),
+      y: parseFloat(node[tmpcanvaChartMeter.yLable]),
+    }))
+
+    createObjectForCluster(tmpAxisListData, newObj);
   };
 
   const selecttopicSentiment = (e, value, isTime) => {
@@ -3544,6 +3619,29 @@ export default function MlResultsConnection({ resultData }) {
       console.log(filterset);
     }
   };
+
+  const rangeFilter = () => {
+
+
+
+    let result = [...masterResult].filter((node) => {
+
+      return (
+        node[canvaChartMeter.xLable] > psvalone[0] && node[canvaChartMeter.xLable] < psvalone[1] &&
+        node[canvaChartMeter.yLable] > psvaltwo[0] && node[canvaChartMeter.yLable] < psvaltwo[1]
+      )
+
+    })
+
+
+    setpositiveSatisfactionResult({
+      filterdRow: result,
+      filterdCol: positiveSatisfactionResult.filterdCol,
+
+    })
+
+
+  }
 
   const weekStart = new Date(
     new Date(
@@ -3769,9 +3867,9 @@ export default function MlResultsConnection({ resultData }) {
       .post(
         `${process.env.REACT_APP_API_URL}/survey/getAnalysisProcessStatus`,
         {
-          user_id: resultData.user_id,
           project_name: resultData.project_name,
-        }
+        },
+        { withCredentials: true }
       )
       .then(async (response1) => {
         // setLoderVisual(false);
@@ -3853,6 +3951,7 @@ export default function MlResultsConnection({ resultData }) {
   const getPromptData = async () => {
     localStorage.setItem("selectedUser_Id", resultData.user_id);
     localStorage.setItem("selectedProjectId", resultData._id);
+    localStorage.setItem("selectedProjectname", resultData.project_name);
     let url = resultData.user_id + "/" + resultData._id;
     await axios
       .get(`http://54.84.56.97/questions/` + url)
@@ -3876,72 +3975,61 @@ export default function MlResultsConnection({ resultData }) {
   const handleClose = () => { setAnchorEl(null); };
 
   /* _____________________ Custom chart genrate  _____________________ */
-
-  const [colorPatternList, setcolorPatternList] = useState(false);
-  const [resultvalueKeys, setresultvalueKeys] = useState([false]);
-  const [rowgridData, setrowgridData] = useState({})
-  const [customChartOpertaion, setcustomChartOpertaion] = useState([
-    {name:'Sum',  calby:'x'},
-    {name:'Average',  calby:'x'} 
-  ])
-  const [customChartDataGen, setcustomChartDataGen] = useState({
-    series: [{
-    data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
-  }],
-    chart: {
-    type: 'bar',
-    height: 350
-  },
-  plotOptions: {
-    bar: {
-      borderRadius: 4,
-      borderRadiusApplication: 'end',
-      horizontal: true,
-    }
-  },
-  dataLabels: {
-    enabled: false
-  },
-  xaxis: {
-    categories: ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan',
-      'United States', 'China', 'Germany'
-    ],
-  }
-  }) 
-
-
-  const [filtercustomChartRange, setfiltercustomChartRange] = React.useState([null, null]);
+  const [cxaxis, setcxaxis] = useState([]);
+  const [cyaxis, setcyaxis] = useState([]); 
+  const [customChartOpertaion, setcustomChartOpertaion] = useState(['sum','mean'])  
+  const [filtercustomChartRange, setfiltercustomChartRange] = React.useState(["", ""]); 
   const [customaxis, setcustomaxis] = useState({
     project_name: resultData.project_name,
     xaxis: '',
     yaxis: '',
-    operationName: '', 
+    operation: '',
     // colorPattern:selectedcolorspattern,
-  });
-
-  const colorspatternList = [
-    {
-      id: 1,
-      name: 'color1',
-      colorspattern: ['#546E7A',]
-    },
-  ]
-  const showcolorpattern = () => { setcolorPatternList(!colorPatternList) }
-  const [customchartData, setcustomchartData] = useState([{ data:null }]);
+  }); 
+  const [customchartData, setcustomchartData] = useState(null);
+  const [customchartloader, setcustomchartloader] = useState(false); 
+  const [customChartResMessage, setcustomChartResMessage] = useState('');
   
-  const [customchartloader, setcustomchartloader] = useState(false);
-
-
+  const [customrespoanceMessage, setcustomrespoanceMessage] = useState('');
+  
+  
   const selectChartaxis = (e, val, label) => {
     let tmpcustomaxis = { ...customaxis, }
-    tmpcustomaxis[label] = val  
+    tmpcustomaxis[label] = val
     setcustomaxis(tmpcustomaxis);
     console.log(customaxis)
   }
 
+  const customDataRang=(e)=>{
+    // let startDate=e.startDate.toString();
+    // let endDate=e.endDate.toString();  
+    // let customdateStart1 = convertToDate(startDate);
+    // let customdateEnd2 = convertToDate(endDate);  
+    setfiltercustomChartRange(e.value) 
+  } 
+
+  const clearAllscutom=(e)=>{
+    let tmpcustomaxis = { ...customaxis, } 
+      tmpcustomaxis={
+      project_name: resultData.project_name,
+      xaxis: '',
+      yaxis: '',
+      operation: '',
+    }
+    let tempDatarang=["", ""]
+    setfiltercustomChartRange(tempDatarang) 
+    console.log(filtercustomChartRange)
+    setcustomaxis(tmpcustomaxis) 
+    console.log(customaxis)  
+    let temp=null;
+    setcustomchartData(temp)
+    console.log(customchartData)
+  }
+
   const applyCustomChart = async () => {
-    // let daterang = {'operation':customaxis.operationName, 'axis': customaxis.xaxis}
-    let daterang = { "operation": "sum", "axis": "x" }
+    setcustomchartloader(true)
+    // let daterang = {'operation':customaxis.operation, 'axis': customaxis.xaxis}
+    let selOperation = { "operation": customaxis.operation, "axis": "x" }
     let requestCustomchart = {
       project_name: resultData.project_name,
       project_id: resultData._id,
@@ -3950,13 +4038,13 @@ export default function MlResultsConnection({ resultData }) {
       mapping_json: resultData.mapping_json,
       graph_id: 'customaxis' + customaxis.xaxis,
       xaxis: customaxis.xaxis,
-      yaxis:customaxis.yaxis,
-      operationName:daterang,
-        // operationName: {"operation": "sum", "axis": "x"},
-      timerange:filtercustomChartRange,
+      yaxis: customaxis.yaxis,
+      operationName: selOperation,
+      // operationName: {"operation": "sum", "axis": "x"},
+      timerange: filtercustomChartRange,
       colorPattern: "null",
       chart_type: "bar",
-    } 
+    }
     fetch(`${process.env.REACT_APP_API_URL}/survey/createCustomGraph`, {
       method: "POST",
       credentials: "include",
@@ -3964,24 +4052,27 @@ export default function MlResultsConnection({ resultData }) {
         "Content-type": "application/json",
       },
       body: JSON.stringify(requestCustomchart),
-    }) 
-    .then((res) => res.json()) 
-     .then((res) => {
-        if (res.success==true) {
-          setcustomchartloader(false)  
-          let customdatares = JSON.parse(res.data); 
-          let  customdataresn=JSON.parse(customdatares);    
-          setcustomchartData(customdataresn)       
-        } 
-        else{ 
-          console.log("fesdfdfgfd")
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success == true) {
+          setcustomchartloader(false)
+          let customdatares = JSON.parse(res.data);
+          let customdataresn = JSON.parse(customdatares);
+          setcustomchartData(customdataresn)
+          setcustomChartResMessage('')
         }
-        
+        else {
+          setcustomChartResMessage('Data not Available')
+          setcustomchartloader(false)
+          console.log("Fail")
+        } 
+
       })
       .catch((err) => {
-        setcustomchartloader(true) 
+        customrespoanceMessage(true)
         setTimeout(() => {
-          setcustomchartloader(false) 
+          customrespoanceMessage(false)
         }, 5000);
         console.log("Error: " + err);
       });
@@ -3999,6 +4090,7 @@ export default function MlResultsConnection({ resultData }) {
           size="small"
           color="primary"
           variant="outlined"
+          title="Insight"
           onClick={(e) => openInsightDialogBox(e, "Dashboard")}
           className="mr-2"
         >
@@ -4010,6 +4102,7 @@ export default function MlResultsConnection({ resultData }) {
             size="small"
             color="primary"
             variant="outlined"
+            title="Segmentation"
             onClick={(e) => openSegmentaionDialogBox(e, "Dashboard")}
             className="mr-2"
           >
@@ -4022,6 +4115,7 @@ export default function MlResultsConnection({ resultData }) {
           size="small"
           color="primary"
           variant="outlined"
+          title="Hide Table"
           onClick={(e) => hideDataTable(e)}
           className="mr-2"
         >
@@ -4034,6 +4128,7 @@ export default function MlResultsConnection({ resultData }) {
         <Button
           onClick={(e) => openFilterBox(e, "Dashboard")}
           color="primary"
+          title="filter"
           variant={activeTopButton ? "contained" : "outlined"}
           className="icon-btn-sm mr-2"
         >
@@ -4043,12 +4138,103 @@ export default function MlResultsConnection({ resultData }) {
           onClick={(e) => openAlertsDialogBox(e, resultData.template)}
           color="primary"
           variant="outlined"
+          title="Alerts"
           className="icon-btn-sm"
         >
           <i className="fa fa-bell"></i>
         </Button>
       </div>
       <div className="clearfix"></div>
+
+
+      {/* ------------filter box range slider------------ */}
+
+      <Popover
+        open={rangeBox}
+        close={(e) => closeRangePopupBox()}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+        style={{ left: filterPopup.xPosition, top: filterPopup.yPosition }}
+      >    <div className="filterBox">
+          <a
+            onClick={(e) => closeRangePopupBox()}
+            className="fa fa-close float-right"
+          ></a>{" "}
+          <h4 className="m-0">
+            <i className="fa fa-filter"> </i> Filter {filterForBoxString}
+          </h4>
+          <label>{canvaChartMeter.xLable}</label>
+          <FormControl
+            sx={{ mt: 0.5, mb: 1, minWidth: "100%", maxWidth: "100%" }}
+          >
+
+            <Slider
+              getAriaLabel={() => canvaChartMeter.xLable}
+              value={psvalone}
+              onChange={handleChangeRange}
+              valueLabelDisplay="auto"
+              min={canvaChartMeter.minx}
+              step={0.1}
+              max={canvaChartMeter.maxx}
+              disableSwap
+            />
+
+          </FormControl>
+          <label>{canvaChartMeter.yLable}</label>
+          <FormControl
+            sx={{ mt: 0.5, mb: 1, minWidth: "100%", maxWidth: "100%" }}
+          >
+
+
+
+            <Slider
+              getAriaLabel={() => canvaChartMeter.yLable}
+              value={psvaltwo}
+              onChange={handleChangePsRange}
+              valueLabelDisplay="auto"
+              min={canvaChartMeter.miny}
+              step={0.1}
+              max={canvaChartMeter.maxy}
+              disableSwap
+            />
+          </FormControl>
+          <br />
+
+
+          <Stack direction="row" spacing={1}>
+            <Button
+              color="primary"
+              variant="outlined"
+              onClick={() => {
+                rangeFilter();
+              }}
+            >
+              Apply Filter
+            </Button>
+            <Button
+              color="primary"
+              variant="outlined"
+              onClick={() => {
+                clearRangefilter();
+              }}
+            >
+              Clear
+            </Button>
+          </Stack>
+
+
+
+        </div>
+
+      </Popover>
+
+
 
       {/* ------------filter box ------------ */}
       <Popover
@@ -4784,7 +4970,7 @@ export default function MlResultsConnection({ resultData }) {
                                 "text-align": ii == 0 ? `left` : "center",
                               }}
                             >
-                               {itemBodydata}  
+                              <span className={itemBodydata == '100.0%' ? 'text-highlighter' : ''}> {itemBodydata} </span>
                             </div>
                           </td>
                         ))}
@@ -5689,25 +5875,30 @@ export default function MlResultsConnection({ resultData }) {
                       <Card
                         className={
                           selectedGridBox ==
-                            ` WHERE s."sat_category" = 'positive'` ||
+                            'positive' ||
                             selectedGridBox ==
-                            ` WHERE s."sat_category" = 'Promoter'`
+                            'Promoter'
                             ? "cardBox selectCard"
                             : "cardBox "
                         }
                       >
                         <CardContent
                           onClick={() => {
+                            setIsselectedGridBox("positive")
                             resultData.template == "Net Promoter Score"
                               ? getResultFromS3(
                                 isHubspotMerge,
                                 mappingResultdata.query_list,
-                                ` WHERE s."nps_category" = 'Promoter'`
+                                ` WHERE s."nps_category" = 'Promoter'`,
+                                "",
+                                "Promoter"
                               )
                               : getResultFromS3(
                                 isHubspotMerge,
                                 mappingResultdata.query_list,
-                                ` WHERE s."sat_category" = 'positive'`
+                                ` WHERE s."sat_category" = 'positive'`,
+                                "",
+                                "Positive"
                               );
                           }}
                         >
@@ -5752,25 +5943,29 @@ export default function MlResultsConnection({ resultData }) {
                     <Grid item xs={4}>
                       <Card
                         className={
-                          selectedGridBox ==
-                            ` WHERE sat_category = 'neutral'` ||
-                            selectedGridBox == ` WHERE sat_category = 'Passive'`
+                          selectedGridBox == "neutral" ||
+                            selectedGridBox == 'Passive'
                             ? "cardBox selectCard"
                             : "cardBox"
                         }
                       >
                         <CardContent
                           onClick={() => {
+                            setIsselectedGridBox("Passive")
                             resultData.template == "Net Promoter Score"
                               ? getResultFromS3(
                                 isHubspotMerge,
                                 mappingResultdata.query_list,
-                                `WHERE s."nps_category" = 'Passive'`
+                                `WHERE s."nps_category" = 'Passive'`,
+                                "",
+                                "Passive"
                               )
                               : getResultFromS3(
                                 isHubspotMerge,
                                 mappingResultdata.query_list,
-                                ` WHERE s."sat_category" = 'neutral'`
+                                ` WHERE s."sat_category" = 'neutral'`,
+                                "",
+                                "Neutral"
                               );
                           }}
                         >
@@ -5818,23 +6013,27 @@ export default function MlResultsConnection({ resultData }) {
                 data.row.sat_category.toLowerCase() == "detractor") ? */}
                       <Card
                         className={
-                          selectedGridBox ==
-                            ` WHERE sat_category = 'negative'` ||
-                            selectedGridBox == ` WHERE sat_category = 'Detractor'`
+                          selectedGridBox == 'negative' ||
+                            selectedGridBox == 'Detractor'
                             ? "cardBox selectCard"
                             : "cardBox"
                         }
                         onClick={() => {
+                          setIsselectedGridBox("Detractor")
                           resultData.template == "Net Promoter Score"
                             ? getResultFromS3(
                               isHubspotMerge,
                               mappingResultdata.query_list,
-                              ` WHERE s."nps_category" = 'Detractor'`
+                              ` WHERE s."nps_category" = 'Detractor'`,
+                              "",
+                              "Detractor"
                             )
                             : getResultFromS3(
                               isHubspotMerge,
                               mappingResultdata.query_list,
-                              ` WHERE s."sat_category" = 'negative'`
+                              ` WHERE s."sat_category" = 'negative'`,
+                              "",
+                              "Negative"
                             );
                         }}
                       >
@@ -5885,13 +6084,24 @@ export default function MlResultsConnection({ resultData }) {
                   <Grid item xs={4}>
                     <Card
                       className={
-                        selectedGridBox == ` WHERE sat_category = 'positive'` ||
-                          selectedGridBox == ` WHERE sat_category = 'Promoter'`
+                        selectedGridBox ==
+                          'High'
                           ? "cardBox selectCard"
                           : "cardBox "
                       }
                     >
-                      <CardContent>
+                      <CardContent
+                        onClick={() => {
+                          setIsselectedGridBox("High")
+                          getResultFromS3(
+                            isHubspotMerge,
+                            mappingResultdata.query_list,
+                            ` WHERE s."nps_category" = 'High'`,
+                            "",
+                            "High"
+                          )
+                        }}
+                      >
                         <img
                           src={positivechart}
                           alt="Positive"
@@ -5926,13 +6136,21 @@ export default function MlResultsConnection({ resultData }) {
                   <Grid item xs={4}>
                     <Card
                       className={
-                        selectedGridBox == ` WHERE sat_category = 'neutral'` ||
-                          selectedGridBox == ` WHERE sat_category = 'Passive'`
+                        selectedGridBox == "Low"
                           ? "cardBox selectCard"
                           : "cardBox"
                       }
                     >
-                      <CardContent>
+                      <CardContent onClick={() => {
+                        setIsselectedGridBox("Low")
+                        getResultFromS3(
+                          isHubspotMerge,
+                          mappingResultdata.query_list,
+                          ` WHERE s."nps_category" = 'Low'`,
+                          "",
+                          "Low"
+                        )
+                      }}>
                         <img
                           src={neutralchart}
                           alt="Positive"
@@ -5966,9 +6184,9 @@ export default function MlResultsConnection({ resultData }) {
                 </Grid>
               )}
 
-              <div style={{ height: 9 }}></div>
-              {/* ---------------- custom chart  ----------------  */}
-              <Grid container spacing={1}>
+              <div style={{ height: 9 }}></div> 
+               <Grid container spacing={1}>
+                 {/* ---------------- custom chart  ----------------  */}
                 <Grid item xs={8}>
                   <Card className="cardBox">
                     <CardContent>
@@ -5981,10 +6199,10 @@ export default function MlResultsConnection({ resultData }) {
                               <Select
                                 labelId="cxaxis"
                                 id="cxaxis"
-                                value={setcustomaxis.xaxis}
+                                value={customaxis.xaxis}
                                 label="X-axis"
                               >
-                                {resultvalueKeys.map(
+                                {cxaxis.map(
                                   (item, i) => (
                                     <MenuItem
                                       key={item}
@@ -6005,10 +6223,10 @@ export default function MlResultsConnection({ resultData }) {
                               <Select
                                 labelId="cxaxis"
                                 id="cxaxis"
-                                value={setcustomaxis.yaxis}
+                                value={customaxis.yaxis}
                                 label="X-axis"
                               >
-                                {resultvalueKeys.map(
+                                {cyaxis.map(
                                   (item, i) => (
                                     <MenuItem
                                       key={item}
@@ -6029,8 +6247,8 @@ export default function MlResultsConnection({ resultData }) {
                               <Select
                                 labelId="cxaxis"
                                 id="cxaxis"
-                                value={setcustomaxis.operationName}
-                                label="X-axis"
+                                value={customaxis.operation}
+                                label="Data Operation"
                               >
                                 {customChartOpertaion.map(
                                   (item, i) => (
@@ -6038,7 +6256,7 @@ export default function MlResultsConnection({ resultData }) {
                                       key={item}
                                       value={item}
                                       onClick={(e) => {
-                                        selectChartaxis(e, item,'operation');
+                                        selectChartaxis(e, item, 'operation');
                                       }}
                                     >
                                       <ListItemText primary={item} />
@@ -6052,9 +6270,8 @@ export default function MlResultsConnection({ resultData }) {
                                 placeholder="Select Time range"
                                 cssClass="e-outline"
                                 value={filtercustomChartRange}
-                                change={(ev) => {
-                                  setfiltercustomChartRange(ev.value);
-                                }}
+                                change={(event) => {  customDataRang(event);}}
+                               // change={(ev) => customDataRang(ev)}
                               >
                                 <PresetsDirective>
                                   <PresetDirective
@@ -6090,14 +6307,10 @@ export default function MlResultsConnection({ resultData }) {
                             <Button
                               color="primary"
                               variant="outlined"
-                              onClick={() => {
-                                clearfilter("timeseries");
-                              }}
-
-                            >
+                              onClick={() => clearAllscutom()}>
                               <i className="fa fa-close mr-1" />  Clear All
                             </Button>
-                            <Button
+                            {/* <Button
                               color="primary"
                               variant="outlined"
                               onClick={() => {
@@ -6105,7 +6318,7 @@ export default function MlResultsConnection({ resultData }) {
                               }}
                             >
                               <i className="fa fa-exchange mr-1" />  Swap
-                            </Button>
+                            </Button> */}
                             <Button
                               sx={{ mt: { xs: 2, sm: 0 } }}
                               color="primary"
@@ -6119,16 +6332,16 @@ export default function MlResultsConnection({ resultData }) {
 
                         </Grid>
                         <Grid item xs={6}>
-                          <Box sx={{ height: 300, width: "100%" }}>
-                            {customchartloader?<div className="text-center"><br/><br/><br/><br/><CircularProgress /><br/> <br/>Thank you for your patience...</div>:<><CustomChart customchartData={customchartData} /></>}
-                          
+                          <Box sx={{ height: 300, width: "100%" }}> 
+                            {customchartloader ? <div className="text-center"><br /><br /><br /><br /><CircularProgress /><br /> <br />Thank you for your patience...</div> : <><CustomChart customchartData={customchartData} customChartResMessage={customChartResMessage} /></>}
                           </Box>
 
                         </Grid>
                       </Grid>
                     </CardContent>
                   </Card>
-                </Grid>
+                </Grid> 
+                {/* ---------------- custom chart  ----------------  */}
                 {featureImportanceData.chartSeries.length != 0 ? (
                   <>
                     {" "}
@@ -6267,7 +6480,12 @@ export default function MlResultsConnection({ resultData }) {
                     xs={chartHalfST}
                   // xs={resultData.template == "Net Promoter Score" ? 6 : 8}
                   >
-                    <Card className="cardBox">
+                    <Card className={
+                      selectedGridBox ==
+                        'Analysis Based On Topic'
+                        ? "cardBox selectCard"
+                        : "cardBox "
+                    }>
                       <CardContent>
                         <h3
                           title={
@@ -6308,7 +6526,7 @@ export default function MlResultsConnection({ resultData }) {
                               }
                             ></i>
                           </a>
-                          
+
                         </div>
                         <div className="clearfix"></div>
 
@@ -6332,39 +6550,48 @@ export default function MlResultsConnection({ resultData }) {
                                 </label>
                                 <div className="bars">
                                   <div
-                                    onClick={(e) =>
+                                    onClick={() => {
+                                      setIsselectedGridBox("Analysis Based On Topic")
                                       getResultFromS3(
                                         isHubspotMerge,
                                         mappingResultdata.query_list,
-                                        `WHERE CAST(s."${baritem.topic}" as FLOAT) BETWEEN 4 AND 5 `
+                                        `WHERE CAST(s."${baritem.topic}" as FLOAT) BETWEEN 4 AND 5 `,
+                                        "",
+                                        baritem.topic
                                       )
-                                    }
+                                    }}
                                     className="promoter"
                                     style={{ width: baritem.positive + "%" }}
                                   >
                                     <span>{baritem.positive + "%"}</span>
                                   </div>
                                   <div
-                                    onClick={(e) =>
+                                    onClick={() => {
+                                      setIsselectedGridBox("Analysis Based On Topic")
                                       getResultFromS3(
                                         isHubspotMerge,
                                         mappingResultdata.query_list,
-                                        `WHERE CAST(s."${baritem.topic}" as FLOAT) BETWEEN 2 AND 3.9999`
+                                        `WHERE CAST(s."${baritem.topic}" as FLOAT) BETWEEN 2 AND 3.9999`,
+                                        "",
+                                        baritem.topic
                                       )
-                                    }
+                                    }}
                                     className="passive"
                                     style={{ width: baritem.neutral + "%" }}
                                   >
                                     <span>{baritem.neutral + "%"}</span>
                                   </div>
                                   <div
-                                    onClick={(e) =>
+                                    onClick={() => {
+                                      setIsselectedGridBox("Analysis Based On Topic")
                                       getResultFromS3(
                                         isHubspotMerge,
                                         mappingResultdata.query_list,
-                                        `WHERE CAST(s."${baritem.topic}" as FLOAT) < 2`
+                                        `WHERE CAST(s."${baritem.topic}" as FLOAT) < 2`,
+                                        "",
+                                        baritem.topic
                                       )
-                                    }
+                                    }}
                                     className="detractor"
                                     style={{ width: baritem.negative + "%" }}
                                   >
@@ -6422,11 +6649,16 @@ export default function MlResultsConnection({ resultData }) {
                     ) : null}
                   </>
                 ) : (
-                  <> 
+                  <>
                     {demographicsResult.chartSeries.length != 0 ? (
                       <>
                         <Grid item xs={chartHalfdonutChart}>
-                          <Card className="cardBox">
+                          <Card className={
+                            selectedGridBox ==
+                              'Brand Differentiation'
+                              ? "cardBox selectCard"
+                              : "cardBox "
+                          }>
                             <CardContent>
                               <h3 title={`${demographicsResult.selectedCat}`}>
                                 {demographicsResult.selectedCat}
@@ -6439,20 +6671,20 @@ export default function MlResultsConnection({ resultData }) {
                                 >
                                   <i className="fa fa-info-circle small-md-icons"></i>
                                 </Tooltip>
-                               
+
                                 <a
-                              className={"-  " + hideButtondonutChart}
-                              onClick={(e) => closeenlarge("donutChart")}
-                            >
-                              <i className="fa fa-compress"> </i>{" "}
-                            </a>
-                            <a
-                              className={"-  " + showButtondonutChart}
-                              onClick={(e) => chartenlarge("donutChart")}
-                            >
-                              <i className="fa fa-expand"> </i>
-                            </a>
-                            <a
+                                  className={"-  " + hideButtondonutChart}
+                                  onClick={(e) => closeenlarge("donutChart")}
+                                >
+                                  <i className="fa fa-compress"> </i>{" "}
+                                </a>
+                                <a
+                                  className={"-  " + showButtondonutChart}
+                                  onClick={(e) => chartenlarge("donutChart")}
+                                >
+                                  <i className="fa fa-expand"> </i>
+                                </a>
+                                <a
                                   onClick={(e) =>
                                     openFilterBox(e, "Demography")
                                   }
@@ -6460,7 +6692,7 @@ export default function MlResultsConnection({ resultData }) {
                                   <i className="fa fa-filter"></i>
                                 </a>
                               </div>
-                              
+
                               <div className="clearfix"></div>
                               <Box
                                 sx={{
@@ -6494,7 +6726,12 @@ export default function MlResultsConnection({ resultData }) {
                   resultData.template !== "Churn Prediction" ? (
                   <>
                     <Grid item xs={chartHalfTs} className={chartOne}>
-                      <Card className="cardBox">
+                      <Card className={
+                        selectedGridBox ==
+                          'Time Series'
+                          ? "cardBox selectCard"
+                          : "cardBox "
+                      }>
                         <CardContent>
                           <h3
                             title={`Time Series: ${timeSeriesData.selectedTimeSeriesTimeOption.filter(
@@ -6746,7 +6983,7 @@ export default function MlResultsConnection({ resultData }) {
                     </Grid>
                   </>
                 ) : null}
-                {correspondenceAnalysis.chartSeries.length != 0 ? (
+                {canvaChart.length != 0 ? (
                   <>
                     <Grid item xs={chartHalfCR} className={chartThree}>
                       <Card className="cardBox">
@@ -6754,12 +6991,9 @@ export default function MlResultsConnection({ resultData }) {
                           <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={1}>
                             <div><h3 style={{ minWidth: 250 }}
                               title={
-                                "Clustering Analysis" +
-                                correspondenceAnalysis?.overall
-                              }
+                                "Clustering Analysis"}
                             >
                               Clustering Analysis
-                              {correspondenceAnalysis?.overall}
                             </h3>
                             </div>
                             <div>{
@@ -6772,9 +7006,9 @@ export default function MlResultsConnection({ resultData }) {
                                         labelId="X-axis-label"
                                         id="X-axis-label"
                                         label="X-axis"
-                                        value={correspondenceAnalysis.xLable}
+                                        value={canvaChartMeter.xLable}
                                       >
-                                        {correspondenceAnalysis.colList.map(
+                                        {canvaChartMeter.colList.map(
                                           (item, i) => (
                                             <MenuItem
                                               key={item}
@@ -6793,14 +7027,14 @@ export default function MlResultsConnection({ resultData }) {
                                   </Grid>
                                   <Grid item xs={6} md={6}>
                                     <FormControl size="small" sx={{ minWidth: 250, width: "100%" }}>
-                                      <InputLabel id="Y-axis-label">X-axis</InputLabel>
+                                      <InputLabel id="Y-axis-label">Y-axis</InputLabel>
                                       <Select
                                         labelId="Y-axis-label"
                                         id="Y-axis-label"
                                         label="Y-axis"
-                                        value={correspondenceAnalysis.yLable}
+                                        value={canvaChartMeter.yLable}
                                       >
-                                        {correspondenceAnalysis.colList.map(
+                                        {canvaChartMeter.colList.map(
                                           (item, i) => (
                                             <MenuItem
                                               key={item}
@@ -6828,6 +7062,8 @@ export default function MlResultsConnection({ resultData }) {
                               >
                                 <i className="fa fa-info-circle cursorpointer small-md-icons mr-1"></i>
                               </Tooltip>
+
+
                               <i
                                 className={"fa fa-expand cursorpointer " + showButtonCR}
                                 onClick={(e) => chartenlarge("companyCR")}
@@ -6836,6 +7072,14 @@ export default function MlResultsConnection({ resultData }) {
                                 className={"fa fa-compress cursorpointer " + hideButtonCR}
                                 onClick={(e) => closeenlarge("companyCR")}
                               ></i>
+                              <a>
+                                <i
+                                  className="fa fa-filter"
+                                  onClick={(e) =>
+                                    openRangePopupBox(e, " Clustering")
+                                  }
+                                ></i>
+                              </a>
                             </div>
                           </Stack>
 
@@ -6851,12 +7095,13 @@ export default function MlResultsConnection({ resultData }) {
                           <div className="clearfix"></div>
                           <Box sx={{ height: chartBoxHeightCR, width: "100%" }}>
                             <div id="chart12b">
-                              <Chart
+                              <CanvasJSChart options={options} />
+                              {/* <Chart
                                 height={chartHeightCR}
                                 options={chartOptions2}
                                 series={correspondenceAnalysis.chartSeries}
                                 type="scatter"
-                              />
+                              /> */}
                             </div>
                           </Box>
                         </CardContent>
@@ -6865,10 +7110,16 @@ export default function MlResultsConnection({ resultData }) {
                   </>
                 ) : null}
 
+
                 {churnRate.chartSeries.length != 0 ? (
                   <>
                     <Grid item xs={chartHalfPC} className={chartFour}>
-                      <Card className="cardBox">
+                      <Card className={
+                        selectedGridBox ==
+                          'Word Cloud'
+                          ? "cardBox selectCard"
+                          : "cardBox "
+                      }>
                         <CardContent>
                           <h3
                             title={"Word Cloud: " + churnRate.selectedChurnCat}
@@ -6925,15 +7176,24 @@ export default function MlResultsConnection({ resultData }) {
                       </Card>
                     </Grid>
                   </>
-                ) : null}
-
+                ) : null}  
               </Grid>
-              {/* ---------------- custom chart  ----------------  */}
-              <div className="clearfix"></div>
-            </Box>
-          </div>
+              < div className="clearfix" ></div >
+            </Box >
+          </div >
           {dataTable && (
             <div>
+              {(selectedcardTemplate !== "" && selectedcardTemplate !== undefined) ?
+                <Button
+                  size="small"
+                  color="primary"
+                  variant="outlined"
+                  onClick={(e) => refreshDataGrid(e)}
+                  className="mr-2 mt-1 ml-1"
+                >
+                  {selectedcardTemplate} X
+                </Button>
+                : ""}
               <Box
                 sx={{
                   height: "calc(100vh - 18em)",
@@ -6950,7 +7210,7 @@ export default function MlResultsConnection({ resultData }) {
                   </Box>
                 )}
                 {!showLoder && (
-                  <DataGridPro
+                  <DataGrid
                     className="table"
                     sx={{
                       height: "calc(100vh - 13.8em)",
@@ -6963,7 +7223,7 @@ export default function MlResultsConnection({ resultData }) {
                     pageSizeOptions={[20, 50, 100]}
                     checkboxSelection={false}
                     disableSelectionOnClick
-                    getRowHeight={() => "auto"}
+                    // getRowHeight={() => "auto"}
                     initialState={{
                       pagination: {
                         paginationModel: {
@@ -6978,9 +7238,10 @@ export default function MlResultsConnection({ resultData }) {
                 )}
               </Box>
             </div>
-          )}
-        </SplitterLayout>
-      </div>
-    </div>
+          )
+          }
+        </SplitterLayout >
+      </div >
+    </div >
   );
 }

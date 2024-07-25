@@ -118,7 +118,7 @@ function SignupPage() {
       if(urlinfo.utm_campaign!=null&&urlinfo.utm_medium!=null&&urlinfo.utm_source!=null&&urlinfo.utm_url!=null){  
         fetch(`${process.env.REACT_APP_API_URL}/survey/saveTypeformUserRecord`,{
           method:'POST',
-          headers:{'Content-Type':'application/json'},
+          headers:{'Content-Type':'application/json',"token":Cookies.get("token")},
           body:JSON.stringify(urlinfo), 
          }) 
       }     

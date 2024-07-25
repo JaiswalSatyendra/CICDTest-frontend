@@ -1,4 +1,5 @@
 import React, { useState, forwardRef, useContext, useEffect } from 'react';
+import Cookies from "js-cookie";
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -18,6 +19,7 @@ import MuiAccordionSummary, {
   AccordionSummaryProps,
 } from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
+import { DataGrid } from "@mui/x-data-grid";
 import { DataGridPro } from "@mui/x-data-grid-pro";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import { useTranslation } from "react-i18next";
@@ -212,6 +214,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
         {
           headers: {
             "Content-type": "application/json",
+            "token":Cookies.get("token"),
           }
         })
         .then((response) => {
@@ -669,12 +672,20 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
     setselectedDefaultWorkspace(val);
     // ${process.env.REACT_APP_API_URL}/survey/getFeedbackListOfHubspot
     // "token": "FcCmBqwFNAYWKtXv5F6g6CZtfmBQKgMnBP7vSMTYGshg"
-    axios
-      .post(`${process.env.REACT_APP_AMEZON_AWSAPI_URL}/workspace/forms`, { "token": token, "workspaceid": val.value })
+    fetch(`${process.env.REACT_APP_AMEZON_AWSAPI_URL}/workspace/forms`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify( { "token": token, "workspaceid": val.value })
+    })
+      .then((res) => res.json())
+    // axios
+    //   .post(`${process.env.REACT_APP_AMEZON_AWSAPI_URL}/workspace/forms`, { "token": token, "workspaceid": val.value })
       .then((response) => {
-        if (response.data.length != 0) {
+        if (response.length != 0) {
           let newWorkspace = [];
-          response.data.forEach(ele => {
+          response.forEach(ele => {
             newWorkspace.push({ "title": ele.title, "value": ele.id })
           })
           setlistOfForm(newWorkspace);
@@ -732,7 +743,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
       let cloneContactMap = []//[...listContactMapping];
       let cloneContactMap1 = [];
       setisFetchedFeedbackList(true)
-      await axios.post(`${process.env.REACT_APP_API_URL}/survey/getFeedbackListOfHubspot`, { user: user._id, "token": hubspotTokenName, refresh_token: hubspotRefreshtokenName, hs_object: hsObject })
+      await axios.post(`${process.env.REACT_APP_API_URL}/survey/getFeedbackListOfHubspot`, { "token": hubspotTokenName, refresh_token: hubspotRefreshtokenName, hs_object: hsObject },{ withCredentials: true })
         .then(async (response) => {
           console.log(response.data);
           setisFetchedFeedbackList(false)
@@ -825,7 +836,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
     // ${process.env.REACT_APP_AMEZON_AWSAPI_URL}/form
     //${process.env.REACT_APP_API_URL}/survey/getTypePreviewListData
     await axios
-      .post(`${process.env.REACT_APP_API_URL}/survey/getTypePreviewListData`, { "token": token, "formidlist": newList })
+      .post(`${process.env.REACT_APP_API_URL}/survey/getTypePreviewListData`, { "token": token, "formidlist": newList },{ withCredentials: true })
       .then((response) => {
         setLoaderShow(false);
 
@@ -1090,14 +1101,15 @@ console.log(filterlistContactMapping)
                                     }
                                   </Box>
                                   <Box sx={{ height: 300, width: '100%', paddingBottom: '10px' }}>
-                                    <DataGridPro
+                                    <DataGrid
                                       rows={item.formFields}
                                       columns={colList}
                                       pageSizeOptions={[5, 10, 50, 100]}
                                       checkboxSelection={true}
-                                      getRowHeight={() => 'auto'}
-                                      rowSelectionModel={item.selectedRow}
-                                      onRowSelectionModelChange={(e) => {
+                                     
+
+                                      selectionModel={item.selectedRow}
+                                      onSelectionModelChange={(e) => {
                                         let newList1 = [...listMapping]
                                         newList1[index].selectedRow = e;
                                         setlistMapping(newList1);
@@ -1399,10 +1411,35 @@ console.log(filterlistContactMapping)
                                                             <span onClick={(ev) => {editObjgrid(index,item.hs_object);}}>{item.displayName}</span> <i className='fa fa-times-circle' onClick={(ev) => {
                                                               handleRemoveSurvey(ev, index);
                                                             }}></i>
-                                                          </button> 
-                                                          <br /> <div className='mt-2'></div>  
-                                                {!item.ptag?<></>:<> <Box  sx={{  height: 280, width:1100  }}>
-                                                  <DataGridPro
+                                                          </button>
+                                                          <br /><div className='mt-2'></div> 
+                                                          <Box  sx={{
+                                          height: 280, width:'99%'  
+                                        }}
+                                        
+                                      >
+                                        <DataGrid
+                                    rows={item.colList}
+                                    columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
+                                    pageSizeOptions={[5, 10, 50, 100]}
+                                    checkboxSelection={true}
+                                    isRowSelectable={(params) => (params.row.used == "False" ? false : true)}
+                                    disableSelectionOnClick
+                                   
+                                    selectionModel={item.selectedRow}
+                                    // onSelectionModelChange={(e) => {
+                                    //   let newList1 = [...listContactMapping]
+                                    //   newList1[index].selectedRow = e;
+                                    //   setlistContactMapping(newList1);
+                                    //   // item.selectedRow = e;
+                                    // }}
+
+                                    pagination={false}
+                                    hideFooterRowCount={true}
+                                    hideFooter={true}
+                                    editable
+                                  />
+                                                          {/* <DataGridPro
                                                             rows={item.colList}
                                                             columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
                                                             pageSizeOptions={[5, 10, 50, 100]}
@@ -1413,13 +1450,13 @@ console.log(filterlistContactMapping)
                                                             rowSelectionModel={item.selectedRow} 
                                                             pagination={false}
                                                             hideFooterRowCount={true}
-                                                            hideFooter={true} 
-                                                            editable       
-                                                          />  <div className='mt-2 mb-2'></div> 
-                                                          <Button variant='contained' size="small"   onClick={(ev) => {hideObjgrid(index,item.hs_object);}}  >Done</Button> 
-                                                          </Box><br /><br />  </>} 
-                                                        <div className='clearfix'></div> <br/>
-                                                         </div>  
+                                                            hideFooter={true}
+                                                            editable
+                                                          /> */}
+                                                          </Box> 
+                                                        <div className='clearfix'></div> 
+                                                            </div> 
+
                                                     ) 
                                                     )}
                                                     
@@ -1697,16 +1734,16 @@ console.log(filterlistContactMapping)
                                   } */}
                                 </Box><br />
                                 <Box sx={{ height: 300, width: '100%', paddingBottom: '10px' }}>
-                                  <DataGridPro
+                                  <DataGrid
                                     rows={item.colList}
                                     columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
                                     pageSizeOptions={[5, 10, 50, 100]}
                                     checkboxSelection={true}
                                     isRowSelectable={(params) => (params.row.used == "False" ? false : true)}
                                     disableSelectionOnClick
-                                    getRowHeight={() => 'auto'}
-                                    rowSelectionModel={item.selectedRow}
-                                    // onRowSelectionModelChange={(e) => {
+                                   
+                                    selectionModel={item.selectedRow}
+                                    // onSelectionModelChange={(e) => {
                                     //   let newList1 = [...listContactMapping]
                                     //   newList1[index].selectedRow = e;
                                     //   setlistContactMapping(newList1);
@@ -1998,16 +2035,16 @@ console.log(filterlistContactMapping)
                                   } */}
                                 </Box><br />
                                 <Box sx={{ height: 300, width: '100%', paddingBottom: '10px' }}>
-                                  <DataGridPro
+                                  <DataGrid
                                     rows={item.colList}
                                     columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
                                     pageSizeOptions={[5, 10, 50, 100]}
                                     checkboxSelection={true}
                                     isRowSelectable={(params) => (params.row.used == "False" ? false : true)}
                                     disableSelectionOnClick
-                                    getRowHeight={() => 'auto'}
-                                    rowSelectionModel={item.selectedRow}
-                                    // onRowSelectionModelChange={(e) => {
+                                   
+                                    selectionModel={item.selectedRow}
+                                    // onSelectionModelChange={(e) => {
                                     //   let newList1 = [...listContactMapping]
                                     //   newList1[index].selectedRow = e;
                                     //   setlistContactMapping(newList1);
@@ -2298,16 +2335,16 @@ console.log(filterlistContactMapping)
                                   } */}
                                 </Box><br />
                                 <Box sx={{ height: 300, width: '100%', paddingBottom: '10px' }}>
-                                  <DataGridPro
+                                  <DataGrid
                                     rows={item.colList}
                                     columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
                                     pageSizeOptions={[5, 10, 50, 100]}
                                     checkboxSelection={true}
                                     isRowSelectable={(params) => (params.row.used == "False" ? false : true)}
                                     disableSelectionOnClick
-                                    getRowHeight={() => 'auto'}
-                                    rowSelectionModel={item.selectedRow}
-                                    // onRowSelectionModelChange={(e) => {
+                                   
+                                    selectionModel={item.selectedRow}
+                                    // onSelectionModelChange={(e) => {
                                     //   let newList1 = [...listContactMapping]
                                     //   newList1[index].selectedRow = e;
                                     //   setlistContactMapping(newList1);
@@ -2598,16 +2635,16 @@ console.log(filterlistContactMapping)
                                   } */}
                                 </Box><br />
                                 <Box sx={{ height: 300, width: '100%', paddingBottom: '10px' }}>
-                                  <DataGridPro
+                                  <DataGrid
                                     rows={item.colList}
                                     columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
                                     pageSizeOptions={[5, 10, 50, 100]}
                                     checkboxSelection={true}
                                     isRowSelectable={(params) => (params.row.used == "False" ? false : true)}
                                     disableSelectionOnClick
-                                    getRowHeight={() => 'auto'}
-                                    rowSelectionModel={item.selectedRow}
-                                    // onRowSelectionModelChange={(e) => {
+                                   
+                                    selectionModel={item.selectedRow}
+                                    // onSelectionModelChange={(e) => {
                                     //   let newList1 = [...listContactMapping]
                                     //   newList1[index].selectedRow = e;
                                     //   setlistContactMapping(newList1);
@@ -2897,16 +2934,16 @@ console.log(filterlistContactMapping)
                                   } */}
                                 </Box><br />
                                 <Box sx={{ height: 300, width: '100%', paddingBottom: '10px' }}>
-                                  <DataGridPro
+                                  <DataGrid
                                     rows={item.colList}
                                     columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
                                     pageSizeOptions={[5, 10, 50, 100]}
                                     checkboxSelection={true}
                                     isRowSelectable={(params) => (params.row.used == "False" ? false : true)}
                                     disableSelectionOnClick
-                                    getRowHeight={() => 'auto'}
-                                    rowSelectionModel={item.selectedRow}
-                                    // onRowSelectionModelChange={(e) => {
+                                   
+                                    selectionModel={item.selectedRow}
+                                    // onSelectionModelChange={(e) => {
                                     //   let newList1 = [...listContactMapping]
                                     //   newList1[index].selectedRow = e;
                                     //   setlistContactMapping(newList1);
@@ -3170,16 +3207,16 @@ console.log(filterlistContactMapping)
                                   } */}
                                 </Box><br />
                                 <Box sx={{ height: 300, width: '100%', paddingBottom: '10px' }}>
-                                  <DataGridPro
+                                  <DataGrid
                                     rows={item.colList}
                                     columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
                                     pageSizeOptions={[5, 10, 50, 100]}
                                     checkboxSelection={true}
                                     isRowSelectable={(params) => (params.row.used == "False" ? false : true)}
                                     disableSelectionOnClick
-                                    getRowHeight={() => 'auto'}
-                                    rowSelectionModel={item.selectedRow}
-                                    // onRowSelectionModelChange={(e) => {
+                                   
+                                    selectionModel={item.selectedRow}
+                                    // onSelectionModelChange={(e) => {
                                     //   let newList1 = [...listContactMapping]
                                     //   newList1[index].selectedRow = e;
                                     //   setlistContactMapping(newList1);
@@ -3470,16 +3507,16 @@ console.log(filterlistContactMapping)
                                   } */}
                                 </Box><br />
                                 <Box sx={{ height: 300, width: '100%', paddingBottom: '10px' }}>
-                                  <DataGridPro
+                                  <DataGrid
                                     rows={item.colList}
                                     columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
                                     pageSizeOptions={[5, 10, 50, 100]}
                                     checkboxSelection={true}
                                     isRowSelectable={(params) => (params.row.used == "False" ? false : true)}
                                     disableSelectionOnClick
-                                    getRowHeight={() => 'auto'}
-                                    rowSelectionModel={item.selectedRow}
-                                    // onRowSelectionModelChange={(e) => {
+                                   
+                                    selectionModel={item.selectedRow}
+                                    // onSelectionModelChange={(e) => {
                                     //   let newList1 = [...listContactMapping]
                                     //   newList1[index].selectedRow = e;
                                     //   setlistContactMapping(newList1);
@@ -3526,7 +3563,7 @@ console.log(filterlistContactMapping)
         </Box>
       </Modal>
       }
-       {openKlaviyo && <Modal
+      {openKlaviyo && <Modal
         open={openKlaviyo}
         onClose={isModalClose}
         aria-labelledby="modal-modal-title"

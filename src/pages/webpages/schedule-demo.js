@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"; 
+import Cookies from "js-cookie";
 import Navbar from "../../components/molecules/Navbar"; 
 import {
   Button,
@@ -57,6 +58,7 @@ export default  function ScheduleDemo () {
       credentials: "include",
       headers: {
         "Content-type": "application/json",
+        "token":Cookies.get("token")
       },
       body: JSON.stringify({ "userName": userName,"userLastName": userLastName, "userEmail": userEmail, "userPhone": userPhone, mailType: mailtype })
     })

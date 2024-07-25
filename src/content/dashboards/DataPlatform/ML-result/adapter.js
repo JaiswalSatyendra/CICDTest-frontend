@@ -1,16 +1,24 @@
 import { Adapter, StreamingAdapterObserver } from '@nlux/react';
 
-const demoProxyServerUrl = 'http://54.84.56.97/chat/';
+//const demoProxyServerUrl = 'http://54.84.56.97/chat/';
+const demoProxyServerUrl = 'http://54.84.56.97:80/chat';
 //const demoProxyServerUrl = 'https://demo.api.nlux.ai/openai/chat/stream';
 
 export const streamAdapter: Adapter = {
-  
+
   streamText: async (prompt: string, observer: StreamingAdapterObserver) => {
-   let userId= localStorage.getItem("selectedUser_Id");
-   let projectId= localStorage.getItem("selectedProjectId");
-   let url = userId + "/" + projectId
-    const body = { prompt };
-    const response = await fetch(demoProxyServerUrl+ url, {
+    let userId = localStorage.getItem("selectedUser_Id");
+    let projectId = localStorage.getItem("selectedProjectId");
+    let projectName = localStorage.getItem("selectedProjectName");
+    let url = userId + "/" + projectId
+    const body = {
+      prompt,
+      "user_id": userId,
+      "project_name": projectName,
+      "project_id": projectId,
+      "env": "test"
+    };
+    const response = await fetch(demoProxyServerUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
@@ -39,9 +47,10 @@ export const streamAdapter: Adapter = {
       }
 
       let content = textDecoder.decode(value);
-      var obj = JSON.parse(content);
+      const parsedObject = JSON.parse(content);
+      // var obj = JSON.parse(content);
       if (content) {
-        observer.next(obj);
+        observer.next(parsedObject.content);
       }
     }
 

@@ -184,6 +184,21 @@ export const homepage=
       locale:'en_US',
       type:'insights',
     }  
+
+    export  const LeadGenration={  
+      page:'LeadGenration',
+      title:'LeadGenration',
+      description:'ConvertMLs resources, FAQs, and support options for assistance. Find solutions, contact information, and enhance your experience with ConvertMLs support services.',
+      keywords:'Help Resources: FAQ, Contact Us, Support | ConvertML',
+      url:'https://convertml.ai/faqs',
+      canonical:'https://convertml.ai/faqs',
+      image:'https://convertml.ai/json-media/img/convertmlLogoicon.png',
+      publisher:'ConvertML',
+      author:'ConvertML',
+      site_name:'ConvertML',
+      locale:'en_US',
+      type:'insights',
+    }
     export  const scheduleDemo={  
       page:'scheduleDemo',
       title:'Schedule a Demo Seamless integration with multiple platforms',

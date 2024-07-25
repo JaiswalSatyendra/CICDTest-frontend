@@ -211,6 +211,7 @@ li{    padding-top: 5px;  padding-bottom: 5px; padding-left:0px}
  .banner-onlyheading{ background: rgb(248,249,250);
   background: linear-gradient(0deg, rgba(248,249,250,1) 91%, rgba(233,234,235,1) 100%); margin-top: 117px;   
   .heading3{ margin:20px 0px; font-size: 40px; font-style: normal; font-weight: 700;  line-height: 50px; b{ color: #6644F1;} }
+  .heading4{ margin:10px 0px; font-size: 25px; font-style: normal; font-weight: 700;  line-height: 50px; b{ color: #6644F1;} }
   h1{ margin: 20px 0px; font-size: 80px; font-style: normal; font-weight: 700;  line-height: 100%; b{ color: #6644F1;} }
       h2{ margin: 20px 0px; font-size: 60px; font-style: normal; font-weight: 700; line-height: 100%; b{ color: #6644F1;}  }
       h3{ margin:20px 0px; font-size: 40px; font-style: normal; font-weight: 700;  line-height: 50px; b{ color: #6644F1;} }
@@ -981,3 +982,11 @@ span{ color: #868D9E;}
 
    
    /* ------------- scheduleDemo -------------  */ 
+
+
+   /* leadgernration-form */
+   .leadgernration-form{background: rgb(248,249,250);
+    background: linear-gradient(0deg, rgba(248,249,250,1) 91%, rgba(233,234,235,1) 100%);    padding: 20px;         border-radius: 10px;
+    .formControl{ background: $white;}
+
+   }

@@ -151,10 +151,10 @@ function HeaderUserbox() {
   const [defaultImg, selectedImg] = useState("");
 
   useEffect(async () => {
-    axios
+    await axios
     .post(`${process.env.REACT_APP_API_URL}/user/updateFirstTimeLogin`, {
       user_id: user._id,
-    })
+    },{ withCredentials: true })
     .then((response) => {
       if(response.data.success){
         setopenpopUP(true);

@@ -1,4 +1,4 @@
-import { AboutUsMeta, ConvertMLUserGuide, HelpResources,IntegrationMultiplePlatform,scheduleDemo, TypeformIntegration, princing } from "./metadata-list";
+import { AboutUsMeta, ConvertMLUserGuide, HelpResources,IntegrationMultiplePlatform,scheduleDemo, TypeformIntegration, princing, LeadGenration } from "./metadata-list";
 
 export const homeStructuredData = {
     "@context": "https://schema.org",
@@ -310,6 +310,30 @@ export const AboutUsMetaData = {
       datePublished: "2023-12-01",
       dateModified: "2065-06-30"
   };
+  export const LeadGenrationMarkup = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: LeadGenration.title,
+    description:LeadGenration.description,
+    image: LeadGenration.image,
+    datePublished: new Date("2023-06-04T09:25:01.340Z").toISOString(),
+    author: {
+        "@type": "Organization",
+        "name": "convertml",
+        "url": "convertml.ai"
+    },
+    publisher: {
+        "@type": "Organization",
+        "name": "",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://convertml.ai/images/convertmlLogo.png"
+        }
+      },
+      datePublished: "2023-12-01",
+      dateModified: "2065-06-30"
+  };
+  
   export const scheduleDemoMarkup = {
     "@context": "https://schema.org",
     "@type": "Article",
