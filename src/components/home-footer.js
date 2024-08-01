@@ -72,7 +72,7 @@ function HomeFooter() {
       <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={0}>
       <Grid item xs={12} sm={3} lg={3}>
-        <img src={'/json-media/img/footer-banner-left.png'} alt="convertml" width={'100%'} className='banner-img' />
+        <img src={'/json-media/img/footer-banner-left.png'} alt="Customer Insights platform" width={'100%'} className='banner-img' />
         </Grid>
         <Grid item xs={12} sm={6} lg={6}>
           <div className="text-center"> 
@@ -127,7 +127,7 @@ function HomeFooter() {
             
         </Grid>
         <Grid item xs={12} sm={3} lg={3}>
-        <img src={'/json-media/img/footer-banner-right.png'} alt="convertml" width={'100%'} className='banner-img' />
+        <img src={'/json-media/img/footer-banner-right.png'} alt="predictive customer insights platform" width={'100%'} className='banner-img' />
         </Grid>
         
       </Grid>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react"; 
-import Cookies from "js-cookie";
 import Navbar from "../../components/molecules/Navbar"; 
 import {
   Button,
@@ -29,16 +28,7 @@ import {
   faqsListTypeform,
 } from "../../assets/data/fasq";
 import { scheduleDemo } from "../../assets/data/metadata-list";
-import { scheduleDemoMarkup } from "../../assets/data/schema-markup";
-import {
-  CRMListData,
-  customerServiceListData,
-  dataWarehouseDatabaseListData,
-  financialListData,
-  reviewsListData,
-  socialmediaList,
-  SurveyListData,
-} from "../../assets/data/create-data-connection";
+import { scheduleDemoMarkup } from "../../assets/data/schema-markup"; 
 
 export default  function ScheduleDemo () {
   const url = "";
@@ -58,7 +48,6 @@ export default  function ScheduleDemo () {
       credentials: "include",
       headers: {
         "Content-type": "application/json",
-        "token":Cookies.get("token")
       },
       body: JSON.stringify({ "userName": userName,"userLastName": userLastName, "userEmail": userEmail, "userPhone": userPhone, mailType: mailtype })
     })
@@ -138,7 +127,7 @@ export default  function ScheduleDemo () {
             Get an in-depth
 product demo
               </h2>
-              <p>Want to see how Mixpanel can help your team build better products? Schedule a live demo with our product analytics experts.</p>
+              <p>Want to see how convertML can help your team build better products? Schedule a live demo with our product analytics experts.</p>
               <div className="clearfix"></div><br/>
                
               </Grid>
@@ -180,7 +169,7 @@ product demo
                           </Grid>  
                           <Grid item xs={12} sm={12} lg={12}><div className="text-center"> 
                             <button type="submit" disabled={data.fname != "" && data.lname != "" && data.email != "" ? false : true} onClick={(e) => { submitForm() }}>Submit</button></div><br/>
-                            <p>By submitting this form, you consent to Glassbox storing and processing the personal information provided in accordance with our Privacy Policy</p>
+                            <p>By submitting this form, you consent to convertML storing and processing the personal information provided in accordance with our Privacy Policy</p>
                           </Grid> 
                          
                         </Grid>

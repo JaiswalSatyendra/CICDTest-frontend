@@ -35,6 +35,7 @@
     "@svgr/webpack": "^5.5.0",
     "@syncfusion/ej2-base": "^18.4.41",
     "@syncfusion/ej2-react-calendars": "^18.4.41",
+    "@syncfusion/ej2-react-diagrams": "^18.4.41",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",

@@ -87,7 +87,19 @@ import ConnectorsLoader from "../connectors-loader";
 import { useRef } from "react";
 import MarketResearchAnalysis from "../../../content/dashboards/DataPlatform/market-research-analysis";
 import tr from "date-fns/locale/tr/index";
-import { CRMListData, SurveyListData, customerServiceListData, dataWarehouseDatabaseListData, financialListData, macroMicroEconomics, reviewsListData, sassPlatform, socialmediaList, ecommerceListData } from "../../../assets/data/create-data-connection";
+import {
+  CRMListData,
+  SurveyListData,
+  customerServiceListData,
+  dataWarehouseDatabaseListData,
+  financialListData,
+  macroMicroEconomics,
+  reviewsListData,
+  sassPlatform,
+  socialmediaList,
+  ecommerceListData,
+  selectedForm,
+} from "../../../assets/data/create-data-connection";
 
 const steps = ["Name & Source", "Template", "Data Visualization"];
 
@@ -142,17 +154,18 @@ function CreateDataConnection() {
   const location = useLocation();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const errorRef = useRef()
+  const errorRef = useRef();
   const [emailpopupopen, setemailpopupopen] = React.useState(false);
   const [announcement, Isannouncement] = useState(true);
   const [session, ,] = useContext(SessionContext);
   const { user } = session;
+  const [userLogininfo, setUserLogininfo] = React.useState({});
   const [activeStep, setActiveStep] = React.useState(0);
   const [selectedProjectId, setSelectedProjectId] = React.useState("");
   const [value, setValue] = React.useState(0); //selected tab for integration and upload
   const [checked, setChecked] = React.useState(new Array());
   const [selected, setSelected] = React.useState(new Array());
-  const [open, setOpen] = React.useState(false); 
+  const [open, setOpen] = React.useState(false);
   const [isConnected, setisConnected] = React.useState(false);
   const [openHubspot, setOpenHubspot] = React.useState(false);
   const [openZendesk, setOpenZendesk] = React.useState(false);
@@ -172,24 +185,32 @@ function CreateDataConnection() {
   const [isConnectedTypeForm, setisConnectedTypeForm] = React.useState(false);
   const [isOpenPopupTypeform, setisOpenPopupTypeform] = React.useState(false);
   const [isConnectedHubspot, setisConnectedHubspot] = React.useState(false);
-  const [isOpenPopupHubspot, setisOpenPopupHubspot] = React.useState(false); 
-  const [isOpenPopupKlaviyo, setisOpenPopupKlaviyo] = React.useState(true); 
+  const [isConnectedKlaviyo, setisConnectedKlaviyo] = React.useState(false);
+  const [isConnectedShopify, setisConnectedShopify] = React.useState(false); 
+  
+  const [isConnectedIntercom, setisConnectedIntercom] = React.useState(false);
+
+  const [isOpenPopupHubspot, setisOpenPopupHubspot] = React.useState(false);
+  const [isOpenPopupKlaviyo, setisOpenPopupKlaviyo] = React.useState(true);
   const [isOpenPopupIntercom, setisOpenPopupIntercom] = React.useState(true);
   const [isUpload, setIsUpload] = React.useState(false);
   const [isTypeform, setIsTypeform] = React.useState(false);
   const [showLoder, setLoaderShow] = useState(false);
   const [showLoderVisual, setLoderVisual] = useState(false);
-  const [typeformIngestionStatus, setTypeformIngestionStatus] = useState({ status: false, percentage: 30 });
+  const [typeformIngestionStatus, setTypeformIngestionStatus] = useState({
+    status: false,
+    percentage: 30,
+  });
   const [paramsForFetchResult, setParamsForFetchResult] = React.useState({});
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [selectionModel, setSelectionModel] = React.useState(() => []);
   const [gridDataForGrid, setGridDataForGrid] = useState({
     columns: [],
     rows: [],
-    columns1: []
+    columns1: [],
   });
 
-  const [ecommerceList,setecommerceList]=React.useState([])
+  const [ecommerceList, setecommerceList] = React.useState([]);
 
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [isShowSurveyMapp, setIsShowSurveyMapp] = useState([]);
@@ -200,7 +221,8 @@ function CreateDataConnection() {
   const [hubspotTokenName, setHubspotTokenName] = useState("");
   const [hubspotRefreshtokenName, setHubspotRefreshtokenName] = useState("");
   const [projectName, setProjectName] = useState("");
-  const [selectedDataSourceForSurvey, setselectedDataSourceForSurvey] = useState("");
+  const [selectedDataSourceForSurvey, setselectedDataSourceForSurvey] =
+    useState("");
   const [selectedSurvey, setSelectedSurvey] = useState({});
   const [openAddNewDatasource, setOpenAddNewDatasource] = useState(false);
   const [allSurveyListTypeForm, setallSurveyListTypeForm] = useState([]);
@@ -209,17 +231,22 @@ function CreateDataConnection() {
   const [isModalDataTypeform, setIsModalDataTypeform] = useState([]);
   const [isModalDataHubspot, setIsModalDataHubspot] = useState([]);
   const [isModalDataFile, setIsModalDataFile] = useState([]);
-  const [checkProgressDatasetStatus, setcheckProgressDatasetStatus] = useState([]);
+  const [checkProgressDatasetStatus, setcheckProgressDatasetStatus] = useState(
+    []
+  );
   const [isRunningIngestion, setisRunningIngestion] = useState(false);
-  const [isError, setisError] = useState(true)
+  const [isError, setisError] = useState(true);
   const interval = React.useRef();
-  const [isRunningAnalysis, setisRunningAnalysis] = useState({ processList: [], status: false, sccessPercent: 10 });
+  const [isRunningAnalysis, setisRunningAnalysis] = useState({
+    processList: [],
+    status: false,
+    sccessPercent: 10,
+  });
   const intervalForAnalysis = React.useRef();
   const intervalForCategoryMapping = React.useRef();
   const [datarefreshloader, setdatarefreshloader] = useState(true);
 
   const [datarefreshupdated, setdatarefreshupdated] = useState(true);
-
 
   const [warningNotificationAlert, setwarningNotificationAlert] = useState({
     alertType: "",
@@ -243,7 +270,7 @@ function CreateDataConnection() {
     datasource: "",
     temmplateName: "",
     message: "",
-    isSubmit: false
+    isSubmit: false,
   });
 
   const [changeCatMappingData, setChangeCatMappingData] = useState({});
@@ -254,55 +281,78 @@ function CreateDataConnection() {
     }
     ev.stopPropagation();
     if (value == "Typeform") {
-      localStorage.setItem("hubspotMapping", JSON.stringify(isModalDataHubspot));
+      localStorage.setItem(
+        "hubspotMapping",
+        JSON.stringify(isModalDataHubspot)
+      );
       setOpen(true);
-    }
-    else if (value == "Hubspot") {
-      localStorage.setItem("typeformMapping", JSON.stringify(isModalDataTypeform));
+    } else if (value == "Hubspot") {
+      localStorage.setItem(
+        "typeformMapping",
+        JSON.stringify(isModalDataTypeform)
+      );
       setOpenHubspot(true);
-    }
-    else if (value == "Zendesk") {
-      localStorage.setItem("typeformMapping", JSON.stringify(isModalDataTypeform));
+    } else if (value == "Zendesk") {
+      localStorage.setItem(
+        "typeformMapping",
+        JSON.stringify(isModalDataTypeform)
+      );
       setOpenZendesk(true);
-    }
-    else if (value == "Facebook") {
-      localStorage.setItem("facebookMapping", JSON.stringify(isModalDataTypeform));
+    } else if (value == "Facebook") {
+      localStorage.setItem(
+        "facebookMapping",
+        JSON.stringify(isModalDataTypeform)
+      );
       setOpenFacebook(true);
-    }
-    else if (value == "Twitter") {
-      localStorage.setItem("twitterMapping", JSON.stringify(isModalDataTypeform));
+    } else if (value == "Twitter") {
+      localStorage.setItem(
+        "twitterMapping",
+        JSON.stringify(isModalDataTypeform)
+      );
       setOpenTwitter(true);
-    }
-    else if (value == "Feshdesk") {
-      localStorage.setItem("feshdeskMapping", JSON.stringify(isModalDataTypeform));
+    } else if (value == "Feshdesk") {
+      localStorage.setItem(
+        "feshdeskMapping",
+        JSON.stringify(isModalDataTypeform)
+      );
       setOpenFeshdesk(true);
-    }
-    else if (value == "Salesforce") {
-      localStorage.setItem("salesforceMapping", JSON.stringify(isModalDataTypeform));
+    } else if (value == "Salesforce") {
+      localStorage.setItem(
+        "salesforceMapping",
+        JSON.stringify(isModalDataTypeform)
+      );
       setOpenSalesforce(true);
-    }
-    else if (value == "braze") {
-      localStorage.setItem("salesforceMapping", JSON.stringify(isModalDataTypeform));
+    } else if (value == "braze") {
+      localStorage.setItem(
+        "salesforceMapping",
+        JSON.stringify(isModalDataTypeform)
+      );
       setOpenbraze(true);
-    }
-
-    else if (value == "Instagram") {
-      localStorage.setItem("instagramMapping", JSON.stringify(isModalDataTypeform));
+    } else if (value == "Instagram") {
+      localStorage.setItem(
+        "instagramMapping",
+        JSON.stringify(isModalDataTypeform)
+      );
       setOpenInstagram(true);
-    }
-    else if (value == "Klaviyo") {
-      localStorage.setItem("KlaviyoMapping", JSON.stringify(isModalDataTypeform));
+    } else if (value == "Klaviyo") {
+      localStorage.setItem(
+        "KlaviyoMapping",
+        JSON.stringify(isModalDataTypeform)
+      );
       setOpenKlaviyo(true);
-    }
-    else if (value == "Intercom") {
-      localStorage.setItem("intercomMapping", JSON.stringify(isModalDataTypeform));
+    } else if (value == "Intercom") {
+      localStorage.setItem(
+        "intercomMapping",
+        JSON.stringify(isModalDataTypeform)
+      );
       setOpenIntercom(true);
-    }
-    else if (value == "Shopify") {
-      localStorage.setItem("shopifyMapping", JSON.stringify(isModalDataTypeform));
+    } else if (value == "Shopify") {
+      localStorage.setItem(
+        "shopifyMapping",
+        JSON.stringify(isModalDataTypeform)
+      );
       setOpenShopify(true);
     }
-
   };
 
   const emailpopupOpen = (objectkey, objectVal) => {
@@ -312,34 +362,34 @@ function CreateDataConnection() {
       email: user.company_email,
       datasource: objectkey == "datasource" ? objectVal : "",
       temmplateName: objectkey == "temmplateName" ? objectVal : "",
-      isSubmit: false
-    }
+      isSubmit: false,
+    };
     setdataSourceMailObj(newObj);
     setemailpopupopen(true);
   };
 
   const emailpopupClose = () => {
-    console.log("---bbbbb-", dataSourceMailObj)
+    console.log("---bbbbb-", dataSourceMailObj);
     setdataSourceMailObj({
       first_name: "",
       last_name: "",
       email: "",
       datasource: "",
       temmplateName: "",
-      isSubmit: false
+      isSubmit: false,
     });
     setemailpopupopen(false);
   };
 
   const hideannouncementBar = () => {
     Isannouncement(false);
-  }
+  };
 
   const collapseAndExpandError = (val, ind) => {
     let newObj = [...errorListDisplay];
     newObj[ind].isCollapsable = !newObj[ind].isCollapsable;
-    seterrorListDisplay(newObj)
-  }
+    seterrorListDisplay(newObj);
+  };
 
   const checkedMappingForSurvey = (value) => {
     setIsModalDataTypeform(value);
@@ -350,14 +400,14 @@ function CreateDataConnection() {
     );
     tmpConnectedSourceType.push({ label: "Typeform", value: "typeform" });
     setSelected(value.length == 0 ? [] : tmpConnectedSourceType);
-    value.forEach(ele => {
+    value.forEach((ele) => {
       listOfDataSource1.push({
         dataSource: "typeform",
         dataSourceText: `${ele.formName}`,
         progress_percent: "40",
         status: "progress",
       });
-    })
+    });
     setcheckProgressDatasetStatus(value.length == 0 ? [] : listOfDataSource1);
     setisRunningIngestion(value.length == 0 ? false : true);
   };
@@ -369,19 +419,21 @@ function CreateDataConnection() {
     // }, 1000);
     setIsModalDataHubspot(value);
     let connectedSourceType = [...selected];
-    let tmpConnectedSourceType = connectedSourceType.filter((ele) => ele.value != "hubspot");
+    let tmpConnectedSourceType = connectedSourceType.filter(
+      (ele) => ele.value != "hubspot"
+    );
     tmpConnectedSourceType.push({ label: "Hubspot", value: "hubspot" });
     setSelected(value.length == 0 ? [] : tmpConnectedSourceType);
     let listOfDataSource1 = [...checkProgressDatasetStatus];
-    value.forEach(ele => {
-      // Hubspot ${ele.hs_object == 'contact' ? 'contact' : 'survey'} 
+    value.forEach((ele) => {
+      // Hubspot ${ele.hs_object == 'contact' ? 'contact' : 'survey'}
       listOfDataSource1.push({
         dataSource: "hubspot",
-        dataSourceText: (`${ele.displayName}`),
+        dataSourceText: `${ele.displayName}`,
         progress_percent: "40",
         status: "progress",
       });
-    })
+    });
     setcheckProgressDatasetStatus(value.length == 0 ? [] : listOfDataSource1);
     setisRunningIngestion(value.length == 0 ? false : true);
   };
@@ -434,7 +486,7 @@ function CreateDataConnection() {
 
   const handleToggle = (ev, val, name) => {
     setOpenAddNewDatasource(false);
-    seterrorListDisplay([])
+    seterrorListDisplay([]);
 
     if (val == 1 || val == 2 || val == 3 || val == 4 || val == 5 || val == 6) {
       let newChecked = [...checked];
@@ -454,27 +506,32 @@ function CreateDataConnection() {
       }
 
       if (ev != null && ev.target.checked != false) {
-        axios.post(`${process.env.REACT_APP_API_URL}/survey/setNewQuestionMapping`, {
-          template: name
-        },{
-        headers: {
-          "Content-type": "application/json",
-          "token": Cookies.get("token")
-        },
-        withCredentials: true,
-      }).then(async (response1) => {
-          if (response1.data.success) {
-            setisError(true)
-          } else {
-            setisError(false)
-          }
-        })
+        axios
+          .post(
+            `${process.env.REACT_APP_API_URL}/survey/setNewQuestionMapping`,
+            {
+              template: name,
+            },
+            {
+              headers: {
+                "Content-type": "application/json",
+                token: Cookies.get("token"),
+              },
+              withCredentials: true,
+            }
+          )
+          .then(async (response1) => {
+            if (response1.data.success) {
+              setisError(true);
+            } else {
+              setisError(false);
+            }
+          });
 
         handleApplyFetchSurvey(name);
       }
-    }
-    else {
-      emailpopupOpen("temmplateName", name)
+    } else {
+      emailpopupOpen("temmplateName", name);
     }
   };
 
@@ -487,8 +544,8 @@ function CreateDataConnection() {
   };
 
   const handleNext = async () => {
-    errorRef.current.scrollIntoView({ behavior: 'smooth' })
-    setisError(true)
+    errorRef.current.scrollIntoView({ behavior: "smooth" });
+    setisError(true);
     if (activeStep == 0) {
       let checkDuplicate = await checkProjectNameExist();
       // if (projectName.match(/[^a-zA-Z0-9_]/) !== null) {
@@ -508,35 +565,46 @@ function CreateDataConnection() {
           isduplicate: true,
           textMessage: "Project name already in use. Choose a unique name.",
         }));
-        errorRef.current.scrollIntoView({ behavior: 'smooth' })
-      }
-      else if (projectName.trim() == "") {
+        errorRef.current.scrollIntoView({ behavior: "smooth" });
+      } else if (projectName.trim() == "") {
         let isValiedProject = { ...projectNameValid };
         setprojectNameValid((prev) => ({
           ...isValiedProject,
           isEmpty: true,
           textMessage: `Enter project name`,
         }));
-        errorRef.current.scrollIntoView({ behavior: 'smooth' })
+        errorRef.current.scrollIntoView({ behavior: "smooth" });
       } else if (selected.length == 0) {
-        setisError(false)
-        seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Data Source Connection Error', message: ['Select at least one data source'] }])
+        setisError(false);
+        seterrorListDisplay([
+          {
+            alertType: "error-message",
+            isCollapsable: true,
+            short_text: "Data Source Connection Error",
+            message: ["Select at least one data source"],
+          },
+        ]);
 
-        errorRef.current.scrollIntoView({ behavior: 'smooth' })
+        errorRef.current.scrollIntoView({ behavior: "smooth" });
       } else {
-        localStorage.setItem('projectName', projectName.trim());
-        seterrorListDisplay([])
+        localStorage.setItem("projectName", projectName.trim());
+        seterrorListDisplay([]);
         setcheckProgressDatasetStatus([]);
         setisRunningIngestion(false);
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
       }
     } else {
-      let typeFormConnectedList = isShowSurveyMapp.filter((ele) => ele.dataType == "Typeform");
+      let typeFormConnectedList = isShowSurveyMapp.filter(
+        (ele) => ele.dataType == "Typeform"
+      );
 
       if (typeFormConnectedList.length > 1) {
         isShowSurveyMapp.forEach((ele) => {
           if (ele.dataType == "Typeform") {
-            ele.listMapping = typeFormConnectedList[typeFormConnectedList.length - 1].listMapping
+            ele.listMapping =
+              typeFormConnectedList[
+                typeFormConnectedList.length - 1
+              ].listMapping;
           }
         });
       }
@@ -545,45 +613,67 @@ function CreateDataConnection() {
         return !ele.is_mapped;
       });
       if (found2.length == 0) {
-        seterrorListDisplay([])
+        seterrorListDisplay([]);
         createSurvey(true);
       } else {
-        setisError(false)
-        seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Category Mapping Error', message: ['Please map question with category'] }])
+        setisError(false);
+        seterrorListDisplay([
+          {
+            alertType: "error-message",
+            isCollapsable: true,
+            short_text: "Category Mapping Error",
+            message: ["Please map question with category"],
+          },
+        ]);
 
-        errorRef.current.scrollIntoView({ behavior: 'smooth' })
+        errorRef.current.scrollIntoView({ behavior: "smooth" });
       }
     }
-
   };
 
-  const handleGetSurveyMapp = async (dataSource, formName, formId, templacteName, questions) => {
+  const handleGetSurveyMapp = async (
+    dataSource,
+    formName,
+    formId,
+    templacteName,
+    questions
+  ) => {
     let newList = [];
     // setLoaderShow(true);
     await axios
-      .post(`${process.env.REACT_APP_API_URL}/survey/getQuestionMapping`, {
-        data_source: dataSource,
-        form_name: formName,
-        form_id: formId,
-        analysis_template: templacteName,
-        questions: questions,
-      },{
-        headers: {
-          "Content-type": "application/json",
-          "token": Cookies.get("token")
+      .post(
+        `${process.env.REACT_APP_API_URL}/survey/getQuestionMapping`,
+        {
+          data_source: dataSource,
+          form_name: formName,
+          form_id: formId,
+          analysis_template: templacteName,
+          questions: questions,
         },
-        withCredentials: true,
-      })
+        {
+          headers: {
+            "Content-type": "application/json",
+            token: Cookies.get("token"),
+          },
+          withCredentials: true,
+        }
+      )
       .then(async (response1) => {
         if (response1.data.success) {
-          setisError(true)
+          setisError(true);
           let newData = JSON.parse(response1.data.data);
           newList = newData.map((ele, ind) => ({ ...ele, id: ind + 1 }));
-
         } else {
           newList = [];
-          setisError(false)
-          seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Category Mapping Error', message: [response1.data.message] }])
+          setisError(false);
+          seterrorListDisplay([
+            {
+              alertType: "error-message",
+              isCollapsable: true,
+              short_text: "Category Mapping Error",
+              message: [response1.data.message],
+            },
+          ]);
         }
       })
       .catch((err) => {
@@ -604,12 +694,16 @@ function CreateDataConnection() {
       .then(async (response1) => {
         let listOfDataSource1 = [];
         if (response1.data.data.length != 0) {
-          let findInprogressIngestion = response1.data.data.filter((ele) => ele.status == "progress");
-          let findInprogressIngestionerror = response1.data.data.filter((ele) => ele.message != "");
+          let findInprogressIngestion = response1.data.data.filter(
+            (ele) => ele.status == "progress"
+          );
+          let findInprogressIngestionerror = response1.data.data.filter(
+            (ele) => ele.message != ""
+          );
 
           if (findInprogressIngestionerror.length == 0) {
-            setisError(true)
-            let getStatus = (findInprogressIngestion.length == 0 ? false : true);
+            setisError(true);
+            let getStatus = findInprogressIngestion.length == 0 ? false : true;
             setisRunningIngestion(getStatus);
             response1.data.data.forEach((ele) => {
               // `Typeform data processing......`
@@ -622,8 +716,8 @@ function CreateDataConnection() {
                     ? `${ele.title}`
                     : `${ele.title}`
                   : ele.status == "progress"
-                    ? `${ele.title}`
-                    : `${ele.title}`;
+                  ? `${ele.title}`
+                  : `${ele.title}`;
               listOfDataSource1.push({
                 dataSource: ele.dataSource,
                 dataSourceText: dataSourceTypeStatusText,
@@ -631,16 +725,26 @@ function CreateDataConnection() {
                 status: ele.status,
               });
             });
-            seterrorListDisplay([])
+            seterrorListDisplay([]);
             setcheckProgressDatasetStatus(listOfDataSource1);
           } else {
-            setisRunningIngestion(false)
-            setisError(false)
-            let errorListitem = findInprogressIngestionerror.map((ele) => ({ ...ele, short_text: 'Ingestion Error', message: (ele.message.split(/[,|;]+/)), alertType: 'error-message', isCollapsable: true }));
+            setisRunningIngestion(false);
+            setisError(false);
+            let errorListitem = findInprogressIngestionerror.map((ele) => ({
+              ...ele,
+              short_text: "Ingestion Error",
+              message: ele.message.split(/[,|;]+/),
+              alertType: "error-message",
+              isCollapsable: true,
+            }));
             seterrorListDisplay(errorListitem);
-            let tmpwithouterror = selected.filter((elem) => elem.label != "Typeform")
-            let tmpremoveprogress = checkProgressDatasetStatus.filter((elem) => elem.dataSource != "typeform");
-            setcheckProgressDatasetStatus(tmpremoveprogress)
+            let tmpwithouterror = selected.filter(
+              (elem) => elem.label != "Typeform"
+            );
+            let tmpremoveprogress = checkProgressDatasetStatus.filter(
+              (elem) => elem.dataSource != "typeform"
+            );
+            setcheckProgressDatasetStatus(tmpremoveprogress);
             setSelected(tmpwithouterror);
           }
         }
@@ -651,31 +755,37 @@ function CreateDataConnection() {
   };
 
   const checkedAnalysisStatusMongo = async () => {
-    await axios.post(
-      `${process.env.REACT_APP_API_URL}/survey/getAnalysisProcessStatus`,
-      {
-       project_name: projectName
-      },{
-        headers: {
-          "Content-type": "application/json",
-          "token": Cookies.get("token")
+    await axios
+      .post(
+        `${process.env.REACT_APP_API_URL}/survey/getAnalysisProcessStatus`,
+        {
+          project_name: projectName,
         },
-        withCredentials: true,
-      }
-    )
+        {
+          headers: {
+            "Content-type": "application/json",
+            token: Cookies.get("token"),
+          },
+          withCredentials: true,
+        }
+      )
       .then(async (response1) => {
         if (response1.data.success && response1.data.data.message.body == "") {
           let findInprogressIngestion = response1.data.data.status_list.filter(
             (ele) => ele.progress == "True"
           );
-          let tmpSccessPercent = (20 * parseInt(findInprogressIngestion.length));
+          let tmpSccessPercent = 20 * parseInt(findInprogressIngestion.length);
           let tmpStatus = true;
           if (response1.data.data.status == "success") {
             tmpStatus = false;
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
             setLoderVisual(false);
           }
-          let tmpAnalysisStatus = { processList: response1.data.data.status_list, status: tmpStatus, sccessPercent: tmpSccessPercent }
+          let tmpAnalysisStatus = {
+            processList: response1.data.data.status_list,
+            status: tmpStatus,
+            sccessPercent: tmpSccessPercent,
+          };
           setisRunningAnalysis(tmpAnalysisStatus);
         } else {
           setisRunningAnalysis((prev) => ({
@@ -687,8 +797,13 @@ function CreateDataConnection() {
           let wariningListitem = newRes.map((ele) => ele["suggestion"]);
           let errorListitemTmp = newRes.map((ele) => ele["error"]);
 
-          let errorListitem = errorListitemTmp.map((ele) => ({ ...ele, message: (ele.message.split(/[,|;]+/)), alertType: 'error-message', isCollapsable: true }));
-          seterrorListDisplay(errorListitem)
+          let errorListitem = errorListitemTmp.map((ele) => ({
+            ...ele,
+            message: ele.message.split(/[,|;]+/),
+            alertType: "error-message",
+            isCollapsable: true,
+          }));
+          seterrorListDisplay(errorListitem);
         }
       })
       .catch((err) => {
@@ -702,64 +817,100 @@ function CreateDataConnection() {
 
   const checkedCategoryMappingsMongo = async () => {
     let selectedTemplacte = templateData.filter((ele) => ele.id == checked[0]);
-    await axios.post(
-      `${process.env.REACT_APP_API_URL}/survey/getCategoryMappingsStatus`,
-      {
-        user_id: user._id,
-        analysis_template: selectedTemplacte[0].name,
-      },{
-        headers: {
-          "Content-type": "application/json",
-          "token": Cookies.get("token")
+    await axios
+      .post(
+        `${process.env.REACT_APP_API_URL}/survey/getCategoryMappingsStatus`,
+        {
+          user_id: user._id,
+          analysis_template: selectedTemplacte[0].name,
         },
-        withCredentials: true,
-      }
-    ).then(async (response1) => {
-      setTypeformIngestionStatus((response1.data.data.mapping_info.status == "completed" ? { status: false, percentage: response1.data.data.mapping_info.progress } : { status: true, percentage: response1.data.data.mapping_info.progress }));
-      if (response1.data.data.mapping_info.status == "completed") {
-        let newTypeFormData = JSON.parse(response1.data.data.typeform);
-        let isFoundHidden = false;
-        // newTypeFormData.forEach(ele1 => {
-        //   let hiddenFieldSurvey = isModalDataTypeform.filter(ele => ele.formId == ele1.survey.value)
-        //   hiddenFieldSurvey[0].formFields.forEach((ele, ind) => {
-        //     if (((ele.module == "hidden" && ele.item.toLowerCase().match(/(utm|name|email)/) == null))) {
-        //       ele1.listMapping.push({ item: ele.item, module: "", is_mapped: false, weightage: "L" });
-        //       isFoundHidden = true;
-        //     }
-        //   })
-        //   ele1.listMapping = ele1.listMapping.map((ele, ind) => ({ ...ele, id: ind + 1 }));
-        //   ele1["checkedAllList"] = ele1.listMapping.map((elee) => elee.id);
-        // })
-
-        let surveyListMappingTmp = [];
-        isModalDataTypeform.forEach((ele1) => {
-          let tmpListMappingWithoutHidden = newTypeFormData[0].listMapping;
-          ele1.formFields.forEach((ele, ind) => {
-            if (((ele.module == "hidden" && ele.item.toLowerCase().match(/(utm|name|email)/) == null))) {
-              tmpListMappingWithoutHidden.push({ item: ele.item, module: "", is_mapped: false, weightage: "L" });
-              isFoundHidden = true;
-            }
-          })
-          let tmpListMapping = tmpListMappingWithoutHidden.map((ele, ind) => ({ ...ele, id: ind + 1 }));
-          let tmpListMappingId = tmpListMapping.map((elee) => elee.id);
-          surveyListMappingTmp.push({ dataType: "Typeform", survey: { label: ele1.formName, value: ele1.formId }, listMapping: tmpListMapping, checkedAllList: tmpListMappingId });
-        })
-
-        if (isFoundHidden == true) {
-          seterrorListDisplay([{ alertType: 'warning-message', isCollapsable: true, short_text: 'Hidden field', message: ['We noticed that you are bringing custom hidden fields which is great! However, due to the nature of these fields, we are unable to map them to appropriate categories. Here is an example of what you can do'] }])
+        {
+          headers: {
+            "Content-type": "application/json",
+            token: Cookies.get("token"),
+          },
+          withCredentials: true,
         }
+      )
+      .then(async (response1) => {
+        setTypeformIngestionStatus(
+          response1.data.data.mapping_info.status == "completed"
+            ? {
+                status: false,
+                percentage: response1.data.data.mapping_info.progress,
+              }
+            : {
+                status: true,
+                percentage: response1.data.data.mapping_info.progress,
+              }
+        );
+        if (response1.data.data.mapping_info.status == "completed") {
+          let newTypeFormData = JSON.parse(response1.data.data.typeform);
+          let isFoundHidden = false;
+          // newTypeFormData.forEach(ele1 => {
+          //   let hiddenFieldSurvey = isModalDataTypeform.filter(ele => ele.formId == ele1.survey.value)
+          //   hiddenFieldSurvey[0].formFields.forEach((ele, ind) => {
+          //     if (((ele.module == "hidden" && ele.item.toLowerCase().match(/(utm|name|email)/) == null))) {
+          //       ele1.listMapping.push({ item: ele.item, module: "", is_mapped: false, weightage: "L" });
+          //       isFoundHidden = true;
+          //     }
+          //   })
+          //   ele1.listMapping = ele1.listMapping.map((ele, ind) => ({ ...ele, id: ind + 1 }));
+          //   ele1["checkedAllList"] = ele1.listMapping.map((elee) => elee.id);
+          // })
 
-        let withoutTypeformList = [...isShowSurveyMapp];
-        let withoutTypeformList1 = withoutTypeformList.filter(ele => ele.dataType != "Typeform");
-        let newMergeList = [
-          ...surveyListMappingTmp,
-          ...withoutTypeformList1,
-        ]
-        setIsShowSurveyMapp(newMergeList);
-      }
-    })
+          let surveyListMappingTmp = [];
+          isModalDataTypeform.forEach((ele1) => {
+            let tmpListMappingWithoutHidden = newTypeFormData[0].listMapping;
+            ele1.formFields.forEach((ele, ind) => {
+              if (
+                ele.module == "hidden" &&
+                ele.item.toLowerCase().match(/(utm|name|email)/) == null
+              ) {
+                tmpListMappingWithoutHidden.push({
+                  item: ele.item,
+                  module: "",
+                  is_mapped: false,
+                  weightage: "L",
+                });
+                isFoundHidden = true;
+              }
+            });
+            let tmpListMapping = tmpListMappingWithoutHidden.map(
+              (ele, ind) => ({ ...ele, id: ind + 1 })
+            );
+            let tmpListMappingId = tmpListMapping.map((elee) => elee.id);
+            surveyListMappingTmp.push({
+              dataType: "Typeform",
+              survey: { label: ele1.formName, value: ele1.formId },
+              listMapping: tmpListMapping,
+              checkedAllList: tmpListMappingId,
+            });
+          });
+
+          if (isFoundHidden == true) {
+            seterrorListDisplay([
+              {
+                alertType: "warning-message",
+                isCollapsable: true,
+                short_text: "Hidden field",
+                message: [
+                  "We noticed that you are bringing custom hidden fields which is great! However, due to the nature of these fields, we are unable to map them to appropriate categories. Here is an example of what you can do",
+                ],
+              },
+            ]);
+          }
+
+          let withoutTypeformList = [...isShowSurveyMapp];
+          let withoutTypeformList1 = withoutTypeformList.filter(
+            (ele) => ele.dataType != "Typeform"
+          );
+          let newMergeList = [...surveyListMappingTmp, ...withoutTypeformList1];
+          setIsShowSurveyMapp(newMergeList);
+        }
+      })
       .catch((err) => {
-        setTypeformIngestionStatus({ status: false, percentage: 30 })
+        setTypeformIngestionStatus({ status: false, percentage: 30 });
         console.log("Error: " + err);
       });
   };
@@ -771,43 +922,79 @@ function CreateDataConnection() {
     let counter = 0;
     await selected.forEach(async (elem) => {
       if (elem.label == "Typeform") {
-
         isModalDataTypeform.forEach(async (element, ind) => {
-          let savedMappingList = isShowSurveyMapp.filter((ele1) => ele1.dataType == elem.label);
-          let savedQuestionList = savedMappingList.length == 0 ? [] : savedMappingList[0].listMapping.map((ele) => ele.item);
-          let questionList = element.formFields.filter(ele => (ele.module != "hidden" || (ele.module == "hidden" && ele.item.toLowerCase().match(/(utm|name|email)/) != null))).map((ele) => ele.item);
-          let symDifference = questionList.filter((x) => !savedQuestionList.includes(x)).concat(savedQuestionList.filter((x) => !questionList.includes(x)));
+          let savedMappingList = isShowSurveyMapp.filter(
+            (ele1) => ele1.dataType == elem.label
+          );
+          let savedQuestionList =
+            savedMappingList.length == 0
+              ? []
+              : savedMappingList[0].listMapping.map((ele) => ele.item);
+          let questionList = element.formFields
+            .filter(
+              (ele) =>
+                ele.module != "hidden" ||
+                (ele.module == "hidden" &&
+                  ele.item.toLowerCase().match(/(utm|name|email)/) != null)
+            )
+            .map((ele) => ele.item);
+          let symDifference = questionList
+            .filter((x) => !savedQuestionList.includes(x))
+            .concat(savedQuestionList.filter((x) => !questionList.includes(x)));
           if (symDifference.length == 0) {
             // newSelectedSurveyListType[ind] = savedMappingList[ind];
             counter = counter + 1;
           } else {
             setLoaderShow(true);
-            let newMappedObj = await handleGetSurveyMapp(elem.value, element.formName, element.formId, templacteName, questionList);
+            let newMappedObj = await handleGetSurveyMapp(
+              elem.value,
+              element.formName,
+              element.formId,
+              templacteName,
+              questionList
+            );
             counter = counter + 1;
             // setLoaderShow(false);
-            if (isModalDataTypeform.length + isModalDataHubspot.length == counter) {
+            if (
+              isModalDataTypeform.length + isModalDataHubspot.length ==
+              counter
+            ) {
               setLoaderShow(false);
               setTypeformIngestionStatus({ status: true, percentage: 30 });
             }
           }
-
         });
       } else if (elem.label == "Hubspot") {
         isModalDataHubspot.forEach(async (eleHub, ind) => {
-
-          let savedMappingList = isShowSurveyMapp.filter((ele1) => ele1.dataType == elem.label);
-          let savedQuestionList = savedMappingList.length == 0 ? [] : savedMappingList[0].listMapping.map((ele) => ele.item);
+          let savedMappingList = isShowSurveyMapp.filter(
+            (ele1) => ele1.dataType == elem.label
+          );
+          let savedQuestionList =
+            savedMappingList.length == 0
+              ? []
+              : savedMappingList[0].listMapping.map((ele) => ele.item);
           let questionList = eleHub.colList.map((ele) => ele.displayName);
 
-          let symDifference = questionList.filter((x) => !savedQuestionList.includes(x)).concat(savedQuestionList.filter((x) => !questionList.includes(x)));
+          let symDifference = questionList
+            .filter((x) => !savedQuestionList.includes(x))
+            .concat(savedQuestionList.filter((x) => !questionList.includes(x)));
           if (symDifference.length == 0) {
             newSelectedSurveyListHub[ind] = savedMappingList[ind];
             counter = counter + 1;
           } else {
             setLoaderShow(true);
-            let newMappedObj = await handleGetSurveyMapp(elem.value, eleHub.displayName, eleHub.value, templacteName, questionList);
+            let newMappedObj = await handleGetSurveyMapp(
+              elem.value,
+              eleHub.displayName,
+              eleHub.value,
+              templacteName,
+              questionList
+            );
             counter = counter + 1;
-            let lstQuesCat = newMappedObj.map((ele) => ({ ...ele, displayName: ele.item }));
+            let lstQuesCat = newMappedObj.map((ele) => ({
+              ...ele,
+              displayName: ele.item,
+            }));
             let lstSelectedQuesId = newMappedObj.map((elee) => elee.id);
 
             newSelectedSurveyListHub.push({
@@ -821,13 +1008,18 @@ function CreateDataConnection() {
               checkedAllList: lstSelectedQuesId,
             });
 
-            if (isModalDataTypeform.length + isModalDataHubspot.length == counter) {
-
+            if (
+              isModalDataTypeform.length + isModalDataHubspot.length ==
+              counter
+            ) {
               let withoutTypeformList = [...isShowSurveyMapp];
-              let withoutTypeformList1 = withoutTypeformList.filter(ele => ele.dataType != "Hubspot");
+              let withoutTypeformList1 = withoutTypeformList.filter(
+                (ele) => ele.dataType != "Hubspot"
+              );
               let mergeArray = [
                 ...withoutTypeformList1,
-                ...newSelectedSurveyListHub]
+                ...newSelectedSurveyListHub,
+              ];
 
               setIsShowSurveyMapp(mergeArray);
               setLoaderShow(false);
@@ -837,9 +1029,7 @@ function CreateDataConnection() {
             }
           }
           // ...newSelectedSurveyListType
-
         });
-
       } else if (elem.label == "File") {
         isModalDataFile.forEach(async (eleHub) => {
           newSelectedSurveyListFile.push({
@@ -859,9 +1049,6 @@ function CreateDataConnection() {
         ]);
       }
     });
-
-
-
   };
 
   const handleApplyFetchSurvey1 = async () => {
@@ -876,13 +1063,23 @@ function CreateDataConnection() {
       if (selectedDataSourceForSurvey == "Typeform") {
         setTypeformIngestionStatus({ status: true, percentage: 30 });
       } else if (selectedDataSourceForSurvey == "Hubspot") {
-
         let newSelectedSurveyListHub = [...isShowSurveyMapp];
-        let newFilterSurveyObj = isModalDataHubspot.filter((element, ind) => selectedSurvey.value == element.value && selectedSurvey.label == element.displayName);
-        let questionList = newFilterSurveyObj[0].colList.map((ele) => ele.displayName);
-        let selectedTemplacte = templateData.filter((ele) => ele.id == checked[0]);
+        let newFilterSurveyObj = isModalDataHubspot.filter(
+          (element, ind) =>
+            selectedSurvey.value == element.value &&
+            selectedSurvey.label == element.displayName
+        );
+        let questionList = newFilterSurveyObj[0].colList.map(
+          (ele) => ele.displayName
+        );
+        let selectedTemplacte = templateData.filter(
+          (ele) => ele.id == checked[0]
+        );
         setLoaderShow(true);
-        let newMappedObj = await handleGetSurveyMapp("hubspot", selectedSurvey.label, selectedSurvey.value,
+        let newMappedObj = await handleGetSurveyMapp(
+          "hubspot",
+          selectedSurvey.label,
+          selectedSurvey.value,
           selectedTemplacte[0].name,
           questionList
         );
@@ -892,7 +1089,10 @@ function CreateDataConnection() {
           dataType: "Hubspot",
           survey: { label: selectedSurvey.label, value: selectedSurvey.value },
           hs_object: newFilterSurveyObj[0].hs_object,
-          listMapping: newMappedObj.map((ele) => ({ ...ele, displayName: ele.item })),
+          listMapping: newMappedObj.map((ele) => ({
+            ...ele,
+            displayName: ele.item,
+          })),
           checkedAllList: newMappedObj.map((elee) => elee.id),
         });
         setIsShowSurveyMapp(newSelectedSurveyListHub);
@@ -917,7 +1117,14 @@ function CreateDataConnection() {
 
       setOpenAddNewDatasource(false);
     } else {
-      seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Category Mapping Error', message: ['This Survey already mapped'] }]);
+      seterrorListDisplay([
+        {
+          alertType: "error-message",
+          isCollapsable: true,
+          short_text: "Category Mapping Error",
+          message: ["This Survey already mapped"],
+        },
+      ]);
     }
   };
 
@@ -931,37 +1138,35 @@ function CreateDataConnection() {
       credentials: "include",
       headers: {
         "Content-type": "application/json",
-        "token":Cookies.get("token")
+        token: Cookies.get("token"),
       },
-      body: JSON.stringify(dataSourceMailObj)
+      body: JSON.stringify(dataSourceMailObj),
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res)
-      })
-  }
+        console.log(res);
+      });
+  };
 
   const changeDataSourceMailObj = (key, val) => {
     let tmpObj = { ...dataSourceMailObj };
     tmpObj[key] = val;
     setdataSourceMailObj(tmpObj);
-  }
+  };
 
   const handleBack = () => {
-    seterrorListDisplay([])
+    seterrorListDisplay([]);
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   const handleresultBack = (e, index) => {
     //setActiveStep((prevActiveStep) => prevActiveStep - 1);
     if (activeStep == 2) {
-      seterrorListDisplay([])
+      seterrorListDisplay([]);
       setActiveStep(index);
-    }
-    else if (activeStep == 1 && checked.length > 0) {
+    } else if (activeStep == 1 && checked.length > 0) {
       setActiveStep(index);
-    }
-    else if (activeStep == 0 && checked.length == 0) {
+    } else if (activeStep == 0 && checked.length == 0) {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
     }
   };
@@ -1006,9 +1211,15 @@ function CreateDataConnection() {
   const createSurvey = async (isDraft) => {
     let getSelectedFormId = isShowSurveyMapp.map((ele) => ele.survey);
     let selectedTemplacte = templateData.filter((ele) => ele.id == checked[0]);
-    let hubspotConnectedListCotact = isShowSurveyMapp.filter((ele) => ele.dataType == "Hubspot" && ele.hs_object === "contact");
-    let hubspotConnectedListFeedback = isShowSurveyMapp.filter((ele) => ele.dataType == "Hubspot" && ele.hs_object === "feedback");
-    let typeFormConnectedList = isShowSurveyMapp.filter((ele) => ele.dataType == "Typeform");
+    let hubspotConnectedListCotact = isShowSurveyMapp.filter(
+      (ele) => ele.dataType == "Hubspot" && ele.hs_object === "contact"
+    );
+    let hubspotConnectedListFeedback = isShowSurveyMapp.filter(
+      (ele) => ele.dataType == "Hubspot" && ele.hs_object === "feedback"
+    );
+    let typeFormConnectedList = isShowSurveyMapp.filter(
+      (ele) => ele.dataType == "Typeform"
+    );
 
     // if (typeFormConnectedList.length > 1) {
     //   isShowSurveyMapp.forEach((ele) => {
@@ -1023,19 +1234,46 @@ function CreateDataConnection() {
     //   isDraft
     // ) {
     //   seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Survey Error', message: ['No survey Data is available for analysis, please try again with survey data'] }])
-    // } else 
-    if ((typeFormConnectedList.length != 0 && hubspotConnectedListFeedback.length != 0) &&
+    // } else
+    if (
+      typeFormConnectedList.length != 0 &&
+      hubspotConnectedListFeedback.length != 0 &&
       activeStep == 1 &&
       isDraft
     ) {
-      seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Survey Error', message: ['Ensure that survey data is selected from a single source only'] }])
+      seterrorListDisplay([
+        {
+          alertType: "error-message",
+          isCollapsable: true,
+          short_text: "Survey Error",
+          message: [
+            "Ensure that survey data is selected from a single source only",
+          ],
+        },
+      ]);
     } else {
-      if (((typeFormConnectedList.length != 0 && hubspotConnectedListCotact.length == 0) || (hubspotConnectedListFeedback.length != 0 && hubspotConnectedListCotact.length == 0)) &&
+      if (
+        ((typeFormConnectedList.length != 0 &&
+          hubspotConnectedListCotact.length == 0) ||
+          (hubspotConnectedListFeedback.length != 0 &&
+            hubspotConnectedListCotact.length == 0)) &&
         activeStep == 1 &&
         isDraft
       ) {
-        if (selectedTemplacte.length != 0 && selectedTemplacte[0].name != "Market Research") {
-          seterrorListDisplay([{ alertType: 'warning-message', isCollapsable: true, short_text: 'Hubspot Datasource', message: ['To ensure you maximize all the dashboards & analytics, we recommend you connect your customer data with a unique identifier to join customer data and survey response'] }])
+        if (
+          selectedTemplacte.length != 0 &&
+          selectedTemplacte[0].name != "Market Research"
+        ) {
+          seterrorListDisplay([
+            {
+              alertType: "warning-message",
+              isCollapsable: true,
+              short_text: "Hubspot Datasource",
+              message: [
+                "To ensure you maximize all the dashboards & analytics, we recommend you connect your customer data with a unique identifier to join customer data and survey response",
+              ],
+            },
+          ]);
         }
       }
       if (isDraft) {
@@ -1047,7 +1285,7 @@ function CreateDataConnection() {
         credentials: "include",
         headers: {
           "Content-type": "application/json",
-          "token":Cookies.get("token"),
+          token: Cookies.get("token"),
         },
         body: JSON.stringify({
           projectName: projectName,
@@ -1058,7 +1296,7 @@ function CreateDataConnection() {
           saveAsDraft: isDraft,
           savedScreen: isDraft ? activeStep + 1 : activeStep,
           selectedProjectId: selectedProjectId,
-          filters: "null"
+          filters: "null",
         }),
       })
         .then((res) => res.json())
@@ -1066,24 +1304,31 @@ function CreateDataConnection() {
           let messageList = [];
           // setLoderVisual(false);
           if (isDraft) {
-            setisRunningAnalysis({ processList: [], status: true, sccessPercent: 10 });
+            setisRunningAnalysis({
+              processList: [],
+              status: true,
+              sccessPercent: 10,
+            });
           }
 
           if (res.success === true) {
             setSelectedProjectId(res.createdId);
             if (isDraft) {
-              let selectedTemplacte = templateData.filter((ele) => ele.id == checked[0]);
+              let selectedTemplacte = templateData.filter(
+                (ele) => ele.id == checked[0]
+              );
               setParamsForFetchResult({
                 project_name: projectName,
                 user_id: user._id,
                 _id: res.createdId,
                 template:
-                  selectedTemplacte.length == 0 ? "" : selectedTemplacte[0].name,
-                mapping_json: JSON.stringify(isShowSurveyMapp)
+                  selectedTemplacte.length == 0
+                    ? ""
+                    : selectedTemplacte[0].name,
+                mapping_json: JSON.stringify(isShowSurveyMapp),
               });
             }
             // seterrorListDisplay([]);
-
           } else {
             setSelectedProjectId(res.createdId);
             // let newRes = JSON.parse(res.message);
@@ -1092,7 +1337,6 @@ function CreateDataConnection() {
 
             // let errorListitem = errorListitemTmp.map((ele) => ({ ...ele, message: (ele.message.split(/[,|;]+/)), alertType: 'error-message', isCollapsable: true }));
             // seterrorListDisplay(errorListitem)
-
           }
         });
     }
@@ -1105,7 +1349,10 @@ function CreateDataConnection() {
     if (location?.state?.newObj?.savedScreen != undefined) {
       setActiveStep(location?.state?.newObj?.savedScreen);
       setProjectName(location?.state?.newObj?.project_name);
-      localStorage.setItem("selectedProjectName", location?.state?.newObj?.project_name);
+      localStorage.setItem(
+        "selectedProjectName",
+        location?.state?.newObj?.project_name
+      );
       localStorage.setItem("selectedProjectId", location?.state?.newObj?._id);
       setSelectedProjectId(location?.state?.newObj?._id);
       let surveymapping = JSON.parse(location?.state?.newObj?.mapping_json);
@@ -1116,8 +1363,7 @@ function CreateDataConnection() {
           formId: el.survey.value,
           formFields: el.listMapping,
           isCollapse: false,
-          selectedRow: el.checkedAllList
-
+          selectedRow: el.checkedAllList,
         }));
       let selectedSurveyHubspot = surveymapping
         .filter((ele1) => ele1.dataType == "Hubspot")
@@ -1126,7 +1372,10 @@ function CreateDataConnection() {
           value: el.survey.value,
           hs_object: el.hs_object,
           selectedRow: el.checkedAllList,
-          colList: (el.hs_object == "feedback" ? el.listMapping : el.listMapping.map(ele1 => ({ ...ele1, used: "True" }))),
+          colList:
+            el.hs_object == "feedback"
+              ? el.listMapping
+              : el.listMapping.map((ele1) => ({ ...ele1, used: "True" })),
         }));
 
       let selectedSurveyFile = surveymapping
@@ -1150,7 +1399,11 @@ function CreateDataConnection() {
           (ele) => ele.name == location?.state?.newObj?.template
         );
         if (selectedTemplacte.length != 0) {
-          handleToggle(null, selectedTemplacte[0].id, selectedTemplacte[0].name);
+          handleToggle(
+            null,
+            selectedTemplacte[0].id,
+            selectedTemplacte[0].name
+          );
         }
         setIsModalDataTypeform(selectedSurveyTypeForm);
         setIsModalDataHubspot(selectedSurveyHubspot);
@@ -1161,33 +1414,44 @@ function CreateDataConnection() {
       }
     }
 
-    axios.get(`${process.env.REACT_APP_API_URL}/user/getUser`, {
-      params: { id: user._id },
-    })
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/user/getUser`, {
+        params: { id: user._id },
+      })
       .then((response) => {
+        let checkConnectionSource = localStorage.getItem(
+          "userConnectionSourceType"
+        );
+        let userInfo = response.data.user;
+        setUserLogininfo(userInfo);
 
-        let checkConnectionSource = localStorage.getItem("userConnectionSourceType");
+        console.log(userLogininfo);
 
         if (response.data.user.access_token == undefined) {
           let search = window.location.search;
           let params = new URLSearchParams(search);
           let newParam = params.get("code");
           // &&checkConnectionSource == process.env.REACT_APP_TYPEFORM_CLIENT_ID
-          if (newParam != null && response.data.user.connectionType == process.env.REACT_APP_TYPEFORM_CLIENT_ID) {
-            let newValLocalStorage = localStorage.getItem("selectedProjectName");
+          if (
+            newParam != null &&
+            response.data.user.connectionType ==
+              process.env.REACT_APP_TYPEFORM_CLIENT_ID
+          ) {
+            let newValLocalStorage = localStorage.getItem(
+              "selectedProjectName"
+            );
             let newValLocalStorage1 = localStorage.getItem("selectedProjectId");
             let tmpHubspotMapping = localStorage.getItem("hubspotMapping");
             if (tmpHubspotMapping != null) {
               let tmpHubspotMapping1 = JSON.parse(tmpHubspotMapping);
-              checkedMappingForHubspot(tmpHubspotMapping1)
+              checkedMappingForHubspot(tmpHubspotMapping1);
             }
 
             setSelectedProjectId(newValLocalStorage1);
             setProjectName(newValLocalStorage);
             setisConnectedTypeForm(true);
             fetchTokenTypeform(null, newParam);
-          }
-          else {
+          } else {
             setisConnectedTypeForm(false);
           }
         } else {
@@ -1195,18 +1459,25 @@ function CreateDataConnection() {
           settokenName(response.data.user.access_token);
           setRefreshtokenName(response.data.user.refresh_token);
         }
+
         if (response.data.user.hubspot_access_token == undefined) {
           let search = window.location.search;
           let params = new URLSearchParams(search);
           let newParam = params.get("code");
           // && checkConnectionSource == process.env.REACT_APP_HUBSPOT_CLIENT_ID
-          if (newParam != null && response.data.user.connectionType == process.env.REACT_APP_HUBSPOT_CLIENT_ID) {
-            let newValLocalStorage = localStorage.getItem("selectedProjectName");
+          if (
+            newParam != null &&
+            response.data.user.connectionType ==
+              process.env.REACT_APP_HUBSPOT_CLIENT_ID
+          ) {
+            let newValLocalStorage = localStorage.getItem(
+              "selectedProjectName"
+            );
             let newValLocalStorage1 = localStorage.getItem("selectedProjectId");
             let tmpTypeformMapping = localStorage.getItem("typeformMapping");
             if (tmpTypeformMapping != null) {
               let tmpTypeformMapping1 = JSON.parse(tmpTypeformMapping);
-              checkedMappingForSurvey(tmpTypeformMapping1)
+              checkedMappingForSurvey(tmpTypeformMapping1);
             }
 
             setSelectedProjectId(newValLocalStorage1);
@@ -1216,16 +1487,124 @@ function CreateDataConnection() {
           } else {
             setisConnectedHubspot(false);
           }
-        } else {
+        }
+         else {
           setisConnectedHubspot(true);
           setHubspotTokenName(response.data.user.hubspot_access_token);
           setHubspotRefreshtokenName(response.data.user.hubspot_refresh_token);
         }
+
+        if (response.data.user.klaviyo_access_token == undefined) {
+          let search = window.location.search;
+          let params = new URLSearchParams(search);
+          let newParam = params.get("code");
+          // && checkConnectionSource == process.env.REACT_APP_HUBSPOT_CLIENT_ID
+          if (
+            newParam != null &&
+            response.data.user.connectionType ==
+              process.env.REACT_APP_klaviyo_CLIENT_ID
+          ) {
+            let newValLocalStorage = localStorage.getItem(
+              "selectedProjectName"
+            );
+            let newValLocalStorage1 = localStorage.getItem("selectedProjectId");
+            // let tmpTypeformMapping = localStorage.getItem("typeformMapping");
+            // if (tmpTypeformMapping != null) {
+            //   let tmpTypeformMapping1 = JSON.parse(tmpTypeformMapping);
+            //   checkedMappingForSurvey(tmpTypeformMapping1);
+            // }
+
+            setSelectedProjectId(newValLocalStorage1);
+            setProjectName(newValLocalStorage);
+            setisConnectedKlaviyo(true);
+            fetchTokenHubspotList(null, newParam);
+          } 
+          else {
+            setisConnectedKlaviyo(false);
+          }
+        }
+         else {
+          setisConnectedKlaviyo(true); 
+        }
+
+        // if (response.data.user.klaviyo_access_token != undefined) {
+        //   setisConnectedKlaviyo(true);
+        // }
+
+        if (response.data.user.shopify_access_token == undefined) {
+          let search = window.location.search;
+          let params = new URLSearchParams(search);
+          let newParam = params.get("code");
+          // && checkConnectionSource == process.env.REACT_APP_HUBSPOT_CLIENT_ID
+          if (
+            newParam != null &&
+            response.data.user.connectionType ==
+              process.env.REACT_APP_shopify_CLIENT_ID
+          ) {
+            let newValLocalStorage = localStorage.getItem(
+              "selectedProjectName"
+            );
+            let newValLocalStorage1 = localStorage.getItem("selectedProjectId");
+            // let tmpTypeformMapping = localStorage.getItem("typeformMapping");
+            // if (tmpTypeformMapping != null) {
+            //   let tmpTypeformMapping1 = JSON.parse(tmpTypeformMapping);
+            //   checkedMappingForSurvey(tmpTypeformMapping1);
+            // }
+
+            setSelectedProjectId(newValLocalStorage1);
+            setProjectName(newValLocalStorage);
+            setisConnectedShopify(true);
+            // fetchTokenHubspotList(null, newParam);
+          } 
+          else {
+            setisConnectedShopify(false);
+          }
+        }
+         else {
+          setisConnectedShopify(true); 
+        }
+        // if (response.data.user.shopify_access_token != undefined) {
+        //   setisConnectedShopify(true);
+        // }
+
+        if (response.data.user.intercom_access_token == undefined) {
+          let search = window.location.search;
+          let params = new URLSearchParams(search);
+          let newParam = params.get("code");
+          // && checkConnectionSource == process.env.REACT_APP_HUBSPOT_CLIENT_ID
+          if (
+            newParam != null &&
+            response.data.user.connectionType ==
+              process.env.REACT_APP_Intercom_CLIENT_ID
+          ) {
+            let newValLocalStorage = localStorage.getItem(
+              "selectedProjectName"
+            );
+            let newValLocalStorage1 = localStorage.getItem("selectedProjectId");
+            // let tmpTypeformMapping = localStorage.getItem("typeformMapping");
+            // if (tmpTypeformMapping != null) {
+            //   let tmpTypeformMapping1 = JSON.parse(tmpTypeformMapping);
+            //   checkedMappingForSurvey(tmpTypeformMapping1);
+            // }
+
+            setSelectedProjectId(newValLocalStorage1);
+            setProjectName(newValLocalStorage);
+            setisConnectedIntercom(true); 
+          } 
+          else {
+            setisConnectedIntercom(false);
+          }
+        }
+         else {
+          setisConnectedIntercom(true); 
+        }
+        // if (response.data.user.intercom_access_token != undefined) {
+        //   setisConnectedIntercom(true);
+        // }
       })
       .catch((err) => {
         console.log(err);
       });
-
 
     let zUrlsearch = window.location.search;
     let zparams = new URLSearchParams(zUrlsearch);
@@ -1233,25 +1612,25 @@ function CreateDataConnection() {
     const fetchZendesktoken = (znewParam) => {
       if (znewParam.toSting().length > 2) {
         setisConnectedZendesk(true);
-      }
-      else {
+      } else {
         setisConnectedZendesk(false);
       }
       // axios.get(`https://cml5331.zendesk.com/oauth/tokens`, {
-      //   grant_type: "authorization_code", 
+      //   grant_type: "authorization_code",
       //   code: znewParam,
-      //   client_id: "CMLNew", 
-      //   client_secret: "5f14e76071f6ad71b19bf080ae4bbafdaddc513cb712ae6091dda988594383cf", 
-      //   redirect_uri: "http://localhost:3000/dashboard/data-platform/create-data-connection", 
-      //   scope: "organizations:write read" 
+      //   client_id: "CMLNew",
+      //   client_secret: "5f14e76071f6ad71b19bf080ae4bbafdaddc513cb712ae6091dda988594383cf",
+      //   redirect_uri: "http://localhost:3000/dashboard/data-platform/create-data-connection",
+      //   scope: "organizations:write read"
       //   })
       //   .then((response) => {   })
       // .catch((err) => {
       //   console.log(err);
       // });
-    }
+    };
     fetchTokenklaviyo();
     fetchTokenIntercom();
+    fetchTokenShopify();
   }, []);
 
   const setCatMappingOption = (catOptionList) => {
@@ -1427,7 +1806,8 @@ function CreateDataConnection() {
                       event.stopPropagation();
                       data.row.module = value;
                       data.row.weightage = "L";
-                      data.row.is_mapped = data.row.module != null ? true : false;
+                      data.row.is_mapped =
+                        data.row.module != null ? true : false;
                     }
                   }}
                   renderInput={(params) => (
@@ -1473,32 +1853,11 @@ function CreateDataConnection() {
 
   //databases json
 
-
-
   //upload a file json
-
-
 
   //selected form data
 
-  const selectedForm = [
-    {
-      id: 1,
-      name: "Typeform",
-      value: "typeform",
-      description: "Build beautiful, interactive forms — get more responses",
-      img: "/json-media/img/partners/typeform-sm.svg",
-    },
-    // { id: 2, name: 'Salesforce', description: 'Personalize every experience along the customer journey with the Customer 360', img: '/images/partners/salesforce.svg' },
-    {
-      id: 3,
-      name: "Hubspot",
-      value: "hubspot",
-      description:
-        "CRM platform with all the software, integrations, and resources",
-      img: "/json-media/img/partners/hubspot-sm.svg",
-    },
-  ];
+
 
   //select data source
 
@@ -1507,21 +1866,25 @@ function CreateDataConnection() {
     setisOpenPopupTypeform(true);
 
     await axios
-      .post(`${process.env.REACT_APP_API_URL}/user/fetchTokenTypeform`, {
-        grant_type: process.env.REACT_APP_TYPEFORM_GRANT_TYPE,
-        refresh_token: "",
-        code: newParam,
-        client_id: process.env.REACT_APP_TYPEFORM_CLIENT_ID,
-        client_secret: process.env.REACT_APP_TYPEFORM_CLIENT_SECRET,
-        redirect_uri: process.env.REACT_APP_TYPEFORM_REDIRECT_URI,
-        token_url: process.env.REACT_APP_TYPEFORMTOKEN_URL,
-      },{
-        headers: {
-          "Content-type": "application/json",
-          "token": Cookies.get("token")
+      .post(
+        `${process.env.REACT_APP_API_URL}/user/fetchTokenTypeform`,
+        {
+          grant_type: process.env.REACT_APP_TYPEFORM_GRANT_TYPE,
+          refresh_token: "",
+          code: newParam,
+          client_id: process.env.REACT_APP_TYPEFORM_CLIENT_ID,
+          client_secret: process.env.REACT_APP_TYPEFORM_CLIENT_SECRET,
+          redirect_uri: process.env.REACT_APP_TYPEFORM_REDIRECT_URI,
+          token_url: process.env.REACT_APP_TYPEFORMTOKEN_URL,
         },
-        withCredentials: true,
-      })
+        {
+          headers: {
+            "Content-type": "application/json",
+            token: Cookies.get("token"),
+          },
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         settokenName(response.data.access_token);
         setRefreshtokenName(response.data.refresh_token);
@@ -1540,27 +1903,33 @@ function CreateDataConnection() {
     let params = new URLSearchParams(search);
     let newParam = params.get("code");
     await axios
-      .post(`${process.env.REACT_APP_API_URL}/user/fetchTokenKlaviyo`, {
-        refresh_token: '',
-        code: newParam,
-        client_id: process.env.REACT_APP_klaviyo_CLIENT_ID,
-        client_secret: process.env.REACT_APP_klaviyo_Client_Secret,
-        redirect_uri: process.env.REACT_APP_klaviyo_REDIRECT_URI,
-        user_id: user._id,
-        code_verifier: process.env.REACT_APP_klaviyo_Code_verifier, 
-      },{
-        headers: {
-          "Content-type": "application/json",
-          "token": Cookies.get("token")
+      .post(
+        `${process.env.REACT_APP_API_URL}/user/fetchTokenKlaviyo`,
+        {
+          refresh_token: "",
+          code: newParam,
+          client_id: process.env.REACT_APP_klaviyo_CLIENT_ID,
+          client_secret: process.env.REACT_APP_klaviyo_Client_Secret,
+          redirect_uri: process.env.REACT_APP_klaviyo_REDIRECT_URI,
+          user_id: user._id,
+          code_verifier: process.env.REACT_APP_klaviyo_Code_verifier,
         },
-        withCredentials: true,
-      })
-      .then((response) => { 
-         settokenName(response.data.access_token);
-         console.log(response.data.access_token)
-         setRefreshtokenName(response.data.refresh_token);
-         let ecomlist=[...ecommerceListData];
-         console.log(ecomlist)
+        {
+          headers: {
+            "Content-type": "application/json",
+            token: Cookies.get("token"),
+          },
+          withCredentials: true,
+        }
+      )
+      .then((response) => {
+        setOpenKlaviyo(true); 
+        setisConnectedKlaviyo(true);  
+        // settokenName(response.data.access_token);
+        // console.log(response.data.access_token);
+        // setRefreshtokenName(response.data.refresh_token);
+        // let ecomlist = [...ecommerceListData];
+        // console.log(ecomlist);
 
         //  setprojectNameValid((prev) => ({
         //   ...isValiedProject,
@@ -1568,8 +1937,8 @@ function CreateDataConnection() {
         //   textMessage: "Enter project name",
         // }));
 
-        //  setisConnected(true) 
-         setisOpenPopupKlaviyo(true);
+        //  setisConnected(true)
+
         // getWorkspaceList(
         //   { token: response.data.access_token },
         //   response.data.refresh_token
@@ -1581,26 +1950,27 @@ function CreateDataConnection() {
       });
   };
 
-
-  const fetchTokenShopify = async (ev) => { 
+  const fetchTokenShopify = async (ev) => {
     let search = window.location.search;
     let params = new URLSearchParams(search);
     let newParam = params.get("code");
     await axios
-      .post(`${process.env.REACT_APP_API_URL}/user/fetchTokenShopify`, { 
+      .post(`${process.env.REACT_APP_API_URL}/user/fetchTokenShopify`, {
         code: newParam,
         client_id: process.env.REACT_APP_Shopify_CLIENT_ID,
         client_secret: process.env.REACT_APP_Shopify_Client_Secret,
         redirect_uri: process.env.REACT_APP_Shopify_REDIRECT_URI,
-        shop:process.env.REACT_APP_Shopify_shop,
-        user_id: user._id, 
+        shop: process.env.REACT_APP_Shopify_shop,
+        user_id: user._id,
       })
-      .then((response) => { 
-         settokenName(response.data.access_token);
-         console.log(response.data.access_token)
-         setRefreshtokenName(response.data.refresh_token);
-         let ecomlist=[...ecommerceListData];
-         console.log(ecomlist) 
+      .then((response) => {
+        setOpenShopify(true); 
+        setisConnectedShopify(true);  
+        // settokenName(response.data.access_token);
+        // console.log(response.data.access_token);
+        // setRefreshtokenName(response.data.refresh_token);
+        // let ecomlist = [...ecommerceListData];
+        // console.log(ecomlist);
       })
       .catch((err) => {
         console.log(err);
@@ -1608,27 +1978,31 @@ function CreateDataConnection() {
       });
   };
 
-
-  const fetchTokenIntercom = async (ev) => { 
+  const fetchTokenIntercom = async (ev) => {
     let search = window.location.search;
     let params = new URLSearchParams(search);
     let newParam = params.get("code");
     await axios
-      .post(`${process.env.REACT_APP_API_URL}/user/fetchTokenIntercom`, {
-        grant_type: process.env.REACT_APP_TYPEFORM_GRANT_TYPE,
-        refresh_token: "",
-        code: newParam,
-        code_verifier: 'code_challenge',
-        redirect_uri: 'http://localhost:3000/dashboard/data-platform/create-data-connection',
-      },{
-        headers: {
-          "Content-type": "application/json",
-          "token": Cookies.get("token")
+      .post(
+        `${process.env.REACT_APP_API_URL}/user/fetchTokenIntercom`,
+        {
+          grant_type: process.env.REACT_APP_TYPEFORM_GRANT_TYPE,
+          refresh_token: "",
+          code: newParam,
+          code_verifier: "code_challenge",
+          redirect_uri:
+            "http://localhost:3000/dashboard/data-platform/create-data-connection",
         },
-        withCredentials: true,
-      })
+        {
+          headers: {
+            "Content-type": "application/json",
+            token: Cookies.get("token"),
+          },
+          withCredentials: true,
+        }
+      )
       .then((response) => {
-        console.log(response)
+        console.log(response);
         setisOpenPopupIntercom(false);
         // settokenName(response.data.access_token);
         // setRefreshtokenName(response.data.refresh_token);
@@ -1670,13 +2044,12 @@ function CreateDataConnection() {
       });
   };
 
-
   const connectDataForIngestion = (ev, value) => {
     ev.stopPropagation();
     setChecked([]);
     if (value == "Typeform") {
       if (tokenName == "") {
-        handleOpen(ev, value)
+        handleOpen(ev, value);
         // seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Data Source Connection Error', message: ['Connection to the data source is required, connect your data source before moving forward'] }])
       } else {
         // token: "FcCmBqwFNAYWKtXv5F6g6CZtfmBQKgMnBP7vSMTYGshg"
@@ -1686,35 +2059,64 @@ function CreateDataConnection() {
       }
     } else if (value == "Hubspot") {
       if (hubspotTokenName == "") {
-        handleOpen(ev, value)
+        handleOpen(ev, value);
         // seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Data Source Connection Error', message: ['Connection to the data source is required, connect your data source before moving forward'] }])
       } else {
-        setOpenHubspot(true);
-        setisOpenPopupHubspot(true);
+        setOpen(true);
+        setisOpenPopupTypeform(true);
       }
     }
-  }
+    else if (value == "Klaviyo") {
+      if (hubspotTokenName == "") {
+        handleOpen(ev, value); 
+      } 
+        else {
+        setOpenKlaviyo(true);
+        isConnectedKlaviyo(true);
+       }
+    }
+    else if (value == "Shopify") {
+      if (hubspotTokenName == "") {
+        handleOpen(ev, value); 
+      } 
+        else {
+        setOpenShopify(true);
+        isConnectedShopify(true);
+       }
+    }
+  };
 
   const clearDataForIngestion = async (ev, value) => {
-    ev.stopPropagation()
+    value = value.toLowerCase();
+    ev.stopPropagation();
     let newSelected = [...selected];
     let newcheckProgressDatasetStatus = [...checkProgressDatasetStatus];
-    if (value == "Typeform") {
+    if (value == "typeform") {
       setIsModalDataTypeform([]);
-      newcheckProgressDatasetStatus = newcheckProgressDatasetStatus.filter((eleType) => eleType.dataSource !== value.toLowerCase())
-      newSelected.splice(newSelected.findIndex((ele1) => ele1.label === value), 1);
+      newcheckProgressDatasetStatus = newcheckProgressDatasetStatus.filter(
+        (eleType) => eleType.dataSource !== value.toLowerCase()
+      );
+      newSelected.splice(
+        newSelected.findIndex((ele1) => ele1.label === value),
+        1
+      );
       setcheckProgressDatasetStatus(newcheckProgressDatasetStatus);
       setSelected(newSelected);
-    } else if (value == "Hubspot") {
-      setIsModalDataHubspot([])
-      newcheckProgressDatasetStatus = newcheckProgressDatasetStatus.filter(eleHub => eleHub.dataSource !== value.toLowerCase());
-      newSelected.splice(newSelected.findIndex((ele1) => ele1.label === value), 1);
+    } else if (value == "hubspot") {
+      setIsModalDataHubspot([]);
+      newcheckProgressDatasetStatus = newcheckProgressDatasetStatus.filter(
+        (eleHub) => eleHub.dataSource !== value.toLowerCase()
+      );
+      newSelected.splice(
+        newSelected.findIndex((ele1) => ele1.label === value),
+        1
+      );
       setcheckProgressDatasetStatus(newcheckProgressDatasetStatus);
       setSelected(newSelected);
     }
     clearInterval(interval.current);
     setisRunningIngestion(false);
-  }
+  };
 
   const getUpdateSurveyList = async (ev, value) => {
     // if (ev != null) {
@@ -1722,7 +2124,6 @@ function CreateDataConnection() {
     // }
     // let newSelected = [...selected];
     // let newcheckProgressDatasetStatus = [...checkProgressDatasetStatus];
-
     // setChecked([]);
     // if (value == "Typeform") {
     //   if (newSelected.findIndex((ele1) => ele1.label === value) != -1) {
@@ -1746,48 +2147,70 @@ function CreateDataConnection() {
     //     if (hubspotTokenName == "") {
     //       seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Data Source Connection Error', message: ['Connection to the data source is required, connect your data source before moving forward'] }])
     //     } else {
-    //       setOpenHubspot(true);
-    //       setisOpenPopupHubspot(true);
+    //       setOpenHubspot(true); 
     //       getContactList({ token: hubspotTokenName }, hubspotRefreshtokenName);
     //     }
     //   }
     // }
     // setcheckProgressDatasetStatus(newcheckProgressDatasetStatus);
     // setSelected(newSelected);
-
   };
 
-  const removeTypeformToken = async (ev, value) => {
+  const removeToken = async (ev, tokenName) => {
+    tokenName = tokenName.toLowerCase();
     if (ev != null) {
       ev.stopPropagation();
     }
-    clearDataForIngestion(ev, value);
+    clearDataForIngestion(ev, tokenName);
+
+    let token_access =
+      tokenName == "typeform" ? "access_token" : tokenName + "_access_token";
+    let token_refresh =
+      tokenName == "typeform" ? "refresh_token" : tokenName + "_refresh_token";
+
+    let tokenObj = {};
+    tokenObj[token_access] = 1;
+    tokenObj[token_refresh] = 1;
 
     axios
-      .post(`${process.env.REACT_APP_API_URL}/user/removeTypeformToken`, {
-        isRemoveTypeForm: value == "Typeform" ? true : false,
-      },{
-        headers: {
-          "Content-type": "application/json",
-          "token": Cookies.get("token")
+      .post(
+        `${process.env.REACT_APP_API_URL}/user/removeToken`,
+        {
+          isRemoveToken: tokenObj,
         },
-        withCredentials: true,
-      })
+        {
+          headers: {
+            "Content-type": "application/json",
+            token: Cookies.get("token"),
+          },
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         console.log(checkProgressDatasetStatus);
-        if (value == "Typeform") {
+        if (tokenName == "typeform") {
           setOpen(false);
           setisOpenPopupTypeform(false);
           setisConnectedTypeForm(false);
           settokenName("");
           getworkspaceName([]);
-        } else if (value == "Hubspot") {
+        } else if (tokenName == "hubspot") {
           setOpenHubspot(false);
           setisOpenPopupHubspot(false);
           setisConnectedHubspot(false);
           setHubspotTokenName("");
           getlistListOfContact([]);
+        } 
+        else if (tokenName == "klaviyo") {
+          setisConnectedKlaviyo(false) 
         }
+        else if (tokenName == "shopify") {
+          setisConnectedShopify(false) 
+        }
+        else if (tokenName == "intercom") {
+          setisConnectedIntercom(false) 
+        }
+        
         navigate("/dashboard/data-platform/create-data-connection");
       })
       .catch((err) => {
@@ -1797,14 +2220,6 @@ function CreateDataConnection() {
         // setLoaderShow(false)
       });
   };
-
-
-  const removeKlaviyoToken = async (ev,connectionName) => {
-    if(connectionName=='Klaviyo'){ setisConnected(false)  }
-
-}
-
-
 
   const getContactList = async (newBodyObj, refreshToken) => {
     getlistListOfContact([]);
@@ -1820,12 +2235,19 @@ function CreateDataConnection() {
             response1.data.list.length != 0
           ) {
             getlistListOfContact([response1.data.list]);
-            setisError(true)
+            setisError(true);
           } else {
             setOpenHubspot(false);
             setisOpenPopupHubspot(false);
-            setisError(false)
-            seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Data Source Connection Error', message: ['No Contact List is found in this account'] }])
+            setisError(false);
+            seterrorListDisplay([
+              {
+                alertType: "error-message",
+                isCollapsable: true,
+                short_text: "Data Source Connection Error",
+                message: ["No Contact List is found in this account"],
+              },
+            ]);
           }
         } else {
           axios
@@ -1839,13 +2261,14 @@ function CreateDataConnection() {
                 client_secret: process.env.REACT_APP_HUBSPOT_CLIENT_SECRET,
                 redirect_uri: process.env.REACT_APP_HUBSPOT_REDIRECT_URI,
                 token_url: process.env.REACT_APP_HUBSPOT_REDIRECT_URI,
-              },{
-        headers: {
-          "Content-type": "application/json",
-          "token": Cookies.get("token")
-        },
-        withCredentials: true,
-      }
+              },
+              {
+                headers: {
+                  "Content-type": "application/json",
+                  token: Cookies.get("token"),
+                },
+                withCredentials: true,
+              }
             )
             .then((response) => {
               setHubspotTokenName(response.data.hubspot_access_token);
@@ -1873,7 +2296,7 @@ function CreateDataConnection() {
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify(newBodyObj)
+      body: JSON.stringify(newBodyObj),
     })
       .then((res) => res.json())
       .then((response) => {
@@ -1891,21 +2314,25 @@ function CreateDataConnection() {
           getworkspaceName(newWorkspace);
         } else {
           axios
-            .post(`${process.env.REACT_APP_API_URL}/user/fetchTokenTypeform`, {
-              grant_type: "refresh_token",
-              refresh_token: refreshToken,
-              code: "",
-              client_id: process.env.REACT_APP_TYPEFORM_CLIENT_ID,
-              client_secret: process.env.REACT_APP_TYPEFORM_CLIENT_SECRET,
-              redirect_uri: process.env.REACT_APP_TYPEFORM_REDIRECT_URI,
-              token_url: process.env.REACT_APP_TYPEFORMTOKEN_URL,
-            },{
-        headers: {
-          "Content-type": "application/json",
-          "token": Cookies.get("token")
-        },
-        withCredentials: true,
-      })
+            .post(
+              `${process.env.REACT_APP_API_URL}/user/fetchTokenTypeform`,
+              {
+                grant_type: "refresh_token",
+                refresh_token: refreshToken,
+                code: "",
+                client_id: process.env.REACT_APP_TYPEFORM_CLIENT_ID,
+                client_secret: process.env.REACT_APP_TYPEFORM_CLIENT_SECRET,
+                redirect_uri: process.env.REACT_APP_TYPEFORM_REDIRECT_URI,
+                token_url: process.env.REACT_APP_TYPEFORMTOKEN_URL,
+              },
+              {
+                headers: {
+                  "Content-type": "application/json",
+                  token: Cookies.get("token"),
+                },
+                withCredentials: true,
+              }
+            )
             .then((response) => {
               // if (count == 1) {
               getWorkspaceList(
@@ -1968,8 +2395,7 @@ function CreateDataConnection() {
     if (projectName.trim() !== "") {
       if (await checkProjectNameExist()) {
         localStorage.setItem("selectedProjectName", projectName);
-      }
-      else {
+      } else {
         let isValiedProject = { ...projectNameValid };
         setprojectNameValid((prev) => ({
           ...isValiedProject,
@@ -1991,7 +2417,7 @@ function CreateDataConnection() {
       .then(async (response1) => {
         isExist = response1.data.success;
       })
-      .catch((err) => { });
+      .catch((err) => {});
 
     return isExist;
   };
@@ -2039,15 +2465,27 @@ function CreateDataConnection() {
         selected.forEach(async (elem) => {
           if (elem.label == "Typeform") {
             isModalDataTypeform.forEach((ele) => {
-              let newSurvyNameFormateTmp = ele.formName.replace(/[^a-zA-Z0-9_ ]/g, "_").replace(/\s+/g, "_").toLowerCase();
-              let newSurvyNameFormate = newSurvyNameFormateTmp.replace(/[_]{2,}/g, "_");
+              let newSurvyNameFormateTmp = ele.formName
+                .replace(/[^a-zA-Z0-9_ ]/g, "_")
+                .replace(/\s+/g, "_")
+                .toLowerCase();
+              let newSurvyNameFormate = newSurvyNameFormateTmp.replace(
+                /[_]{2,}/g,
+                "_"
+              );
               let newStr = `${user._id}/${newSurvyNameFormate}/${ele.formId}`;
               newList11.push(newStr);
             });
           } else if (elem.label == "Hubspot") {
             isModalDataHubspot.forEach((ele) => {
-              let newSurvyNameFormateTmp = ele.displayName.replace(/[^a-zA-Z0-9_ ]/g, "_").replace(/\s+/g, "_").toLowerCase();
-              let newSurvyNameFormate = newSurvyNameFormateTmp.replace(/[_]{2,}/g, "_");
+              let newSurvyNameFormateTmp = ele.displayName
+                .replace(/[^a-zA-Z0-9_ ]/g, "_")
+                .replace(/\s+/g, "_")
+                .toLowerCase();
+              let newSurvyNameFormate = newSurvyNameFormateTmp.replace(
+                /[_]{2,}/g,
+                "_"
+              );
               let newStr = `${user._id}/${newSurvyNameFormate}/${ele.value}`;
               newList11.push(newStr);
             });
@@ -2077,7 +2515,9 @@ function CreateDataConnection() {
       intervalForCategoryMapping.current = setInterval(() => {
         checkedCategoryMappingsMongo();
       }, 3000);
-      setTimeout(function () { clearInterval(intervalForCategoryMapping.current); }, 30000);
+      setTimeout(function () {
+        clearInterval(intervalForCategoryMapping.current);
+      }, 30000);
     } else {
       clearInterval(intervalForCategoryMapping.current);
     }
@@ -2089,8 +2529,6 @@ function CreateDataConnection() {
 
   // }, [changeCatMappingData]);
 
-
-
   const gotoProjectManagementScreen = async () => {
     // setSelectedProjectId("");
     // navigate("/dashboard/data-platform/project-management");
@@ -2101,15 +2539,13 @@ function CreateDataConnection() {
         isEmpty: true,
         textMessage: `Enter project name`,
       }));
-    }
-    else if (await checkProjectNameExist()) {
+    } else if (await checkProjectNameExist()) {
       if (activeStep !== 2) {
         createSurvey(false);
       }
       setSelectedProjectId("");
       navigate("/dashboard/data-platform/project-management");
-    }
-    else {
+    } else {
       let isValiedProject = { ...projectNameValid };
       setprojectNameValid((prev) => ({
         ...isValiedProject,
@@ -2120,23 +2556,23 @@ function CreateDataConnection() {
   };
 
   function dataRefreshProject() {
-    setdatarefreshloader(false)
+    setdatarefreshloader(false);
     setTimeout(() => {
-      setdatarefreshloader(true)
+      setdatarefreshloader(true);
     }, 5000);
     setTimeout(() => {
-      setdatarefreshloader(false)
-      setdatarefreshupdated(false)
+      setdatarefreshloader(false);
+      setdatarefreshupdated(false);
     }, 5000);
     setTimeout(() => {
-      setdatarefreshloader(true)
-      setdatarefreshupdated(true)
+      setdatarefreshloader(true);
+      setdatarefreshupdated(true);
     }, 10000);
   }
 
   function CircularProgressWithLabel(props) {
     return (
-      <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+      <Box sx={{ position: "relative", display: "inline-flex" }}>
         <CircularProgress variant="determinate" {...props} />
         <Box
           sx={{
@@ -2144,10 +2580,10 @@ function CreateDataConnection() {
             left: 0,
             bottom: 0,
             right: 0,
-            position: 'absolute',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            position: "absolute",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           <Typography variant="caption" component="div" color="text.secondary">
@@ -2158,19 +2594,37 @@ function CreateDataConnection() {
     );
   }
 
-
-
   return (
     <>
       <div className="container-full">
-
         {/* -------------------- header section -------------------- */}
         <div className="after-login-header">
-          {announcement ? <> <div class="announcement"><a className="fa fa-times-circle close-icon" onClick={() => hideannouncementBar()}></a>
-            <div class="container">
-              <div class="announcement-text">
-                <Link to="/power-user-program-convertml">  <b> Pioneer with the 20 leaders! Join the <strong>Power User Program</strong> for exclusive benefits.</b></Link>
-              </div> </div></div></> : <> </>}
+          {announcement ? (
+            <>
+              {" "}
+              <div class="announcement">
+                <a
+                  className="fa fa-times-circle close-icon"
+                  onClick={() => hideannouncementBar()}
+                ></a>
+                <div class="container">
+                  <div class="announcement-text">
+                    <Link to="/power-user-program-convertml">
+                      {" "}
+                      <b>
+                        {" "}
+                        Pioneer with the 20 leaders! Join the{" "}
+                        <strong>Power User Program</strong> for
+                        exclusive benefits.
+                      </b>
+                    </Link>
+                  </div>{" "}
+                </div>
+              </div>
+            </>
+          ) : (
+            <> </>
+          )}
           <Grid container spacing={2}>
             <Grid item xs={3} md={3} lg={3}>
               <Link to="/">
@@ -2180,9 +2634,30 @@ function CreateDataConnection() {
                 />
               </Link>
 
-              <div className="projectName" title={location?.state?.newObj?.project_name == undefined
-                ? (projectName + "(" + paramsForFetchResult.template + ")") : (location?.state?.newObj?.project_name) + ' (' + (location?.state?.newObj?.template) + ')'}>
-                {activeStep + 1 == 3 ? <><span className='selectedservay'>{paramsForFetchResult.template}</span> <div className="clearfix"></div> {paramsForFetchResult.project_name} </> : <span className="createproject">Let’s Create Your Project</span>}
+              <div
+                className="projectName"
+                title={
+                  location?.state?.newObj?.project_name == undefined
+                    ? projectName + "(" + paramsForFetchResult.template + ")"
+                    : location?.state?.newObj?.project_name +
+                      " (" +
+                      location?.state?.newObj?.template +
+                      ")"
+                }
+              >
+                {activeStep + 1 == 3 ? (
+                  <>
+                    <span className="selectedservay">
+                      {paramsForFetchResult.template}
+                    </span>{" "}
+                    <div className="clearfix"></div>{" "}
+                    {paramsForFetchResult.project_name}{" "}
+                  </>
+                ) : (
+                  <span className="createproject">
+                    Let’s Create Your Project
+                  </span>
+                )}
               </div>
             </Grid>
             <Grid item xs={6} md={6} lg={6}>
@@ -2199,7 +2674,12 @@ function CreateDataConnection() {
                       {...stepProps}
                       className={index == activeStep ? "selected-tab" : ""}
                     >
-                      <StepLabel {...labelProps} onClick={(e) => handleresultBack(e, index)}>{label}</StepLabel>
+                      <StepLabel
+                        {...labelProps}
+                        onClick={(e) => handleresultBack(e, index)}
+                      >
+                        {label}
+                      </StepLabel>
                     </Step>
                   );
                 })}
@@ -2214,26 +2694,48 @@ function CreateDataConnection() {
                         color="primary"
                         variant="outlined"
                         title="Save Draft"
-                      // onClick={() => {
-                      //   onsaveAsDraft();
-                      // }}
+                        // onClick={() => {
+                        //   onsaveAsDraft();
+                        // }}
                       >
                         Save Draft
                       </Button>
                     )}
-                    {activeStep == 2 ? <Button
-                      color={!datarefreshupdated ? 'success' : 'primary'}
-                      variant="outlined"
-                      className="icon-btn"
-                      title="Data Refresh"
-                      onClick={() => {
-                        dataRefreshProject();
-                      }}
-                    >
-                      {datarefreshloader ? <> <span class="icon-data-refresh fa-1x"></span></> : <>
-                        {datarefreshupdated ? <><CircularProgress size="1.5rem" className="float-right" /></> : <><i class="fa fa-check-circle"></i></>}
-                      </>}
-                    </Button> : ''}
+                    {activeStep == 2 ? (
+                      <Button
+                        color={!datarefreshupdated ? "success" : "primary"}
+                        variant="outlined"
+                        className="icon-btn"
+                        title="Data Refresh"
+                        onClick={() => {
+                          dataRefreshProject();
+                        }}
+                      >
+                        {datarefreshloader ? (
+                          <>
+                            {" "}
+                            <span class="icon-data-refresh fa-1x"></span>
+                          </>
+                        ) : (
+                          <>
+                            {datarefreshupdated ? (
+                              <>
+                                <CircularProgress
+                                  size="1.5rem"
+                                  className="float-right"
+                                />
+                              </>
+                            ) : (
+                              <>
+                                <i class="fa fa-check-circle"></i>
+                              </>
+                            )}
+                          </>
+                        )}
+                      </Button>
+                    ) : (
+                      ""
+                    )}
                     <Button
                       color="primary"
                       variant="outlined"
@@ -2253,7 +2755,8 @@ function CreateDataConnection() {
           </Grid>
         </div>
         {/* -------------------- header section end -------------------- */}
-        <Box ref={errorRef}
+        <Box
+          ref={errorRef}
           component="form"
           noValidate
           autoComplete="off"
@@ -2267,8 +2770,7 @@ function CreateDataConnection() {
                 <Box>
                   {/* step1 code */}
                   {activeStep + 1 == 1 ? (
-                    <Box display={"grid"} gap={4}  >
-
+                    <Box display={"grid"} gap={4}>
                       <Grid container spacing={2}>
                         <Grid item xs={4}>
                           <Typography variant="h6" component="h6">
@@ -2292,7 +2794,6 @@ function CreateDataConnection() {
                         <Grid item xs={8}>
                           <TextField
                             fullWidth
-
                             label="Enter Project Name"
                             value={projectName}
                             sx={{
@@ -2305,10 +2806,10 @@ function CreateDataConnection() {
                                   projectName == "" ? "#D41E4A" : "#0051FA",
                               },
                               "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                              {
-                                borderColor:
-                                  projectName == "" ? "#D41E4A" : "#0051FA",
-                              },
+                                {
+                                  borderColor:
+                                    projectName == "" ? "#D41E4A" : "#0051FA",
+                                },
                             }}
                             //onKeyPress={(event, val) =>onProjectententerKey(event, val)}
                             onBlur={(event, val) => onProjectName1(event, val)}
@@ -2319,11 +2820,9 @@ function CreateDataConnection() {
                             {projectNameValid.textMessage}
                           </span>
                         </Grid>
-
                       </Grid>
 
-
-                      <hr style={{ border: "1px solid #ddd", margin: 0 }} />
+                      <hr style={{ border: "1px solid #ddd", margin: 0, padding:0 }} />
 
                       <Grid container item xs={12} display={"flex"}>
                         <Grid>
@@ -2347,47 +2846,37 @@ function CreateDataConnection() {
                         </Grid>
                       </Grid>
 
-                      {
-                        errorListDisplay.map(
-                          (itemMessage, i) => (
-                            <section
-                              className={`message-box   ${itemMessage.alertType}`}
-                            >
-                              <span>{itemMessage.short_text}</span>
-                              <a
-                                onClick={(val, ind) => {
-                                  collapseAndExpandError(val, i)
-                                }
-                                }
-                              >
-                                <i
-                                  className={
-                                    !itemMessage.isCollapsable
-                                      ? "fa fa-angle-up"
-                                      : "fa fa-angle-down"
-                                  }
-                                ></i>
-                              </a>
-                              {!itemMessage.isCollapsable ? (
-                                <>
-                                  <ul>
-                                    {
-                                      itemMessage.message.map((mssgList, ii) => (
-
-
-                                        <li>{mssgList} </li>
-
-                                      ))
-                                    }
-                                  </ul>
-                                </>
-                              ) : (
-                                <> </>
-                              )}
-
-                            </section>
-                          ))
-                      }
+                      {errorListDisplay.map((itemMessage, i) => (
+                        <section
+                          className={`message-box   ${itemMessage.alertType}`}
+                        >
+                          <span>{itemMessage.short_text}</span>
+                          <a
+                            onClick={(val, ind) => {
+                              collapseAndExpandError(val, i);
+                            }}
+                          >
+                            <i
+                              className={
+                                !itemMessage.isCollapsable
+                                  ? "fa fa-angle-up"
+                                  : "fa fa-angle-down"
+                              }
+                            ></i>
+                          </a>
+                          {!itemMessage.isCollapsable ? (
+                            <>
+                              <ul>
+                                {itemMessage.message.map((mssgList, ii) => (
+                                  <li>{mssgList} </li>
+                                ))}
+                              </ul>
+                            </>
+                          ) : (
+                            <> </>
+                          )}
+                        </section>
+                      ))}
 
                       {/* {errorNotificationAlert.alertVisible == true && (
                         <section
@@ -2459,24 +2948,13 @@ function CreateDataConnection() {
                                 xs={12}
                                 md={3}
                                 lg={3}
-                                key={i}
+                                key={i} 
                                 className="cursor-pointer"
-
+                                onClick={(ev) => {
+                                  connectDataForIngestion(ev, item.name);
+                                }}
                               >
-                                <Card
-                                  key={i}
-                                  onClick={(ev) => {
-                                    connectDataForIngestion(ev, item.name);
-                                  }}
-                                >
-                                  {/* 
-className={
-                                    selected.findIndex(
-                                      (ele1) => ele1.label === item.name
-                                    ) == -1
-                                      ? ""
-                                      : "active-card"
-                                  } */}
+                                <Card key={i}> 
 
                                   <CardMedia
                                     sx={{
@@ -2489,27 +2967,39 @@ className={
                                     }}
                                     image={item.img}
                                     title={item.name}
-                                  />
+                                  /> 
                                   {(isConnectedTypeForm == true &&
-                                    ["Typeform"].indexOf(item.name) != -1) ||
-                                    (isConnectedHubspot == true &&
-                                      ["Hubspot"].indexOf(item.name) != -1) ? (
-                                    // <span className="connected-label-top float-right">
-                                    //   Connected
-                                    // </span>
-                                    <> <label class="switch" onClick={(ev) => {
-                                      removeTypeformToken(ev, item.name);
-                                    }}>
-                                      <input type="checkbox" checked={true} />
-                                      <span class="slider round"></span>
-                                    </label> </>
+                                  ["typeform"].indexOf(item.value) != -1) ||
+                                  (isConnectedHubspot == true &&
+                                    ["hubspot"].indexOf(item.value) != -1) ? (
+                                    <>
+                                      {" "}
+                                      <label
+                                        class="switch"
+                                        onClick={(ev) => {
+                                          removeToken(ev, item.value);
+                                        }}
+                                      >
+                                        <input type="checkbox" checked={true} />
+                                        <span class="slider round"></span>
+                                      </label>{" "}
+                                    </>
                                   ) : (
-                                    <> <label class="switch" onClick={(e) => {
-                                      handleOpen(e, item.name);
-                                    }}>
-                                      <input type="checkbox" checked={false} />
-                                      <span class="slider round"></span>
-                                    </label> </>
+                                    <>
+                                      {" "}
+                                      <label
+                                        class="switch"
+                                        onClick={(e) => {
+                                          handleOpen(e, item.name);
+                                        }}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={false}
+                                        />
+                                        <span class="slider round"></span>
+                                      </label>{" "}
+                                    </>
                                   )}
                                   <CardContent>
                                     <Typography
@@ -2529,42 +3019,73 @@ className={
                                     </Typography>
                                   </CardContent>
                                   <CardActions>
-                                    {/* <button   onClick={(ev) => {
-                                  getUpdateSurveyList(ev, item.name);
-                                }}>servay connect</button> */}
-                                    {/* <Button className='connect-btn' >Ingest New Form</Button>     getUpdateSurveyList(ev, item.name);*/}
-
                                     {(isConnectedTypeForm == true &&
-                                      ["Typeform"].indexOf(item.name) !=
-                                      -1) ||
-                                      (isConnectedHubspot == true &&
-                                        ["Hubspot"].indexOf(item.name) !=
-                                        -1) ? (
+                                  ["typeform"].indexOf(item.value) != -1) ||
+                                  (isConnectedHubspot == true &&
+                                    ["hubspot"].indexOf(item.value) != -1) ? (
                                       <>
-                                        {(["Typeform"].indexOf(item.name) != -1 && isModalDataTypeform.length != 0) || ["Hubspot"].indexOf(item.name) != -1 && isModalDataHubspot.length != 0 ?
-                                          (<div className="disconnect-btn">Dataset Connected <span className="float-right"><a className="fa fa-pencil mr-3" onClick={(ev) => {
-                                            connectDataForIngestion(ev, item.name);
-                                          }}></a>   <a className="fa fa-close" onClick={(ev) => {
-                                            clearDataForIngestion(ev, item.name);
-                                          }}></a></span></div>) : <Button className="connect-btn">Connect Dataset</Button>}
-
-
+                                        {(["typeform"].indexOf(item.name) !=
+                                          -1 &&
+                                          isModalDataTypeform.length != 0) ||
+                                        (["hubspot"].indexOf(item.name) != -1 &&
+                                          isModalDataHubspot.length != 0) ? (
+                                          <div className="disconnect-btn">
+                                            Dataset Connected{" "}
+                                            <div className="float-right">
+                                              <a
+                                                className="fa fa-pencil mr-3"
+                                                onClick={(ev) => {
+                                                  connectDataForIngestion(
+                                                    ev,
+                                                    item.name
+                                                  );
+                                                }}
+                                              ></a>{" "}
+                                              <a
+                                                className="fa fa-close"
+                                                onClick={(ev) => {
+                                                  clearDataForIngestion(
+                                                    ev,
+                                                    item.name
+                                                  );
+                                                }}
+                                              ></a>
+                                            </div>
+                                          </div>
+                                        ) : (
+                                          <>
+                                            <Button className="connect-btn">
+                                              Connect Source
+                                            </Button>
+                                          </>
+                                        )}
                                       </>
                                     ) : (
                                       <>
-                                        <Button className="connect-btn">
+                                        <Button
+                                          className="connect-btn"
+                                          onClick={(e) => {
+                                            handleOpen(item.name);
+                                          }}
+                                        >
                                           Connect Dataset
                                         </Button>
+                                        {item.name != "Typeform" &&
+                                          item.name != "Hubspot" && (
+                                            <Button
+                                              className="getstart-btn"
+                                              onClick={(e) =>
+                                                emailpopupOpen(
+                                                  "datasource",
+                                                  item.name
+                                                )
+                                              }
+                                            >
+                                              Get Started
+                                            </Button>
+                                          )}
                                       </>
-                                    )}
-
-                                    {/* <Chip icon={<CheckIcon />} label="Connected" style={{ marginRight: '10px' }} />
-                                        {item.name == "Typeform" ?
-                                          <Chip icon={<CheckIcon />} onClick={(ev) => { getUpdateSurveyList(ev) }} variant='outlined' label="Update" style={{ marginLeft: '20px' }} /> : ''
-                                        } */}
-
-                                    {/* {item.name == "Typeform" ? <Grid display={'flex'}> <Button className='disconnect-btn mr-2'>Disconnect</Button> <Button className='connect-btn' onClick={(ev) => { getUpdateSurveyList(ev) }}>Ingest New Form</Button></Grid> : <><Button className='disconnect-btn mr-2'>Disconnect</Button></>} */}
-
+                                    )} 
                                   </CardActions>
                                 </Card>
                               </Grid>
@@ -2589,12 +3110,17 @@ className={
                                 md={3}
                                 lg={3}
                                 key={i}
-                                className="cursor-pointer" onClick={(ev) => {
+                                className="cursor-pointer"
+                                onClick={(ev) => {
                                   connectDataForIngestion(ev, item.name);
-                                }}>
+                                }}
+                              >
                                 <Card
                                   key={i}
-                                  className={item.connectionAvl ? '' : 'dataListcard'}>
+                                  className={
+                                    item.connectionAvl ? "" : "dataListcard"
+                                  }
+                                >
                                   <CardMedia
                                     sx={{
                                       height: 48,
@@ -2604,25 +3130,44 @@ className={
                                       borderRadius: "4px",
                                       border: "1px solid #ddd",
                                     }}
-                                    className='cardMedia'
+                                    className="cardMedia"
                                     image={item.img}
                                     title={item.name}
                                   />
-                                  {(isConnectedTypeForm == true && ["Typeform"].indexOf(item.name) != -1) ||
-                                    (isConnectedHubspot == true && ["Hubspot"].indexOf(item.name) != -1) || (isConnectedZendesk == true && ["Zendesk"].indexOf(item.name) != -1) ? (
-                                    <> <label class="switch" onClick={(ev) => {
-                                      removeTypeformToken(ev, item.name);
-                                    }}>
-                                      <input type="checkbox" checked={true} disabled={item.active} />
-                                      <span class="slider round"></span>
-                                    </label> </>
+                                  {isConnectedTypeForm == true &&
+                                  ["typeform"].indexOf(item.value) != -1 ? (
+                                    <>
+                                      {" "}
+                                      <label
+                                        class="switch"
+                                        onClick={(ev) => {
+                                          removeToken(ev, item.value);
+                                        }}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={true}
+                                          disabled={item.active}
+                                        />
+                                        <span class="slider round"></span>
+                                      </label>{" "}
+                                    </>
                                   ) : (
-                                    <> <label class="switch" onClick={(e) => {
-                                      handleOpen(e, item.name);
-                                    }} >
-                                      <input type="checkbox" checked={false} />
-                                      <span class="slider round"></span>
-                                    </label> </>
+                                    <>
+                                      {" "}
+                                      <label
+                                        class="switch"
+                                        onClick={(e) => {
+                                          handleOpen(e, item.name);
+                                        }}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={false}
+                                        />
+                                        <span class="slider round"></span>
+                                      </label>{" "}
+                                    </>
                                   )}
                                   <CardContent>
                                     <Typography
@@ -2642,74 +3187,73 @@ className={
                                     </Typography>
                                   </CardContent>
                                   <CardActions>
-                                    {item.connectionAvl ? (
+                                    {(isConnectedTypeForm == true &&
+                                  ["typeform"].indexOf(item.value) != -1) ||
+                                  (isConnectedHubspot == true &&
+                                    ["hubspot"].indexOf(item.value) != -1) ? (
                                       <>
-                                        {(["Typeform"].indexOf(item.name) != -1 && isModalDataTypeform.length != 0) || ["Hubspot"].indexOf(item.name) != -1 && isModalDataHubspot.length != 0 ?
-                                          (<div className="disconnect-btn">Dataset Connected  <div className="float-right"><a className="fa fa-pencil mr-3" onClick={(ev) => {
-                                            connectDataForIngestion(ev, item.name);
-                                          }}></a>   <a className="fa fa-close" onClick={(ev) => {
-                                            clearDataForIngestion(ev, item.name);
-                                          }}></a></div></div>) : <><Button
-                                            className="connect-btn">Connect Source</Button></>}
+                                        {(["Typeform"].indexOf(item.name) !=
+                                          -1 &&
+                                          isModalDataTypeform.length != 0) ||
+                                        (["Hubspot"].indexOf(item.name) != -1 &&
+                                          isModalDataHubspot.length != 0) ? (
+                                          <div className="disconnect-btn">
+                                            Dataset Connected{" "}
+                                            <div className="float-right">
+                                              <a
+                                                className="fa fa-pencil mr-3"
+                                                onClick={(ev) => {
+                                                  connectDataForIngestion(
+                                                    ev,
+                                                    item.name
+                                                  );
+                                                }}
+                                              ></a>{" "}
+                                              <a
+                                                className="fa fa-close"
+                                                onClick={(ev) => {
+                                                  clearDataForIngestion(
+                                                    ev,
+                                                    item.name
+                                                  );
+                                                }}
+                                              ></a>
+                                            </div>
+                                          </div>
+                                        ) : (
+                                          <>
+                                            <Button className="connect-btn">
+                                              Connect Source
+                                            </Button>
+                                          </>
+                                        )}
                                       </>
                                     ) : (
                                       <>
                                         <Button
                                           className="connect-btn"
-                                          onClick={(e) => { handleOpen(item.name) }}
+                                          onClick={(e) => {
+                                            handleOpen(item.name);
+                                          }}
                                         >
                                           Connect Dataset
                                         </Button>
-                                        {
-                                          (item.name != "Typeform" && item.name != "Hubspot") &&
-                                          <Button className="getstart-btn" onClick={(e) => emailpopupOpen("datasource", item.name)}>
-                                            Get Started
-                                          </Button>
-                                        }
+                                        {item.name != "Typeform" &&
+                                          item.name != "Hubspot" && (
+                                            <Button
+                                              className="getstart-btn"
+                                              onClick={(e) =>
+                                                emailpopupOpen(
+                                                  "datasource",
+                                                  item.name
+                                                )
+                                              }
+                                            >
+                                              Get Started
+                                            </Button>
+                                          )}
                                       </>
-                                    )}
-                                    {/* <Grid display={"flex"}>
-                                      {(isConnectedTypeForm == true &&
-                                        ["Typeform"].indexOf(item.name) !=
-                                        -1) ||
-                                        (isConnectedHubspot == true &&
-                                          ["Hubspot"].indexOf(item.name) !=
-                                          -1) ? (
-                                        <Grid display={"flex"}>
-                                          {" "}
-                                          <Button
-                                            className="disconnect-btn mr-2"
-                                            onClick={(ev) => {
-                                              removeTypeformToken(
-                                                ev,
-                                                item.name
-                                              );
-                                            }}
-                                          >
-                                            Disconnect
-                                          </Button>
-                                        </Grid>
-                                      ) : (
-                                        <>
-                                          <Button
-                                            className="connect-btn"
-                                            onClick={(e) => {
-                                              handleOpen(e, item.name);
-                                            }}
-                                          >
-                                            Connect
-                                          </Button>
-                                        </>
-                                      )}
-                                      {/* {item.name == "Typeform" ? <Grid display={'flex'}> <Button className='disconnect-btn mr-2'>Disconnect</Button> <Button className='connect-btn' onClick={(ev) => { getUpdateSurveyList(ev) }}>Ingest New Form</Button></Grid> : item.name == "Salesforce" ? <Button className='connect-btn'>Connect</Button> : <><Button className='disconnect-btn mr-2'>Disconnect</Button></>} */}
-                                    {/* <Button className='connect-btn mr-2'>Connect</Button> *
-                                    </Grid> */}
-
-                                    {/* <Chip icon={<CheckIcon />} label="Connected" /> */}
-                                    {/* {!isConnectedTypeForm && connectedType.indexOf(item.name) != -1 ?
-                                        <Button variant='outlined' onClick={(e) => { handleOpen(item.name) }} size="small">Connect</Button> :
-                                        <Chip icon={<CheckIcon />} label="Connected" />
-                                      } */}
+                                    )} 
                                   </CardActions>
                                 </Card>
                               </Grid>
@@ -2731,12 +3275,17 @@ className={
                                 md={3}
                                 lg={3}
                                 key={i}
-                                className="cursor-pointer" onClick={(ev) => {
+                                className="cursor-pointer"
+                                onClick={(ev) => {
                                   connectDataForIngestion(ev, item.name);
-                                }}>
+                                }}
+                              >
                                 <Card
                                   key={i}
-                                  className={item.connectionAvl ? '' : 'dataListcard'}>
+                                  className={
+                                    item.connectionAvl ? "" : "dataListcard"
+                                  }
+                                >
                                   <CardMedia
                                     sx={{
                                       height: 48,
@@ -2746,25 +3295,44 @@ className={
                                       borderRadius: "4px",
                                       border: "1px solid #ddd",
                                     }}
-                                    className='cardMedia'
+                                    className="cardMedia"
                                     image={item.img}
                                     title={item.name}
                                   />
-                                  {(isConnectedTypeForm == true && ["Typeform"].indexOf(item.name) != -1) ||
-                                    (isConnectedHubspot == true && ["Hubspot"].indexOf(item.name) != -1) || (isConnectedZendesk == true && ["Zendesk"].indexOf(item.name) != -1) ? (
-                                    <> <label class="switch" onClick={(ev) => {
-                                      removeTypeformToken(ev, item.name);
-                                    }}>
-                                      <input type="checkbox" checked={true} disabled={item.active} />
-                                      <span class="slider round"></span>
-                                    </label> </>
+                                  {isConnectedHubspot == true &&
+                                  ["Hubspot"].indexOf(item.name) != -1 ? (
+                                    <>
+                                      {" "}
+                                      <label
+                                        class="switch"
+                                        onClick={(ev) => {
+                                          removeToken(ev, item.value);
+                                        }}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={true}
+                                          disabled={item.active}
+                                        />
+                                        <span class="slider round"></span>
+                                      </label>{" "}
+                                    </>
                                   ) : (
-                                    <> <label class="switch" onClick={(e) => {
-                                      handleOpen(e, item.name);
-                                    }} >
-                                      <input type="checkbox" checked={false} />
-                                      <span class="slider round"></span>
-                                    </label> </>
+                                    <>
+                                      {" "}
+                                      <label
+                                        class="switch"
+                                        onClick={(e) => {
+                                          handleOpen(e, item.name);
+                                        }}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={false}
+                                        />
+                                        <span class="slider round"></span>
+                                      </label>{" "}
+                                    </>
                                   )}
                                   <CardContent>
                                     <Typography
@@ -2786,28 +3354,66 @@ className={
                                   <CardActions>
                                     {item.connectionAvl ? (
                                       <>
-                                        {(["Typeform"].indexOf(item.name) != -1 && isModalDataTypeform.length != 0) || ["Hubspot"].indexOf(item.name) != -1 && isModalDataHubspot.length != 0 ?
-                                          (<div className="disconnect-btn">Dataset Connected  <div className="float-right"><a className="fa fa-pencil mr-3" onClick={(ev) => {
-                                            connectDataForIngestion(ev, item.name);
-                                          }}></a>   <a className="fa fa-close" onClick={(ev) => {
-                                            clearDataForIngestion(ev, item.name);
-                                          }}></a></div></div>) : <><Button
-                                            className="connect-btn">Connect Source</Button></>}
+                                        {(["Typeform"].indexOf(item.name) !=
+                                          -1 &&
+                                          isModalDataTypeform.length != 0) ||
+                                        (["Hubspot"].indexOf(item.name) != -1 &&
+                                          isModalDataHubspot.length != 0) ? (
+                                          <div className="disconnect-btn">
+                                            Dataset Connected{" "}
+                                            <div className="float-right">
+                                              <a
+                                                className="fa fa-pencil mr-3"
+                                                onClick={(ev) => {
+                                                  connectDataForIngestion(
+                                                    ev,
+                                                    item.name
+                                                  );
+                                                }}
+                                              ></a>{" "}
+                                              <a
+                                                className="fa fa-close"
+                                                onClick={(ev) => {
+                                                  clearDataForIngestion(
+                                                    ev,
+                                                    item.name
+                                                  );
+                                                }}
+                                              ></a>
+                                            </div>
+                                          </div>
+                                        ) : (
+                                          <>
+                                            <Button className="connect-btn">
+                                              Connect Source
+                                            </Button>
+                                          </>
+                                        )}
                                       </>
                                     ) : (
                                       <>
                                         <Button
                                           className="connect-btn"
-                                          onClick={(e) => { handleOpen(item.name) }}
+                                          onClick={(e) => {
+                                            handleOpen(item.name);
+                                          }}
                                         >
                                           Connect Dataset
                                         </Button>
-                                        {
-                                          (item.name != "Typeform" && item.name != "Hubspot") &&
-                                          <Button className="getstart-btn" onClick={(e) => emailpopupOpen("datasource", item.name)}>
-                                            Get Started
-                                          </Button>
-                                        }
+                                        {item.name != "Typeform" &&
+                                          item.name != "Hubspot" && (
+                                            <Button
+                                              className="getstart-btn"
+                                              onClick={(e) =>
+                                                emailpopupOpen(
+                                                  "datasource",
+                                                  item.name
+                                                )
+                                              }
+                                            >
+                                              Get Started
+                                            </Button>
+                                          )}
                                       </>
                                     )}
                                   </CardActions>
@@ -2832,12 +3438,17 @@ className={
                                 md={3}
                                 lg={3}
                                 key={i}
-                                className="cursor-pointer" onClick={(ev) => {
+                                className="cursor-pointer"
+                                onClick={(ev) => {
                                   connectDataForIngestion(ev, item.name);
-                                }}>
+                                }}
+                              >
                                 <Card
                                   key={i}
-                                  className={item.connectionAvl ? '' : 'dataListcard'}>
+                                  className={
+                                    item.connectionAvl ? "" : "dataListcard"
+                                  }
+                                >
                                   <CardMedia
                                     sx={{
                                       height: 48,
@@ -2847,25 +3458,45 @@ className={
                                       borderRadius: "4px",
                                       border: "1px solid #ddd",
                                     }}
-                                    className='cardMedia'
+                                    className="cardMedia"
                                     image={item.img}
                                     title={item.name}
                                   />
-                                  {(isConnectedTypeForm == true && ["Typeform"].indexOf(item.name) != -1) ||
-                                    (isConnectedHubspot == true && ["Hubspot"].indexOf(item.name) != -1) || (isConnectedZendesk == true && ["Zendesk"].indexOf(item.name) != -1) ? (
-                                    <> <label class="switch" onClick={(ev) => {
-                                      removeTypeformToken(ev, item.name);
-                                    }}>
-                                      <input type="checkbox" checked={true} disabled={item.active} />
-                                      <span class="slider round"></span>
-                                    </label> </>
+                                  {(isConnectedIntercom == true &&
+                                  ["intercom"].indexOf(item.value) != -1) ||
+                                  (isConnectedZendesk == true &&
+                                    ["zendesk"].indexOf(item.value) != -1) ?  (
+                                    <> 
+                                      <label
+                                        class="switch"
+                                        onClick={(ev) => {
+                                          removeToken(ev, item.value);
+                                        }}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={true}
+                                          disabled={item.active}
+                                        />
+                                        <span class="slider round"></span>
+                                      </label>{" "}
+                                    </>
                                   ) : (
-                                    <> <label class="switch" onClick={(e) => {
-                                      handleOpen(e, item.name);
-                                    }} >
-                                      <input type="checkbox" checked={false} />
-                                      <span class="slider round"></span>
-                                    </label> </>
+                                    <>
+                                      {" "}
+                                      <label
+                                        class="switch"
+                                        onClick={(e) => {
+                                          handleOpen(e, item.name);
+                                        }}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={false}
+                                        />
+                                        <span class="slider round"></span>
+                                      </label>{" "}
+                                    </>
                                   )}
                                   <CardContent>
                                     <Typography
@@ -2887,28 +3518,66 @@ className={
                                   <CardActions>
                                     {item.connectionAvl ? (
                                       <>
-                                        {(["Typeform"].indexOf(item.name) != -1 && isModalDataTypeform.length != 0) || ["Hubspot"].indexOf(item.name) != -1 && isModalDataHubspot.length != 0 ?
-                                          (<div className="disconnect-btn">Dataset Connected  <div className="float-right"><a className="fa fa-pencil mr-3" onClick={(ev) => {
-                                            connectDataForIngestion(ev, item.name);
-                                          }}></a>   <a className="fa fa-close" onClick={(ev) => {
-                                            clearDataForIngestion(ev, item.name);
-                                          }}></a></div></div>) : <><Button
-                                            className="connect-btn">Connect Source</Button></>}
+                                        {(["Typeform"].indexOf(item.name) !=
+                                          -1 &&
+                                          isModalDataTypeform.length != 0) ||
+                                        (["Hubspot"].indexOf(item.name) != -1 &&
+                                          isModalDataHubspot.length != 0) ? (
+                                          <div className="disconnect-btn">
+                                            Dataset Connected{" "}
+                                            <div className="float-right">
+                                              <a
+                                                className="fa fa-pencil mr-3"
+                                                onClick={(ev) => {
+                                                  connectDataForIngestion(
+                                                    ev,
+                                                    item.name
+                                                  );
+                                                }}
+                                              ></a>{" "}
+                                              <a
+                                                className="fa fa-close"
+                                                onClick={(ev) => {
+                                                  clearDataForIngestion(
+                                                    ev,
+                                                    item.name
+                                                  );
+                                                }}
+                                              ></a>
+                                            </div>
+                                          </div>
+                                        ) : (
+                                          <>
+                                            <Button className="connect-btn">
+                                              Connect Source
+                                            </Button>
+                                          </>
+                                        )}
                                       </>
                                     ) : (
                                       <>
                                         <Button
                                           className="connect-btn"
-                                          onClick={(e) => { handleOpen(item.name) }}
+                                          onClick={(e) => {
+                                            handleOpen(item.name);
+                                          }}
                                         >
                                           Connect Dataset
                                         </Button>
-                                        {
-                                          (item.name != "Typeform" && item.name != "Hubspot") &&
-                                          <Button className="getstart-btn" onClick={(e) => emailpopupOpen("datasource", item.name)}>
-                                            Get Started
-                                          </Button>
-                                        }
+                                        {item.name != "Typeform" &&
+                                          item.name != "Hubspot" && (
+                                            <Button
+                                              className="getstart-btn"
+                                              onClick={(e) =>
+                                                emailpopupOpen(
+                                                  "datasource",
+                                                  item.name
+                                                )
+                                              }
+                                            >
+                                              Get Started
+                                            </Button>
+                                          )}
                                       </>
                                     )}
                                   </CardActions>
@@ -2933,12 +3602,17 @@ className={
                                 md={3}
                                 lg={3}
                                 key={i}
-                                className="cursor-pointer" onClick={(ev) => {
+                                className="cursor-pointer"
+                                onClick={(ev) => {
                                   connectDataForIngestion(ev, item.name);
-                                }}>
+                                }}
+                              >
                                 <Card
                                   key={i}
-                                  className={item.connectionAvl ? '' : 'dataListcard'}>
+                                  className={
+                                    item.connectionAvl ? "" : "dataListcard"
+                                  }
+                                >
                                   <CardMedia
                                     sx={{
                                       height: 48,
@@ -2948,25 +3622,44 @@ className={
                                       borderRadius: "4px",
                                       border: "1px solid #ddd",
                                     }}
-                                    className='cardMedia'
+                                    className="cardMedia"
                                     image={item.img}
                                     title={item.name}
                                   />
-                                  {(isConnectedTypeForm == true && ["Typeform"].indexOf(item.name) != -1) ||
-                                    (isConnectedHubspot == true && ["Hubspot"].indexOf(item.name) != -1) || (isConnectedZendesk == true && ["Zendesk"].indexOf(item.name) != -1) ? (
-                                    <> <label class="switch" onClick={(ev) => {
-                                      removeTypeformToken(ev, item.name);
-                                    }}>
-                                      <input type="checkbox" checked={true} disabled={item.active} />
-                                      <span class="slider round"></span>
-                                    </label> </>
+                                  {isConnectedZendesk == true &&
+                                  ["Zendesk"].indexOf(item.name) != -1 ? (
+                                    <>
+                                      {" "}
+                                      <label
+                                        class="switch"
+                                        onClick={(ev) => {
+                                          removeToken(ev, item.value);
+                                        }}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={true}
+                                          disabled={item.active}
+                                        />
+                                        <span class="slider round"></span>
+                                      </label>{" "}
+                                    </>
                                   ) : (
-                                    <> <label class="switch" onClick={(e) => {
-                                      handleOpen(e, item.name);
-                                    }} >
-                                      <input type="checkbox" checked={false} />
-                                      <span class="slider round"></span>
-                                    </label> </>
+                                    <>
+                                      {" "}
+                                      <label
+                                        class="switch"
+                                        onClick={(e) => {
+                                          handleOpen(e, item.name);
+                                        }}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={false}
+                                        />
+                                        <span class="slider round"></span>
+                                      </label>{" "}
+                                    </>
                                   )}
                                   <CardContent>
                                     <Typography
@@ -2988,28 +3681,66 @@ className={
                                   <CardActions>
                                     {item.connectionAvl ? (
                                       <>
-                                        {(["Typeform"].indexOf(item.name) != -1 && isModalDataTypeform.length != 0) || ["Hubspot"].indexOf(item.name) != -1 && isModalDataHubspot.length != 0 ?
-                                          (<div className="disconnect-btn">Dataset Connected  <div className="float-right"><a className="fa fa-pencil mr-3" onClick={(ev) => {
-                                            connectDataForIngestion(ev, item.name);
-                                          }}></a>   <a className="fa fa-close" onClick={(ev) => {
-                                            clearDataForIngestion(ev, item.name);
-                                          }}></a></div></div>) : <><Button
-                                            className="connect-btn">Connect Source</Button></>}
+                                        {(["Typeform"].indexOf(item.name) !=
+                                          -1 &&
+                                          isModalDataTypeform.length != 0) ||
+                                        (["Hubspot"].indexOf(item.name) != -1 &&
+                                          isModalDataHubspot.length != 0) ? (
+                                          <div className="disconnect-btn">
+                                            Dataset Connected{" "}
+                                            <div className="float-right">
+                                              <a
+                                                className="fa fa-pencil mr-3"
+                                                onClick={(ev) => {
+                                                  connectDataForIngestion(
+                                                    ev,
+                                                    item.name
+                                                  );
+                                                }}
+                                              ></a>{" "}
+                                              <a
+                                                className="fa fa-close"
+                                                onClick={(ev) => {
+                                                  clearDataForIngestion(
+                                                    ev,
+                                                    item.name
+                                                  );
+                                                }}
+                                              ></a>
+                                            </div>
+                                          </div>
+                                        ) : (
+                                          <>
+                                            <Button className="connect-btn">
+                                              Connect Source
+                                            </Button>
+                                          </>
+                                        )}
                                       </>
                                     ) : (
                                       <>
                                         <Button
                                           className="connect-btn"
-                                          onClick={(e) => { handleOpen(item.name) }}
+                                          onClick={(e) => {
+                                            handleOpen(item.name);
+                                          }}
                                         >
                                           Connect Dataset
                                         </Button>
-                                        {
-                                          (item.name != "Typeform" && item.name != "Hubspot") &&
-                                          <Button className="getstart-btn" onClick={(e) => emailpopupOpen("datasource", item.name)}>
-                                            Get Started
-                                          </Button>
-                                        }
+                                        {item.name != "Typeform" &&
+                                          item.name != "Hubspot" && (
+                                            <Button
+                                              className="getstart-btn"
+                                              onClick={(e) =>
+                                                emailpopupOpen(
+                                                  "datasource",
+                                                  item.name
+                                                )
+                                              }
+                                            >
+                                              Get Started
+                                            </Button>
+                                          )}
                                       </>
                                     )}
                                   </CardActions>
@@ -3034,12 +3765,17 @@ className={
                                 md={3}
                                 lg={3}
                                 key={i}
-                                className="cursor-pointer" onClick={(ev) => {
+                                className="cursor-pointer"
+                                onClick={(ev) => {
                                   connectDataForIngestion(ev, item.name);
-                                }}>
+                                }}
+                              >
                                 <Card
                                   key={i}
-                                  className={item.connectionAvl ? '' : 'dataListcard'}>
+                                  className={
+                                    item.connectionAvl ? "" : "dataListcard"
+                                  }
+                                >
                                   <CardMedia
                                     sx={{
                                       height: 48,
@@ -3049,25 +3785,44 @@ className={
                                       borderRadius: "4px",
                                       border: "1px solid #ddd",
                                     }}
-                                    className='cardMedia'
+                                    className="cardMedia"
                                     image={item.img}
                                     title={item.name}
                                   />
-                                  {(isConnectedTypeForm == true && ["Typeform"].indexOf(item.name) != -1) ||
-                                    (isConnectedHubspot == true && ["Hubspot"].indexOf(item.name) != -1) || (isConnectedZendesk == true && ["Zendesk"].indexOf(item.name) != -1) ? (
-                                    <> <label class="switch" onClick={(ev) => {
-                                      removeTypeformToken(ev, item.name);
-                                    }}>
-                                      <input type="checkbox" checked={true} disabled={item.active} />
-                                      <span class="slider round"></span>
-                                    </label> </>
+                                  {isConnectedZendesk == true &&
+                                  ["Zendesk"].indexOf(item.name) != -1 ? (
+                                    <>
+                                      {" "}
+                                      <label
+                                        class="switch"
+                                        onClick={(ev) => {
+                                          removeToken(ev, item.value);
+                                        }}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={true}
+                                          disabled={item.active}
+                                        />
+                                        <span class="slider round"></span>
+                                      </label>{" "}
+                                    </>
                                   ) : (
-                                    <> <label class="switch" onClick={(e) => {
-                                      handleOpen(e, item.name);
-                                    }} >
-                                      <input type="checkbox" checked={false} />
-                                      <span class="slider round"></span>
-                                    </label> </>
+                                    <>
+                                      {" "}
+                                      <label
+                                        class="switch"
+                                        onClick={(e) => {
+                                          handleOpen(e, item.name);
+                                        }}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={false}
+                                        />
+                                        <span class="slider round"></span>
+                                      </label>{" "}
+                                    </>
                                   )}
                                   <CardContent>
                                     <Typography
@@ -3089,35 +3844,72 @@ className={
                                   <CardActions>
                                     {item.connectionAvl ? (
                                       <>
-                                        {(["Typeform"].indexOf(item.name) != -1 && isModalDataTypeform.length != 0) || ["Hubspot"].indexOf(item.name) != -1 && isModalDataHubspot.length != 0 ?
-                                          (<div className="disconnect-btn">Dataset Connected  <div className="float-right"><a className="fa fa-pencil mr-3" onClick={(ev) => {
-                                            connectDataForIngestion(ev, item.name);
-                                          }}></a>   <a className="fa fa-close" onClick={(ev) => {
-                                            clearDataForIngestion(ev, item.name);
-                                          }}></a></div></div>) : <><Button
-                                            className="connect-btn">Connect Source</Button></>}
+                                        {(["Typeform"].indexOf(item.name) !=
+                                          -1 &&
+                                          isModalDataTypeform.length != 0) ||
+                                        (["Hubspot"].indexOf(item.name) != -1 &&
+                                          isModalDataHubspot.length != 0) ? (
+                                          <div className="disconnect-btn">
+                                            Dataset Connected{" "}
+                                            <div className="float-right">
+                                              <a
+                                                className="fa fa-pencil mr-3"
+                                                onClick={(ev) => {
+                                                  connectDataForIngestion(
+                                                    ev,
+                                                    item.name
+                                                  );
+                                                }}
+                                              ></a>{" "}
+                                              <a
+                                                className="fa fa-close"
+                                                onClick={(ev) => {
+                                                  clearDataForIngestion(
+                                                    ev,
+                                                    item.name
+                                                  );
+                                                }}
+                                              ></a>
+                                            </div>
+                                          </div>
+                                        ) : (
+                                          <>
+                                            <Button className="connect-btn">
+                                              Connect Source
+                                            </Button>
+                                          </>
+                                        )}
                                       </>
                                     ) : (
                                       <>
                                         <Button
                                           className="connect-btn"
-                                          onClick={(e) => { handleOpen(item.name) }}
+                                          onClick={(e) => {
+                                            handleOpen(item.name);
+                                          }}
                                         >
                                           Connect Dataset
                                         </Button>
-                                        {
-                                          (item.name != "Typeform" && item.name != "Hubspot") &&
-                                          <Button className="getstart-btn" onClick={(e) => emailpopupOpen("datasource", item.name)}>
-                                            Get Started
-                                          </Button>
-                                        }
+                                        {item.name != "Typeform" &&
+                                          item.name != "Hubspot" && (
+                                            <Button
+                                              className="getstart-btn"
+                                              onClick={(e) =>
+                                                emailpopupOpen(
+                                                  "datasource",
+                                                  item.name
+                                                )
+                                              }
+                                            >
+                                              Get Started
+                                            </Button>
+                                          )}
                                       </>
                                     )}
                                   </CardActions>
                                 </Card>
                               </Grid>
                             ))}
-
 
                             <Grid xs={12} md={12} lg={12}>
                               <div className="mt-3"></div>
@@ -3136,12 +3928,17 @@ className={
                                 md={3}
                                 lg={3}
                                 key={i}
-                                className="cursor-pointer" onClick={(ev) => {
+                                className="cursor-pointer"
+                                onClick={(ev) => {
                                   connectDataForIngestion(ev, item.name);
-                                }}>
+                                }}
+                              >
                                 <Card
                                   key={i}
-                                  className={item.connectionAvl ? '' : 'dataListcard'}>
+                                  className={
+                                    item.connectionAvl ? "" : "dataListcard"
+                                  }
+                                >
                                   <CardMedia
                                     sx={{
                                       height: 48,
@@ -3151,25 +3948,44 @@ className={
                                       borderRadius: "4px",
                                       border: "1px solid #ddd",
                                     }}
-                                    className='cardMedia'
+                                    className="cardMedia"
                                     image={item.img}
                                     title={item.name}
                                   />
-                                  {(isConnectedTypeForm == true && ["Typeform"].indexOf(item.name) != -1) ||
-                                    (isConnectedHubspot == true && ["Hubspot"].indexOf(item.name) != -1) || (isConnectedZendesk == true && ["Zendesk"].indexOf(item.name) != -1) ? (
-                                    <> <label class="switch" onClick={(ev) => {
-                                      removeTypeformToken(ev, item.name);
-                                    }}>
-                                      <input type="checkbox" checked={true} disabled={item.active} />
-                                      <span class="slider round"></span>
-                                    </label> </>
+                                  {isConnectedZendesk == true &&
+                                  ["Zendesk"].indexOf(item.name) != -1 ? (
+                                    <>
+                                      {" "}
+                                      <label
+                                        class="switch"
+                                        onClick={(ev) => {
+                                          removeToken(ev, item.value);
+                                        }}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={true}
+                                          disabled={item.active}
+                                        />
+                                        <span class="slider round"></span>
+                                      </label>{" "}
+                                    </>
                                   ) : (
-                                    <> <label class="switch" onClick={(e) => {
-                                      handleOpen(e, item.name);
-                                    }} >
-                                      <input type="checkbox" checked={false} />
-                                      <span class="slider round"></span>
-                                    </label> </>
+                                    <>
+                                      {" "}
+                                      <label
+                                        class="switch"
+                                        onClick={(e) => {
+                                          handleOpen(e, item.name);
+                                        }}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={false}
+                                        />
+                                        <span class="slider round"></span>
+                                      </label>{" "}
+                                    </>
                                   )}
                                   <CardContent>
                                     <Typography
@@ -3191,37 +4007,72 @@ className={
                                   <CardActions>
                                     {item.connectionAvl ? (
                                       <>
-                                        {(["Typeform"].indexOf(item.name) != -1 && isModalDataTypeform.length != 0) || ["Hubspot"].indexOf(item.name) != -1 && isModalDataHubspot.length != 0 ?
-                                          (<div className="disconnect-btn">Dataset Connected  <div className="float-right"><a className="fa fa-pencil mr-3" onClick={(ev) => {
-                                            connectDataForIngestion(ev, item.name);
-                                          }}></a>   <a className="fa fa-close" onClick={(ev) => {
-                                            clearDataForIngestion(ev, item.name);
-                                          }}></a></div></div>) : <><Button
-                                            className="connect-btn">Connect Source</Button></>}
+                                        {(["Typeform"].indexOf(item.name) !=
+                                          -1 &&
+                                          isModalDataTypeform.length != 0) ||
+                                        (["Hubspot"].indexOf(item.name) != -1 &&
+                                          isModalDataHubspot.length != 0) ? (
+                                          <div className="disconnect-btn">
+                                            Dataset Connected{" "}
+                                            <div className="float-right">
+                                              <a
+                                                className="fa fa-pencil mr-3"
+                                                onClick={(ev) => {
+                                                  connectDataForIngestion(
+                                                    ev,
+                                                    item.name
+                                                  );
+                                                }}
+                                              ></a>{" "}
+                                              <a
+                                                className="fa fa-close"
+                                                onClick={(ev) => {
+                                                  clearDataForIngestion(
+                                                    ev,
+                                                    item.name
+                                                  );
+                                                }}
+                                              ></a>
+                                            </div>
+                                          </div>
+                                        ) : (
+                                          <>
+                                            <Button className="connect-btn">
+                                              Connect Source
+                                            </Button>
+                                          </>
+                                        )}
                                       </>
                                     ) : (
                                       <>
                                         <Button
                                           className="connect-btn"
-                                          onClick={(e) => { handleOpen(item.name) }}
+                                          onClick={(e) => {
+                                            handleOpen(item.name);
+                                          }}
                                         >
                                           Connect Dataset
                                         </Button>
-                                        {
-                                          (item.name != "Typeform" && item.name != "Hubspot") &&
-                                          <Button className="getstart-btn" onClick={(e) => emailpopupOpen("datasource", item.name)}>
-                                            Get Started
-                                          </Button>
-                                        }
+                                        {item.name != "Typeform" &&
+                                          item.name != "Hubspot" && (
+                                            <Button
+                                              className="getstart-btn"
+                                              onClick={(e) =>
+                                                emailpopupOpen(
+                                                  "datasource",
+                                                  item.name
+                                                )
+                                              }
+                                            >
+                                              Get Started
+                                            </Button>
+                                          )}
                                       </>
                                     )}
                                   </CardActions>
                                 </Card>
                               </Grid>
                             ))}
-
-
-
 
                             <Grid xs={12} md={12} lg={12}>
                               <div className="mt-3"></div>
@@ -3240,12 +4091,17 @@ className={
                                 md={3}
                                 lg={3}
                                 key={i}
-                                className="cursor-pointer" onClick={(ev) => {
+                                className="cursor-pointer"
+                                onClick={(ev) => {
                                   connectDataForIngestion(ev, item.name);
-                                }}>
+                                }}
+                              >
                                 <Card
                                   key={i}
-                                  className={item.connectionAvl ? '' : 'dataListcard'}>
+                                  className={
+                                    item.connectionAvl ? "" : "dataListcard"
+                                  }
+                                >
                                   <CardMedia
                                     sx={{
                                       height: 48,
@@ -3255,25 +4111,44 @@ className={
                                       borderRadius: "4px",
                                       border: "1px solid #ddd",
                                     }}
-                                    className='cardMedia'
+                                    className="cardMedia"
                                     image={item.img}
                                     title={item.name}
                                   />
-                                  {(isConnectedTypeForm == true && ["Typeform"].indexOf(item.name) != -1) ||
-                                    (isConnectedHubspot == true && ["Hubspot"].indexOf(item.name) != -1) || (isConnectedZendesk == true && ["Zendesk"].indexOf(item.name) != -1) ? (
-                                    <> <label class="switch" onClick={(ev) => {
-                                      removeTypeformToken(ev, item.name);
-                                    }}>
-                                      <input type="checkbox" checked={true} disabled={item.active} />
-                                      <span class="slider round"></span>
-                                    </label> </>
+                                  {isConnectedZendesk == true &&
+                                  ["Zendesk"].indexOf(item.name) != -1 ? (
+                                    <>
+                                      {" "}
+                                      <label
+                                        class="switch"
+                                        onClick={(ev) => {
+                                          removeToken(ev, item.value);
+                                        }}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={true}
+                                          disabled={item.active}
+                                        />
+                                        <span class="slider round"></span>
+                                      </label>{" "}
+                                    </>
                                   ) : (
-                                    <> <label class="switch" onClick={(e) => {
-                                      handleOpen(e, item.name);
-                                    }} >
-                                      <input type="checkbox" checked={false} />
-                                      <span class="slider round"></span>
-                                    </label> </>
+                                    <>
+                                      {" "}
+                                      <label
+                                        class="switch"
+                                        onClick={(e) => {
+                                          handleOpen(e, item.name);
+                                        }}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={false}
+                                        />
+                                        <span class="slider round"></span>
+                                      </label>{" "}
+                                    </>
                                   )}
                                   <CardContent>
                                     <Typography
@@ -3295,28 +4170,66 @@ className={
                                   <CardActions>
                                     {item.connectionAvl ? (
                                       <>
-                                        {(["Typeform"].indexOf(item.name) != -1 && isModalDataTypeform.length != 0) || ["Hubspot"].indexOf(item.name) != -1 && isModalDataHubspot.length != 0 ?
-                                          (<div className="disconnect-btn">Dataset Connected  <div className="float-right"><a className="fa fa-pencil mr-3" onClick={(ev) => {
-                                            connectDataForIngestion(ev, item.name);
-                                          }}></a>   <a className="fa fa-close" onClick={(ev) => {
-                                            clearDataForIngestion(ev, item.name);
-                                          }}></a></div></div>) : <><Button
-                                            className="connect-btn">Connect Source</Button></>}
+                                        {(["Typeform"].indexOf(item.name) !=
+                                          -1 &&
+                                          isModalDataTypeform.length != 0) ||
+                                        (["Hubspot"].indexOf(item.name) != -1 &&
+                                          isModalDataHubspot.length != 0) ? (
+                                          <div className="disconnect-btn">
+                                            Dataset Connected{" "}
+                                            <div className="float-right">
+                                              <a
+                                                className="fa fa-pencil mr-3"
+                                                onClick={(ev) => {
+                                                  connectDataForIngestion(
+                                                    ev,
+                                                    item.name
+                                                  );
+                                                }}
+                                              ></a>{" "}
+                                              <a
+                                                className="fa fa-close"
+                                                onClick={(ev) => {
+                                                  clearDataForIngestion(
+                                                    ev,
+                                                    item.name
+                                                  );
+                                                }}
+                                              ></a>
+                                            </div>
+                                          </div>
+                                        ) : (
+                                          <>
+                                            <Button className="connect-btn">
+                                              Connect Source
+                                            </Button>
+                                          </>
+                                        )}
                                       </>
                                     ) : (
                                       <>
                                         <Button
                                           className="connect-btn"
-                                          onClick={(e) => { handleOpen(item.name) }}
+                                          onClick={(e) => {
+                                            handleOpen(item.name);
+                                          }}
                                         >
                                           Connect Dataset
                                         </Button>
-                                        {
-                                          (item.name != "Typeform" && item.name != "Hubspot") &&
-                                          <Button className="getstart-btn" onClick={(e) => emailpopupOpen("datasource", item.name)}>
-                                            Get Started
-                                          </Button>
-                                        }
+                                        {item.name != "Typeform" &&
+                                          item.name != "Hubspot" && (
+                                            <Button
+                                              className="getstart-btn"
+                                              onClick={(e) =>
+                                                emailpopupOpen(
+                                                  "datasource",
+                                                  item.name
+                                                )
+                                              }
+                                            >
+                                              Get Started
+                                            </Button>
+                                          )}
                                       </>
                                     )}
                                   </CardActions>
@@ -3341,12 +4254,17 @@ className={
                                 md={3}
                                 lg={3}
                                 key={i}
-                                className="cursor-pointer" onClick={(ev) => {
+                                className="cursor-pointer"
+                                onClick={(ev) => {
                                   connectDataForIngestion(ev, item.name);
-                                }}>
+                                }}
+                              >
                                 <Card
                                   key={i}
-                                  className={item.connectionAvl ? '' : 'dataListcard'}>
+                                  className={
+                                    item.connectionAvl ? "" : "dataListcard"
+                                  }
+                                >
                                   <CardMedia
                                     sx={{
                                       height: 48,
@@ -3356,25 +4274,46 @@ className={
                                       borderRadius: "4px",
                                       border: "1px solid #ddd",
                                     }}
-                                    className='cardMedia'
+                                    className="cardMedia"
                                     image={item.img}
                                     title={item.name}
                                   />
-                                  {(isConnectedTypeForm == true && ["Typeform"].indexOf(item.name) != -1) ||
-                                    (isConnectedHubspot == true && ["Hubspot"].indexOf(item.name) != -1) || (isConnectedZendesk == true && ["Zendesk"].indexOf(item.name) != -1) ? (
-                                    <> <label class="switch" onClick={(ev) => {
-                                      removeTypeformToken(ev, item.name);
-                                    }}>
-                                      <input type="checkbox" checked={true} disabled={item.active} />
-                                      <span class="slider round"></span>
-                                    </label> </>
+                                  {(isConnectedKlaviyo == true &&
+                                    ["klaviyo"].indexOf(item.value) != -1) ||
+                                  (isConnectedShopify == true &&
+                                    ["shopify"].indexOf(item.value) != -1) ? (
+                                    <>
+                                      {" "}
+                                      <label
+                                        class="switch"
+                                        onClick={(ev) => {
+                                          removeToken(ev, item.value);
+                                        }}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={true}
+                                          disabled={item.active}
+                                        />
+                                        <span class="slider round"></span>
+                                      </label>{" "}
+                                    </>
                                   ) : (
-                                    <> <label class="switch" onClick={(e) => {
-                                      handleOpen(e, item.name);
-                                    }} >
-                                      <input type="checkbox" checked={false} />
-                                      <span class="slider round"></span>
-                                    </label> </>
+                                    <>
+                                      {" "}
+                                      <label
+                                        class="switch"
+                                        onClick={(e) => {
+                                          handleOpen(e, item.name);
+                                        }}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={false}
+                                        />
+                                        <span class="slider round"></span>
+                                      </label>{" "}
+                                    </>
                                   )}
                                   <CardContent>
                                     <Typography
@@ -3394,32 +4333,59 @@ className={
                                     </Typography>
                                   </CardContent>
                                   <CardActions>
-                                    {item.connectionAvl ? (
+                                    {(isConnectedKlaviyo == true &&
+                                    ["klaviyo"].indexOf(item.value) != -1) ||
+                                  (isConnectedShopify == true &&
+                                    ["shopify"].indexOf(item.value) != -1) ? (
                                       <>
-                                        {(["Typeform"].indexOf(item.name) != -1 && isModalDataTypeform.length != 0) || ["Hubspot"].indexOf(item.name) != -1 && isModalDataHubspot.length != 0 ?
-                                          (<div className="disconnect-btn">Dataset Connected  <div className="float-right"><a className="fa fa-pencil mr-3" onClick={(ev) => {
-                                            connectDataForIngestion(ev, item.name);
-                                          }}></a>   <a className="fa fa-close" onClick={(ev) => {
-                                            clearDataForIngestion(ev, item.name);
-                                          }}></a></div></div>) : <><Button
-                                            className="connect-btn">Connect Source</Button></>}
+                                        {(["typeform"].indexOf(item.name) !=
+                                          -1 &&
+                                          isModalDataTypeform.length != 0) ||
+                                        (["hubspot"].indexOf(item.name) != -1 &&
+                                          isModalDataHubspot.length != 0) ? (
+                                          <div className="disconnect-btn">
+                                            Dataset Connected{" "}
+                                            <div className="float-right">
+                                              <a
+                                                className="fa fa-pencil mr-3"
+                                                onClick={(ev) => {
+                                                  connectDataForIngestion(
+                                                    ev,
+                                                    item.name
+                                                  );
+                                                }}
+                                              ></a>{" "}
+                                              <a
+                                                className="fa fa-close"
+                                                onClick={(ev) => {
+                                                  clearDataForIngestion(
+                                                    ev,
+                                                    item.name
+                                                  );
+                                                }}
+                                              ></a>
+                                            </div>
+                                          </div>
+                                        ) : (
+                                          <>
+                                            <Button className="connect-btn">
+                                              Connect Source
+                                            </Button>
+                                          </>
+                                        )}
                                       </>
                                     ) : (
                                       <>
                                         <Button
                                           className="connect-btn"
-                                          onClick={(e) => { handleOpen(item.name) }}
+                                          onClick={(e) => {
+                                            handleOpen(item.name);
+                                          }}
                                         >
                                           Connect Dataset
-                                        </Button>
-                                        {
-                                          (item.name != "Typeform" && item.name != "Hubspot") &&
-                                          <Button className="getstart-btn" onClick={(e) => emailpopupOpen("datasource", item.name)}>
-                                            Get Started
-                                          </Button>
-                                        }
+                                        </Button> 
                                       </>
-                                    )}
+                                    )} 
                                   </CardActions>
                                 </Card>
                               </Grid>
@@ -3496,97 +4462,104 @@ className={
                   {/* end */}
 
                   {/* step2 code */}
-                  {activeStep + 1 == 2 ? (<>
-                    <Box display={"grid"} gap={4}>
-                      <Grid container item xs={12} display={"flex"}>
-                        <Grid item xs={12}>
-                          <Typography variant="h6" component="h6">
-                            Project Name:{" "}
+                  {activeStep + 1 == 2 ? (
+                    <>
+                      <Box display={"grid"} gap={4}>
+                        <Grid container item xs={12} display={"flex"}>
+                          <Grid item xs={12}>
+                            <Typography variant="h6" component="h6">
+                              Project Name:{" "}
+                              <Typography
+                                variant="span"
+                                component="span"
+                                color="text.secondary"
+                              >
+                                {projectName}
+                              </Typography>
+                            </Typography>
+                          </Grid>
+                        </Grid>
+
+                        <Grid container item xs={12} display={"flex"}>
+                          <Grid item xs={12}>
+                            <Typography variant="h6" component="h6">
+                              Choose a model template
+                            </Typography>
                             <Typography
-                              variant="span"
-                              component="span"
+                              variant="p"
+                              component="p"
                               color="text.secondary"
                             >
-                              {projectName}
+                              Based on your datasets we recommend to use
+                              following model templates
                             </Typography>
-                          </Typography>
+                          </Grid>
                         </Grid>
-                      </Grid>
 
-                      <Grid container item xs={12} display={"flex"}>
-                        <Grid item xs={12}>
-                          <Typography variant="h6" component="h6">
-                            Choose a model template
-                          </Typography>
-                          <Typography
-                            variant="p"
-                            component="p"
-                            color="text.secondary"
-                          >
-                            Based on your datasets we recommend to use following
-                            model templates
-                          </Typography>
-                        </Grid>
-                      </Grid>
+                        <Grid display={"grid"} gap={2}>
+                          {templateData.map((item, i) => (
+                            <List
+                              sx={{ width: "100%", padding: "0" }}
+                              component="nav"
+                              aria-labelledby="nested-list-subheader"
+                              style={{
+                                border: "1px solid #d0d0d0",
+                                borderRadius: "4px",
+                                overflow: "auto",
+                              }}
+                              className={i < 5 ? "active-servay" : ""}
+                            >
+                              <ListItemButton
+                                style={{ padding: "16px", width: "98%" }}
+                              >
+                                <ListItemIcon>
+                                  <i
+                                    className={item.icons}
+                                    style={{ fontSize: "25px" }}
+                                  ></i>
+                                  {/* {i == 0 || i == 3 ? <CurrencyExchangeIcon /> : i == 1 || i == 4 ? <PieChartIcon /> : i == 2 || i == 5 ? <StarBorderIcon /> : ''} */}
+                                </ListItemIcon>
+                                <ListItemText>
+                                  <Typography variant="h6" component="h6">
+                                    {item.name}
+                                  </Typography>
+                                  <Typography
+                                    variant="p"
+                                    component="p"
+                                    color="text.secondary"
+                                  >
+                                    {item.description}
+                                  </Typography>
+                                </ListItemText>
+                                <Switch
+                                  edge="end"
+                                  checked={
+                                    checked.indexOf(item.id) == -1
+                                      ? false
+                                      : true
+                                  }
+                                  onChange={(ev) => {
+                                    handleToggle(ev, item.id, item.name);
+                                  }}
+                                  inputProps={{
+                                    "aria-labelledby": "switch-list-label-wifi",
+                                  }}
+                                />
+                              </ListItemButton>
 
-                      <Grid display={"grid"} gap={2}>
-                        {templateData.map((item, i) => (
-                          <List
-                            sx={{ width: "100%", padding: "0" }}
-                            component="nav"
-                            aria-labelledby="nested-list-subheader"
-                            style={{
-                              border: "1px solid #d0d0d0",
-                              borderRadius: "4px",
-                              overflow: 'auto'
-                            }}
-                            className={i < 5 ? 'active-servay' : ''}
-                          >
-                            <ListItemButton style={{ padding: "16px", width: '98%' }} >
-                              <ListItemIcon >
-                                <i
-                                  className={item.icons}
-                                  style={{ fontSize: "25px" }}
-                                ></i>
-                                {/* {i == 0 || i == 3 ? <CurrencyExchangeIcon /> : i == 1 || i == 4 ? <PieChartIcon /> : i == 2 || i == 5 ? <StarBorderIcon /> : ''} */}
-                              </ListItemIcon>
-                              <ListItemText>
-                                <Typography variant="h6" component="h6">
-                                  {item.name}
-                                </Typography>
-                                <Typography
-                                  variant="p"
-                                  component="p"
-                                  color="text.secondary"
-                                >
-                                  {item.description}
-                                </Typography>
-                              </ListItemText>
-                              <Switch
-                                edge="end"
-                                checked={
+                              <Collapse
+                                in={
                                   checked.indexOf(item.id) == -1 ? false : true
                                 }
-                                onChange={(ev) => {
-                                  handleToggle(ev, item.id, item.name);
-                                }}
-                                inputProps={{
-                                  "aria-labelledby": "switch-list-label-wifi",
-                                }}
-                              />
-                            </ListItemButton>
-
-                            <Collapse
-                              in={checked.indexOf(item.id) == -1 ? false : true}
-                              timeout="auto"
-                              unmountOnExit
-                            >
-                              <List component="div" disablePadding>
-                                <div className="clearFix" />
-                                <br />
-                                <Grid container spacing={3}>
-                                  {warningNotificationAlert.alertVisible ==
-                                    true && (
+                                timeout="auto"
+                                unmountOnExit
+                              >
+                                <List component="div" disablePadding>
+                                  <div className="clearFix" />
+                                  <br />
+                                  <Grid container spacing={3}>
+                                    {warningNotificationAlert.alertVisible ==
+                                      true && (
                                       <Grid item xs={3}>
                                         <section
                                           className={`message-box ml-41 ${warningNotificationAlert.alertType}`}
@@ -3627,48 +4600,49 @@ className={
                                         </section>
                                       </Grid>
                                     )}
-                                  {
-                                    errorListDisplay.map(
-                                      (itemMessage, i) => (
-                                        <Grid item>
-                                          <div style={{ height: (itemMessage.isCollapsable == true ? '50px' : 'auto') }}
-                                            className={`message-box mb-3 ml-4   ${itemMessage.alertType}`}
+                                    {errorListDisplay.map((itemMessage, i) => (
+                                      <Grid item>
+                                        <div
+                                          style={{
+                                            height:
+                                              itemMessage.isCollapsable == true
+                                                ? "50px"
+                                                : "auto",
+                                          }}
+                                          className={`message-box mb-3 ml-4   ${itemMessage.alertType}`}
+                                        >
+                                          <span>{itemMessage.short_text}</span>
+                                          <a
+                                            onClick={(val, ind) => {
+                                              collapseAndExpandError(val, i);
+                                            }}
                                           >
-                                            <span>{itemMessage.short_text}</span>
-                                            <a
-                                              onClick={(val, ind) => {
-
-                                                collapseAndExpandError(val, i)
+                                            <i
+                                              className={
+                                                !itemMessage.isCollapsable
+                                                  ? "fa fa-angle-up"
+                                                  : "fa fa-angle-down"
                                               }
-                                              }
-                                            >
-                                              <i
-                                                className={
-                                                  !itemMessage.isCollapsable
-                                                    ? "fa fa-angle-up"
-                                                    : "fa fa-angle-down"
-                                                }
-                                              ></i>
-                                            </a>
-                                            {!itemMessage.isCollapsable ? (
-                                              <>
-                                                <ul>
-                                                  {
-                                                    itemMessage.message.map((mssgList, ii) => (
-                                                      <li>{mssgList} </li>
-                                                    ))
-                                                  }
-                                                </ul>
-                                              </>
-                                            ) : (
-                                              <> </>
-                                            )}
+                                            ></i>
+                                          </a>
+                                          {!itemMessage.isCollapsable ? (
+                                            <>
+                                              <ul>
+                                                {itemMessage.message.map(
+                                                  (mssgList, ii) => (
+                                                    <li>{mssgList} </li>
+                                                  )
+                                                )}
+                                              </ul>
+                                            </>
+                                          ) : (
+                                            <> </>
+                                          )}
+                                        </div>
+                                      </Grid>
+                                    ))}
 
-                                          </div></Grid>
-                                      ))
-                                  }
-
-                                  {/* {errorNotificationAlert.alertVisible ==
+                                    {/* {errorNotificationAlert.alertVisible ==
                                     true && (
                                       <Grid item xs={3} >
                                         <section
@@ -3710,314 +4684,337 @@ className={
                                         </section>
                                       </Grid>
                                     )} */}
-                                </Grid>
+                                  </Grid>
 
+                                  {!showLoder &&
+                                  !typeformIngestionStatus.status ? (
+                                    isShowSurveyMapp.map((label, index) => (
+                                      <>
+                                        <Typography
+                                          style={{ margin: "15px" }}
+                                          variant="span"
+                                          className="text-primary datasources"
+                                        >
+                                          <span className="datasources-type">
+                                            {label.dataType}
+                                          </span>
+                                          <span className="datasources-list">
+                                            {label.survey.label}
+                                          </span>
+                                          <Button
+                                            color="primary"
+                                            size="small"
+                                            variant="outlined"
+                                            onClick={() => {
+                                              handleRemoveSurvey(index);
+                                            }}
+                                          >
+                                            <CloseIcon /> Remove
+                                          </Button>
+                                        </Typography>
 
-                                {!showLoder && !typeformIngestionStatus.status ?
-                                  isShowSurveyMapp.map((label, index) => (
+                                        {label.dataType == "Typeform" &&
+                                        label.survey.value ==
+                                          isShowSurveyMapp.filter(
+                                            (ele) => ele.dataType == "Typeform"
+                                          )[
+                                            isShowSurveyMapp.filter(
+                                              (ele) =>
+                                                ele.dataType == "Typeform"
+                                            ).length - 1
+                                          ].survey.value ? (
+                                          <Box
+                                            sx={{
+                                              height: 520,
+                                              width: "98.5%",
+                                              margin: "15px",
+                                              paddingBottom: "10px",
+                                            }}
+                                          >
+                                            <DataGrid
+                                              rows={label.listMapping}
+                                              columns={
+                                                label.dataType == "Typeform"
+                                                  ? gridDataForGrid.columns
+                                                  : gridDataForGrid.columns1
+                                              }
+                                              pageSizeOptions={[5, 10, 50, 100]}
+                                              checkboxSelection={true}
+                                              disableSelectionOnClick
+                                              rowHeight={65}
+                                              selectionModel={
+                                                label.checkedAllList
+                                              }
+                                              onSelectionModelChange={(e) => {
+                                                setSelectionModel(e);
+                                                const selectedIDs = new Set(e);
+                                                const selectedRows =
+                                                  label.listMapping.filter(
+                                                    (r) => selectedIDs.has(r.id)
+                                                  );
+                                                setSelectedRows(selectedRows);
+                                              }}
+                                              onCellKeyDown={(
+                                                params,
+                                                event
+                                              ) => {
+                                                event.stopPropagation();
+                                                event.defaultMuiPrevented = true;
+                                              }}
+                                              pagination={false}
+                                              hideFooterRowCount={true}
+                                              hideFooter={true}
+                                              editable
+                                            />
+                                          </Box>
+                                        ) : (
+                                          ""
+                                        )}
+
+                                        {label.dataType !== "Typeform" ? (
+                                          <Box
+                                            sx={{
+                                              height: 520,
+                                              width: "98.5%",
+                                              margin: "15px",
+                                            }}
+                                          >
+                                            <DataGrid
+                                              rows={label.listMapping}
+                                              columns={
+                                                label.dataType == "Typeform"
+                                                  ? gridDataForGrid.columns
+                                                  : gridDataForGrid.columns1
+                                              }
+                                              pageSizeOptions={[5, 10, 50, 100]}
+                                              checkboxSelection={true}
+                                              disableSelectionOnClick
+                                              selectionModel={
+                                                label.checkedAllList
+                                              }
+                                              onSelectionModelChange={(e) => {
+                                                setSelectionModel(e);
+                                                const selectedIDs = new Set(e);
+                                                const selectedRows =
+                                                  label.listMapping.filter(
+                                                    (r) => selectedIDs.has(r.id)
+                                                  );
+                                                setSelectedRows(selectedRows);
+                                              }}
+                                              // rowSelectionModel={
+                                              //   label.checkedAllList
+                                              // }
+                                              // onRowSelectionModelChange={(
+                                              //   e
+                                              // ) => {
+                                              //   setSelectionModel(e);
+                                              //   const selectedIDs = new Set(e);
+                                              //   const selectedRows =
+                                              //     label.listMapping.filter(
+                                              //       (r) => selectedIDs.has(r.id)
+                                              //     );
+                                              //   setSelectedRows(selectedRows);
+                                              // }}
+                                              onCellKeyDown={(
+                                                params,
+                                                event
+                                              ) => {
+                                                event.stopPropagation();
+                                                event.defaultMuiPrevented = true;
+                                              }}
+                                              pagination={false}
+                                              hideFooterRowCount={true}
+                                              hideFooter={true}
+                                              editable
+                                            />
+                                          </Box>
+                                        ) : (
+                                          ""
+                                        )}
+                                      </>
+                                    ))
+                                  ) : (
                                     <>
-                                      <Typography style={{ margin: '15px' }}
-                                        variant="span"
-                                        className="text-primary datasources"
-                                      >
-                                        <span className="datasources-type">
-                                          {label.dataType}
-                                        </span>
-                                        <span className="datasources-list">
-                                          {label.survey.label}
-                                        </span>
-                                        <Button
-                                          color="primary"
-                                          size="small"
-                                          variant="outlined"
-                                          onClick={() => {
-                                            handleRemoveSurvey(index);
-                                          }}
-                                        >
-                                          <CloseIcon /> Remove
-                                        </Button>
-                                      </Typography>
-
-                                      {label.dataType == "Typeform" && label.survey.value == (isShowSurveyMapp.filter((ele) => ele.dataType == "Typeform")[isShowSurveyMapp.filter((ele) => ele.dataType == "Typeform").length - 1]).survey.value ?
-                                        <Box
-                                          sx={{
-                                            height: 520,
-                                            width: "98.5%",
-                                            margin: '15px',
-                                            paddingBottom: "10px",
-                                          }}
-                                        >
-                                          <DataGrid
-                                            rows={label.listMapping}
-                                            columns={
-                                              label.dataType == "Typeform"
-                                                ? gridDataForGrid.columns
-                                                : gridDataForGrid.columns1
-                                            }
-                                            pageSizeOptions={[5, 10, 50, 100]}
-                                            checkboxSelection={true}
-                                            disableSelectionOnClick
-                                            rowHeight={65}
-                                            selectionModel={
-                                              label.checkedAllList
-                                            }
-                                            onSelectionModelChange={(
-                                              e
-                                            ) => {
-                                              setSelectionModel(e);
-                                              const selectedIDs = new Set(e);
-                                              const selectedRows =
-                                                label.listMapping.filter(
-                                                  (r) => selectedIDs.has(r.id)
-                                                );
-                                              setSelectedRows(selectedRows);
-                                            }}
-                                            onCellKeyDown={(
-                                              params,
-                                              event
-                                            ) => {
-                                              event.stopPropagation();
-                                              event.defaultMuiPrevented = true;
-                                            }}
-                                            pagination={false}
-                                            hideFooterRowCount={true}
-                                            hideFooter={true}
-                                            editable
-                                          />
-                                        </Box>
-                                        : ""}
-
-                                      {label.dataType !== "Typeform" ? <Box
-                                        sx={{
-                                          height: 520,
-                                          width: "98.5%",
-                                          margin: '15px',
-                                        }}
-                                      >
-                                        <DataGrid
-                                          rows={label.listMapping}
-                                          columns={
-                                            label.dataType == "Typeform"
-                                              ? gridDataForGrid.columns
-                                              : gridDataForGrid.columns1
+                                      <Box className="text-center">
+                                        <br />
+                                        <CircularProgressWithLabel
+                                          value={
+                                            typeformIngestionStatus.percentage
                                           }
-                                          pageSizeOptions={[5, 10, 50, 100]}
-                                          checkboxSelection={true}
-                                          disableSelectionOnClick
-                                          selectionModel={
-                                            label.checkedAllList
-                                          }
-                                          onSelectionModelChange={(
-                                            e
-                                          ) => {
-                                            setSelectionModel(e);
-                                            const selectedIDs = new Set(e);
-                                            const selectedRows =
-                                              label.listMapping.filter(
-                                                (r) => selectedIDs.has(r.id)
-                                              );
-                                            setSelectedRows(selectedRows);
-                                          }}
-                                          // rowSelectionModel={
-                                          //   label.checkedAllList
-                                          // }
-                                          // onRowSelectionModelChange={(
-                                          //   e
-                                          // ) => {
-                                          //   setSelectionModel(e);
-                                          //   const selectedIDs = new Set(e);
-                                          //   const selectedRows =
-                                          //     label.listMapping.filter(
-                                          //       (r) => selectedIDs.has(r.id)
-                                          //     );
-                                          //   setSelectedRows(selectedRows);
-                                          // }}
-                                          onCellKeyDown={(
-                                            params,
-                                            event
-                                          ) => {
-                                            event.stopPropagation();
-                                            event.defaultMuiPrevented = true;
-                                          }}
-                                          pagination={false}
-                                          hideFooterRowCount={true}
-                                          hideFooter={true}
-                                          editable
                                         />
+                                        {/* <CircularProgress /> */}
+                                        <div className="ml-3">
+                                          <p>
+                                            Sorting your questions into
+                                            categories, thank you for your
+                                            patience...
+                                          </p>{" "}
+                                        </div>
                                       </Box>
-                                        : ''}
-
                                     </>
-                                  )) :
-                                  <>
-                                    <Box className='text-center'><br />
-                                      <CircularProgressWithLabel value={typeformIngestionStatus.percentage} />
-                                      {/* <CircularProgress /> */}
-                                      <div className='ml-3'>
-                                        <p>Sorting your questions into categories, thank you for your patience...</p> </div>
-                                    </Box></>
-                                }
+                                  )}
 
-                                <Grid
-                                  container
-                                  spacing={4}
-                                  display="grid"
-                                  alignItems="left"
-                                >
-                                  {openAddNewDatasource ? (
-                                    <Grid item xs={12}>
-                                      <Box
-                                        sx={{ height: "auto", width: "100%" }}
-                                      >
-                                        <Grid
-                                          item
-                                          xs={12}
-                                          display={"grid"}
-                                          gap={2}
-                                          style={{
-                                            padding: "16px",
-                                            background: "#f5f5f5",
-                                            margin: "16px 16px 10px 16px",
-                                          }}
+                                  <Grid
+                                    container
+                                    spacing={4}
+                                    display="grid"
+                                    alignItems="left"
+                                  >
+                                    {openAddNewDatasource ? (
+                                      <Grid item xs={12}>
+                                        <Box
+                                          sx={{ height: "auto", width: "100%" }}
                                         >
-                                          <Grid item xs={12}>
-                                            <Typography
-                                              variant="h6"
-                                              component="h6"
-                                            >
-                                              Data Sources
-                                            </Typography>
-                                          </Grid>
                                           <Grid
                                             item
                                             xs={12}
-                                            display={"flex"}
-                                            gap={3}
+                                            display={"grid"}
+                                            gap={2}
+                                            style={{ 
+                                              background: "#f5f5f5",
+                                              margin: "5px 16px 5px 16px",
+                                            }}
                                           >
-                                            <Grid item xs={6}>
-                                              <Autocomplete
-                                                disablePortal
-                                                id="combo-box-demo"
-                                                options={selected}
-                                                onChange={(event, value) =>
-                                                  changeDataForSurvey(
-                                                    event,
-                                                    value
-                                                  )
-                                                }
-                                                getOptionLabel={(option) =>
-                                                  option.label
-                                                }
-                                                //value={selectedDataSourceForSurvey}
-                                                sx={{ width: "100%" }}
-                                                renderInput={(params) => (
-                                                  <TextField
-                                                    {...params}
-                                                    label="Select data source"
-                                                  />
-                                                )}
-                                              />
+                                            <Grid item xs={12}>
+                                              <Typography
+                                                variant="h6"
+                                                component="h6"
+                                              >
+                                                Data Sources
+                                              </Typography>
                                             </Grid>
-                                            <Grid item xs={6}>
-                                              {selectedDataSourceForSurvey ==
-                                                "Typeform" ? (
+                                            <Grid
+                                              item
+                                              xs={12}
+                                              display={"flex"}
+                                              gap={3}
+                                            >
+                                              <Grid item xs={6}>
                                                 <Autocomplete
                                                   disablePortal
-                                                  id="combo-box-demo1"
-                                                  options={
-                                                    selectedTypeSurveyList
-                                                  }
-                                                  sx={{ width: "100%" }}
+                                                  id="combo-box-demo"
+                                                  options={selected}
                                                   onChange={(event, value) =>
-                                                    changeSurvey(event, value)
+                                                    changeDataForSurvey(
+                                                      event,
+                                                      value
+                                                    )
                                                   }
                                                   getOptionLabel={(option) =>
-                                                    option.formName
+                                                    option.label
                                                   }
+                                                  //value={selectedDataSourceForSurvey}
+                                                  sx={{ width: "100%" }}
                                                   renderInput={(params) => (
                                                     <TextField
                                                       {...params}
-                                                      label={
-                                                        selectedDataSourceForSurvey.toLowerCase() ==
+                                                      label="Select data source"
+                                                    />
+                                                  )}
+                                                />
+                                              </Grid>
+                                              <Grid item xs={6}>
+                                                {selectedDataSourceForSurvey ==
+                                                "Typeform" ? (
+                                                  <Autocomplete
+                                                    disablePortal
+                                                    id="combo-box-demo1"
+                                                    options={
+                                                      selectedTypeSurveyList
+                                                    }
+                                                    sx={{ width: "100%" }}
+                                                    onChange={(event, value) =>
+                                                      changeSurvey(event, value)
+                                                    }
+                                                    getOptionLabel={(option) =>
+                                                      option.formName
+                                                    }
+                                                    renderInput={(params) => (
+                                                      <TextField
+                                                        {...params}
+                                                        label={
+                                                          selectedDataSourceForSurvey.toLowerCase() ==
                                                           "hubspot"
-                                                          ? "Select Entity"
-                                                          : selectedDataSourceForSurvey.toLowerCase() ==
-                                                            "file"
+                                                            ? "Select Entity"
+                                                            : selectedDataSourceForSurvey.toLowerCase() ==
+                                                              "file"
                                                             ? "Select File"
                                                             : "Select Survey"
-                                                      }
-                                                    />
-                                                  )}
-                                                />
-                                              ) : (
-                                                <Autocomplete
-                                                  disablePortal
-                                                  id="combo-box-demo1"
-                                                  options={
-                                                    selectedTypeSurveyList
-                                                  }
-                                                  sx={{ width: "100%" }}
-                                                  onChange={(event, value) =>
-                                                    changeSurvey1(event, value)
-                                                  }
-                                                  getOptionLabel={(option) =>
-                                                    option.displayName
-                                                  }
-                                                  renderInput={(params) => (
-                                                    <TextField
-                                                      {...params}
-                                                      label={
-                                                        selectedDataSourceForSurvey.toLowerCase() ==
+                                                        }
+                                                      />
+                                                    )}
+                                                  />
+                                                ) : (
+                                                  <Autocomplete
+                                                    disablePortal
+                                                    id="combo-box-demo1"
+                                                    options={
+                                                      selectedTypeSurveyList
+                                                    }
+                                                    sx={{ width: "100%" }}
+                                                    onChange={(event, value) =>
+                                                      changeSurvey1(
+                                                        event,
+                                                        value
+                                                      )
+                                                    }
+                                                    getOptionLabel={(option) =>
+                                                      option.displayName
+                                                    }
+                                                    renderInput={(params) => (
+                                                      <TextField
+                                                        {...params}
+                                                        label={
+                                                          selectedDataSourceForSurvey.toLowerCase() ==
                                                           "hubspot"
-                                                          ? "Select entity"
-                                                          : "Select survey"
-                                                      }
-                                                    />
-                                                  )}
-                                                />
-                                              )}
+                                                            ? "Select entity"
+                                                            : "Select survey"
+                                                        }
+                                                      />
+                                                    )}
+                                                  />
+                                                )}
+                                              </Grid>
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                              <Button
+                                                disabled={showLoder}
+                                                color="primary"
+                                                variant="outlined"
+                                                onClick={() => {
+                                                  handleApplyFetchSurvey1();
+                                                }}
+                                              >
+                                                Apply
+                                              </Button>
                                             </Grid>
                                           </Grid>
-                                          <Grid item xs={12}>
-                                            <Button
-                                              disabled={showLoder}
-                                              color="primary"
-                                              variant="outlined"
-                                              onClick={() => {
-                                                handleApplyFetchSurvey1();
-                                              }}
-                                            >
-                                              Apply
-                                            </Button>
-                                          </Grid>
-                                        </Grid>
-                                      </Box>
+                                        </Box>
+                                      </Grid>
+                                    ) : (
+                                      ""
+                                    )}
+                                    <Grid item xs={12}>
+                                      <Button
+                                        style={{ margin: "16px" }}
+                                        color="primary"
+                                        variant="outlined"
+                                        onClick={handleAddNewDataSource}
+                                      >
+                                        <AddIcon /> Add Data Source
+                                      </Button>
                                     </Grid>
-                                  ) : (
-                                    ""
-                                  )}
-                                  <Grid item xs={12}>
-                                    <Button
-                                      style={{ margin: "16px" }}
-                                      color="primary"
-                                      variant="outlined"
-                                      onClick={handleAddNewDataSource}
-                                    >
-                                      <AddIcon /> Add Data Source
-                                    </Button>
                                   </Grid>
-                                </Grid>
-                              </List>
-                            </Collapse>
-                          </List>
-                        ))}
-                      </Grid>
-                      {/* {
+                                </List>
+                              </Collapse>
+                            </List>
+                          ))}
+                        </Grid>
+                        {/* {
                         isRunningAnalysis.processList.length != 0 && isRunningAnalysis.status && (<ConnectorsLoader processListStatus={isRunningAnalysis.processList} />)
                       } */}
-                    </Box>
-
-                  </>
+                      </Box>
+                    </>
                   ) : (
                     ""
                   )}
@@ -4032,13 +5029,9 @@ className={
                         />
                       ) : ( */}
 
-
                       {/* ( */}
 
-                      <MlResultsConnection
-                        resultData={paramsForFetchResult}
-                      />
-
+                      <MlResultsConnection resultData={paramsForFetchResult} />
 
                       {/* ) */}
                       {/* 
@@ -4047,101 +5040,108 @@ className={
                   ) : (
                     ""
                   )}
-
-
-
-
                 </Box>
 
-                {activeStep + 1 != 3 ? <> <Box
-                  sx={{ display: "flex", flexDirection: "row" }}
-                  className="result-action-bottom-bar"
-                >
-                  {activeStep + 1 != 1 ? (
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      onClick={handleBack}
-                      sx={{ mr: 1 }}
+                {activeStep + 1 != 3 ? (
+                  <>
+                    {" "}
+                    <Box
+                      sx={{ display: "flex", flexDirection: "row" }}
+                      className="result-action-bottom-bar"
                     >
-                      Previous Step
-                    </Button>
-                  ) : (
-                    ""
-                  )}
-                  <Box sx={{ flex: "1 1 auto" }} />
-                  {activeStep + 1 != 3 && (
-                    <>
-                      {checkProgressDatasetStatus.map((label11, index) => {
-                        return (
-                          <>
-                            <Box className="dataprogressBar">
-                              <img className="mr-2" src={`/json-media/img/partners/${label11.dataSource}-sm.svg`} width={20} height={20} />
-                              {label11.status == "progress" ? (
-                                ""
-                              ) : (
-                                <i className="fa fa-check-circle"></i>
-                              )}{" "}
-                              {label11.dataSourceText}
-                              {label11.status == "progress" ? (
-                                <LinearProgress
-                                  color="secondary"
-                                  style={{ marginTop: 5 }}
-                                />
-                              ) : (
-                                <LinearProgress
-                                  color="success"
-                                  variant="determinate"
-                                  value={100}
-                                  style={{ marginTop: 5 }}
-                                />
-                              )}
-                              {/* <CircularProgressWithLabel value={99} /> */}
-                            </Box>
-                          </>
-                        );
-                      })}
+                      {activeStep + 1 != 1 ? (
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          onClick={handleBack}
+                          sx={{ mr: 1 }}
+                        >
+                          Previous Step
+                        </Button>
+                      ) : (
+                        ""
+                      )}
+                      <Box sx={{ flex: "1 1 auto" }} />
+                      {activeStep + 1 != 3 && (
+                        <>
+                          {checkProgressDatasetStatus.map((label11, index) => {
+                            return (
+                              <>
+                                <Box className="dataprogressBar">
+                                  <img
+                                    className="mr-2"
+                                    src={`/json-media/img/partners/${label11.dataSource}-sm.svg`}
+                                    width={20}
+                                    height={20}
+                                  />
+                                  {label11.status == "progress" ? (
+                                    ""
+                                  ) : (
+                                    <i className="fa fa-check-circle"></i>
+                                  )}{" "}
+                                  {label11.dataSourceText}
+                                  {label11.status == "progress" ? (
+                                    <LinearProgress
+                                      color="secondary"
+                                      style={{ marginTop: 5 }}
+                                    />
+                                  ) : (
+                                    <LinearProgress
+                                      color="success"
+                                      variant="determinate"
+                                      value={100}
+                                      style={{ marginTop: 5 }}
+                                    />
+                                  )}
+                                  {/* <CircularProgressWithLabel value={99} /> */}
+                                </Box>
+                              </>
+                            );
+                          })}
 
-                      {showLoderVisual && (
-                        <Box className="dataprogressBar">
-                          {isRunningAnalysis.sccessPercent != 100 ? 'Survey data analysis processing...' : 'Survey data analysis completed'}
-                          <LinearProgress
-                            color="success"
-                            variant="determinate"
-                            value={isRunningAnalysis.sccessPercent}
-                            style={{ marginTop: 5 }}
-                          />
-                        </Box>)
-                      }
-                      <Button color="inherit">
-                        {selected.length} datasource(s) selected
-                      </Button>
-                      {/* {showLoderVisual && (
+                          {showLoderVisual && (
+                            <Box className="dataprogressBar">
+                              {isRunningAnalysis.sccessPercent != 100
+                                ? "Survey data analysis processing..."
+                                : "Survey data analysis completed"}
+                              <LinearProgress
+                                color="success"
+                                variant="determinate"
+                                value={isRunningAnalysis.sccessPercent}
+                                style={{ marginTop: 5 }}
+                              />
+                            </Box>
+                          )}
+                          <Button color="inherit">
+                            {selected.length} datasource(s) selected
+                          </Button>
+                          {/* {showLoderVisual && (
                         <Box sx={{ textAlign: "center" }}>
                           <CircularProgress />
                         </Box>
                       )} */}
 
-                      <Button
-                        color="primary"
-                        sx={{ marginLeft: 2 }}
-                        variant="outlined"
-                        disabled={
-                          (activeStep + 1 == 2 && showLoder == true) || (activeStep + 1 == 2 && checked.length == 0) ||
-                          showLoderVisual == true ||
-                          isRunningIngestion == true
-                        }
-                        onClick={handleNext}
-                      >
-                        Next Step
-                      </Button>
-                    </>
-                  )}
-
-                </Box></> : ''}
-
-
-
+                          <Button
+                            color="primary"
+                            sx={{ marginLeft: 2 }}
+                            variant="outlined"
+                            disabled={
+                              (activeStep + 1 == 2 && showLoder == true) ||
+                              (activeStep + 1 == 2 && checked.length == 0) ||
+                              showLoderVisual == true ||
+                              isRunningIngestion == true
+                            }
+                            onClick={handleNext}
+                          >
+                            Next Step
+                          </Button>
+                        </>
+                      )}
+                    </Box>
+                  </>
+                ) : (
+                  ""
+                )}
 
                 {/* )} */}
               </React.Fragment>
@@ -4160,7 +5160,8 @@ className={
             openbraze={openbraze}
             openInstagram={openInstagram}
             openKlaviyo={openKlaviyo}
-            isOpenPopupKlaviyo={isOpenPopupKlaviyo}
+            isConnectedKlaviyo={isConnectedKlaviyo}
+            isConnectedShopify={isConnectedShopify}
             isOpenPopupIntercom={isOpenPopupIntercom}
             openIntercom={openIntercom}
             openShopify={openShopify}
@@ -4184,7 +5185,6 @@ className={
           />
         </Box>
 
-
         {/* ------------------ send email popup  ------------------  */}
         <Dialog
           open={emailpopupopen}
@@ -4193,12 +5193,14 @@ className={
           aria-describedby="alert-dialog-description"
           className="popup-form"
         >
-          <DialogTitle id="alert-dialog-title"> Integration Inquiry
+          <DialogTitle id="alert-dialog-title">
+            {" "}
+            Integration Inquiry
             <IconButton
               aria-label="close"
               onClick={emailpopupClose}
               sx={{
-                position: 'absolute',
+                position: "absolute",
                 right: 8,
                 top: 8,
                 color: (theme) => theme.palette.grey[500],
@@ -4208,18 +5210,18 @@ className={
             </IconButton>
           </DialogTitle>
           <DialogContent>
-            {
-
-              !dataSourceMailObj.isSubmit && (<>
-                <span>Experience exclusive data intergration tailored to your needs! Please provide your details below, and our team will connect with you get started.</span><br /><br />
-
+            {!dataSourceMailObj.isSubmit && (
+              <>
+                <span>
+                  Experience exclusive data intergration tailored to your needs!
+                  Please provide your details below, and our team will connect
+                  with you get started.
+                </span>
+                <br />
+                <br />
                 <form>
-                  <Grid
-                    container
-                    spacing={2}
-                  >
+                  <Grid container spacing={2}>
                     <Grid item xs={6}>
-
                       <TextField
                         required
                         autoComplete="new-password"
@@ -4229,7 +5231,12 @@ className={
                         label="First name"
                         type="text"
                         value={dataSourceMailObj.first_name}
-                        onChange={(event, val) => changeDataSourceMailObj("first_name", event.target.value)}
+                        onChange={(event, val) =>
+                          changeDataSourceMailObj(
+                            "first_name",
+                            event.target.value
+                          )
+                        }
                         placeholder="First name"
                       />
                     </Grid>
@@ -4242,7 +5249,12 @@ className={
                         label="Last name"
                         type="text"
                         value={dataSourceMailObj.last_name}
-                        onChange={(event, val) => changeDataSourceMailObj("last_name", event.target.value)}
+                        onChange={(event, val) =>
+                          changeDataSourceMailObj(
+                            "last_name",
+                            event.target.value
+                          )
+                        }
                         placeholder="Last name"
                       />
                     </Grid>
@@ -4256,7 +5268,9 @@ className={
                         label="Email"
                         type="text"
                         value={dataSourceMailObj.email}
-                        onChange={(event, val) => changeDataSourceMailObj("email", event.target.value)}
+                        onChange={(event, val) =>
+                          changeDataSourceMailObj("email", event.target.value)
+                        }
                         placeholder="Email"
                       />
                     </Grid>
@@ -4270,26 +5284,54 @@ className={
                         label="Feedback (Optional)"
                         type="text"
                         value={dataSourceMailObj.message}
-                        onChange={(event, val) => changeDataSourceMailObj("message", event.target.value)}
+                        onChange={(event, val) =>
+                          changeDataSourceMailObj("message", event.target.value)
+                        }
                         placeholder="Feedback (Optional)"
                       />
                     </Grid>
-                  </Grid><br />
-                  <Button variant="contained" disabled={dataSourceMailObj.first_name == "" || dataSourceMailObj.email == ""} className="pink-btn d-block w-full" onClick={(e) => { sendDataSourceMail() }} size="large">Submit</Button>
-                </form> </>)
-            }
-            {
-              dataSourceMailObj.isSubmit &&
-              (<div className="text-center">
-                <div className="emailsuccessfulsubmit" style={{ width: '280px', margin: 'auto' }}><h1>Thank you!</h1></div><br />
-                Our team will be in touch shortly to kickstart your ConvertMl Journey<br /><br />
-                <hr className="blue-hr" style={{ width: '100px', margin: 'auto' }} />
-              </div>)
-            }
+                  </Grid>
+                  <br />
+                  <Button
+                    variant="contained"
+                    disabled={
+                      dataSourceMailObj.first_name == "" ||
+                      dataSourceMailObj.email == ""
+                    }
+                    className="pink-btn d-block w-full"
+                    onClick={(e) => {
+                      sendDataSourceMail();
+                    }}
+                    size="large"
+                  >
+                    Submit
+                  </Button>
+                </form>{" "}
+              </>
+            )}
+            {dataSourceMailObj.isSubmit && (
+              <div className="text-center">
+                <div
+                  className="emailsuccessfulsubmit"
+                  style={{ width: "280px", margin: "auto" }}
+                >
+                  <h1>Thank you!</h1>
+                </div>
+                <br />
+                Our team will be in touch shortly to kickstart your ConvertMl
+                Journey
+                <br />
+                <br />
+                <hr
+                  className="blue-hr"
+                  style={{ width: "100px", margin: "auto" }}
+                />
+              </div>
+            )}
           </DialogContent>
         </Dialog>
         {/* ------------------ send email popup  ------------------   */}
-      </div >
+      </div>
     </>
   );
 }

@@ -145,7 +145,7 @@ export default function MarketResearch() {
                         {" "}
                         <img
                           src={"/json-media/img/solutions/marketResearch/" + content.bannerName + ".png"}
-                          alt="sitting in Goldmine"
+                          alt="Customer Satisfaction Analysis"
                           className="img-responsive"
                         />{" "}
                       </Grid>{" "}
@@ -190,7 +190,7 @@ export default function MarketResearch() {
                         {" "}
                         <img
                           src={"/json-media/img/solutions/marketResearch/" + content.bannerName + ".png"}
-                          alt="sitting in Goldmine"
+                          alt="Customer Satisfaction Analysis"
                           className="img-responsive"
                         />{" "}
                       </Grid>{" "}
@@ -227,7 +227,7 @@ export default function MarketResearch() {
                     {" "}
                     <img
                       src={"/json-media/img/solutions/marketResearch/" + content.bannerName + ".png"}
-                      alt="sitting in Goldmine"
+                      alt="Customer Satisfaction Analysis"
                       className="img-responsive"
                     />{" "}
                   </Grid>

@@ -1,8 +1,7 @@
 import { Adapter, StreamingAdapterObserver } from '@nlux/react';
 
-//const demoProxyServerUrl = 'http://54.84.56.97/chat/';
-const demoProxyServerUrl = 'http://54.84.56.97:80/chat';
 //const demoProxyServerUrl = 'https://demo.api.nlux.ai/openai/chat/stream';
+const demoProxyServerUrl = 'https://tango.convertml.ai/chat'
 
 export const streamAdapter: Adapter = {
 

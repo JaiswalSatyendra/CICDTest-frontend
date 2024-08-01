@@ -86,7 +86,7 @@ function CustomerSuccessPage() {
             <i className="fa fa-play-circle"> </i> Get Started  
     </button> 
           <br />
-          <img src={customerSuccessBanner} alt="churn Analysis" className="bannerimg" /> 
+          <img src={customerSuccessBanner} alt="customer success platforms" className="bannerimg" /> 
         </section>
       </div>
       {/* ------------------- banner   ------------------- */} 
@@ -105,7 +105,7 @@ function CustomerSuccessPage() {
               > 
                 {content.bannerdirection=='left'?<><Grid item xs={12} md={5} lg={5}> <img
                  src={'/json-media/img/'+content.bannerName+'.png'}
-                  alt="sitting in Goldmine"
+                  alt={content.altText}
                   className="img-responsive"
                 /> </Grid>  <Grid item xs={12} md={7} lg={7}><div className="heading2"> {content.heading}</div>
                 {content.listContent.map((content) => (
@@ -125,7 +125,7 @@ function CustomerSuccessPage() {
                 </Grid>
                 <Grid item xs={12} md={5} lg={5}> <img
                  src={'/json-media/img/'+content.bannerName+'.png'}
-                  alt="sitting in Goldmine"
+                 alt={content.altText}
                   className="img-responsive"
                 /> </Grid> </>}
                  </Grid>  
@@ -149,7 +149,7 @@ function CustomerSuccessPage() {
                 </Grid>
                 <Grid item xs={12} md={5} lg={5}> <img
                  src={'/json-media/img/'+content.bannerName+'.png'}
-                  alt="sitting in Goldmine"
+                  alt="Customer Satisfaction Analysis"
                   className="img-responsive"
                 /> </Grid>
                  </Grid>  
@@ -160,7 +160,7 @@ function CustomerSuccessPage() {
 
                 {/* {content.bannerdirection=='left'?<><Grid item xs={12} md={5} lg={5}> <img
                  src={'/json-media/img/'+content.bannerName+'.png'}
-                  alt="sitting in Goldmine"
+                  alt="Customer Satisfaction Analysis"
                   className="img-responsive"
                 /> </Grid></>:<> <Grid item xs={12} md={7} lg={7}><h2> {content.heading}</h2>
                 {content.listContent.map((content) => (
@@ -179,7 +179,7 @@ function CustomerSuccessPage() {
                   ))}</Grid></>:<> <Grid item xs={12} md={5} lg={5}>
                    <img 
                   src={'/json-media/img/'+content.bannerName+'.png'}
-                  alt="sitting in Goldmine"
+                  alt="Customer Satisfaction Analysis"
                   className="img-responsive"
                 /></Grid></>}   */}
              

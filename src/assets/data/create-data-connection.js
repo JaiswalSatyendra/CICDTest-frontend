@@ -1,3 +1,29 @@
+
+  export const   selectedForm = [
+    {
+      id: 0,
+      name: "Typeform",
+      value: "typeform",
+      description: "Build beautiful, interactive forms — get more responses",
+      img: "/json-media/img/partners/typeform-sm.svg",
+      access_token: "",
+      refresh_token: "",
+      istokenGet: false
+    },
+    // { id: 2, name: 'Salesforce', description: 'Personalize every experience along the customer journey with the Customer 360', img: '/images/partners/salesforce.svg' },
+    {
+      id: 1,
+      name: "Hubspot",
+      value: "hubspot",
+      access_token: "",
+      refresh_token: "",
+      description:
+        "CRM platform with all the software, integrations, and resources",
+      img: "/json-media/img/partners/hubspot-sm.svg",
+      istokenGet: false
+    },
+  ];
+
 export const SurveyListData = [
   {
     id: 1,
@@ -35,6 +61,8 @@ export const SurveyListData = [
     active: false, 
   },  
 ];
+
+
 
 export const CRMListData = [ 
   {
@@ -91,7 +119,7 @@ export const customerServiceListData = [
     id: 2,
     img: "/json-media/img/partners/zendesk-sm.svg",
     name: "Zendesk",
-    value: "Zendesk",
+    value: "zendesk",
     description:
       "CRM platform with all the software, integrations, and resources",
     btnLink: "",
@@ -374,7 +402,7 @@ export const ecommerceListData = [
     id: 1,
     img: "/json-media/img/partners/klaviyo-sm.svg",
     name: "Klaviyo",
-    value: "Klaviyo",
+    value: "klaviyo",
     description: "Build beautiful, interactive forms — get more responses",
     btnLink: "", 
     type:"E-commerce",
@@ -385,7 +413,7 @@ export const ecommerceListData = [
     id: 2,
     img: "/json-media/img/partners/shopify-sm.svg",
     name: "Shopify",
-    value: "Shopify",
+    value: "shopify",
     description:
       "CRM platform with all the software, integrations, and resources",
     btnLink: "",

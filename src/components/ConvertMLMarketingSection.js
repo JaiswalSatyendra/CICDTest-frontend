@@ -119,7 +119,7 @@ function ConvertMLMarketingSection() {
           </Grid> 
           <Grid item xs={12} md={6} lg={6}>
 
-            <img src={sittingingoldine} alt="sitting in Goldmine" className="img-responsive"/>
+            <img src={sittingingoldine} alt="Customer Satisfaction Analysis" className="img-responsive"/>
             {/* <div className="img-placeholder float-right">
 
 

@@ -201,7 +201,7 @@ const Navbar = () => {
                     <>
                       <div className="payrentsubMenu">
                         <div className="subMenu">
-                          <div className="container-home">
+                        <div className="container-home">
                             <b>Key Initiative </b>
                             <hr />
                             <Grid
@@ -259,6 +259,59 @@ const Navbar = () => {
                                     Combine sentiments from user generated
                                     feedback and transactional systems (CRM)
                                     for truly comprehensive insights.
+                                  </p>
+                                </Link>
+                              </Grid>
+                              
+                              <Grid item xs={12} md={4} lg={4}>
+                                <Link to="/solutions/roles/leadGenerationAnalysis">
+
+                                  <b>
+                                    <img
+                                      src={
+                                        "/json-media/img/nav/leadGenerationAnalysis.png"
+                                      }width={30}
+                                      alt="leadGenerationAnalysis"
+                                    />
+                                   Lead Generation Analysis
+                                  </b>
+                                  <p>
+                                  Use AI to combine lead information with actionable insights for improved lead generation. 
+                                  </p>
+                                </Link>
+                              </Grid>
+                              <Grid item xs={12} md={4} lg={4}>
+                                <Link to="/solutions/roles/brandLoyalty">
+
+                                  <b>
+                                    <img
+                                      src={
+                                        "/json-media/img/nav/brandLoyalty.png"
+                                      }width={30}
+                                      alt="brandLoyalty"
+                                    />
+                                    Brand Loyalty
+                                  </b>
+                                  <p>
+                                  Combine engagement data and sentiment analysis to accurately measure and improve brand loyalty. 
+                                  </p>
+                                </Link>
+                              </Grid>
+                              <Grid item xs={12} md={4} lg={4}>
+                                <Link to="/solutions/roles/marketResearch">
+
+                                  <b>
+                                    <img
+                                      src={
+                                        "/json-media/img/nav/marketResearch.png"
+                                      }
+                                      alt="marketResearch"
+                                      width={30}
+                                    />
+                                    Market Research
+                                  </b>
+                                  <p>
+                                  Combine AI insights with sentiment analysis and segmentation for clear market understanding. 
                                   </p>
                                 </Link>
                               </Grid>
@@ -330,7 +383,7 @@ const Navbar = () => {
                                 </Link>
                               </Grid>
                             </Grid>
-                          </div>
+                          </div> 
 
                         </div>
                       </div>

@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import Navbar from "../../../../components/molecules/Navbar";
 import churnAnalysis from "../../../../assets/img/solutions/NpsTopdesign.png";
 import { Grid } from "@mui/material"; 
-import multiChannelNPSIcon from "../../../../assets/icons/multiChannelNPSIcon.svg";
-import customerSegmentationIcon from "../../../../assets/icons/customerSegmentationIcon.png";
+import multiChannelNPSIcon from "../../../../assets/icons/multiChannelNPSIcon.svg"; 
+import multiChannelcsIcons from "../../../../assets/icons/customerSegmentationIcon.svg";
 import recencyFrequency from "../../../../assets/icons/recencyFrequency.svg"; 
 import salesforce from "../../../../assets/icons/salesforce.png";
 import hubsport from "../../../../assets/icons/hubsport.png";
@@ -22,6 +22,7 @@ import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router";
 import { netPromoterScoreData } from "../../../../assets/data/schema-markup";
 import { NPSinsights } from "../../../../assets/data/metadata-list";
+import { dataSourceList } from "../../../../assets/data/roles";
 
 function NPSPage() {
   useEffect(() => {}, []);
@@ -38,7 +39,7 @@ function NPSPage() {
     },
     {
       id: 2,
-      img: customerSegmentationIcon,
+      img: multiChannelcsIcons,
       title: "Customer",
       title1: "Segmentation",
       content:
@@ -54,17 +55,7 @@ function NPSPage() {
     },
   ];
 
-  const dataSourceList = [
-    { id: 1, img: typeform },
-    { id: 2, img: salesforce },
-    { id: 3, img: hubsport },
-    { id: 4, img: googleForms },
-    { id: 5, img: surveyFrom },
-    { id: 6, img: surveymonkey },
-    { id: 7, img: capterra },
-    { id: 8, img: zendesk },
-    { id: 9, img: customdataSource },
-  ];
+   
 
   return (
     <>
@@ -113,7 +104,7 @@ function NPSPage() {
             <i className="fa fa-play-circle"> </i> Get Started  
     </button> {" "}
           <br />
-          <img src={churnAnalysis} alt="churn Analysis" className="bannerimg" />
+          <img src={churnAnalysis} alt="NPS software" className="bannerimg" />
           <br />
         </section>
       </div>
@@ -238,9 +229,9 @@ function NPSPage() {
               justifyContent="center"
               alignItems="center"
             >
-              <Grid item xs={12} md={5} lg={5}>
+              <Grid item xs={12} md={7} lg={7}>
                 <h2 className="text-center fw-600">
-                  Data Sources for Predictive NPS <br /> <br />
+                  Data Sources for Predictive NPS <br />  
                 </h2>
               </Grid>
             </Grid>
@@ -251,25 +242,23 @@ function NPSPage() {
               justifyContent="center"
               alignItems="center"
             >
-              {dataSourceList.map((action) => (
+               {dataSourceList.map((action) => (
                 <>
                   <Grid item xs={12} md={4} lg={4} key={action.id}>
-                    <div
+                  <div
                       className="content-box text-center"
-                      style={{
-                        minHeight: 80,
-                        height: 80,
-                        padding: 10,
-                        display: "block",
-                      }}
+                      style={{minHeight:80, height:80, padding: 10, display: "block" }}
                     >
                       <img
-                        src={action.img}
-                        alt="crosssell"
+                        // src={action.img}
+                        src={
+                          "./json-media/icons/" + action.img + ".png"
+                        } 
+                        alt={action.img}
                         className="img-responsive"
                         height={30}
                         width={150}
-                      />
+                      /> 
                     </div>
                   </Grid>
                 </>
@@ -290,7 +279,7 @@ function NPSPage() {
           >
             <Grid item xs={12} md={6} lg={6}>
               <h2 className="text-center fw-600">
-                Empowering the Team with Real-Time NPS <br />
+                Empowering the Team with Real-Time NPS  
               </h2>
             </Grid>
           </Grid>
@@ -328,7 +317,7 @@ function NPSPage() {
             <Grid item xs={12} md={6} lg={6}>
               <img
                 src={marketing}
-                alt="sitting in Goldmine"
+                alt="Customer Satisfaction Analysis"
                 className="img-responsive"
               />
             </Grid>

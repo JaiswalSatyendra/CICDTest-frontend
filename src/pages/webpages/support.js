@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Cookies from "js-cookie";
 import HeroSection from "../../components/HeroSection";
 import NavigationLinkSection from "../../components/NavigationLinkSection";
 import ConvertMLMarketingSection from "../../components/ConvertMLMarketingSection";
@@ -239,7 +238,6 @@ function SupportPages() {
       credentials: "include",
       headers: {
         "Content-type": "application/json",
-        "token":Cookies.get("token")
       },
       body: JSON.stringify({ "userName": userName, "userEmail": userEmail, mailType: mailtype })
     })

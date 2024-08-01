@@ -91,7 +91,7 @@ const AvatarSuccess = styled(Avatar)(
 //   borderTop: '1px solid rgba(0, 0, 0, .125)',
 // }));
 
-function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebook, openTwitter, openFeshdesk, openSalesforce,openbraze, openInstagram,openKlaviyo,isOpenPopupKlaviyo,openIntercom,isOpenPopupIntercom, openShopify, listOfWorkspace, listListOfContact, checkedMappingForSurvey, checkedMappingForHubspot, isOpenPopupTypeform, isOpenPopupHubspot, token, hubspotTokenName, hubspotRefreshtokenName, isTypeFormEmptyData, isHubspotEmptyData, selectedWorkspace }) {
+function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebook, openTwitter, openFeshdesk, openSalesforce,openbraze, openInstagram,openKlaviyo,isConnectedKlaviyo,openIntercom,isOpenPopupIntercom, openShopify,isConnectedShopify,listOfWorkspace, listListOfContact, checkedMappingForSurvey, checkedMappingForHubspot, isOpenPopupTypeform, isOpenPopupHubspot, token, hubspotTokenName, hubspotRefreshtokenName, isTypeFormEmptyData, isHubspotEmptyData, selectedWorkspace }) {
 
   // const [isConfirm, setIsConfirm] = React.useState(false);
 
@@ -518,7 +518,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
   const handleNext = (seltype) => {
     let newConnectionType = "";
     if (seltype == 'typeform') {
-      localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_TYPEFORM_CLIENT_ID);
+      // localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_TYPEFORM_CLIENT_ID);
       newConnectionType = process.env.REACT_APP_TYPEFORM_CLIENT_ID
       window.location = 'https://admin.typeform.com/oauth/authorize?client_id=' + process.env.REACT_APP_TYPEFORM_CLIENT_ID + '&scope=offline+workspaces:read+workspaces:write+accounts:read+responses:read+responses:write+forms:write+forms:read+webhooks:read+webhooks:write&redirect_uri=' + process.env.REACT_APP_TYPEFORM_REDIRECT_URI + '&state=xyz789';
        /* --------------  Don't delete --------------  */
@@ -527,18 +527,18 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
        /* --------------  Don't delete --------------  */
     }
     else if (seltype == 'hubspot') {
-      localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_HUBSPOT_CLIENT_ID);
-      newConnectionType = process.env.REACT_APP_HUBSPOT_CLIENT_ID
-      window.location = 'https://app.hubspot.com/oauth/authorize?client_id=' + process.env.REACT_APP_HUBSPOT_CLIENT_ID + '&scope=cms.domains.write+crm.schemas.quotes.read+cms.functions.read+crm.objects.line_items.read+cms.functions.write+crm.schemas.deals.read+crm.schemas.line_items.read+cms.knowledge_base.articles.publish+cms.knowledge_base.articles.write+actions+cms.knowledge_base.articles.read+cms.knowledge_base.settings.read+cms.knowledge_base.settings.write+crm.objects.owners.read+forms+settings.users.teams.read+analytics.behavioral_events.send+account-info.security.read+integration-sync+cms.performance.read+settings.currencies.read+crm.objects.marketing_events.read+crm.schemas.custom.read+crm.objects.custom.read+crm.objects.feedback_submissions.read+forms-uploaded-files+crm.objects.goals.read+crm.objects.companies.read+crm.lists.read+settings.users.read+crm.objects.deals.read+crm.schemas.contacts.read+ctas.read+crm.objects.contacts.read+cms.domains.read+crm.schemas.companies.read+crm.objects.quotes.read+accounting&redirect_uri=' + process.env.REACT_APP_HUBSPOT_REDIRECT_URI;
+      // localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_HUBSPOT_CLIENT_ID);
+      newConnectionType = process.env.REACT_APP_HUBSPOT_CLIENT_ID 
+      window.location = `https://app.hubspot.com/oauth/authorize?client_id=${process.env.REACT_APP_HUBSPOT_CLIENT_ID}&scope=cms.knowledge_base.settings.read+cms.knowledge_base.settings.write+cms.performance.read+collector.graphql_query.execute+collector.graphql_schema.read+communication_preferences.read+communication_preferences.read_write+communication_preferences.statuses.batch.read+communication_preferences.statuses.batch.write+communication_preferences.write+content+conversations.read+conversations.visitor_identification.tokens.create+conversations.write+crm.dealsplits.read_write+crm.export+crm.import+crm.lists.read+crm.lists.write+crm.objects.carts.read+crm.objects.carts.write+crm.objects.commercepayments.read+crm.objects.companies.read+crm.objects.companies.write+crm.objects.contacts.read+crm.objects.contacts.write+crm.objects.custom.read+crm.objects.custom.write+crm.objects.deals.read+crm.objects.deals.write+crm.objects.feedback_submissions.read+crm.objects.goals.read+crm.objects.invoices.read+crm.objects.leads.read+crm.objects.leads.write+crm.objects.line_items.read+crm.objects.line_items.write+crm.objects.marketing_events.read+crm.objects.marketing_events.write+crm.objects.orders.read+crm.objects.orders.write+crm.objects.owners.read+crm.objects.partner-accounts.read+crm.objects.partner-clients.read+crm.objects.partner-clients.write+crm.objects.quotes.read+crm.objects.quotes.write+crm.objects.subscriptions.read+crm.objects.users.read+crm.objects.users.write+crm.pipelines.orders.read+crm.pipelines.orders.write+crm.schemas.carts.read+crm.schemas.carts.write+crm.schemas.commercepayments.read+crm.schemas.companies.read+crm.schemas.companies.write+crm.schemas.contacts.read+crm.schemas.contacts.write+crm.schemas.custom.read+crm.schemas.deals.read+crm.schemas.deals.write+crm.schemas.invoices.read+crm.schemas.line_items.read+crm.schemas.orders.read+crm.schemas.orders.write+crm.schemas.quotes.read+crm.schemas.subscriptions.read+ctas.read+e-commerce+external_integrations.forms.access+files+files.ui_hidden.read+forms+forms-uploaded-files+hubdb+integration-sync+marketing-email+media_bridge.read+media_bridge.write+oauth+sales-email-read+settings.billing.write+settings.currencies.read+settings.currencies.write+settings.security.security_health.read+settings.users.read+settings.users.teams.read+settings.users.teams.write+settings.users.write+social+tickets+timeline+transactional-email&redirect_uri=${process.env.REACT_APP_HUBSPOT_REDIRECT_URI}`;
       /* --------------  Don't delete --------------  */
       // rawcubes.us@gmail.com 
       // Convertml$2024
       /* --------------  Don't delete --------------  */
     }
     else if (seltype == 'zendesk') {
-      localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_Zendesk_CLIENT_ID);
+      // localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_Zendesk_CLIENT_ID);
       newConnectionType = process.env.REACT_APP_Zendesk_CLIENT_ID
-      window.location = 'https://' + process.env.REACT_APP_Zendesk_subdomain + '.zendesk.com/oauth/authorizations/new?response_type=code&redirect_uri=' + process.env.REACT_APP_Zendesk_REDIRECT_URI + '&client_id=' + process.env.REACT_APP_Zendesk_CLIENT_ID + '&scope=read%20write';
+      window.location = 'https://'+process.env.REACT_APP_Zendesk_subdomain+'.zendesk.com/oauth/authorizations/new?response_type=code&redirect_uri='+process.env.REACT_APP_Zendesk_REDIRECT_URI + '&client_id=' + process.env.REACT_APP_Zendesk_CLIENT_ID + '&scope=read%20write';
       /* --------------  Don't delete --------------  */
       //app id client id
       // login: https://cml5331.zendesk.com/
@@ -548,7 +548,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
       /* -------------- Don't delete --------------  */
     }
     else if (seltype == 'facebook') {
-      localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_HUBSPOT_CLIENT_ID);
+      // localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_HUBSPOT_CLIENT_ID);
       window.location = 'https://www.facebook.com/v19.0/dialog/oauth?client_id=' + process.env.REACT_APP_facebook_CLIENT_ID + '&redirect_uri=' + process.env.REACT_APP_facebook_REDIRECT_URI + '&state=xyzABC123'
       /* --------------  Don't delete --------------  */
       // login: https://www.facebook.com/login/ 
@@ -557,7 +557,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
       /* -------------- Don't delete --------------  */
     }
     else if (seltype == 'twitter') {
-      localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_HUBSPOT_CLIENT_ID);
+      // localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_HUBSPOT_CLIENT_ID);
       window.location = 'https://twitter.com/i/oauth2/authorize?response_type=code&client_id=b1pqN1lJSDV0b3A0Qm9tTnZScFE6MTpjaQ&redirect_uri=https://convertml.ai/dashboard/data-platform/create-data-connection&scope=tweet.read%20users.read%20follows.read%20offline.access&state=state&code_challenge=challenge&code_challenge_method=plain'
       /* --------------  Don't delete --------------  */
       // login: https://www.facebook.com/login/ 
@@ -566,7 +566,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
       /* -------------- Don't delete --------------  */
     }
     else if (seltype == 'feshdesk') {
-      localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_HUBSPOT_CLIENT_ID);
+      // localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_HUBSPOT_CLIENT_ID);
       window.location = ''
       /* --------------  Don't delete --------------  */
       // login: https://www.feshdesk.com/login/ 
@@ -575,7 +575,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
       /* -------------- Don't delete --------------  */
     }
     else if (seltype == 'salesforce') {
-      localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_HUBSPOT_CLIENT_ID);
+      // localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_HUBSPOT_CLIENT_ID);
       window.location = 'https://efficiency-velocity-7985.my.salesforce.com/services/oauth2/authorize?client_id=3MVG9GBhY6wQjl2vsFAygvxDXmCvnIni0guyyKikpMTlfLAobaHK_KHPoC0XtQdwEBASGOWEyOw==&redirect_uri=http://localhost:3000/dashboard/data-platform/create-data-connection&response_type=code&code_challenge=aQRLMpUbCUdk_gXXsWiQlKI5RYXuUb6XA8Q7Z9j0lXg'
       /* --------------  Don't delete --------------  */
       // User Name: aman.chaurasia-nzgm@force.com
@@ -584,7 +584,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
     }
 
     else if (seltype == 'braze') {
-      localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_HUBSPOT_CLIENT_ID);
+      // localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_HUBSPOT_CLIENT_ID);
       window.location = 'https://www.braze.com/#'
       /* --------------  Don't delete --------------  */
       
@@ -593,7 +593,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
     
 
     else if (seltype == 'instagram') {
-      localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_HUBSPOT_CLIENT_ID);
+      // localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_HUBSPOT_CLIENT_ID);
       window.location = 'https://api.instagram.com/oauth/authorize?force_authentication=1&client_id=458136926822674&redirect_uri=https://test.convertml.ai/dashboard/data-platform/create-data-connection&scope=user_profile,user_media&state=1&response_type=code' 
       /* --------------  Don't delete --------------  */
       // login: https://www.facebook.com/login/ 
@@ -602,7 +602,8 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
       /* -------------- Don't delete --------------  */
     }
     else if (seltype == 'klaviyo') {
-      localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_klaviyo_CLIENT_ID);  
+      // localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_klaviyo_CLIENT_ID);  
+      newConnectionType = process.env.REACT_APP_klaviyo_CLIENT_ID
       window.location = 'https://www.klaviyo.com/oauth/authorize?response_type=code&client_id=' + process.env.REACT_APP_klaviyo_CLIENT_ID + '&redirect_uri=' + process.env.REACT_APP_klaviyo_REDIRECT_URI+'&scope=accounts:read%20accounts:write%20events:read%20events:write%20profiles:read%20profiles:write%20campaigns:read%20campaigns:write%20lists:write%20metrics:read&code_challenge_method=S256&code_challenge=eOMWaNXLASXynd_pmDcbaxjMNFDN9bBhwRZ_n6IhWmk&selected_account=true'
      
       // window.location = 'https://www.klaviyo.com/oauth/authorize?response_type=code&client_id=' + process.env.REACT_APP_klaviyo_CLIENT_ID + '&redirect_uri=' + process.env.REACT_APP_klaviyo_REDIRECT_URI+'&scope=lists:accounts:read%20accounts:write%20events:read%20events:write%20profiles:read%20profiles:write%20campaigns:read%20campaigns:write%20lists:write%20metrics:read&code_challenge_method=S256&code_challenge=' + process.env.REACT_APP_klaviyo_Code_challenge + '=&selected_account=true' 
@@ -619,7 +620,8 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
       /* -------------- Don't delete --------------  */
     }
     else if (seltype == 'intercom') {
-      localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_Intercom_CLIENT_ID); 
+      // localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_Intercom_CLIENT_ID);
+      newConnectionType = process.env.REACT_APP_Intercom_CLIENT_ID 
       window.location = 'https://app.intercom.com/oauth?&client_id=' + process.env.REACT_APP_Intercom_CLIENT_ID + '&redirect_uri=' + process.env.REACT_APP_Intercom_REDIRECT_URI+'&response_type=code&state=random_string_here'   
       /* --------------  Don't delete --------------  */ 
       // user name- aman.chaurasia@convertml.ai
@@ -627,7 +629,8 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
       /* -------------- Don't delete --------------  */
     }
     else if (seltype == 'shopify') {
-      localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_Shopify_CLIENT_ID);
+      // localStorage.setItem("userConnectionSourceType", process.env.REACT_APP_Shopify_CLIENT_ID);
+      newConnectionType = process.env.REACT_APP_Shopify_CLIENT_ID
       window.location = 'https://cmlstore1.myshopify.com/admin/oauth/authorize?client_id=' + process.env.REACT_APP_Shopify_CLIENT_ID + '&scope=read_products,write_orders&redirect_uri=' + process.env.REACT_APP_Shopify_REDIRECT_URI+'' 
 
       /* --------------  Don't delete --------------  */        
@@ -719,7 +722,7 @@ function ConnectDialog({ open, handleClose, openHubspot, openZendesk, openFacebo
         setselectedFeedbackSurvey(val)
       } else {
         // setcheckDuplicateSurveyList("If you are selecting multiple surveys, ensure identical questions sets")
-        seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Question Mapping Error', message: ["If you are selecting multiple surveys, ensure identical questions sets."] }]);
+        seterrorListDisplay([{ alertType: 'error-message', isCollapsable: true, short_text: 'Question Mapping Error', message: ["If you are selecting multiple "+val.hs_object+'s'+", ensure identical questions sets."] }]);
 
       }
 
@@ -1412,7 +1415,9 @@ console.log(filterlistContactMapping)
                           </Grid>
                         </Box>  
                         {listContactMapping.map((item, index) =>
-                                                    (   <div className='ml-1  mt-2 mr-2 float-left'> 
+                                                    ( 
+                                                      <>
+                                                      <div style={{width:listContactMapping.length==2 ?'50%':'100%',display:listContactMapping.length==2 ?'inline-block':'inline-block',}}  className='mt-2'> 
                                                           <button
                                                             className='chips-btn'
                                                             color="primary"
@@ -1435,9 +1440,9 @@ console.log(filterlistContactMapping)
                                     columns={(item.hs_object == "contact" ? colListHubspotContact : colListHubspot)}
                                     pageSizeOptions={[5, 10, 50, 100]}
                                     checkboxSelection={true}
+                                    getRowHeight={() => 'auto'}
                                     isRowSelectable={(params) => (params.row.used == "False" ? false : true)}
-                                    disableSelectionOnClick
-                                   
+                                    disableSelectionOnClick 
                                     selectionModel={item.selectedRow}
                                     // onSelectionModelChange={(e) => {
                                     //   let newList1 = [...listContactMapping]
@@ -1468,7 +1473,7 @@ console.log(filterlistContactMapping)
                                                           </Box> 
                                                         <div className='clearfix'></div> 
                                                             </div> 
-
+</>
                                                     ) 
                                                     )}
                                                     
@@ -3595,8 +3600,7 @@ console.log(filterlistContactMapping)
           <Box className='panel-body'>
             <Box width={'100%'}>
               <React.Fragment>
-                {isOpenPopupKlaviyo ? (
-                  <Box> 
+                 {!isConnectedKlaviyo?<> <Box> 
                     <Box sx={{ display: 'flex', flexDirection: 'row' }} className='panel-box-bg'>
                       <Grid item xs={12} className='flex justify-center items-center'>
                         <Typography variant="span" component="span" gutterBottom>
@@ -3614,7 +3618,7 @@ console.log(filterlistContactMapping)
 
                     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                       <Grid item mt={1} mb={1}>
-                        <Typography variant="span" component="span" gutterBottom color="text.secondary">ConvertML is requesting access to your Instagram account</Typography>
+                        <Typography variant="span" component="span" gutterBottom color="text.secondary">ConvertML is requesting access to your Klaviyo account</Typography>
                       </Grid>
                     </Box>
 
@@ -3625,9 +3629,7 @@ console.log(filterlistContactMapping)
                         </FormGroup>
                       </Grid>
                     </Box>
-                  </Box>
-                ) : (
-                  <Box>
+                  </Box></>:<>  <Box>
                     <Box container>
                       <Box style={{ maxHeight: '60vh', overflowX: 'hidden', overflowY: 'auto', padding: '0 10px 0 0' }}>
 
@@ -3854,9 +3856,8 @@ console.log(filterlistContactMapping)
                         </Grid>
                       </Box>
                     </Box>
-                  </Box>
-                )
-                }
+                  </Box></>} 
+                 
               </React.Fragment>
 
             </Box>
@@ -4187,7 +4188,7 @@ console.log(filterlistContactMapping)
         <Box sx={popupstyle}   className='panel'>
           <Box sx={{ display: 'flex', flexDirection: 'row', pb: 2 }} className='flex panel-header' >
             <Typography id="modal-modal-title" variant="h4" component="h4" className='flex'>
-              {!isOpenPopupHubspot ? "Connect Intercom" : "Contact Details"}
+              {!isOpenPopupHubspot ? "Connect Shopify" : "Contact Details"}
             </Typography>
             <Typography id="modal-modal-title" variant="p" component="p" className='panel-close-icon'>
               <CloseIcon onClick={isModalClose} className='cursor-pointer' style={{ color: '#212121' }} />
@@ -4197,7 +4198,7 @@ console.log(filterlistContactMapping)
           <Box className='panel-body'>
             <Box width={'100%'}>
               <React.Fragment>
-                {true ? (
+                {!isConnectedShopify ? (
                   <Box>
 
                     <Box sx={{ display: 'flex', flexDirection: 'row' }} className='panel-box-bg'>

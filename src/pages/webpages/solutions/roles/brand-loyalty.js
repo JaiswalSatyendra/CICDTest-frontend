@@ -141,7 +141,7 @@ export default function BrandLoyalty() {
                         {" "}
                         <img
                           src={"/json-media/img/solutions/brandLoyalty/" + content.bannerName + ".png"}
-                          alt="sitting in Goldmine"
+                          alt="Customer Satisfaction Analysis"
                           className="img-responsive"
                         />{" "}
                       </Grid>{" "}
@@ -186,7 +186,7 @@ export default function BrandLoyalty() {
                         {" "}
                         <img
                           src={"/json-media/img/solutions/brandLoyalty/" + content.bannerName + ".png"}
-                          alt="sitting in Goldmine"
+                          alt="Customer Satisfaction Analysis"
                           className="img-responsive"
                         />{" "}
                       </Grid>{" "}
@@ -223,7 +223,7 @@ export default function BrandLoyalty() {
                     {" "}
                     <img
                       src={"/json-media/img/solutions/brandLoyalty/" + content.bannerName + ".png"}
-                      alt="sitting in Goldmine"
+                      alt="Customer Satisfaction Analysis"
                       className="img-responsive"
                     />{" "}
                   </Grid>

@@ -5,20 +5,20 @@ import { Button, Grid } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
 import zeroPartyData from "../../assets/img/home-pagebanner/zeropartyData-banner.png";
-import marketInsights from "../../assets/img/home-pagebanner/marketInsights.svg";
-import customerSuccess from "../../assets/img/home-pagebanner/customerSuccess.svg";
+import marketInsights from "../../assets/img/home-pagebanner/marketInsights.png";
+import customerSuccess from "../../assets/img/home-pagebanner/customerSuccess.png";
 import copilotBanner from "../../assets/img/home-pagebanner/copilot-banner.png";
-import diversePlatforms from "../../assets/img/home-pagebanner/diversePlatforms.svg";
+import diversePlatforms from "../../assets/img/home-pagebanner/diversePlatforms.png";
 import advancedAnalytics from "../../assets/img/home-pagebanner/advancedAnalytics.png";
 import crossTabAnalysis from "../../assets/img/home-pagebanner/crossTabAnalysis.png";
-import AIGeneratedInsights from "../../assets/img/home-pagebanner/AIGeneratedInsights.svg";
+import AIGeneratedInsights from "../../assets/img/home-pagebanner/AIGeneratedInsights.png";
 import marketResearch from "../../assets/icons/home-page-icons/marketResearch.svg";
 import brandLoyalty from "../../assets/icons/home-page-icons/brandLoyalty.svg";
 import netPromoterScore from "../../assets/icons/home-page-icons/netPromoterScore.svg";
 import churnPrediction from "../../assets/icons/home-page-icons/churnPrediction.svg";
 import customerSatisfaction from "../../assets/icons/home-page-icons/customerSatisfaction.svg";
 import leadGeneration from "../../assets/icons/home-page-icons/leadGeneration.svg";
-import marketing from "../../assets/img/home-pagebanner/marketing.svg";
+import marketing from "../../assets/img/home-pagebanner/marketing.png";
 import whyConvertML from "../../assets/img/home-pagebanner/Why-ConvertML.png";
 import HomeFooter from "../../components/home-footer";
 import { Helmet } from "react-helmet";
@@ -124,10 +124,13 @@ function HomePage() {
       </section>
       <div className="home-roles-page">
         <div className="container-home">
-          
+          <h2 className="text-center">
+            <b>
               <h2 className="text-center">
                 <b> Built for Customer-Centric Teams!</b>
-              </h2> <br />
+              </h2>
+            </b>
+          </h2>
           <div className="web-view"> <br />
           <br /></div> 
           <br />
@@ -246,7 +249,7 @@ function HomePage() {
             <Grid item xs={12} md={6} lg={6}>
               <img
                 src={diversePlatforms}
-                alt="sitting in Goldmine"
+                alt="Customer Satisfaction Analysis"
                 className="img-responsive"
               />
             </Grid>
@@ -391,6 +394,7 @@ With ConvertML you can integrate zero-party data with other first-party data sou
             alignItems="center"
           >
             <Grid item xs={12} md={4} lg={4}>
+              <Link to='./solutions/roles/marketResearch'>
               <div className="panel-box">
                 <img
                   src={marketResearch}
@@ -401,9 +405,11 @@ With ConvertML you can integrate zero-party data with other first-party data sou
                 <p>
                   <hr className="hr1" /> Get actionable insights from market research data to optimize customer engagement and data-driven decisions.
                 </p>
-              </div>
+              </div> </Link>
+             
             </Grid>
             <Grid item xs={12} md={4} lg={4}>
+            <Link to='./solutions/roles/brandLoyalty'>
               <div className="panel-box">
                 <img
                   src={brandLoyalty}
@@ -416,8 +422,10 @@ With ConvertML you can integrate zero-party data with other first-party data sou
 
                 </p>
               </div>
+              </Link>
             </Grid>
             <Grid item xs={12} md={4} lg={4}>
+            <Link to='./net-promoter-score'>
               <div className="panel-box">
                 <img
                   src={netPromoterScore}
@@ -429,8 +437,10 @@ With ConvertML you can integrate zero-party data with other first-party data sou
                   <hr className="hr3" /> Segment detractors and promoters based on their loyalty, lifetime value, and other critical metrics.
                 </p>
               </div>
+              </Link>
             </Grid>
             <Grid item xs={12} md={4} lg={4}>
+            <Link to='./customer-satisfaction-analysis'>
               <div className="panel-box">
                 <img
                   src={customerSatisfaction}
@@ -443,8 +453,10 @@ With ConvertML you can integrate zero-party data with other first-party data sou
 
                 </p>
               </div>
+              </Link>
             </Grid>
             <Grid item xs={12} md={4} lg={4}>
+            <Link to='./solutions/roles/leadGenerationAnalysis'>
               <div className="panel-box">
                 <img
                   src={leadGeneration}
@@ -457,8 +469,10 @@ With ConvertML you can integrate zero-party data with other first-party data sou
 
                 </p>
               </div>
+              </Link>
             </Grid>
             <Grid item xs={12} md={4} lg={4}>
+            <Link to='./churn-analysis'>
               <div className="panel-box">
                 <img
                   src={churnPrediction}
@@ -470,6 +484,7 @@ With ConvertML you can integrate zero-party data with other first-party data sou
                   <hr className="hr3" />Identify at-risk customers before they churn using factors such as financial transactions, feedback, product/service usage, and much more 
                 </p>
               </div>
+              </Link>
             </Grid>
           </Grid>
         </div>

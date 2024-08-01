@@ -338,25 +338,16 @@ function LoginPage() {
             </Grid>
             <Grid item xs={12} lg={7} sm={12}>
               <div className="bg-sidebar right-sidebar">
-                <div className="pt-3 our-partners-logo">
+                <div className="pt-1 our-partners-logo">
                   <img
                     src={"/images/authImage.png"}
                     alt='convertml' 
                     className="img-sidebar"
-                  />
-                   {/* <div>
-                    <br />
-                    ConvertML - the ultimate customer retention platform.
-                    Convert leads with AI powered insights and engagement in
-                    minutes.
-                  </div> 
-                  <br />
-                  <br />*/}
-
-                  <div className="mt-1">
+                  /> 
+                  <div>
                     <h1 className="d-none"> Convertml Login</h1>
                     <h2 className="d-none"> Convertml User Access</h2>
-                    <div className="text-center">   <h3>Our Partners</h3>   
+                    <div className="text-center">   <h3 className="m-0 mb-2">Our Partners</h3>   
                     <Grid container
                       direction="row"
                       justifyContent="center"

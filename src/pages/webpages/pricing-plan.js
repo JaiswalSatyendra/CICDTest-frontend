@@ -13,7 +13,7 @@ import { Container } from "postcss";
 import multiChannelNPSIcon from "../../assets/icons/multiChannelNPSIcon.svg";
 import customerSegmentationIcon from "../../assets/icons/customerSegmentationIcon.png";
 import recencyFrequency from "../../assets/icons/recencyFrequency.svg";
-import unlimitedicons from "../../assets/icons/unlimitedicons.png";
+import unlimited from "../../assets/icons/unlimitedicons.png";
 import realtimeNPS from "../../assets/icons/realtimeNPS.png";
 import engagementScore from "../../assets/icons/engagementScore.svg";
 
@@ -654,7 +654,7 @@ function PricingPlan() {
             </Grid>
             <Grid item xs={12} md={8} lg={8}>
               <div className="unlimitedplanbox">
-                <img src={unlimitedicons} alt='convertml' />
+                <img src={'../json-media/icons/unlimitedicons.png'} alt='convertml unlimited' />
                 <h4>Unlimited</h4>
                 <br />
                 <button>Model execution</button>
@@ -723,7 +723,7 @@ function PricingPlan() {
                     <p className="text">
                       {" "}
                       $0<span>/per month</span>{" "}
-                    </p>
+                    </p><br/>
                     <a href="#getStarted"  >Start free trial</a>
                   </div>
                 </CardContent>
@@ -740,7 +740,7 @@ function PricingPlan() {
                     <p className="text">
                       {" "}
                       $150<span>/per month</span>{" "}
-                    </p>
+                    </p><br/>
                     <a href="#getStarted"  >Get started</a>
                   </div>
                 </CardContent>
@@ -754,7 +754,7 @@ function PricingPlan() {
                     <Typography level="title-lg" variant="h4">
                       Enterprise
                     </Typography>
-                    <p className="text"> Custom </p>
+                    <p className="text"> Custom </p><br/>
                     <a href="#getStarted" >Contact sales</a>
                   </div>
                 </CardContent>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react"; 
-import Cookies from "js-cookie";
 import Navbar from "../../components/molecules/Navbar"; 
 import {
   Button,
@@ -102,7 +101,6 @@ function IntegrationMultiplePlatforms() {
       credentials: "include",
       headers: {
         "Content-type": "application/json",
-        "token":Cookies.get("token")
       },
       body: JSON.stringify({
         userName: userName,

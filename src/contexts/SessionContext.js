@@ -30,9 +30,16 @@ export const SessionProvider = ({ children }) => {
     )
   ) {
     domain = "test.convertml.ai";
-  } else {
+  } 
+  else if (hostname.includes("cml-test.convertml.ai")) 
+    {
+    domain = "cml-test.convertml.ai";
+  }
+  else {
     domain = "convertml.ai";
   }
+
+  
 
   async function login({ email, password }) {
     const response = await utils.login({
@@ -58,7 +65,6 @@ export const SessionProvider = ({ children }) => {
 
   async function logout() {
     const response = await utils.logout(domain);
-    Cookies.remove("token");
     setSession({
       token: "",
       user: {},
@@ -84,8 +90,9 @@ export const SessionProvider = ({ children }) => {
       credentials: "include",
       headers: {
         "Content-type": "application/json",
+        "token": Cookies.get("token")
       },
-      body: JSON.stringify({ "user_id": session.user._id })
+     
     })
       .then((res) => res.json())
       .then((res) => {

@@ -1,9 +1,9 @@
-import { useRef, useState, useContext,  } from "react";
+import { useRef, useState, useContext, } from "react";
 import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import { SessionContext } from "../../../../contexts/SessionContext";
-import React, { useEffect, } from "react"; 
-import {  Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid,     } from "@mui/material"; 
+import React, { useEffect, } from "react";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, } from "@mui/material";
 
 import TextField from '@mui/material/TextField';
 import {
@@ -117,7 +117,7 @@ function HeaderUserbox() {
   const theme = useTheme();
   const [openpopUP, setopenpopUP] = React.useState(false);
   const [feedbackopenpopUP, setfeedbackopenpopUP] = React.useState(false);
-  
+
   const [scroll, setScroll] = React.useState("paper");
 
   // const handleClickOpen = (scrollType) => () => {
@@ -137,54 +137,54 @@ function HeaderUserbox() {
     setfeedbackopenpopUP(true);
   };
 
-  const goprojectPage= ()=>{
+  const goprojectPage = () => {
     navigate("/dashboard/data-platform/project-management");
   }
 
 
   const navigate = useNavigate();
-  const [session, , logout, updateSession, , ,userImg, updateImg] = useContext(SessionContext);
+  const [session, , logout, updateSession, , , userImg, updateImg] = useContext(SessionContext);
   const { user } = session;
   const ref = useRef(null);
   const [isOpen, setOpen] = useState(false);
-  
-  const [userDetail, setUserDetail] = useState({ username: "",  company_name: "" });
+
+  const [userDetail, setUserDetail] = useState({ username: "", company_name: "" });
   const [defaultImg, selectedImg] = useState("");
 
   useEffect(async () => {
     await axios
-    .post(`${process.env.REACT_APP_API_URL}/user/updateFirstTimeLogin`, {
-      user_id: user._id,
-    },{
+      .post(`${process.env.REACT_APP_API_URL}/user/updateFirstTimeLogin`, {
+        user_id: user._id,
+      }, {
         headers: {
           "Content-type": "application/json",
-        "token":Cookies.get("token")
+          "token": Cookies.get("token")
         },
         withCredentials: true,
       })
-    .then((response) => {
-      if(response.data.success){
-        setopenpopUP(true);
-      }else{
-        setopenpopUP(false);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      .then((response) => {
+        if (response.data.success) {
+          setopenpopUP(true);
+        } else {
+          setopenpopUP(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     await updateSession()
     await updateImg()
-}, []);
+  }, []);
 
   useEffect(async () => {
     const res = userImg.user
-    selectedImg(res==undefined?"/json-media/img/user-profile.png":"data:" + res.profile_image.imageType + ";base64," + res.profile_image.image)
+    selectedImg(res == undefined ? "/json-media/img/user-profile.png" : "data:" + res.profile_image.imageType + ";base64," + res.profile_image.image)
   }, [userImg]);
 
 
   useEffect(async () => {
-    localStorage.setItem("loggedInUser",user.username)
-    setUserDetail({ username: user.username,  company_name: user.company_name })
+    localStorage.setItem("loggedInUser", user.username)
+    setUserDetail({ username: user.username, company_name: user.company_name })
   }, [user]);
 
   const handleOpen = () => {
@@ -297,19 +297,19 @@ function HeaderUserbox() {
             minWidth: 210,
           }}
           display="flex"
-        ><Link to='/user-profile'> 
-          <Avatar
-            variant="rounded"
-            alt={user.username}
-            src={defaultImg}
-            className='float-left'
-          />
-          <UserBoxText className='float-right'>
-            <UserBoxLabel variant="body1">{userDetail.username}</UserBoxLabel>
-            <UserBoxDescription variant="body2">
-              {userDetail.company_name}
-            </UserBoxDescription>
-          </UserBoxText></Link>
+        ><Link to='/user-profile'>
+            <Avatar
+              variant="rounded"
+              alt={user.username}
+              src={defaultImg}
+              className='float-left'
+            />
+            <UserBoxText className='float-right'>
+              <UserBoxLabel variant="body1">{userDetail.username}</UserBoxLabel>
+              <UserBoxDescription variant="body2">
+                {userDetail.company_name}
+              </UserBoxDescription>
+            </UserBoxText></Link>
         </MenuUserBox>
         {/* <Divider
           sx={{
@@ -379,15 +379,15 @@ function HeaderUserbox() {
               }}
             />
           </MenuItem>
-        </MenuListWrapperPrimary> */}  
-         {/* <Button color="primary" fullWidth to={"/dashboard/data-platform/project-management"}><AssignmentIcon sx={{ mr: 1, }} />   Projects </Button><br/> */}
-         <div className="text-left"> 
-        <Button color="primary"    onClick={(e)=>goprojectPage(e)} className="text-left"><ArticleIcon sx={{ mr: 1, }} />   Projects    <div className="pr-2 ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></Button><br/>
-        <Button color="primary"   onClick={(e)=>handleClickOpen(e)}><AssignmentIcon sx={{ mr: 1, }} />   Guided Workflow </Button><br/>
-        <Button color="primary"   onClick={(e)=>feedbackClickOpen(e)}><RateReviewIcon  sx={{ mr: 1, }} />   Submit Feedback </Button>
-        <Divider />
-         </div>
-       
+        </MenuListWrapperPrimary> */}
+        {/* <Button color="primary" fullWidth to={"/dashboard/data-platform/project-management"}><AssignmentIcon sx={{ mr: 1, }} />   Projects </Button><br/> */}
+        <div className="text-left">
+          <Button color="primary" onClick={(e) => goprojectPage(e)} className="text-left"><ArticleIcon sx={{ mr: 1, }} />   Projects    <div className="pr-2 ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></Button><br />
+          <Button color="primary" onClick={(e) => handleClickOpen(e)}><AssignmentIcon sx={{ mr: 1, }} />   Guided Workflow </Button><br />
+          <Button color="primary" onClick={(e) => feedbackClickOpen(e)}><RateReviewIcon sx={{ mr: 1, }} />   Submit Feedback </Button>
+          <Divider />
+        </div>
+
         {/* <Box m={1}>
           <Box px={2} pt={1} pb={0.5} display="flex" alignItems="flex-start">
             <Text color="warning">
@@ -420,21 +420,21 @@ function HeaderUserbox() {
         </Box>
       </Popover>
 
-      {/* ----------------- Demo -----------------  */} 
-     <Dialog
+      {/* ----------------- Demo -----------------  */}
+      <Dialog
         open={openpopUP}
         onClose={handlePopupClose}
         scroll={scroll}
         aria-labelledby="scroll-dialog-title"
-        aria-describedby="scroll-dialog-description" 
-       minWidth="full"
-       maxWidth="full"
-      > 
+        aria-describedby="scroll-dialog-description"
+        minWidth="full"
+        maxWidth="full"
+      >
         <DialogContent dividers={scroll === "paper"}>
-          <DialogContentText id="alert-dialog-description"> 
-          <iframe width="1600" height="750" src="https://app.storylane.io/share/phd5kqcsjogo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-          {/* <iframe src="https://app.storylane.io/demo/phd5kqcsjogo" data-testid="share-embed-demo" allow="fullscreen; camera; microphone" name="sl-embed" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; border: none;"></iframe> */}
-          {/* <div>
+          <DialogContentText id="alert-dialog-description">
+            <iframe width="1600" height="750" src="https://app.storylane.io/share/phd5kqcsjogo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            {/* <iframe src="https://app.storylane.io/demo/phd5kqcsjogo" data-testid="share-embed-demo" allow="fullscreen; camera; microphone" name="sl-embed" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; border: none;"></iframe> */}
+            {/* <div>
               <script src="https://js.storylane.io/js/v1/storylane.js"></script>
               <div class="sl-embed-container" style="position:relative;display:flex;align-items:center;justify-content:center;border: 1px solid rgba(63,95,172,0.35);box-shadow: 0px 0px 18px rgba(26, 19, 72, 0.15);border-radius:10px">
                 <div class="sl-preview-heading" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background-color:rgba(40, 37, 54, 0.9);z-index:999999;font-family:Poppins, Arial, sans-serif;font-size:clamp(22px, 2.664vw, 30px);font-weight:500;line-height:normal;text-align:center;border-radius:10px;">
@@ -450,50 +450,50 @@ function HeaderUserbox() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handlePopupClose}>Cancel</Button> 
+          <Button onClick={handlePopupClose}>Cancel</Button>
         </DialogActions>
       </Dialog>
       {/* ----------------- Demo -----------------  */}
 
-       {/* ----------------- Demo -----------------  */} 
-     <Dialog
+      {/* ----------------- Demo -----------------  */}
+      <Dialog
         open={feedbackopenpopUP}
         onClose={handlePopupClose}
         scroll={scroll}
         aria-labelledby="scroll-dialog-title"
-        aria-describedby="scroll-dialog-description"   
+        aria-describedby="scroll-dialog-description"
         fullWidth
-      > 
-       <DialogTitle id="alert-dialog-title">
+      >
+        <DialogTitle id="alert-dialog-title">
           {"Submit Feedback"}
         </DialogTitle>
         <DialogContent dividers={scroll === "paper"}>
-          <DialogContentText id="alert-dialog-description"> 
-          <form autoComplete="off" noValidate  >
-                     
-          <TextField
-          id="detail"
-          label="What is the problem you are facing, describe in detail?"
-          multiline
-          rows={10}
-          defaultValue="Description"fullWidth
-        />
-                <br/>  <br/>
-                <TextField
-          id="platformDo"
-          label="What more would you like the platform to do? "
-          multiline
-          rows={10}
-          defaultValue="Description" fullWidth
-        />
-                    
-                    <br />  
-                  </form>
+          <DialogContentText id="alert-dialog-description">
+            <form autoComplete="off" noValidate  >
+
+              <TextField
+                id="detail"
+                label="What is the problem you are facing, describe in detail?"
+                multiline
+                rows={10}
+                defaultValue="Description" fullWidth
+              />
+              <br />  <br />
+              <TextField
+                id="platformDo"
+                label="What more would you like the platform to do? "
+                multiline
+                rows={10}
+                defaultValue="Description" fullWidth
+              />
+
+              <br />
+            </form>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-        <Button >Submit</Button> 
-          <Button onClick={handlePopupClose}>Cancel</Button> 
+          <Button >Submit</Button>
+          <Button onClick={handlePopupClose}>Cancel</Button>
         </DialogActions>
       </Dialog>
       {/* ----------------- Demo -----------------  */}

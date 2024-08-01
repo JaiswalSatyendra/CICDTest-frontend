@@ -120,8 +120,10 @@ import '@nlux/themes/nova.css';
 import { streamAdapter } from './adapter';
 import { personas } from './personas';
 import CanvasJSReact from '@canvasjs/react-charts';
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+import { DiagramComponent, Inject, HierarchicalTree, DataBinding, Rect} from "@syncfusion/ej2-react-diagrams";
+import { DataManager, Query } from "@syncfusion/ej2-data";
 
+var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 function getWeeksAfter(date, amount) {
   return date ? addWeeks(date, amount) : undefined;
@@ -209,6 +211,25 @@ export default function MlResultsConnection({ resultData }) {
     labels: [],
   });
 
+  const [stackedbarchartData, setstackedbarchartData] = useState({
+    chartSeries: [{
+      name: 'Marine Sprite',
+      data: [44, 55, 41]
+    }, {
+      name: 'Striking Calf',
+      data: [53, 32, 33]
+    }, {
+      name: 'Tank Picture',
+      data: [12, 17, 11]
+    },
+    {
+      name: 'Bucket Slope',
+      data: [15, 27, 25]
+    }
+    ],
+    labels: ["Group 1", "Group 2", "Group 3"],
+  });
+
   const [psvalone, setPsoneValue] = useState([0, 0]);
   const [psvaltwo, setPsvaltwo] = useState([0, 0]);
 
@@ -222,6 +243,10 @@ export default function MlResultsConnection({ resultData }) {
 
   };
 
+  const [decChartWidth, setdecChartWidth] = useState(43);
+  const [decChartHeight, setdecChartHeight] = useState(20);
+  const [decChartBoxHeight, setdecChartBoxHeight] = useState(210);
+
   const clearRangefilter = () => {
     setPsoneValue([0, 0]);
     setPsvaltwo([0, 0]);
@@ -231,10 +256,6 @@ export default function MlResultsConnection({ resultData }) {
     })
 
   }
-
-
-
-  // const [timeframeSeriesList, settimeframeSeriesList] = useState([]);
 
   const [nrrBreakdownData, setNrrBreakdownData] = useState({
     chartSeries: [],
@@ -259,7 +280,47 @@ export default function MlResultsConnection({ resultData }) {
     colList: [],
   });
 
+  /*  _____________________ water fall chart  _____________________ */
 
+  const [waterFallseries, setwaterFallseries] = React.useState([{
+    data: [{
+      x: 'Product Revenue',
+      y: [0, 320]
+    }, {
+      x: 'Services Revenue',
+      y: [420, 680]
+    }, {
+      x: 'Fixed Cost',
+      y: [230, 650]
+    },
+    {
+      x: 'Variable Cost',
+      y: [300, 630]
+    },
+    {
+      x: 'Total',
+      y: [0, 320]
+    }
+    ]
+  },
+  ],);
+  const [waterFalloptions, setwaterFalloptions] = React.useState({
+    chart: {
+      type: 'rangeBar',
+      height: 350,
+      toolbar: {
+        show: false
+      }
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false
+      }
+    },
+    dataLabels: {
+      enabled: true
+    }
+  });
 
 
   const [s3listOfkey, sets3listOfkey] = useState([]);
@@ -267,7 +328,7 @@ export default function MlResultsConnection({ resultData }) {
 
   const options = {
     theme: "light",
-    height: 250,
+    height: chartBoxHeightCR,
     animationEnabled: true,
     zoomEnabled: true,
     title: {
@@ -957,7 +1018,77 @@ export default function MlResultsConnection({ resultData }) {
   const [segmentationCategoryMapping, setsegmentationCategoryMapping] =
     useState([{ ques: "Overall Response", tab_name: "Overall Response" }]);
 
-
+  const hierarchicalTreeData = [
+    {
+      Name: "Plant Manager",
+      color: "#034d6d"
+    },
+    {
+      Name: "Production Manager",
+      ReportingPerson: "Plant Manager",
+      color: "#1b80c6"
+    },
+    {
+      Name: "Administrative Officer",
+      ReportingPerson: "Plant Manager",
+      color: "#1b80c6"
+    },
+    {
+      Name: "Maintenance Manager",
+      ReportingPerson: "Plant Manager",
+      color: "#1b80c6"
+    },
+    {
+      Name: "Control Room",
+      ReportingPerson: "Production Manager",
+      color: "#3dbfc9"
+    },
+    {
+      Name: "Plant Operator",
+      ReportingPerson: "Production Manager",
+      color: "#3dbfc9"
+    },
+    {
+      Name: "Electrical Supervisor",
+      ReportingPerson: "Maintenance Manager",
+      color: "#3dbfc9"
+    },
+    {
+      Name: "Mechanical Supervisor",
+      ReportingPerson: "Maintenance Manager",
+      color: "#3dbfc9"
+    },
+    {
+      Name: "Foreman",
+      ReportingPerson: "Control Room",
+      color: "#2bb28e"
+    },
+    {
+      Name: "Foreman",
+      ReportingPerson: "Plant Operator",
+      color: "#2bb28e"
+    },
+    {
+      Name: "Craft Personnel",
+      ReportingPerson: "Electrical Supervisor",
+      color: "#2bb28e"
+    }, {
+      Name: "Craft Personnel",
+      ReportingPerson: "Electrical Supervisor",
+      color: "#2bb28e"
+    },
+    {
+      Name: "Craft Personnel",
+      ReportingPerson: "Mechanical Supervisor",
+      color: "#2bb28e"
+    },
+    {
+      Name: "Craft Personnel",
+      ReportingPerson: "Mechanical Supervisor",
+      color: "#2bb28e"
+    },
+  ];
+  let items = new DataManager(hierarchicalTreeData, new Query().take(7));
 
   const chartOptionsTimeSeries = {
     chart: {
@@ -1374,7 +1505,7 @@ export default function MlResultsConnection({ resultData }) {
         let colorInd = featureImportanceData.chartSeries[
           seriesIndex
         ].data.findIndex((ele) => ele == value);
-        return "#896bfe";
+        return "#2196F3";
         // if (colorInd == 0) {
         //   return "#FA3E00";
         // } else if (colorInd == 1) {
@@ -1388,7 +1519,7 @@ export default function MlResultsConnection({ resultData }) {
       bar: {
         borderRadius: 5,
         barHeight: "70%",
-        horizontal: false,
+        horizontal: true,
       },
     },
     stroke: {
@@ -1449,9 +1580,9 @@ export default function MlResultsConnection({ resultData }) {
         show: true,
         align: "left",
         maxWidth: 200,
-        formatter: function (val) {
-          return val.toFixed(2);
-        },
+        // formatter: function (val) {
+        //   return val.toFixed(2);
+        // },
         style: {
           fontFamily: "Helvetica, Arial, sans-serif",
           fontWeight: 400,
@@ -1463,6 +1594,60 @@ export default function MlResultsConnection({ resultData }) {
       },
     },
   };
+
+  const stackedbarchartOption = {
+    chart: {
+      type: 'bar',
+      height: 350,
+      stacked: true,
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        dataLabels: {
+          total: {
+            enabled: true,
+            offsetX: 0,
+            style: {
+              fontSize: '13px',
+              fontWeight: 900
+            }
+          }
+        }
+      },
+    },
+    stroke: {
+      width: 1,
+      colors: ['#fff']
+    },
+    title: {
+      text: ''
+    },
+    xaxis: {
+      categories: stackedbarchartData.labels,
+    },
+    yaxis: {
+      title: {
+        text: undefined
+      },
+    },
+    tooltip: {
+      y: {
+        formatter: function (val) {
+          return val
+        }
+      }
+    },
+    fill: {
+      opacity: 1
+    },
+    // legend: {
+    //   position: 'top',
+    //   horizontalAlign: 'left',
+    //   offsetX: 40
+    // }
+  };
+
 
   const [radarmaxValue, setradarmaxValue] = useState([]);
   const chartOptions1 = {
@@ -1958,7 +2143,7 @@ export default function MlResultsConnection({ resultData }) {
       method: "POST",
       headers: {
         "Content-type": "application/json",
-        "token":Cookies.get("token"),
+        "token": Cookies.get("token"),
       },
       credentials: "include",
       body: JSON.stringify({
@@ -2047,7 +2232,7 @@ export default function MlResultsConnection({ resultData }) {
             let newKpi = Object.keys(mappingResult.kpis);
             let newKpi1 = newKpi
               .filter(function (value) {
-                return mappingResult.kpis[value] != "null";
+                return mappingResult.kpis[value] != "null" && value !== "total_clv";
               })
               .map((ele) => ({
                 label: ele,
@@ -2465,7 +2650,10 @@ export default function MlResultsConnection({ resultData }) {
       setIsshowButton("d-none");
       setIschartFontSize("12px");
     }
-    else if (selectChart == "heatMap") {
+    else if (selectChart == "decisionTree") {
+      setdecChartWidth(100)
+      setdecChartHeight(50)
+      setdecChartBoxHeight(500)
       setIschartHalfheat(12);
       setIschartBoxHeightheat(600);
       setIshideButtonheat("d-inline-block");
@@ -2489,6 +2677,13 @@ export default function MlResultsConnection({ resultData }) {
       setIschartOneCopy("d-inline-block");
       setIschartFontSize("12px");
     } else if (selectChart == "companyCR") {
+      setIschartHalfCR(12);
+      setIschartBoxHeightCR(600);
+      setIschartHeightCR(600);
+      setIshideButtonCR("d-inline-block");
+      setIsshowButtonCR("d-none");
+    }
+    else if (selectChart == "companyCa") {
       setIschartHalfCR(12);
       setIschartBoxHeightCR(600);
       setIschartHeightCR(600);
@@ -2776,7 +2971,7 @@ export default function MlResultsConnection({ resultData }) {
         credentials: "include",
         headers: {
           "Content-type": "application/json",
-          "token":Cookies.get("token")
+          "token": Cookies.get("token")
         },
         body: JSON.stringify({
           project_name: resultData.project_name,
@@ -2968,7 +3163,7 @@ export default function MlResultsConnection({ resultData }) {
       credentials: "include",
       headers: {
         "Content-type": "application/json",
-        "token":Cookies.get("token")
+        "token": Cookies.get("token")
       },
       body: JSON.stringify(newObj),
     })
@@ -2999,7 +3194,7 @@ export default function MlResultsConnection({ resultData }) {
       credentials: "include",
       headers: {
         "Content-type": "application/json",
-        "token":Cookies.get("token")
+        "token": Cookies.get("token")
       },
       body: JSON.stringify(newObj),
     })
@@ -3031,7 +3226,8 @@ export default function MlResultsConnection({ resultData }) {
       setIshideButton("d-none");
       setIsshowButton("d-blok");
       setIschartFontSize("6px");
-    } else if (selectChart == "companyTM") {
+    }
+    else if (selectChart == "companyTM") {
       setIschartHalfTM(4);
       setIschartBoxHeightTM(250);
       setIschartHeightTM(250);
@@ -3049,7 +3245,18 @@ export default function MlResultsConnection({ resultData }) {
       setIsshowButtonCR("d-blok");
       setIschartFontSize("6px");
     }
-    else if (selectChart == "heatMap") {
+    else if (selectChart == "companyCa") {
+      setIschartHalfCR(4);
+      setIschartBoxHeightCR(230);
+      setIschartHeightCR(230);
+      setIshideButtonCR("d-none");
+      setIsshowButtonCR("d-blok");
+      setIschartFontSize("6px");
+    }
+    else if (selectChart == "decisionTree") {
+      setdecChartWidth(40)
+      setdecChartHeight(20)
+      setdecChartBoxHeight(210)
       setIschartHalfheat(4);
       setIschartBoxHeightheat(230);
       setIshideButtonheat("d-none");
@@ -3189,7 +3396,7 @@ export default function MlResultsConnection({ resultData }) {
       credentials: "include",
       headers: {
         "Content-type": "application/json",
-        "token":Cookies.get("token"),
+        "token": Cookies.get("token"),
       },
       body: JSON.stringify({
         projectName: resultData.project_name,
@@ -3776,7 +3983,7 @@ export default function MlResultsConnection({ resultData }) {
       credentials: "include",
       headers: {
         "Content-type": "application/json",
-        "token":Cookies.get("token")
+        "token": Cookies.get("token")
       },
       body: JSON.stringify({
         project_name: resultData.project_name,
@@ -3872,12 +4079,12 @@ export default function MlResultsConnection({ resultData }) {
           project_name: resultData.project_name,
         },
         {
-        headers: {
-          "Content-type": "application/json",
-          "token": Cookies.get("token")
-        },
-        withCredentials: true,
-      }
+          headers: {
+            "Content-type": "application/json",
+            "token": Cookies.get("token")
+          },
+          withCredentials: true,
+        }
       )
       .then(async (response1) => {
         // setLoderVisual(false);
@@ -3984,23 +4191,23 @@ export default function MlResultsConnection({ resultData }) {
 
   /* _____________________ Custom chart genrate  _____________________ */
   const [cxaxis, setcxaxis] = useState([]);
-  const [cyaxis, setcyaxis] = useState([]); 
-  const [customChartOpertaion, setcustomChartOpertaion] = useState(['sum','mean'])  
-  const [filtercustomChartRange, setfiltercustomChartRange] = React.useState(["", ""]); 
+  const [cyaxis, setcyaxis] = useState([]);
+  const [customChartOpertaion, setcustomChartOpertaion] = useState(['sum', 'mean'])
+  const [filtercustomChartRange, setfiltercustomChartRange] = React.useState(["", ""]);
   const [customaxis, setcustomaxis] = useState({
     project_name: resultData.project_name,
     xaxis: '',
     yaxis: '',
     operation: '',
     // colorPattern:selectedcolorspattern,
-  }); 
+  });
   const [customchartData, setcustomchartData] = useState(null);
-  const [customchartloader, setcustomchartloader] = useState(false); 
+  const [customchartloader, setcustomchartloader] = useState(false);
   const [customChartResMessage, setcustomChartResMessage] = useState('');
-  
+
   const [customrespoanceMessage, setcustomrespoanceMessage] = useState('');
-  
-  
+
+
   const selectChartaxis = (e, val, label) => {
     let tmpcustomaxis = { ...customaxis, }
     tmpcustomaxis[label] = val
@@ -4008,28 +4215,28 @@ export default function MlResultsConnection({ resultData }) {
     console.log(customaxis)
   }
 
-  const customDataRang=(e)=>{
+  const customDataRang = (e) => {
     // let startDate=e.startDate.toString();
     // let endDate=e.endDate.toString();  
     // let customdateStart1 = convertToDate(startDate);
     // let customdateEnd2 = convertToDate(endDate);  
-    setfiltercustomChartRange(e.value) 
-  } 
+    setfiltercustomChartRange(e.value)
+  }
 
-  const clearAllscutom=(e)=>{
-    let tmpcustomaxis = { ...customaxis, } 
-      tmpcustomaxis={
+  const clearAllscutom = (e) => {
+    let tmpcustomaxis = { ...customaxis, }
+    tmpcustomaxis = {
       project_name: resultData.project_name,
       xaxis: '',
       yaxis: '',
       operation: '',
     }
-    let tempDatarang=["", ""]
-    setfiltercustomChartRange(tempDatarang) 
+    let tempDatarang = ["", ""]
+    setfiltercustomChartRange(tempDatarang)
     console.log(filtercustomChartRange)
-    setcustomaxis(tmpcustomaxis) 
-    console.log(customaxis)  
-    let temp=null;
+    setcustomaxis(tmpcustomaxis)
+    console.log(customaxis)
+    let temp = null;
     setcustomchartData(temp)
     console.log(customchartData)
   }
@@ -4058,7 +4265,7 @@ export default function MlResultsConnection({ resultData }) {
       credentials: "include",
       headers: {
         "Content-type": "application/json",
-        "token":Cookies.get("token")
+        "token": Cookies.get("token")
       },
       body: JSON.stringify(requestCustomchart),
     })
@@ -4075,7 +4282,7 @@ export default function MlResultsConnection({ resultData }) {
           setcustomChartResMessage('Data not Available')
           setcustomchartloader(false)
           console.log("Fail")
-        } 
+        }
 
       })
       .catch((err) => {
@@ -4088,6 +4295,11 @@ export default function MlResultsConnection({ resultData }) {
   };
   /* _____________________ Custom chart genrate  _____________________ */
 
+  const clickOnNode = (obj) => {
+    if (obj?.element?.properties?.data?.Name !== undefined) {
+      console.log(obj?.element?.properties?.data?.Name);
+    }
+  };
 
 
   return (
@@ -6088,7 +6300,7 @@ export default function MlResultsConnection({ resultData }) {
                   </Grid>
                 )}
 
-              {resultData.template === "Churn Prediction" && (
+              {/* {resultData.template === "Churn Prediction" && (
                 <Grid container spacing={1}>
                   <Grid item xs={4}>
                     <Card
@@ -6191,135 +6403,137 @@ export default function MlResultsConnection({ resultData }) {
                     </Card>
                   </Grid>
                 </Grid>
-              )}
+              )} */}
 
-              <div style={{ height: 9 }}></div> 
-               <Grid container spacing={1}>
-                 {/* ---------------- custom chart  ----------------  */}
-                <Grid item xs={8}>
-                  <Card className="cardBox">
-                    <CardContent>
-                      <Grid container spacing={1}>
-                        <Grid item xs={6}>
-                          <Stack spacing={2}>
-                            <h4 className="m-0">Custom</h4>
-                            <FormControl sx={{ minWidth: '100%' }} size="small">
-                              <InputLabel id="cxaxis">X-axis</InputLabel>
-                              <Select
-                                labelId="cxaxis"
-                                id="cxaxis"
-                                value={customaxis.xaxis}
-                                label="X-axis"
-                              >
-                                {cxaxis.map(
-                                  (item, i) => (
-                                    <MenuItem
-                                      key={item}
-                                      value={item}
-                                      onClick={(e) => {
-                                        selectChartaxis(e, item, 'xaxis');
-                                      }}
-                                    >
-                                      <ListItemText primary={item} />
-                                    </MenuItem>
-                                  )
-                                )}
-                              </Select>
-                            </FormControl>
+              <div style={{ height: 9 }}></div>
+              <Grid container spacing={1}>
+                {/* ---------------- custom chart  ----------------  */}
 
-                            <FormControl sx={{ minWidth: '100%' }} size="small">
-                              <InputLabel id="cyaxis">Y-axis</InputLabel>
-                              <Select
-                                labelId="cxaxis"
-                                id="cxaxis"
-                                value={customaxis.yaxis}
-                                label="X-axis"
-                              >
-                                {cyaxis.map(
-                                  (item, i) => (
-                                    <MenuItem
-                                      key={item}
-                                      value={item}
-                                      onClick={(e) => {
-                                        selectChartaxis(e, item, 'yaxis');
-                                      }}
-                                    >
-                                      <ListItemText primary={item} />
-                                    </MenuItem>
-                                  )
-                                )}
-                              </Select>
-                            </FormControl>
+                {resultData.template !== "Churn Prediction" ?
+                  <Grid item xs={8}>
+                    <Card className="cardBox">
+                      <CardContent>
+                        <Grid container spacing={1}>
+                          <Grid item xs={6}>
+                            <Stack spacing={2}>
+                              <h4 className="m-0">Custom</h4>
+                              <FormControl sx={{ minWidth: '100%' }} size="small">
+                                <InputLabel id="cxaxis">Measure</InputLabel>
+                                <Select
+                                  labelId="cxaxis"
+                                  id="cxaxis"
+                                  value={customaxis.xaxis}
+                                  label="Measure"
+                                >
+                                  {cxaxis.map(
+                                    (item, i) => (
+                                      <MenuItem
+                                        key={item}
+                                        value={item}
+                                        onClick={(e) => {
+                                          selectChartaxis(e, item, 'xaxis');
+                                        }}
+                                      >
+                                        <ListItemText primary={item} />
+                                      </MenuItem>
+                                    )
+                                  )}
+                                </Select>
+                              </FormControl>
 
-                            <FormControl sx={{ minWidth: '100%' }} size="small">
-                              <InputLabel id="cyaxis">Data Operation</InputLabel>
-                              <Select
-                                labelId="cxaxis"
-                                id="cxaxis"
-                                value={customaxis.operation}
-                                label="Data Operation"
-                              >
-                                {customChartOpertaion.map(
-                                  (item, i) => (
-                                    <MenuItem
-                                      key={item}
-                                      value={item}
-                                      onClick={(e) => {
-                                        selectChartaxis(e, item, 'operation');
-                                      }}
-                                    >
-                                      <ListItemText primary={item} />
-                                    </MenuItem>
-                                  )
-                                )}
-                              </Select>
-                            </FormControl>
-                            <Box sx={{ mt: 2 }}>
-                              <DateRangePickerComponent
-                                placeholder="Select Time range"
-                                cssClass="e-outline"
-                                value={filtercustomChartRange}
-                                change={(event) => {  customDataRang(event);}}
-                               // change={(ev) => customDataRang(ev)}
-                              >
-                                <PresetsDirective>
-                                  <PresetDirective
-                                    label="Current Week"
-                                    start={weekStart}
-                                    end={weekEnd}
-                                  ></PresetDirective>
-                                  <PresetDirective
-                                    label="Last Week"
-                                    start={lastweekStart}
-                                    end={lastweekEnd}
-                                  ></PresetDirective>
-                                  <PresetDirective
-                                    label="Current Month"
-                                    start={monthStart}
-                                    end={monthEnd}
-                                  ></PresetDirective>
-                                  <PresetDirective
-                                    label="Last Month"
-                                    start={lastStart}
-                                    end={lastEnd}
-                                  ></PresetDirective>
-                                  <PresetDirective
-                                    label="Last Year"
-                                    start={yearStart}
-                                    end={yearEnd}
-                                  ></PresetDirective>
-                                </PresetsDirective>
-                              </DateRangePickerComponent>
-                            </Box>
-                          </Stack><br />
-                          <Stack direction="row" spacing={1}>
-                            <Button
-                              color="primary"
-                              variant="outlined"
-                              onClick={() => clearAllscutom()}>
-                              <i className="fa fa-close mr-1" />  Clear All
-                            </Button>
-                            {/* <Button
+                              <FormControl sx={{ minWidth: '100%' }} size="small">
+                                <InputLabel id="cyaxis">Dimension</InputLabel>
+                                <Select
+                                  labelId="cxaxis"
+                                  id="cxaxis"
+                                  value={customaxis.yaxis}
+                                  label="Dimension"
+                                >
+                                  {cyaxis.map(
+                                    (item, i) => (
+                                      <MenuItem
+                                        key={item}
+                                        value={item}
+                                        onClick={(e) => {
+                                          selectChartaxis(e, item, 'yaxis');
+                                        }}
+                                      >
+                                        <ListItemText primary={item} />
+                                      </MenuItem>
+                                    )
+                                  )}
+                                </Select>
+                              </FormControl>
+
+                              <FormControl sx={{ minWidth: '100%' }} size="small">
+                                <InputLabel id="cyaxis">Data Operation</InputLabel>
+                                <Select
+                                  labelId="cxaxis"
+                                  id="cxaxis"
+                                  value={customaxis.operation}
+                                  label="Data Operation"
+                                >
+                                  {customChartOpertaion.map(
+                                    (item, i) => (
+                                      <MenuItem
+                                        key={item}
+                                        value={item}
+                                        onClick={(e) => {
+                                          selectChartaxis(e, item, 'operation');
+                                        }}
+                                      >
+                                        <ListItemText primary={item} />
+                                      </MenuItem>
+                                    )
+                                  )}
+                                </Select>
+                              </FormControl>
+                              <Box sx={{ mt: 2 }}>
+                                <DateRangePickerComponent
+                                  placeholder="Select Time range"
+                                  cssClass="e-outline"
+                                  value={filtercustomChartRange}
+                                  change={(event) => { customDataRang(event); }}
+                                // change={(ev) => customDataRang(ev)}
+                                >
+                                  <PresetsDirective>
+                                    <PresetDirective
+                                      label="Current Week"
+                                      start={weekStart}
+                                      end={weekEnd}
+                                    ></PresetDirective>
+                                    <PresetDirective
+                                      label="Last Week"
+                                      start={lastweekStart}
+                                      end={lastweekEnd}
+                                    ></PresetDirective>
+                                    <PresetDirective
+                                      label="Current Month"
+                                      start={monthStart}
+                                      end={monthEnd}
+                                    ></PresetDirective>
+                                    <PresetDirective
+                                      label="Last Month"
+                                      start={lastStart}
+                                      end={lastEnd}
+                                    ></PresetDirective>
+                                    <PresetDirective
+                                      label="Last Year"
+                                      start={yearStart}
+                                      end={yearEnd}
+                                    ></PresetDirective>
+                                  </PresetsDirective>
+                                </DateRangePickerComponent>
+                              </Box>
+                            </Stack><br />
+                            <Stack direction="row" spacing={1}>
+                              <Button
+                                color="primary"
+                                variant="outlined"
+                                onClick={() => clearAllscutom()}>
+                                <i className="fa fa-close mr-1" />  Clear All
+                              </Button>
+                              {/* <Button
                               color="primary"
                               variant="outlined"
                               onClick={() => {
@@ -6328,69 +6542,31 @@ export default function MlResultsConnection({ resultData }) {
                             >
                               <i className="fa fa-exchange mr-1" />  Swap
                             </Button> */}
-                            <Button
-                              sx={{ mt: { xs: 2, sm: 0 } }}
-                              color="primary"
-                              variant="contained"
-                              onClick={(e) => applyCustomChart()}
-                            >
-                              Apply
-                            </Button>
-                          </Stack>
+                              <Button
+                                sx={{ mt: { xs: 2, sm: 0 } }}
+                                color="primary"
+                                variant="contained"
+                                onClick={(e) => applyCustomChart()}
+                              >
+                                Apply
+                              </Button>
+                            </Stack>
 
 
+                          </Grid>
+                          <Grid item xs={6}>
+                            <Box sx={{ height: 300, width: "100%" }}>
+                              {customchartloader ? <div className="text-center"><br /><br /><br /><br /><CircularProgress /><br /> <br />Thank you for your patience...</div> : <><CustomChart customchartData={customchartData} customChartResMessage={customChartResMessage} /></>}
+                            </Box>
+
+                          </Grid>
                         </Grid>
-                        <Grid item xs={6}>
-                          <Box sx={{ height: 300, width: "100%" }}> 
-                            {customchartloader ? <div className="text-center"><br /><br /><br /><br /><CircularProgress /><br /> <br />Thank you for your patience...</div> : <><CustomChart customchartData={customchartData} customChartResMessage={customChartResMessage} /></>}
-                          </Box>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  : ""}
 
-                        </Grid>
-                      </Grid>
-                    </CardContent>
-                  </Card>
-                </Grid> 
-                {/* ---------------- custom chart  ----------------  */}
-                {featureImportanceData.chartSeries.length != 0 ? (
-                  <>
-                    {" "}
-                    <Grid item xs={4}>
-                      <Card className="cardBox">
-                        <CardContent>
-                          <h3
-                            style={{ letterSpacing: 0.6 }}
-                            title={"Feature Importance"}
-                          >
-                            Feature Importance
-                          </h3>
-                          <div className="result-toolbar">
-                            <Tooltip
-                              title={
-                                "A list of important features which impact churn behaviour in customers. The values denote the relative importance of each feature on the churn behaviour."
-                              }
-                            >
-                              <i className="fa fa-info-circle small-md-icons"></i>
-                            </Tooltip>
-                          </div>
-                          <div className="clearfix"></div>
-                          <Box sx={{ height: 290, width: "100%" }}>
-                            <div id="chart122a1">
-                              <Chart
-                                height={290}
-                                width={"100%"}
-                                options={featureImportancechart}
-                                series={featureImportanceData.chartSeries}
-                                type="bar"
-                              />
-                            </div>
-                          </Box>
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                  </>
-                ) : null}
-
-                {nrrBreakdownData.chartSeries.length != 0 ? (
+                {/* {nrrBreakdownData.chartSeries.length != 0 ? (
                   <Grid item xs={4}>
                     <Card className="cardBox">
                       <CardContent>
@@ -6424,9 +6600,9 @@ export default function MlResultsConnection({ resultData }) {
                       </CardContent>
                     </Card>
                   </Grid>
-                ) : null}
+                ) : null} */}
 
-                {heatMapDataForResult.chartSeries.length != 0 ? (
+                {/* {heatMapDataForResult.chartSeries.length != 0 ? (
                   <>
                     <Grid item xs={chartHalfheat} className={chartOne}>
                       <Card className="cardBox">
@@ -6456,12 +6632,6 @@ export default function MlResultsConnection({ resultData }) {
                             >
                               <i className="fa fa-expand"> </i>
                             </a>
-                            {/* <a>
-                              <i
-                                className="fa fa-filter"
-                                onClick={(e) => openFilterBox(e, "heatMap")}
-                              ></i>
-                            </a> */}
                           </div>
                           <div className="clearfix"></div>
                           <Box sx={{ height: chartBoxHeightheat, width: "100%" }}>
@@ -6479,10 +6649,9 @@ export default function MlResultsConnection({ resultData }) {
                       </Card>
                     </Grid>
                   </>
-                ) : null}
+                ) : null} */}
 
-                {/* <div style={{ height: 10 }}></div> */}
-                {/* <Grid container spacing={1}> */}
+
                 {topicSentimentResult1.length != 0 && (
                   <Grid
                     item
@@ -6731,6 +6900,155 @@ export default function MlResultsConnection({ resultData }) {
                   </>
                 )}
 
+                {resultData.template === "Churn Prediction" ? (
+                  <>
+                    <Grid item xs={chartHalfPC} className={chartFour}>
+                      <Card className={
+                        selectedGridBox ==
+                          'Word Cloud'
+                          ? "cardBox selectCard"
+                          : "cardBox "
+                      }>
+                        <CardContent>
+                          <h3
+                            title={"Waterfall chart: " + churnRate.selectedChurnCat}
+                          >
+                            Waterfall: {churnRate.selectedChurnCat}
+                          </h3>
+                          <div className="result-toolbar">
+                            <Tooltip
+                              title={
+                                "The plot shows the evolution of revenue between consecutive years categorized as new, growing, stable, diminishing, and churned customers, based on changes in revenue between two consecutive periods."
+                              }
+                            >
+                              <i className="fa fa-info-circle small-md-icons"></i>
+                            </Tooltip>
+                            <a>
+                              <i
+                                className={"fa fa-expand " + showButtonPC}
+                                onClick={(e) => chartenlarge("companyPC")}
+                              ></i>
+                            </a>
+                            <a>
+                              <i
+                                className={"fa fa-compress " + hideButtonPC}
+                                onClick={(e) => closeenlarge("companyPC")}
+                              ></i>{" "}
+                            </a>
+                            {churnRate.chartSeries.length != 0 && (
+                              <a>
+                                <i
+                                  className="fa fa-filter"
+                                  onClick={(e) => openFilterBox(e, "Churn")}
+                                ></i>
+                              </a>
+                            )}
+                          </div>
+                          <Box sx={{ height: chartBoxHeightPC, width: "100%" }}>
+                            <Chart options={waterFalloptions} series={waterFallseries} type="rangeBar" height={230} />
+                          </Box>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  </>
+                ) : null}
+
+                {resultData.template === "Churn Prediction" ? (
+                  <>
+                    <Grid item xs={chartHalfheat} className={chartOne}>
+                      <Card className="cardBox">
+                        <CardContent>
+                          <h3
+                            title={"Decision Trees"}
+                          >
+                            Decision Trees
+                          </h3>
+                          <div className="result-toolbar">
+                            <Tooltip
+                              title={
+                                "Visualizes decisions to predict customer churn using a random forest classifier. Nodes show conditions met with color coding from green (low churn) to red (high churn). OpenAI provides descriptive names for terminal nodes."
+                              }
+                            >
+                              <i className="fa fa-info-circle small-md-icons"></i>
+                            </Tooltip>
+                            <a
+                              className={"-  " + hideButtonheat}
+                              onClick={(e) => closeenlarge("decisionTree")}
+                            >
+                              <i className="fa fa-compress"> </i>
+                            </a>
+                            <a
+                              className={"-  " + showButtonheat}
+                              onClick={(e) => chartenlarge("decisionTree")}
+                            >
+                              <i className="fa fa-expand"> </i>
+                            </a>
+                          </div>
+                          <div className="clearfix"></div>
+                          <Box sx={{ height: {decChartBoxHeight}, width: "100%" }}>
+                          {" "}
+                          <br />
+                          <DiagramComponent id="container" width={"100%"} height={decChartBoxHeight}
+                            click={(event) => clickOnNode(event)}
+                            layout={{
+                              type: "HierarchicalTree",
+                              bounds: new Rect(0, -38, 0, 0),
+                             // horizontalSpacing: 25,
+                              //verticalSpacing: 30,
+                              //horizontalAlignment: 'Left',
+                             // verticalAlignment: 'Top',
+                            }}
+
+                            dataSourceSettings={{
+                              id: "Name",
+                              parentId: "ReportingPerson",
+                              dataManager: items,
+                            }}
+                            getNodeDefaults={(obj) => {
+                              obj.shape = {
+                                type: "Text",
+                                content: obj.data.Name,
+                              };
+                              obj.style = {
+                                fill: "None",
+                                strokeColor: "none",
+                                strokeWidth: 2,
+                                bold: true,
+                                color: "white",
+                              };
+                              obj.borderColor = "white";
+                              obj.width = decChartWidth;
+                              obj.height = decChartHeight;
+                              obj.backgroundColor = obj.data.color;
+                              obj.borderWidth = 1;
+                              obj.shape.margin = {
+                                left: 2,
+                                right: 2,
+                                top: 2,
+                                bottom: 2,
+                              };
+                              return obj;
+                            }}
+                            getConnectorDefaults={(connector, diagram) => {
+                              connector.style = {
+                                strokeColor: "#6BA5D7",
+                                strokeWidth: 2,
+                              };
+                              connector.targetDecorator.style.fill = "#6BA5D7";
+                              connector.targetDecorator.style.strokeColor = "#6BA5D7";
+                              connector.type = "Orthogonal";
+                              return connector;
+                            }}
+                          >
+                            <Inject services={[DataBinding, HierarchicalTree]} />
+                          </DiagramComponent>
+                        </Box>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  </>
+                ) : null}
+
                 {timeSeriesData.chartSeries.length != 0 &&
                   resultData.template !== "Churn Prediction" ? (
                   <>
@@ -6808,7 +7126,7 @@ export default function MlResultsConnection({ resultData }) {
                   </>
                 ) : null}
 
-                {timeSeriesData.chartSeries.length != 0 &&
+                {/* {timeSeriesData.chartSeries.length != 0 &&
                   resultData.template == "Churn Prediction" ? (
                   <>
                     <Grid item xs={chartHalfTs} className={chartOne}>
@@ -6830,10 +7148,6 @@ export default function MlResultsConnection({ resultData }) {
                                   timeSeriesData.selectedTimeSeriesTime
                               )[0].name
                             }
-                            {/* {resultData.template == "Net Promoter Score"
-                          ? "Likely to recommend per question"
-                          : "Company Consideration"} 
-                        : {companyConsidration.overall}*/}
                           </h3>
                           <div className="result-toolbar">
                             <Tooltip
@@ -6878,7 +7192,7 @@ export default function MlResultsConnection({ resultData }) {
                       </Card>
                     </Grid>
                   </>
-                ) : null}
+                ) : null} */}
 
                 {companyTrustMatrix.chartSeries.length != 0 ? (
                   <>
@@ -6992,6 +7306,42 @@ export default function MlResultsConnection({ resultData }) {
                     </Grid>
                   </>
                 ) : null}
+
+                {/* ---------------- stacked bar plot  ----------------  */}
+                {resultData.template === "Churn Prediction" ? (
+                  <>
+                    {" "}
+                    <Grid item xs={4}>
+                      <Card className="cardBox">
+                        <CardContent>
+                          <h3
+                            style={{ letterSpacing: 0.6 }}
+                            title={"Stacked Bar Plot"}
+                          >
+                            Stacked Bar Plot
+                          </h3>
+                          <div className="result-toolbar">
+                            <Tooltip
+                              title={
+                                "The plot consists of three bars representing customer distribution by churn rate, for all the nodes in the decision tree."
+                              }
+                            >
+                              <i className="fa fa-info-circle small-md-icons"></i>
+                            </Tooltip>
+                          </div>
+                          <div className="clearfix"></div>
+                          <Box sx={{ height: 230, width: "100%" }}>
+                            <div id="stackedbar">
+                              <Chart options={stackedbarchartOption} series={stackedbarchartData.chartSeries} width={"100%"} type="bar" height={230} />
+                            </div>
+                          </Box>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  </>
+                ) : null}
+
+
                 {canvaChart.length != 0 ? (
                   <>
                     <Grid item xs={chartHalfCR} className={chartThree}>
@@ -7075,11 +7425,11 @@ export default function MlResultsConnection({ resultData }) {
 
                               <i
                                 className={"fa fa-expand cursorpointer " + showButtonCR}
-                                onClick={(e) => chartenlarge("companyCR")}
+                                onClick={(e) => chartenlarge("companyCa")}
                               ></i>
                               <i
                                 className={"fa fa-compress cursorpointer " + hideButtonCR}
-                                onClick={(e) => closeenlarge("companyCR")}
+                                onClick={(e) => closeenlarge("companyCa")}
                               ></i>
                               <a>
                                 <i
@@ -7102,7 +7452,7 @@ export default function MlResultsConnection({ resultData }) {
                             </Grid>
                           </Grid>
                           <div className="clearfix"></div>
-                          <Box sx={{ height: chartBoxHeightCR, width: "100%" }}>
+                          <Box sx={{ height: chartHeightCR, width: "100%" }}>
                             <div id="chart12b">
                               <CanvasJSChart options={options} />
                               {/* <Chart
@@ -7119,6 +7469,45 @@ export default function MlResultsConnection({ resultData }) {
                   </>
                 ) : null}
 
+                {/* ---------------- feature Importance  ----------------  */}
+                {featureImportanceData.chartSeries.length != 0 ? (
+                  <>
+                    {" "}
+                    <Grid item xs={4}>
+                      <Card className="cardBox">
+                        <CardContent>
+                          <h3
+                            style={{ letterSpacing: 0.6 }}
+                            title={"Feature Importance"}
+                          >
+                            Feature Importance
+                          </h3>
+                          <div className="result-toolbar">
+                            <Tooltip
+                              title={
+                                "A list of important features which impact churn behaviour in customers. The values denote the relative importance of each feature on the churn behaviour."
+                              }
+                            >
+                              <i className="fa fa-info-circle small-md-icons"></i>
+                            </Tooltip>
+                          </div>
+                          <div className="clearfix"></div>
+                          <Box sx={{ height: 230, width: "100%" }}>
+                            <div id="chart122a1">
+                              <Chart
+                                height={230}
+                                width={"100%"}
+                                options={featureImportancechart}
+                                series={featureImportanceData.chartSeries}
+                                type="bar"
+                              />
+                            </div>
+                          </Box>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  </>
+                ) : null}
 
                 {churnRate.chartSeries.length != 0 ? (
                   <>
@@ -7185,7 +7574,8 @@ export default function MlResultsConnection({ resultData }) {
                       </Card>
                     </Grid>
                   </>
-                ) : null}  
+                ) : null}
+
               </Grid>
               < div className="clearfix" ></div >
             </Box >

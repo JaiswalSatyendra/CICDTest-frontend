@@ -61,7 +61,7 @@ function Blogs() {
           <button  onClick={getstartedClick} className="link-btn">
             <i className="fa fa-play-circle"> </i> Get Started  
     </button> <br/>
-          <img src={bannerImge} alt="churn Analysis" className="bannerimg"  />
+          <img src={bannerImge} alt="customer success platforms" className="bannerimg"  />
         </section>
       </div>
       {/* ------------------- banner   ------------------- */}

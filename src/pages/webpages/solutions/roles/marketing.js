@@ -83,7 +83,7 @@ function MarketingPage() {
             <i className="fa fa-play-circle"> </i> Get Started  
     </button> 
           <br />
-          <img src={customerSuccessBanner} alt="churn Analysis" className="bannerimg" /> 
+          <img src={customerSuccessBanner} alt="Marketing Strategies" className="bannerimg" /> 
         </section>
       </div>
       {/* ------------------- banner   ------------------- */} 
@@ -102,7 +102,7 @@ function MarketingPage() {
               > 
                 {content.bannerdirection=='left'?<><Grid item xs={12} md={5} lg={5}> <img
                  src={'/json-media/img/'+content.bannerName+'.png'}
-                  alt="sitting in Goldmine"
+                  alt={content.altText}
                   className="img-responsive"
                 /> </Grid>  <Grid item xs={12} md={7} lg={7}><div className="heading2"> {content.heading}</div>
                 {content.listContent.map((content) => (
@@ -122,7 +122,7 @@ function MarketingPage() {
                 </Grid>
                 <Grid item xs={12} md={5} lg={5}> <img
                  src={'/json-media/img/'+content.bannerName+'.png'}
-                  alt="sitting in Goldmine"
+                 alt={content.altText}
                   className="img-responsive"
                 /> </Grid> </>}
                  </Grid>  
@@ -146,7 +146,7 @@ function MarketingPage() {
                 </Grid>
                 <Grid item xs={12} md={5} lg={5}> <img
                  src={'/json-media/img/'+content.bannerName+'.png'}
-                  alt="sitting in Goldmine"
+                 alt={content.altText}
                   className="img-responsive"
                 /> </Grid>
                  </Grid>  

@@ -21,8 +21,8 @@ import competitiveAnalysis from "../../../../assets/icons/competitiveAnalysis.sv
 
 
 
-import multiChannelNPSIcon from "../../../../assets/icons/multiChannelNPSIcon.svg";
-import customerSegmentationIcon from "../../../../assets/icons/customerSegmentationIcon.png";
+import multiChannelNPSIcon from "../../../../assets/icons/multiChannelNPSIcon.svg"; 
+import multicustomerSegmentationIcons from "../../../../assets/icons/customerSegmentationIcon.svg";
 import recencyFrequency from "../../../../assets/icons/recencyFrequency.svg";
 
 import advancedPatternRecognition from "../../../../assets/icons/advancedPatternRecognition.svg";
@@ -32,16 +32,7 @@ import sentimentAnalysisbasedontopics from "../../../../assets/icons/sentimentAn
 import microLevelInsights from "../../../../assets/icons/microLevelInsights.png";
 import realtimeNPS from "../../../../assets/icons/realtimeNPS.png";
 import engagementScore from "../../../../assets/icons/engagementScore.svg";
-
-import salesforce from "../../../../assets/icons/salesforce.png";
-import hubsport from "../../../../assets/icons/hubsport.png";
-import zendesk from "../../../../assets/icons/zendesk.png";
-import surveyFrom from "../../../../assets/icons/surveyFrom.png";
-import capterra from "../../../../assets/icons/capterra.png";
-import customdataSource from "../../../../assets/icons/customdataSource.png";
-import typeform from "../../../../assets/icons/typeform.png";
-import googleForms from "../../../../assets/icons/googleForms.png";
-import surveymonkey from "../../../../assets/icons/surveymonkey.png";
+ 
 
 import productDevelopment from "../../../../assets/img/solutions/satisfactionproductdevelopment.png";
 import customerSuccess from "../../../../assets/img/solutions/statisfactioncustomersuccess.png";
@@ -50,55 +41,13 @@ import HomeFooter from "../../../../components/home-footer";
 import { Helmet } from "react-helmet";
 import { customerSatisfactionAnalysisData } from "../../../../assets/data/schema-markup";
 import { customerSatisfactionAnalysis } from "../../../../assets/data/metadata-list";
+import { dataSourceList, insightsAction } from "../../../../assets/data/roles";
 
 function CustomerSatisfaction() {
   useEffect(() => {}, []);
   const navigate = useNavigate();
   const getstartedClick = () => navigate('/signup');
-  const insightsAction = [
-    {
-      id: 1,
-      img: multiChannelNPSIcon,
-      title: "Harmonization of All ",
-      title1: "Customer Satisfaction Data",
-      content: "Integrate survey, user feedback, and transactional data effortlessly for instant, comprehensive customer insights. Cut manual effort to identify complex trends and patterns across large data sets and address root causes for customer dissatisfaction.",
-    },
-    {
-      id: 2,
-      img: customerSegmentationIcon,
-      title: "Drill Down at Contact-Level ",
-      title1: "Details and Insights",
-      content: 'Go beyond aggregates and get personal. ConvertML provides drill down contact-level details, giving you names, topic-based sentiment analysis, and trust scores for a truly micro level  ',
-    },
-    {
-      id: 3,
-      img: pinpointSatisfactionLevels,
-      title: "Pinpoint ",
-      title1: "Satisfaction Levels",
-      content: "Intuitive dashboard offering a 360-degree view, revealing positives, neutrals, and negatives at a glance.",
-    },
-    {
-        id: 4,
-        img: sentimentAnalysisbasedontopics,
-        title: "Sentiment Analysis",
-        title1: "based on topics",
-        content: "Uncover the nuances of customer sentiment with topic-based analysis. Filter data to focus on specific sentiments, empowering you to make targeted improvements where it matters most to your customers.",
-      },
-      {
-        id: 5,
-        img: advancedPatternRecognition,
-        title: "Advanced ",
-        title1: "pattern recognition",
-        content: "Analyze brand perception by uncovering patterns that contribute to Company Consideration, Trust, Correspondence. Harness the power of uncovering relationships between critical sentiments, topics, demographics and much more.",
-      },
-      {
-        id: 6,
-        img: predictiveChurnAnalysisforProactiveStrategies,
-        title: "Predictive Churn Analysis ",
-        title1: " for Proactive Strategies",
-        content: "Predict potential churn by analyzing behavioral data and develop targeted retention campaigns; turning potential losses into victories.",
-      },
-  ];
+  
   const insightsAction1 = [
     {
       id: 1,
@@ -109,7 +58,7 @@ function CustomerSatisfaction() {
     },
     {
       id: 2,
-      img: customerSegmentationIcon,
+      img: multicustomerSegmentationIcons,
       title: "Enhance",
       title1: "Marketing Campaigns",
       content: 'Identify strengths based on insights to create targeted campaigns and tailor messaging to resonate with customer sentiment.',
@@ -157,17 +106,7 @@ function CustomerSatisfaction() {
         content: "Analytics capabilities help anticipate the effects of policy changes on customer satisfaction before implementation, enabling informed decisions.",
       },
   ];
-  const dataSourceList = [
-    { id: 1, img: typeform },
-    { id: 2, img: salesforce },
-    { id: 3, img: hubsport },
-    { id: 4, img: googleForms },
-    { id: 5, img: surveyFrom },
-    { id: 6, img: surveymonkey },
-    { id: 7, img:  zendesk },
-    { id: 8, img:capterra },
-    { id: 9, img: customdataSource },
-  ];
+ 
 
   return (
     <>
@@ -211,7 +150,7 @@ function CustomerSatisfaction() {
             <i className="fa fa-play-circle"> </i> Get Started  
     </button> 
               <br />   <br /> 
-          <img src={churnAnalysis} alt="churn Analysis" className="bannerimg" />
+          <img src={churnAnalysis} alt="Predicting Customer Churn" className="bannerimg" />
         </section>
       </div>
       {/* ------------------- banner   ------------------- */}
@@ -263,7 +202,9 @@ function CustomerSatisfaction() {
               <>
                 <Grid item xs={12} md={4} lg={4} key={action.id}>
                   <div className="content-box" style={{ height: 440 }}>
-                    <img src={action.img} alt="cross sell" width={100} />
+                    <img   src={
+                          "./json-media/icons/solutions/" + action.img + ".svg"
+                        }   alt={action.img} width={100} />
                     <h3>
                       {action.title} <br />
                       {action.title1}
@@ -329,8 +270,11 @@ function CustomerSatisfaction() {
                       style={{minHeight:80, height:80, padding: 10, display: "block" }}
                     >
                       <img
-                        src={action.img}
-                        alt="crosssell"
+                        // src={action.img}
+                        src={
+                          "./json-media/icons/" + action.img + ".png"
+                        } 
+                        alt={action.img}
                         className="img-responsive"
                         height={30}
                         width={150}
@@ -387,7 +331,7 @@ function CustomerSatisfaction() {
             <Grid item xs={12} md={6} lg={6}>
               <img
                 src={marketing}
-                alt="sitting in Goldmine"
+                alt="Customer Satisfaction Analysis"
                 className="img-responsive"
               />
             </Grid>
@@ -496,16 +440,16 @@ Identify areas with the most significant improvement potential and align develop
             </Grid>
           </Grid>
           <Grid container spacing={2} direction="row">
-            {insightsAction1.map((action) => (
+            {insightsAction1.map((i) => (
               <>
-                <Grid item xs={12} md={4} lg={4} key={action.id}>
+                <Grid item xs={12} md={4} lg={4} key={i.id}>
                   <div className="content-box" style={{ height: 420 }}>
-                    <img src={action.img} alt="cross sell" width={100} />
+                    <img src={i.img} alt="cross sell" width={100} />
                     <h3>
-                      {action.title} <br />
-                      {action.title1}
+                      {i.title} <br />
+                      {i.title1}
                     </h3>
-                    <p> {action.content} </p>
+                    <p> {i.content} </p>
                   </div>
                 </Grid>
               </>

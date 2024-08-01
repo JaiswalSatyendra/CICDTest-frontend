@@ -285,7 +285,7 @@ function AboutUs() {
           <button  onClick={getstartedClick} className="link-btn">
             <i className="fa fa-play-circle"> </i> Get Started  
     </button> 
-          <img src={aboutus} alt="Churn Analysis" className="bannerimg" />
+          <img src={aboutus} alt="customer success platforms" className="bannerimg" />
         </section>
       </div>
       {/* ------------------- banner   ------------------- */}

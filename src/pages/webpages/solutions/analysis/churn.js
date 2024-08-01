@@ -21,7 +21,7 @@ import customerSuccess from "../../../../assets/img/solutions/churncustomersucce
 import marketing from "../../../../assets/img/solutions/churnmarketing.png";
 import HomeFooter from "../../../../components/home-footer";
 import { Helmet } from "react-helmet";
-import { insightsActionData } from "../../../../assets/data/roles";
+import { dataSourceListChurn, insightsActionData } from "../../../../assets/data/roles";
 import { useNavigate } from "react-router";
 import { churnAnalysisData } from "../../../../assets/data/schema-markup";
 
@@ -33,20 +33,7 @@ function ChurnPage() {
   const navigate = useNavigate();
   const getstartedClick = () => navigate('/signup');
 
-  const dataSourceList = [
-    { id: 1, img: salesforce },
-    { id: 2, img: hubsport },
-    { id: 3, img: zendesk },
-    { id: 4, img: marketo },
-    { id: 5, img: freshdesk },
-    { id: 6, img: stripe },
-    { id: 7, img: recurly },
-    { id: 8, img: mixpanel },
-    { id: 9, img: hootsuite },
-    { id: 10, img: typeform },
-    { id: 11, img: googleForms },
-    { id: 12, img: surveymonkey },
-  ];
+   
 
   return (
     <>
@@ -95,7 +82,7 @@ function ChurnPage() {
               <button  onClick={getstartedClick} className="link-btn">
             <i className="fa fa-play-circle"> </i> Get Started  
     </button>  <br/>  
-          <img src={churnAnalysis} alt="churn Analysis" className="bannerimg" />
+          <img src={churnAnalysis} alt="predictive Churn Analysis" className="bannerimg" />
           <br/>  
         </section>
       </div>
@@ -216,16 +203,19 @@ function ChurnPage() {
               justifyContent="center"
               alignItems="center"
             >
-              {dataSourceList.map((action) => (
+             {dataSourceListChurn.map((action) => (
                 <>
                   <Grid item xs={12} md={4} lg={4} key={action.id}>
-                    <div
+                  <div
                       className="content-box text-center"
                       style={{minHeight:80, height:80, padding: 10, display: "block" }}
                     >
                       <img
-                        src={action.img}
-                        alt="crosssell"
+                        // src={action.img}
+                        src={
+                          "./json-media/icons/" + action.img + ".png"
+                        } 
+                        alt={action.img}
                         className="img-responsive"
                         height={30}
                         width={150}
@@ -284,7 +274,7 @@ function ChurnPage() {
             <Grid item xs={12} md={6} lg={6}>
               <img
                 src={marketing}
-                alt="sitting in Goldmine"
+                alt="Customer Satisfaction Analysis"
                 className="img-responsive"
               />
             </Grid>

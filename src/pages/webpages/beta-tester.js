@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState }from "react"; 
-import Cookies from "js-cookie";
 import HeroSection from "../../components/HeroSection";
 import NavigationLinkSection from "../../components/NavigationLinkSection";
 import ConvertMLMarketingSection from "../../components/ConvertMLMarketingSection";
@@ -35,8 +34,7 @@ import HomeFooter from "../../components/home-footer";
 import { Helmet } from "react-helmet";
 import { 
   insightsActionDatamar,
-  mainHeading,
-  midContentDatamar, midContentbetaTester
+  mainHeading,  midContentbetaTester
 } from "../../assets/data/roles";
 import { SessionContext } from "../../contexts/SessionContext";
 import { betaTester } from "../../assets/data/metadata-list";
@@ -72,8 +70,6 @@ function BetaTesterPage() {
       credentials: "include",
       headers: {
         "Content-type": "application/json",
-        "token":Cookies.get("token")
-        
       },
       body: JSON.stringify(dataSourceMailObj)
     })
@@ -139,7 +135,7 @@ function BetaTesterPage() {
           <br />
               </Grid>
               <Grid item xs={12} md={6} lg={6}> 
-              <img src={customerSuccessBanner} alt="churn Analysis" className="bannerimg" /> 
+              <img src={customerSuccessBanner} alt="customer success platforms" className="bannerimg" /> 
               </Grid>
               </Grid>
          
@@ -231,7 +227,7 @@ function BetaTesterPage() {
              
               <Grid item xs={12} md={5} lg={5}> <div className="web-view"> <img
                  src={'/json-media/img/whyjoin.png'}
-                  alt="sitting in Goldmine"
+                  alt="Customer Satisfaction Analysis"
                   className="img-responsive border-radius15"
                 /></div> </Grid>
                  <Grid item xs={12} md={7} lg={7}><h2> Why join the Power User Program?</h2>
@@ -245,7 +241,7 @@ function BetaTesterPage() {
                 </Grid> 
                  <Grid item xs={12} md={5} lg={5}> <div className="mobile-view"> <img
                  src={'/json-media/img/whyjoin.png'}
-                  alt="sitting in Goldmine"
+                  alt="Customer Satisfaction Analysis"
                   className="img-responsive border-radius15"
                 /></div> </Grid>
                 </Grid>  
@@ -296,7 +292,7 @@ function BetaTesterPage() {
                  </ul>
                 </Grid>   <Grid item xs={12} md={5} lg={5}> <img
                  src={'/json-media/img/howtoJoin.png'}
-                  alt="sitting in Goldmine"
+                  alt="Customer Satisfaction Analysis"
                   className="img-responsive border-radius15"
                 /> </Grid>
                 
