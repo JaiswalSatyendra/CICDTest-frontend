@@ -19,7 +19,12 @@ function RequireAuth({ children }) {
     )
   ) {
     domain = "test.convertml.ai";
-  }else {
+  }
+  else if (hostname.includes("cml-test.convertml.ai")) 
+    {
+    domain = "cml-test.convertml.ai";
+  }
+  else {
     domain = "convertml.ai";
   }
   const token = Cookies.get("token", { domain: domain });
